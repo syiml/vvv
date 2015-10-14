@@ -16,8 +16,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class VJudge {
     List<Submitter> s=new ArrayList<Submitter>();
     List<BlockingQueue<SubmitInfo>> queue = new ArrayList<BlockingQueue<SubmitInfo> >();
+    BlockingQueue<SubmitInfo> localQueue = new LinkedBlockingQueue<SubmitInfo>();
     public VJudge(){//初始化。从文件读取？？从数据库？？
         //System.out.println("create Main!!!");
+
+        s.add(new SubmitterLocal(0,"","",-1,this));
+
         String ss[]={"hdu","bnuoj","nbut","pku","hust","cf"};
         for(int j=0;j<ss.length;j++){
             String sss=ss[j];
@@ -28,7 +32,7 @@ public class VJudge {
             }
             queue.add(new LinkedBlockingQueue<SubmitInfo>());
         }
-        //System.out.println("create Main Done!");
+
         DO();
     }
     public int addSubmit(SubmitInfo info,int oj){
@@ -36,6 +40,14 @@ public class VJudge {
             //System.out.println("Vjudge.addSubmit");
             queue.get(oj).put(info);
             //System.out.println("Vjudge.addSubmit Done");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+    public int addSubmit(SubmitInfo info){
+        try {
+            localQueue.put(info);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

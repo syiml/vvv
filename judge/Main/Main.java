@@ -74,8 +74,6 @@ public class Main {
     public static int doSubmit(String user,int pid,int cid,int language,String code,Timestamp submittime){//控制提交跳转到vj还是本地
         System.out.println("Main.doSubmit");
         System.out.println("cid="+cid+" pid="+pid);
-        //statusSQL sts;
-        //ProblemSQL prs;
         int rid;
         if(cid!=-1){//验证user是否有权限提交
             if(contests.getContest(cid).getEndTime().before(submittime)){
@@ -86,16 +84,13 @@ public class Main {
         System.out.println("go=" + pid);
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = status.addStatu(s);//插入数据库，并获取rid
-//        if(cid!=-1){//contest内添加对应的rid
-//            //contests.getContest(cid).addStatus(rid);
-//            //pid = contests.getContest(cid).getGlobalPid(pid);//获得实际的pid
-//        }
         if(!problems.isProblemLocal(pid)){//is vj
             SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),language,code,false);
             submitVJ(ss, problems.getOJid(pid));
-            System.out.println("Main.doSubmit Done");
             return 0;//success submit to vj
         }else{//is local
+            SubmitInfo ss=new SubmitInfo(rid,pid+"",language,code,false);
+            m.addSubmit(ss);
             return 1;//success submit to local
         }
     }
@@ -112,8 +107,6 @@ public class Main {
     public static int rejudge(int rid){
         statu s=status.getStatu(rid);
         int pid=s.getPid();
-        //if(s.getCid()==-1) pid=s.getPid();
-        //else pid=Main.contests.getContest(s.getCid()).getGlobalPid(s.getPid());
         if(!problems.isProblemLocal(pid)){//is vj
             status.setStatusResult(rid, Result.PENDDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),s.getLanguage(),s.getCode(),true);
@@ -121,7 +114,9 @@ public class Main {
             System.out.println("Main.ReJudge Done");
             return 0;//success submit to vj
         }else{//is local
-            System.out.println("Main.doSubmit Done");
+            SubmitInfo ss=new SubmitInfo(rid,pid+"",s.getLanguage(),s.getCode(),true);
+            m.addSubmit(ss);
+            System.out.println("Main.ReJudge Done");
             return 1;//success submit to local
         }
     }

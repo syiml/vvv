@@ -29,16 +29,16 @@ import java.util.List;
 * 提交器
 * */
 public class Submitter implements Runnable{
-    private SubmitInfo info;//正在处理的info
-    private int status;//忙碌状态与否
+    SubmitInfo info;//正在处理的info
+    int status;//忙碌状态与否
     private String username;
     private String password;
-    private int ojid;
+    int ojid;
     private String ojsrid;
     int submitterID;
     String showstatus="";
 
-    private VJudge vj;
+    VJudge vj;
 
     public Submitter(int ojid,String us,String pas,int id,VJudge vj){
         this.ojid=ojid;
