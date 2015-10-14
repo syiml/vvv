@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="asm-3.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/asm-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/asm-commons-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/asm-tree-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-fileupload-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/freemarker-2.3.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javassist-3.11.0.GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ognl-3.0.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/struts2-core-2.3.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xwork-core-2.3.4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

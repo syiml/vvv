@@ -1,0 +1,101 @@
+表结构：
+    statu：
+        id	        int(11)
+    	ruser	    varchar(20)
+    	pid	        int(11)
+    	cid	        int(11)
+    	lang	    int(11)
+    	submitTime	datetime
+    	result	    int(11)
+    	timeUsed	varchar(10)
+    	memoryUsed	varchar(10)
+    	code	    text
+    users:
+    	username	varchar(30)
+    	password	varchar(32)
+    	nick	    varchar(50)
+    	gender	    int(11)
+    	school	    varchar(50)
+    	Email	    varchar(50)
+    	motto	    varchar(100)
+    	registertime datetime
+    	type	    int(11)
+    	solved	    int(11)		//
+    	submissions	int(11)		//
+    	Mark	    varchar(100)
+    contestproblems:
+    	cid			int(11)
+    	pid			int(11)
+    	tpid		int(11)
+
+功能：查询contest内的题目列表(按顺序) 以及每题的ac人数和提交人数
+
+	SELECT t.pid as pid,problem.pid as tpid,problem.title
+	FROM (SELECT pid,tpid FROM contestproblems WHERE cid=[cid] order by pid)t,problem
+	WHERE t.tpid=problem.pid
+	ORDER BY t.pid
+
+功能：查询contest内的题目列表及radio
+	SELECT tt.pid,title,count(username),acuser
+    FROM contestusersolve_view
+    RIGHT JOIN
+        (SELECT t4.pid as pid,t4.title,count(username) acuser
+         FROM
+            (SELECT pid,username
+             FROM contestusersolve_view
+             WHERE cid=? AND solved=1
+            )t1
+         RIGHT JOIN
+            (SELECT t.pid as pid,problem.title as title
+             FROM
+                (SELECT pid,tpid
+                 FROM contestproblems
+                 WHERE cid=? order by pid
+                )t,
+                problem
+             WHERE t.tpid=problem.pid
+             ORDER BY t.pid
+            )t4
+         ON t1.pid=t4.pid
+         GROUP BY t4.pid
+        )tt
+    ON tt.pid=contestusersolve_view.pid and contestusersolve_view.cid=?
+    GROUP BY contestusersolve_view .pid
+
+视图：usersolve_view：
+    CREATE ALGORITHM = TEMPTABLE VIEW usersolve_view(
+        username,
+        pid,
+        solved
+    ) AS
+    SELECT ruser, pid, MAX( result =1 )
+    FROM statu
+    WHERE cid = -1
+    GROUP BY ruser, pid
+
+功能：查询用户AC题目列表（不包括contest内的）
+    SELECT pid FROM usersolve_view WHERE solved=1 AND username=[user]
+功能：查询用户提交了但没AC的题目列表（不包括contest内的）
+    SELECT pid FROM usersolve_view WHERE solved=0 AND username=[user]
+功能：查询AC了pid题目的用户列表
+    SELECT username FROM usersolve_view WHERE solved=1 AND pid=[pid]
+功能：查询提交了pid题目的用户列表
+    SELECT username FROM usersolve_view WHERE pid=[pid]
+功能：查询提交了pid题目的用户数量
+    SELECT COUNT(username) FROM usersolve_view WHERE pid=[pid]
+功能：查询AC了pid题目的用户数量
+    SELECT COUNT(username) FROM usersolve_view WHERE pid=[pid] AND solved=1
+
+
+
+视图：contestusersolve_view：
+    CREATE ALGORITHM = TEMPTABLE VIEW contestusersolve_view(
+    	cid,
+        pid,
+        username,
+        solved
+    ) AS
+    SELECT cid, pid, ruser, MAX( result =1 )
+    FROM statu
+    WHERE cid <> -1
+    GROUP BY ruser, pid, cid

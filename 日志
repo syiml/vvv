@@ -1,0 +1,363 @@
+﻿计划
+    ICPCrank封榜时间
+    Rank重现
+    problem标签的统计
+    队伍账号 t_teamuser（id、teamname、leader、member1、member2、motto、rating、status）
+        比赛有组队赛模式（kind字段）、队长可以报名（也有审核等）
+        队长创建队伍->邀请队员->队员同意->确定创建
+        状态：0创建期，1活动，2解散，3重组期
+            状态0：创建期
+                不能参加比赛
+                队长和成员同意后隶属于本队伍（此时队长和成员不能加入其它队伍）
+                所有邀请队员均同意后直接变成活动状态。
+            状态1：活动
+                可以参加比赛
+                队长和成员隶属于本队伍（此时队长和成员不能加入其它队伍）
+            状态2：解散
+                不能参加比赛
+                可以重组（前提是队员均不属于其它队伍）
+                此时队长和成员可以加入其它队伍
+            状态3：重组期
+                不能参加比赛
+                队长和成员同意后隶属于本队伍（此时队长和成员不能加入其它队伍）
+                所有邀请队员均同意后直接变成活动状态。
+        创建队伍->任何不隶属于其他队伍的人均可发起
+            输入队名、选择队友、确定
+                （检查邀请的队员是否属于其他队伍、检查这个组合是否已经存在一个状态为解散的队伍
+                    存在的话则发起重组，否则重新创建）
+        接受邀请->被邀请人操作
+            如果是最后一个队员接受邀请，则自动创建队伍，给所有队员发送message
+            否则记录接受状态，给发起人发送message
+        拒绝邀请->被邀请人操作
+            拒绝后队伍创建失败，并给发起人和已经接受邀请的队员发送一个message提示
+        解散队伍->要求状态：0、1、3
+            状态为0时直接取消创建，删除记录，创建队伍失败，发送的其他加入邀请失效
+            状态为1时，状态修改为2。
+            状态为3时取消重组，状态修改为2
+        队长转让->要求状态：1
+            指定一个队员转让队长。互换位置，记录队伍日志
+        修改队名耗ACB。（创建期不需要，活动期和重组期需要ABC（并记录队伍日志），已解散不能修改）
+
+    本地判题
+
+    contest的置顶和隐藏（置顶用优先级，默认优先级是0，即不置顶，否则以优先级排序置顶contest）(ORDER BY pri,id)
+    contest和题目的discuss专栏（题目讨论版，和contest的提问版）
+    管理员修改密码
+    增加contest的隐藏（就像problem的隐藏一样）
+    contestuser翻页
+    数据校验
+        登陆校验：用户名密码长度，用户名不能有特殊符号
+        查询校验：（各个筛选的地方）
+        回复discuss
+        发帖
+        管理员功能数据校验
+    problem 增加删除sample
+
+    problem的筛选  题号、题目
+    上传头像预览（裁剪）
+
+    LOG：日志记录功能，同时实现部分业务逻辑
+        记录登录、提交、AC、重判等用户操作记录
+        t_log(id,time,type,par1,par2,par3,intpart,note,status,deadline(过期时间))
+        type:{
+            0:系统运行记录(note)
+            1:登录(par1:user,part2:ip,intpart:dayfirstlogin)//周期22小时
+            2:AC(part1:user,part2:pid,intpart:dayfirstAC)  //周期22小时
+            3:改nick(part1:user,part2:oldnick,part3:newnick)
+            4:改头像(part1:user)
+            5:user操作(note,intpart:显示否)
+        }
+
+    ACB相关：
+        管理员邮件发送ACB作为奖励
+        每日登录ACB奖励（1ACB）
+        每日第一个登录ACB奖励（1ACB）
+        每日第一个AC的人ACB翻倍（+20）
+        ACB修改昵称（50ACB）
+        ACB换头像（80ACB）
+
+    挑战模式
+    其他rank模式...
+BUG
+    rejudge后rank更新会有问题
+10-11
+    1.54
+    discuss可以设置为回复默认隐藏
+    修复了discuss不能下一页的bug
+    题目描述的右边新增一个显示题目出处（所属的最先开始的比赛，但是比赛未开始时不显示）
+10-10
+    1.53
+    修复提交统计图在改变窗口大小时显示不正确的bug
+10-9
+    提交统计的轴改成时间显示
+    支持CF
+10-7
+    1.52
+    修复了rank等页面读取速度很慢的bug（原因是在user的构造函数里面会获取他的AC列表和submit列表等数据）
+    user页面多了一个提交统计的折线图
+10-5
+    1.51
+    添加题目的时候点击获取标题 如果本地已经存在同一题，会显示题目id列表(仍然可以再添加)
+    题目info页面会显示题目来源了
+    各个页面取消登录验证，只保留比赛和后台管理页面需要登录后范围
+10-4
+    题目根据标签筛选
+    status中的user显示username和nick
+10-3
+    给代码判重程序作了一些优化（判重使用的二维数组改成了滚动数组）
+    loading图用css3特效替换
+    管理员可以奖励ACB给用户
+10-2
+    页面布局改成定宽居中(1100宽)
+    其他页面部分文字描述修改
+    翻页按钮文字修改
+    ContestList、Status 的表头、表单等显示为中文
+    导航鼠移入时变成中文显示
+    完善登录失败提示
+    修复bug：练习模式排名计算不正确 ———小毛发现
+9-29
+    1.5
+    discuss和回复可以显示头像、nick、rating等个人信息了，调整了管理员回复的显示方式。
+    个人信息页面修改显示
+    注册和信息修改页面修改为中文显示
+9-28
+    主页新增 AC榜 Top10
+    题目自动获取图片
+    上传头像，并在user.jsp显示
+9-27
+    新增注册状态“需修改”。管理员审批时选择，输入备注信息。用户可以查看并重新注册。
+    User列表可以点击表头排序
+9-26
+    users添加字段name,faculty,major,cla,no,phone（姓名，性别，学校，院系，专业班级，学号，手机）
+    在比赛kind为3时的注册列表显示详细信息，女生添加红色行，字体变小
+9-23
+    1.47
+    暂时关闭暑假签到
+    添加重新获取题目描述
+9-5
+    HDU和FJUT获取时限和空间限制算法修改
+9-1
+    修复了在contest内不能正确保存 没有获取过题目描述的的题目 的描述
+    修改problemTag.js获取时机
+    1.46
+    在个人信息页面添加了一个雷达图表示AC题目的标签类型分布。（AC了没贴标签的题目不计入统计）
+        统计结果=AC的题目拥有的标签类型的总和占该类型的所有题目的AC人总和的百分比
+8-30
+    1.45
+    修复POJ和FJUT拉取题目不正确的BUG
+    修复contest内直接进入题目时，题目导航不显示的bug
+8-24
+    1.44
+    修复不能注册的bug
+    支持FJUT
+    1.43
+    修改contest和problem的缓存大小
+8-21
+    1.42
+    去掉user页面的rating记录表格，只保留rating变化图，鼠标移动到变化图上的点时显示详细信息。
+8-20
+    1.41
+    修复contest内不显示提交状态的bug
+    代码判重只显示重复率0.75以上的
+    修复代码判重内的pid显示不正确的bug
+    修复查看status时带有all参数时翻页不正确
+    修改problemList的ratdio为ac人数/提交次数
+8-19
+    1.40版本
+    积分模式（贴标签可以获得20积分，贴完标签可以查看该题别人AC的代码，可以用100积分兑换没AC题目的代码(不允许复制代码)）
+    新的页面：problemInfo。
+    problem 的status统计信息、标签详情、短码top10
+    contest新的排序规则：未开始的排在开始的前面，开始时间晚的排前面
+    Rank新的排名规则：rating相同则按AC题数排序
+    权限管理
+    新增problemsample
+8-15
+    修改statu表示方式为cid!=-1时pid是全局pid而不是比赛内pid。
+8.14
+    修复了一个可能导致误判的BUG
+    优化了vjudge的评测模式（使用阻塞队列）
+8.11
+    练习场排名
+    支持PKU
+    contest分类 专题、积分、趣味、正式
+7-30
+    1.3版本
+    在contest内提交通过与否可以在题库里面显示了
+    代码查重
+7-28
+    1.1版本
+    签到功能
+    1.0版本
+    管理员在padding的时候可以看见题目
+    contest注册开始时间
+    contest是否计算rating(否的话不显示save链接，以免误点)
+    contest详细说明字段
+    管理员内的评测机状态显示
+7-27
+    一般用户可以看到计算后的rating变化
+7-25
+    0.2版
+    problem 标签（AC的user可以给problem贴标签）
+7-24
+    0.13版上线
+    重写了导航条
+    修复不能修改密码的bug
+7-23
+    0.12版上线
+    重写了contest内（js实现）
+    修复若干bug
+    修改了panel的样式（加了阴影）
+7-19
+    修复了在contest内提交后刷新会重复提交的bug
+7-12
+    版本0.11
+7-11
+    消息提醒（回复提醒、注册审核提醒、rating变化消息）
+7-10
+    BUG修复：Mysql自动断线，现在可以隔一段时间可以自动连接数据库
+7-8
+    发布版本0.1测试版
+7-7
+    注册验证用户名已经存在
+    修改各种地方的链接为相对路径
+7-6
+    submitform去掉user，隐藏cid
+    discuss  对所有user开放（加上限制？）
+    discuss  置顶帖加上“【顶】”字样
+    discuss  楼主可以追加内容
+    discusslist 可以翻页和筛选
+    rating曲线图
+7-5
+    管理员回复DiscussReply
+    userlist翻页
+    页面跳转，提交各种表单后会返回之前页面了
+    Discuss回复
+    管理员手动添加user进contest
+7-4
+    注册contest和管理员审核
+    各种权限的验证
+    支持NBUT
+    Discuss的添加和修改
+    status和rank会高亮显示登陆者的那些记录
+    problemlist和contestlist新增“new”链接
+    提交校验：代码长度：50~65536
+    contest和problem的缓存清除(待改进)
+7-3
+    首页显示discuss、利用discuss显示RecentlyContest(最近比赛)
+    首页显示TOP 10
+    rating计算保存
+7-2
+    problem的修改
+    v_user的rank算法修改成showrating的排名
+7-1
+    在statusList中点击username会跳转到user页面
+    contest修改
+6-30
+    预测user的Rating变化（测试）
+    可以显示Contest的User注册列表
+6-27
+    problem 描述的修改
+    其他oj题目保存在本地(第一次访问时保存)
+        t_problemview表保存题目描述
+        t_problem_sample表保存题目样例输入输出（因为一题可能有多组样例）
+    rating颜色显示（在User.ratingToHTML()）
+    user修改
+    注册校验：用户名只能包括字母数字和下划线
+6-26
+    user界面（UserInfo、Permissions、SolvedProblems、NotSolvedProblems）
+6-25
+    粗糙的UserList界面
+6-23
+    ICPCrank 显示金银铜
+    表t_rank_icpc保存contest的rank配置
+    添加contest
+    contest内的题号如果超过26题用字母表示，否则用数字表示（0开始）（1000开始？）
+6-22
+    form.date类可以选择日期。id_d是日期,id_s是时,id_m是分
+    addcontestform，名称，开始时间，结束时间，类型，进入密码，注册结束时间
+6-21
+    contest内题目列表显示AC率和登陆用户是否AC
+6-20
+    全局题目列表显示AC率（AC用户数/提交用户数）
+    增加视图 usersolve_view (username,pid,solved) 表示每个用户对每道题目的AC情况 solved=1表示该题目AC solved=0表示提交了但未AC
+6-18
+    拥有addContest权限可以控制题目的隐藏和显示（应该跳转回原页面。。。）
+    ceinfo权限
+    session保存User类，包括AC的题和未AC的题。（目前只有登录的时候计算，没有维护）
+6-17
+    problem增加visiable字段控制显示隐藏。（仅对全局题目有效）
+    HTML.problem()验证user是否可以查看该题目
+    对应权限：showHideProblem（addContext附带）
+6-15
+    更新bnuoj获取题目的算法（CF已经独立处理）
+    重判
+6-14
+    添加权限表和用户权限表
+    admin.jsp添加管理员功能 addprooblem
+6-13
+    代码高亮
+    注册校验：用jquery.validate.js   用户名密码长度等的校验
+6-12
+    Judge重试超时
+    problemSet的翻页
+    status的筛选和翻页（conterst内外均可）
+    contest的筛选和翻页
+    Form应该有数据校验和读入当前参数的功能。
+        每个表单用action类保存，传入页面的action类，读取当前数据。
+    处理get请求的中文乱码
+        参考：http://www.jb51.net/article/56701.htm
+6-11
+    FormHTML类管理表单生成，当前仅包括两种样式，一个作用于一般表单的post提交，一个用于筛选条件。
+    HTML类管理全部的HTML页面代码生成
+    将ContestList.jsp页面修改完整，补充筛选参数
+6-10
+    密码加密  md5
+    judge 线程安全
+6-9
+    ICPCrank的一血功能
+    实现BNUOJ类
+    HDU和BNUOJ获取timelimit和memorylimit
+6-8
+    使用HTML类管理简单的HTML代码生成
+    查看自己的code   ViewCode.jsp
+    TablemHTML类管理表格的HTML生成
+    statuListHTML类管理status列表HTML生成
+    statuList翻页
+6-7
+    实现HDU类
+    可获得CE信息  CEinfo.jsp
+    定义Int64 并显示
+6-6
+    Contest.getHomeHTML()获取Contest的Home页面的显示信息
+    使用problemHTML类管理problem的页面显示
+6-5
+    进入contest时user验证、密码验证
+    Contest 有5种模式：
+        0：public 所有user都可以进入提交
+        1：password 进入时要输入密码
+        2：private 管理员添加可以进入的user
+        3：register 注册即可参加
+        4：register2 注册后需要审核才能参加
+    增加RegisterUser表示注册的user（SQL表contestuser）
+        statu：0未处理的报名 1通过的报名 2非正式参加 -1拒绝的报名
+        info： 保存某些信息（如拒绝报名原因）
+6-4
+    Contest 开始和结束时间（开始前不能看题、结束后不能提交）
+    登录和退出（session保存）Login.jsp、loginsuccess.jsp、Logout.jsp、loginForm.jsp
+    提交时未登录会跳转到登录页面，提交表单的user会自动填入已登录的username
+6-3
+    user表建立
+    简单注册（只有username和password）Register.jsp、registerForm.jsp
+6-2
+    status保存到数据库，并且从数据库拉取
+    完善题目列表从数据库拉取的缓存模式
+5-31
+    problemSet可以使用page参数来规定显示页（页从0开始）
+    题目列表从数据库拉取（总表和contest里面的题目列表）
+        （contest内的题目列表应该按contest规定的顺序（可以在cp表添加一列表示contest内的题号，然后用sql语句实现））
+    contest列表从数据库拉取
+之前
+    contest的ICPC模式的rank功能（不包括一血功能）
+    完成了题库、vj、contest
+        vj的post请求实现使用Client类
+        题目显示使用jsoup+css选择器

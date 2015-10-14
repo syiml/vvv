@@ -1,0 +1,37 @@
+@charset "utf-8";
+.modern-menu { width: 950px; height: 40px; font-family: "Arial Narrow", sans-serif; font-size: 15px; font-weight: 700; position: relative; clear: both }
+.modern-menu.mm-vertical { width: 184px; height: auto }
+.modern-menu, .modern-menu ul { list-style: none; margin: 0; padding: 0 }
+.modern-menu li { position: relative }
+.modern-menu a { height: 100%; text-decoration: none; display: block; position: relative; overflow: hidden; z-index: 101; border: 0 }
+.modern-menu a span { line-height: 40px; padding: 0 20px; display: block }
+.modern-menu.mm-vertical a span { line-height: 36px }
+.mm-container.mm-drop span { padding-right: 15px }
+.mm-horizontal span { float: left }
+.mm-hdrop, .mm-hdrop-over, .mm-vdrop, .mm-vdrop-over { background-repeat: no-repeat; background-position: center right; padding-right: 20px }
+.modern-menu .mm-right { display: block; float: right }
+.modern-menu>li { float: left }
+.modern-menu.mm-vertical>li { float: none }
+.mm-group li { float: left }
+.modern-menu .mm-group span { line-height: 40px }
+.modern-menu ul span { line-height: 36px }
+.modern-menu li>ul { width: 135px; font-size: 14px; position: absolute; left: -5000px; opacity: 0; z-index: 100;box-shadow: 0 0 10px #aaaaaa; }
+.mm-vertical li>ul { top: 0 }
+.modern-menu ul ul { float: right; top: 0 }
+.modern-menu .mm-icon span { width: 14px; height: 40px; background-repeat: no-repeat; background-position: center; padding: 0 18px }
+.mm-vertical .mm-icon span { width: 10px }
+.theme8 { background-color: #f5f5f5 }
+.theme8 a span { color: #707070; background-color: #f5f5f5 }
+.theme8 .mm-over { color: #f0f0f0; background-color: #505050 }
+.theme8 .mm-hdrop { background-image: url(hdrop.png) }
+.theme8 .mm-hdrop-over { background-image: url(hdrop-over.png) }
+.theme8 .mm-vdrop { background-image: url(vdrop.png) }
+.theme8 .mm-vdrop-over { background-image: url(vdrop-over.png) }
+/*.theme8 .mm-facebook { background-image: url(../images/theme8/facebook.png) }*/
+/*.theme8 .mm-facebook-over { background-image: url(../images/theme8/facebook-over.png) }*/
+/*.theme8 .mm-twitter { background-image: url(../images/theme8/twitter.png) }*/
+/*.theme8 .mm-twitter-over { background-image: url(../images/theme8/twitter-over.png) }*/
+/*.theme8 .mm-googleplus { background-image: url(../images/theme8/googleplus.png) }*/
+/*.theme8 .mm-googleplus-over { background-image: url(../images/theme8/googleplus-over.png) }*/
+/*.theme8 .mm-linkedin { background-image: url(../images/theme8/linkedin.png) }*/
+/*.theme8 .mm-linkedin-over { background-image: url(../images/theme8/linkedin-over.png) }*/

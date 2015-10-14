@@ -1,0 +1,61 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ page import="Main.Main" %>
+<%@ page import="Main.status.statusSQL" %>
+<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="Main.User.User" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Administrator
+  Date: 2015/5/23
+  Time: 18:04
+  To change this template use File | Settings | File Templates.
+--%>
+
+<%@page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<%--
+  参数：cid
+       from
+       page
+       user   session内,当前登陆的user
+  筛选：user
+       pid
+       result
+       lang
+--%>
+<%
+    Main.saveURL();
+//    if(session.getAttribute("user")==null){
+//        response.sendRedirect("Login.jsp");
+//        return;
+//    }
+  String pa=request.getParameter("page");
+  Object u=session.getAttribute("user");
+  String user=null;
+  if(u!=null){
+    user=((User)u).getUsername();
+  }
+  int paInt=0;
+  if(pa!=null) paInt=Integer.parseInt(pa);
+
+  String ssuser=request.getParameter("user");
+  String pid=request.getParameter("pid");
+  String result=request.getParameter("result");
+  String lang=request.getParameter("lang");
+  String all=request.getParameter("all");
+  int pidInt=-1,resultInt=-1,langInt=-1;
+  if(pid!=null&&!pid.equals("")) pidInt=Integer.parseInt(pid);
+  if(result!=null&&!result.equals("")) resultInt=Integer.parseInt(result);
+  if(lang!=null&&!lang.equals("")) langInt=Integer.parseInt(lang);
+%>
+<html>
+<head>
+    <title>评测状态 - T^T Online Judge</title>
+</head>
+<body>
+<div class="container-fluid">
+  <jsp:include page="module/head.jsp?page=status"/>
+  <%=HTML.StatusHTML(user,-1,paInt,pidInt,resultInt,langInt,ssuser,all!=null)%>
+</div><jsp:include page="module/foot.jsp"/>
+</body>
+</html>

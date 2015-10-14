@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <package name="default" extends="struts-default">
+                <action name="sb" class="action.submit" method="submitProblem">
+                        <result name="success1" type="redirect">Status.jsp</result>
+                        <result name="success2">return.jsp</result>
+                        <result name="OutOfContest">/module/ErrorInfo/OutOfContest.jsp</result>
+                        <result name="login" type="redirect">Login.jsp</result>
+                        <result name="nopermission" type="redirect">Error.jsp?name=NoPermission</result>
+                        <result name="argerror" type="redirect">Error.jsp?name=ArgError</result>
+                </action>
+                <action name="reg" class="action.register" method="reg">
+                        <result name="success">return.jsp</result>
+                        <result name="error">Register.jsp</result>
+                </action>
+                <action name="login" class="action.login" method="login">
+                        <result name="success">return.jsp</result>
+                        <result name="error" type="redirect">Login.jsp</result>
+                </action>
+                <action name="addproblem1" class="action.addproblem1" method="addproblem1">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="rejudge" class="action.rejudge" method="rej">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="pvis" class="action.setProblemVisiable" method="setProVis">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="addcontest" class="action.addcontest" method="add">
+                        <result name="success" type="redirect">Contests.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="editcontest" class="action.addcontest" method="edit">
+                        <result name="success" type="redirect">Contests.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="edit" class="action.edit" method="ed">
+                        <result name="success">return.jsp</result>
+                        <result name="error" type="redirect">EditInfo.jsp</result>
+                </action>
+                <action name="editproblem" class="action.editproblem" method="edit">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="comprating" class="action.comp_rating" method="save">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="adddiscuss" class="action.addDiscuss" method="add">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="adddiscuss2" class="action.addDiscuss" method="add2">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="discussappend" class="action.addDiscuss" method="append">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="registercontest" class="action.RegisterContest" method="regCon">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                        <result name="info">info.jsp?info=需要补充完整信息才能注册！</result>
+                </action>
+                <action name="setregistercontest" class="action.setRegisterContest" method="set">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="replydiscuss" class="action.DiscussReply" method="dr">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="showhide" class="action.DiscussReply" method="hideshow">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="adminReplay" class="action.DiscussReply" method="adminReply">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="clockin" class="action.ClockIn" method="userClockIn">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="adminclockin" class="action.ClockIn" method="adminAdd">
+                        <result name="success">ClockIn.jsp</result>
+                </action>
+                <action name="delclockin" class="action.ClockIn" method="del">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="buyviewcode" class="action.buyviewcode" method="buy">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="delper" class="action.userper" method="del">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="addper" class="action.userper" method="add">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="delProblemDis" class="action.editproblem" method="delProblemDis">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="uploadhead" class="action.uploadhead" method="upload">
+                        <result name="success">return.jsp</result>
+                        <result name="toobig">info.jsp?info="上传的图片不能超过500K"</result>
+                </action>
+                <action name="awardacb" class="action.awardACB" method="award">
+                        <result name="success">info.jsp?info="成功"</result>
+                        <result name="error">info.jsp?info="失败"</result>
+                </action>
+        </package>
+        <package name="challenge" >
+                <action name="blocklist" class="Challenge.ChallengeAction" method="init"> </action>
+        </package>
+</struts>
