@@ -8,6 +8,7 @@ import Tool.HTML.problemHTML.problemHTML;
 import Tool.HTML.problemListHTML.problemView;
 import Tool.SQL;
 import action.editproblem;
+import javafx.util.Pair;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -373,6 +374,21 @@ public class ProblemSQL {
         } catch (SQLException ignored) {
             return null;
         }
+    }
+    public Pair<Integer,Integer> getProblemLimit(int pid){
+        ResultSet rs=SQL.query("SELECT timelimit,MenoryLimit FROM t_problemview WHERE pid=?",pid);
+        try {
+            if(rs.next()){
+                String timeLimitStr=rs.getString("timelimit");
+                String memoryLimitStr=rs.getString("MenoryLimit");
+                int timeLimit=Integer.parseInt(timeLimitStr.substring(0, timeLimitStr.length() - 2));
+                int memoryLimit=Integer.parseInt(memoryLimitStr.substring(0, memoryLimitStr.length() - 2));
+                return new Pair<Integer, Integer>(timeLimit,memoryLimit);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Pair<Integer, Integer>(0,0);
     }
     public String toHref(int pid,int cid){
         return "Contest.jsp?cid="+cid+"#Problem_"+pid;

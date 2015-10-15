@@ -1,10 +1,11 @@
-package Main.OJ.Local;
+package Main.OJ.LocalJudge;
 
 import Main.Vjudge.Submitter;
 import Main.problem.Problem;
 import Main.status.RES;
 import Main.status.Result;
 import Main.Main;
+import javafx.util.Pair;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,12 +13,13 @@ import java.util.ArrayList;
 /**
  * Created by Syiml on 2015/10/14 0014.
  */
-public class Judge {
-    private static String path="D:\\data\\";//标准数据存放 = paht/pid
-    private static String outPath="C:\\temp\\";//临时输出路径 = outPath/rid
-    private static String gccPath="C:\\JudgeOnline\\bin\\gcc\\bin\\";
-    private static String shell = "C:\\JudgeOnline\\bin\\com.exe";
-    private static String runshell = "C:\\JudgeOnline\\bin\\run.exe";
+public class LocalJudge {
+    private static String workPath = Main.GV.getString("localJudgeWorkPath");
+    private static String path     = workPath+"data\\";//标准数据存放 = paht/pid
+    private static String outPath  = workPath+"run\\";//临时输出路径 = outPath/rid
+    private static String gccPath  = workPath+"bin\\gcc\\bin\\";
+    private static String shell    = workPath+"bin\\com.exe";
+    private static String runshell = workPath+"bin\\run.exe";
 
     private static String codeFileExt(int lang){
         if(lang==0) return ".cc";
@@ -32,7 +34,7 @@ public class Judge {
         }
     }
     private static void createFile(String path,String text) throws IOException {
-        System.out.println(path);
+        Main.debug(path);
         File outFile = null;
         outFile = new File(path);
         outFile.createNewFile();
@@ -60,7 +62,7 @@ public class Judge {
         File file = new File(path);
         deleteFile(file);
     }
-    private static boolean compile(String pid,Submitter s,RES res){
+    private static boolean compile(Submitter s,RES res){
         File workPath = new File(outPath + s.getSubmitInfo().rid+"\\");
         String fileName = "Main";
         if(!workPath.mkdirs()) {
@@ -73,9 +75,8 @@ public class Judge {
                 Process pro = rt.exec(shell);
                 OutputStream proOutStr = pro.getOutputStream();
                 proOutStr.write((cmd + "\n").getBytes());
-            System.out.println(cmd);
+            Main.debug(cmd);
                 proOutStr.flush();
-
                 BufferedReader br = new BufferedReader(new InputStreamReader(pro.getErrorStream()));
                 String errorInfo = "";
                 String var15;
@@ -84,11 +85,9 @@ public class Judge {
                     errorInfo += var15 + "\n";
                 }
                 br.close();
-
                 try {
                     pro.waitFor();
                 } catch (InterruptedException ignored){}
-
                 File exe = new File(workPath.getAbsolutePath() +"\\"+ fileName + ".exe");
                 //ServerConfig.debug(Tool.fixPath(workPath.getAbsolutePath()) + fileName + ".exe");
                 if (!exe.isFile()) {
@@ -130,35 +129,33 @@ public class Judge {
                 }
             }
             int FileListSize = inFileList.size();
-            Problem p=Main.problems.getProblem(Integer.parseInt(s.getSubmitInfo().pid));
-            runExeOutputStream.write(("1000\n").getBytes());//时限
-        Main.log("1000");
+            Pair<Integer,Integer> limit=Main.problems.getProblemLimit(Integer.parseInt(s.getSubmitInfo().pid));
+            runExeOutputStream.write((limit.getKey()+"\n").getBytes());//时限(MS)
+        Main.debug("时限"+limit.getKey()+"MS");
             runExeOutputStream.write(("30000\n").getBytes());//单点时限
-        Main.log("30000");
+        Main.debug(("30000"));
             file = new File(fixPath(outPath) + s.getSubmitInfo().getRid());
             try {
                 String filename = "Main";
                 long exMemory = 0L;
-                runExeOutputStream.write(((128000 +  exMemory) * 1024L + "\n").getBytes());//内存限制
-            Main.log((128000 +  exMemory) * 1024L +"");
+                runExeOutputStream.write(((limit.getValue()*1024L +  exMemory) * 1024L + "\n").getBytes());//内存限制MB
+            Main.debug("内存限制"+(limit.getValue()*1024L +  exMemory) * 1024L + "B");
                 String mainExe = filename+".exe";
                 runExeOutputStream.write((file.getAbsolutePath()+"\\"+mainExe + "\n").getBytes());
-            Main.log((file.getAbsolutePath()+"\\"+mainExe));
+            Main.debug((file.getAbsolutePath() + "\\" + mainExe));
                 runExeOutputStream.write((file.getAbsolutePath() + "\\\n").getBytes());
-            Main.log(file.getAbsolutePath()+"\\");
+            Main.debug(file.getAbsolutePath() + "\\");
                 runExeOutputStream.write((FileListSize + "\n").getBytes());
-            Main.log(FileListSize+"");
+            Main.debug(FileListSize + "");
                 long TimeUsed = 0L;
                 long MemoryUsed = 0L;
                 try {
                     for(i = 0; i < FileListSize; ++i) {
                         runExeOutputStream.write(( inFileList.get(i) + "\n").getBytes());
-                    Main.log(inFileList.get(i));
+                    Main.debug(inFileList.get(i));
                         File var20 = new File(outFileList.get(i));
                         runExeOutputStream.write((fixPath(file.getAbsolutePath()) + var20.getName() + "\n").getBytes());
-                    Main.log(fixPath(file.getAbsolutePath()) + var20.getName());
                         runExeOutputStream.write((var20.getAbsolutePath() + "\n").getBytes());
-                    Main.log(var20.getAbsolutePath());
                     }
                     runExeOutputStream.flush();
                 } catch (IOException ignored) {}
@@ -195,16 +192,20 @@ public class Judge {
             }
         }
     }
-    public static RES judge(String pid,Submitter s){
+    public static RES judge(Submitter s){
         RES res=new RES();
         int ret=-1;
-        if(compile(pid,s,res)){
+        s.showstatus="Compile";
+        if(compile(s,res)){
+            s.showstatus="CompileSuccess";
             try {
+                s.showstatus="Running";
                 ret=run(s,res);
+                s.showstatus="runDone";
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(ret);
+            Main.debug("LocalJudge ret="+ret);
             switch (ret){
                 case 0: res.setR(Result.AC); break;
                 case 1: res.setR(Result.PE); break;
@@ -218,6 +219,7 @@ public class Judge {
             }
             delFile(outPath + s.getSubmitInfo().rid+"\\");
         }
+        s.showstatus="res="+res.getR();
         return res;
     }
 }

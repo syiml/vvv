@@ -28,7 +28,7 @@ public class uploadhead {
         if(upload.length()>512*1024){
             return "toobig";
         }
-        String path=Main.getSession().getServletContext().getRealPath("/");
+        String path=Main.getRealPath("/");
         return Main.uploadFile(upload,path+"\\pic\\head\\"+Main.loginUser().getUsername()+".jpg");
     }
 }

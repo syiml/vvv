@@ -114,6 +114,7 @@ public class Main {
             System.out.println("Main.ReJudge Done");
             return 0;//success submit to vj
         }else{//is local
+            status.setStatusResult(rid, Result.PENDDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,pid+"",s.getLanguage(),s.getCode(),true);
             m.addSubmit(ss);
             System.out.println("Main.ReJudge Done");
@@ -185,6 +186,15 @@ public class Main {
     }
     public static void log(String s){
         System.out.println(Main.now()+"-> "+s);
+    }
+    public static boolean isDebug=true;
+    public static void debug(String s){
+        if(isDebug){
+            System.out.println(Main.now()+"=> "+s);
+        }
+    }
+    public static String getRealPath(String s){
+        return getSession().getServletContext().getRealPath(s);
     }
     public static String nowDate(){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

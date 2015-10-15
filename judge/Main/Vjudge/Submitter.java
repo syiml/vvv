@@ -36,7 +36,7 @@ public class Submitter implements Runnable{
     int ojid;
     private String ojsrid;
     int submitterID;
-    String showstatus="";
+    public String showstatus="";
 
     VJudge vj;
 

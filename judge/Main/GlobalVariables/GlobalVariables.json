@@ -11,6 +11,8 @@
   "discussShowNum":"20",
   "autoConnectionTimeMinute":"360",
 
+  "localJudgeWorkPath":"C:\\T_TOJ\\",
+
   "hdu":{
     "URL":"http://acm.hdu.edu.cn",
     "Submitter":[

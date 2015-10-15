@@ -1,8 +1,7 @@
 package Main.Vjudge;
 
 import Main.Main;
-import Main.OJ.Local.Judge;
-import Main.OJ.OTHOJ;
+import Main.OJ.LocalJudge.LocalJudge;
 import Main.status.RES;
 import Main.status.Result;
 
@@ -17,10 +16,8 @@ public class SubmitterLocal extends Submitter {
 
     public void go() {
         showstatus="go";
-        this.status=BUSY;
-        RES res=Judge.judge(info.pid,this);
+        RES res= LocalJudge.judge(this);
         Main.status.setStatusResult(info.rid,res.getR(),res.getTime(),res.getMemory(),res.getCEInfo());
-        this.status=IDLE;
     }
     public void run(){//开始执行线程
         try {
@@ -28,9 +25,10 @@ public class SubmitterLocal extends Submitter {
                 //读取队列执行
                 //System.out.println(submitterID+"IDLE");
                 this.info=vj.localQueue.take();
-                this.status=BUSY;
                 Main.status.setStatusResult(info.rid,Result.JUDGING,"-","-","");
+                this.status=BUSY;
                 go();
+                this.status=IDLE;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
