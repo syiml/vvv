@@ -1,5 +1,6 @@
 package Tool.MyClient;
 
+import Main.Main;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -54,7 +55,7 @@ public class MyClient {
                 String content;
                 try {
                     content = EntityUtils.toString(entity);
-                    System.out.println("Response content:"  +content);
+                    Main.debug("Response content:" + content);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return 0;

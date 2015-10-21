@@ -22,6 +22,9 @@ import Main.contest.rank.RankSQL;
 import Main.contest.Contest;
 import Main.problem.Problem;
 import Main.status.statu;
+import Tool.FILE;
+import Tool.HTML.problemHTML.problemHTML;
+import action.addLocalProblem;
 import action.addcontest;
 import action.addproblem1;
 import net.sf.json.JSONObject;
@@ -58,6 +61,8 @@ public class Main {
     final public static int userShowNum=GV.getInt("userShowNum");//user每页显示数量
     final public static int discussShowNum=GV.getInt("discussShowNum");//discuss的显示数量
     final public static int autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
+    public static boolean isDebug=GV.getBoolean("debug");
+    public static String version=GV.getString("version");
 
     static{
         try {
@@ -101,7 +106,30 @@ public class Main {
     }
     public static String addProblem(addproblem1 action){
         Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle());
-        problems.addProblem(action.getPid(),p);
+        problems.addProblem(action.getPid(), p);
+        return "success";
+    }
+    public static String addLocalProblem(addLocalProblem action){
+        Problem p=new Problem(action.title);
+        int newpid=problems.addProblem(-1,p);
+        problemHTML ph=new problemHTML();
+        ph.setInt64("%I64d");
+        ph.setTimeLimit(action.getTime() + "MS");
+        ph.setMenoryLimit(action.getMemory() + "MB");
+        problems.saveProblemHTML(newpid, ph);
+        FILE.createDirectory(newpid);
+        return "success";
+    }
+    public static String editLocalProblem(addLocalProblem action){
+        int pid=Integer.parseInt(action.getPid());
+        Problem p=Main.problems.getProblem(pid);
+        p.Title=action.getTitle();
+        Main.problems.editProblem(pid,p);
+        problemHTML ph=Main.problems.getProblemHTML(pid);
+        ph.setTimeLimit(action.getTime()+"MS");
+        ph.setMenoryLimit(action.getMemory()+"MB");
+        problems.delProblemDis(pid);
+        problems.saveProblemHTML(pid,ph);
         return "success";
     }
     public static int rejudge(int rid){
@@ -187,7 +215,6 @@ public class Main {
     public static void log(String s){
         System.out.println(Main.now()+"-> "+s);
     }
-    public static boolean isDebug=true;
     public static void debug(String s){
         if(isDebug){
             System.out.println(Main.now()+"=> "+s);

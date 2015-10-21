@@ -22,10 +22,11 @@ public class uploadhead {
 
     private File upload;
     private String uploadFileName;
+    public static long maxHeadImgSize=Main.GV.getLong("maxHeadImgSize");
 
     public String upload() throws Exception{
-        System.out.println(upload.length());
-        if(upload.length()>512*1024){
+        Main.debug("上传头像文件大小：" + upload.length());
+        if(upload.length()>=maxHeadImgSize){
             return "toobig";
         }
         String path=Main.getRealPath("/");

@@ -95,7 +95,7 @@ public class Submitter implements Runnable{
                     return;
                 }
                 prid = oj.getRid(username);//获得原来的rid
-                System.out.println(submitterID+":prid="+prid);
+                Main.debug(submitterID+":prid="+prid);
                 showstatus="get"+z+" prid="+prid;
             }while(prid.equals("error"));
             String nrid ;

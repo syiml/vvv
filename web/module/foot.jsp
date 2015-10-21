@@ -26,7 +26,7 @@
 <div class="foot">
   <%=HTML.center("<h3>T^T Online Judge</h3>")%>
   <%=HTML.center("[<a href='Discuss.jsp?id=6'>BUG反馈</a>] [<a href='Discuss.jsp?id=4'>FAQ</a>]")%>
-  当前版本：1.54
+  当前版本：<%=Main.version%>
   <%=HTML.floatRight("系统时间：" + HTML.timeHTML("time", Main.now().getTime()))%>
   <%--<%=HTML.floatRight("当前访问IP：" + request.getRemoteAddr())%>--%>
   <br>

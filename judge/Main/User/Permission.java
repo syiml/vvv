@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 public class Permission {
     boolean addProblem=false;
+    boolean addLocalProblem=false;
     boolean viewCode=false;
     boolean reJudge=false;
     boolean showHideProblem=false;
@@ -48,6 +49,7 @@ public class Permission {
                     case 9: PermissionAdmin=true;break;
                     case 10:awardACB=true;break;
                     case 11:contestRegisterAdmin=true;break;
+                    case 12:addLocalProblem=true;break;
                 }
             }
         } catch (SQLException e) {
@@ -57,6 +59,7 @@ public class Permission {
     public Permission(){
     }
     public boolean getAddProblem(){return addProblem;}
+    public boolean getAddLocalProblem(){return addLocalProblem;}
     public boolean getViewCode(){return viewCode;}
     public boolean getReJudge(){return reJudge;}
     public boolean getShowHideProblem(){return showHideProblem;}
@@ -77,6 +80,7 @@ public class Permission {
     public String toHTML(){
         String s=" ";
         if(addProblem) s+=(HTML.span("success","添加题目"))+" ";
+        if(addLocalProblem) s+=(HTML.span("success","添加本地题目"))+" ";
         if(viewCode) s+=(HTML.span("success","查看代码"))+" ";
         if(reJudge) s+= (HTML.span("success","重判"))+" ";
         if(showHideProblem) s+=(HTML.span("success","查看隐藏题目"))+" ";

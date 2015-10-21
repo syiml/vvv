@@ -160,7 +160,7 @@ public class ProblemSQL {
             e.printStackTrace();
         }
     }
-    public void addProblem(int pid,Problem pro){
+    public int addProblem(int pid,Problem pro){
         PreparedStatement p;
         int newpid=1000;
         if(pid==-1){
@@ -175,11 +175,11 @@ public class ProblemSQL {
                 newpid=1000;
             } catch (NullPointerException e){
                 e.printStackTrace();
-                return ;
+                return -1;
             }
         }else{
             editProblem(pid,pro);
-            return ;
+            return pid;
         }
         try {
             p = Main.conn.prepareStatement("Insert into problem values(?,?,?,?,?,?)");
@@ -197,6 +197,7 @@ public class ProblemSQL {
         } catch (NullPointerException e){
             e.printStackTrace();
         }
+        return newpid;
     }
     public void delProblem(int pid){pSQL.remove(pid);}
     public String setProblemVisiable(int pid){

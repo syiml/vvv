@@ -25,6 +25,9 @@
                 <action name="addproblem1" class="action.addproblem1" method="addproblem1">
                         <result name="success">return.jsp</result>
                 </action>
+                <action name="addlocalproblem" class="action.addLocalProblem" method="add">
+                        <result name="success">return.jsp</result>
+                </action>
                 <action name="rejudge" class="action.rejudge" method="rej">
                         <result name="success">return.jsp</result>
                 </action>
@@ -114,6 +117,23 @@
                 <action name="awardacb" class="action.awardACB" method="award">
                         <result name="success">info.jsp?info="成功"</result>
                         <result name="error">info.jsp?info="失败"</result>
+                </action>
+                <action name="delFile" class="action.sampleFile" method="del">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="uploadFile" class="action.sampleFile" method="upload">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="downloadFile" class="action.sampleFile" method="download">
+                        <result name="success" type="stream">
+                                <param name="inputName">downloadFile</param>
+                                <param name="contentType">text/plain</param>
+                                <param name="contentDisposition">attachment;fileName="${fileName}"</param>
+                                <param name="bufferSize">1024</param>
+                        </result>
+                        <result name="error">info.jsp?info="错误"</result>
                 </action>
         </package>
         <package name="challenge" >

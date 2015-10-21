@@ -23,7 +23,7 @@ public class autoConnecter implements Runnable{
                 Main.log("连接数据库完成");
                 break;
             } catch (SQLException e) {
-                System.out.print("数据库连接失败,10秒后重试");
+                Main.debug("数据库连接失败,10秒后重试");
                 //e.printStackTrace();
                 Main.sleep(10000);
             }

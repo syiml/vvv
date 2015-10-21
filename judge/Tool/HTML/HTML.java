@@ -18,6 +18,7 @@ import Main.rating.RatingCase;
 import Main.rating.ratingSQL;
 import Main.status.statu;
 import ProblemTag.ProblemTagHTML;
+import Tool.FILE;
 import Tool.HTML.FromHTML.FormHTML;
 import Tool.HTML.FromHTML.FormPart.FormPart;
 import Tool.HTML.FromHTML.check.check;
@@ -43,6 +44,7 @@ import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -468,7 +470,11 @@ public class HTML {
                 else per=_user.getPermission();
                 if(!per.getShowHideProblem()) return  panel("EORROR","没有权限",null,"danger");
             }
-            admin=per.getAddProblem();
+            if(p.getType()==1){
+                admin=per.getAddProblem();
+            }else{
+                admin=per.getAddLocalProblem();
+            }
             String ret;
             problemHTML ph=Main.problems.getProblemHTML(tpid);
 
@@ -720,6 +726,44 @@ public class HTML {
 //        System.gc();
         return c.HTML(f);
     }
+    public static String fileSize(long l){
+        if(l<1024) return l+"B";
+        if(l<1024*1024) return l*100/1024/100.0+"KB";
+        if(l<1024*1024*1024) return l*100/1024/1024/100.0+"MB";
+        return l*100/1024/1024/1024/100.0+"GB";
+    }
+    public static String uploadSample(String pid){
+        int pidInt;
+        try{
+            pidInt=Integer.parseInt(pid);
+        }catch(NumberFormatException e){
+            return "参数错误";
+        }
+        Problem p=Main.problems.getProblem(pidInt);
+        List<File> files= FILE.getFiles(pidInt);
+        TableHTML showFiles=new TableHTML();
+        showFiles.setClass("table table-striped table-hover table-condensed");
+        showFiles.addColname("文件名","大小","下载","删除");
+        for(File f:files){
+            showFiles.addRow(f.getName(),fileSize(f.length()),HTML.a("downloadFile.action?pid="+pidInt+"&filename="+f.getName(),"下载"),HTML.a("delFile.action?pid="+pidInt+"&filename="+f.getName(),"删除"));
+        }
+
+        FormHTML uploadForm=new FormHTML();
+        uploadForm.setAction("uploadFile");
+        uploadForm.setCol(2,10);
+        file inf=new file("samplein","输入");
+        inf.setAccept(".in");
+        uploadForm.addForm(inf);
+        file outf=new file("sampleout", "输出");
+        outf.setAccept(".out");
+        uploadForm.addForm(outf);
+        text t=new text("pid","pid");
+        t.setValue(pid+"");
+        t.setDisabled();
+        uploadForm.addForm(t);
+        uploadForm.setEnctype();
+        return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML())+panel("上传",uploadForm.toHTML());
+    }
 ///////////////////////form///////////////////////////////////////
     public static String registerForm(){
         FormHTML f=new FormHTML();
@@ -924,6 +968,8 @@ public class HTML {
         String s="<ul class='nav nav-pills nav-stacked'>";
         if(p.getAddProblem())
             s+="<li role=presentation"+active("AddProblem".equals(nowpage))+">"+a("admin.jsp?page=AddProblem","新增题目")+"</li>";
+        if(p.getAddLocalProblem())
+            s+="<li role=presentation"+active("AddLocalProblem".equals(nowpage))+">"+a("admin.jsp?page=AddLocalProblem","本地题目")+"</li>";
 //        if(p.getReJudge())
 //            s+="<li role=presentation"+active("ReJudge".equals(nowpage))+">"+a("admin.jsp?page=ReJudge","重判")+"</li>";
         if(p.getAddContest())
@@ -976,6 +1022,8 @@ public class HTML {
             return panel("权限管理",adminPerimission());
         }else if(p!=null&&nowpage.equals("AwardACBAdmin")){
             return panel("奖励ACB",adminAwardACB());
+        }else if(p!=null&&nowpage.equals("AddLocalProblem")){
+            return panel("添加本地题目",adminAddLocalProblem());
         }
         return panel("Index","管理员界面，点击左边链接进行后台管理");
     }
@@ -997,6 +1045,7 @@ public class HTML {
             f1.setValue(pid+"");
             f1.setDisabled();
         }
+        f1.setDisabled();
         f.addForm(f1);
 
         select f2=new select("ojid","oj");
@@ -1205,6 +1254,34 @@ public class HTML {
         text t3=new text("text","text");
         f.addForm(t3);
         f.setSubmitText("确定");
+        f.setCol(2,10);
+        return f.toHTML();
+    }
+    public static String adminAddLocalProblem(){
+        int pid=-1;
+        Problem p=null;
+        problemHTML ph=null;
+        try{
+            pid=Integer.parseInt(Main.getRequest().getParameter("pid"));
+            p=Main.problems.getProblem(pid);
+            ph=Main.problems.getProblemHTML(pid);
+        }catch(NumberFormatException ignored){}
+        FormHTML f=new FormHTML();
+        f.setAction("addlocalproblem.action");
+        f.setSubmitText("确定");
+        text t0=new text("pid","pid");
+        t0.setDisabled();
+        t0.setValue(pid+"");
+        f.addForm(t0);
+        text t1=new text("title","标题");
+        if(p!=null) t1.setValue(p.getTitle());
+        text t2=new text("time","时限(MS)");
+        if(ph!=null) t2.setValue(ph.getTime()+"");
+        text t3=new text("memory","空间限制(MB)");
+        if(ph!=null) t3.setValue(ph.getMemory()+"");
+        f.addForm(t1);
+        f.addForm(t2);
+        f.addForm(t3);
         f.setCol(2,10);
         return f.toHTML();
     }

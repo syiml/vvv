@@ -1,5 +1,7 @@
 package Tool.HTML.problemHTML;
 
+import Main.Main;
+import Main.problem.Problem;
 import Tool.HTML.HTML;
 import Tool.HTML.modal.modal;
 
@@ -148,6 +150,7 @@ public class problemHTML {
         admin=a;
     }
     public String getHTML(){
+        Problem p= Main.problems.getProblem(pid);
         String s="";
         s+=getTitleHTML();
         s+=getLimitHTML();
@@ -155,11 +158,16 @@ public class problemHTML {
         s+=getSpjHTML();
         if(admin){
             String adminstring="";
-            adminstring+="["+HTML.a("delProblemDis.action?pid="+pid,"重新获取")+"]";
-            adminstring+="<br>"+"["+HTML.a("admin.jsp?page=AddProblem&pid="+pid,"编辑")+"]";
+            if(p.getType()==1){
+                adminstring += "[" + HTML.a("delProblemDis.action?pid=" + pid, "重新获取") + "]";
+                adminstring+="<br>"+"["+HTML.a("admin.jsp?page=AddProblem&pid="+pid,"编辑")+"]";
+            }else{
+                adminstring+="["+HTML.a("UploadSample.jsp?pid="+pid,"测试数据")+"]";
+                adminstring+="<br>"+"["+HTML.a("admin.jsp?page=AddLocalProblem&pid="+pid,"编辑")+"]";
+            }
             modal mo=new modal("problem_admin","题目管理",adminstring,"admin");
             mo.setBtnCls("link btn-sm");
-            s+=HTML.div("row",HTML.col(12,HTML.floatRight(mo.toHTML())));
+            s+=HTML.div("row", HTML.col(12, HTML.floatRight(mo.toHTML())));
         }
         //s+="<br><br>";
         s+=HTML.panel("Problem Description", (admin?edit("editproblem.jsp?pid="+pid+"&edit=dis","编辑"):"")+Dis);
@@ -221,5 +229,11 @@ public class problemHTML {
             s+=(admin?edit("editproblem.jsp?pid="+pid+"&edit=sampleoutput&num=0","编辑"):"")+SampleOutput.get(0);
         }
         return HTML.panel("Problem "+pid,s);
+    }
+
+    public int getTime(){
+        return Integer.parseInt(TimeLimit.substring(0,TimeLimit.length()-2));
+    }public int getMemory(){
+        return Integer.parseInt(MenoryLimit.substring(0,MenoryLimit.length()-2));
     }
 }

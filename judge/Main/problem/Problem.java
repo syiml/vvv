@@ -31,6 +31,12 @@ public class Problem {
         this.Title=title;
         this.type=1;
     }
+    public Problem(String title){
+        this.ojid=0;
+        this.ojspid="0";
+        this.Title=title;
+        this.type=0;
+    }
     public Problem(Problem p){
         type=p.type;
         Title=p.getTitle();

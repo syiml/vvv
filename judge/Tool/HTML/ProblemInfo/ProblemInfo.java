@@ -60,7 +60,13 @@ public class ProblemInfo {
     }
     public String front(){
         Problem p= Main.problems.getProblem(pid);
-        String s=HTML.row(HTML.col(12,HTML.text(pid + " - " + p.Title, 10)+HTML.floatRight(HTML.aNew(Main.ojs[p.getOjid()].getProblemURL(p.getOjspid()), HTML.spannull("badge", "题目将评测在：" + Main.ojs[p.getOjid()].getName() + " " + p.getOjspid())))));
+        String from;
+        if(p.getType()==1){
+            from=HTML.aNew(Main.ojs[p.getOjid()].getProblemURL(p.getOjspid()), HTML.spannull("badge", "题目将评测在：" + Main.ojs[p.getOjid()].getName() + " " + p.getOjspid()));
+        }else{
+            from=HTML.spannull("badge", "题目将评测在：本OJ");
+        }
+        String s=HTML.row(HTML.col(12,HTML.text(pid + " - " + p.Title, 10)+HTML.floatRight(from)));
         //int[] status=Main.status.getProblemStatus(pid);
         String ss[]={"AC","WA","CE","RE","TLE","MLE","OLE","PE"};
         int ac=Main.status.getProblemAcUserNum(pid);

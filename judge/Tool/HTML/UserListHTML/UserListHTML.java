@@ -88,7 +88,7 @@ public class UserListHTML {
             r+="报名时间："+c.getRegisterstarttime().toString().substring(0,16)+
                     " ～ "+c.getRegisterendtime().toString().substring(0,16);
         }
-        if(u!=null&&u.getPermission().getAddContest()){
+        if(admin){
             r=adminForm(r);
         }
         ss+=HTML.floatRight(r);

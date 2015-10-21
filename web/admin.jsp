@@ -11,7 +11,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Main.saveURL();
     String pa=request.getParameter("page");
     Object user=session.getAttribute("user");
     if(session.getAttribute("user")==null){
@@ -21,6 +20,10 @@
     Permission per=null;
     if(user!=null) per=Main.getPermission(((User)user).getUsername());
     else response.sendRedirect("Login.jsp");
+
+    if(pa!=null&&(pa.equals("AddTag")||pa.equals("PermissionAdmin"))){
+        Main.saveURL();
+    }
 %>
 <html>
 <head>
