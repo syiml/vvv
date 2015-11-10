@@ -41,7 +41,7 @@ public class UserListHTML {
         if(search!=null) this.search=search;
         this.page=page;
         num=Main.userShowNum;
-        list= Main.users.getUsers(page * num, num + 1, search,order,bo);
+        list= Main.users.getUsers((page-1) * num, num + 1, search,order,bo);
         type=0;
         u=Main.loginUser();
         if(Main.loginUserPermission().getContestRegisterAdmin()) admin=true;
@@ -201,13 +201,13 @@ public class UserListHTML {
         s+=HTML.abtn(size,topHref(),"首页","");
         s+="</div>";
         s+="<div class='btn-group' role='group'>";
-        if(page!=0){
+        if(page!=1){
             s+=HTML.abtn(size,preHref(),"上一页","");
         }else{
             s+=HTML.abtn(size,"","上一页","disabled");
             //disabled='disabled'
         }
-        s+=HTML.abtn(size,null,(page+1)+"","");
+        s+=HTML.abtn(size,null,page+"","");
         if(list.size()==num+1){
             s+=HTML.abtn(size,nextHref(),"下一页","");
         }else{

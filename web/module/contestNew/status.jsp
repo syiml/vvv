@@ -17,7 +17,7 @@
   if(u!=null){
     user=((User)u).getUsername();
   }
-  int paInt=0,cidInt=-1;
+  int paInt=1,cidInt=-1;
   if(pa!=null) paInt=Integer.parseInt(pa);
   if(cid!=null) cidInt=Integer.parseInt(cid);
 

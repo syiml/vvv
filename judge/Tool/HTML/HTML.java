@@ -1,5 +1,9 @@
 package Tool.HTML;
 
+import Challenge.Block;
+import Challenge.ChallengeMain;
+import Challenge.ChallengeSQL;
+import Challenge.Condition;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
 import CodeCompare.cplusplus.ContestCodeCompare;
@@ -33,6 +37,7 @@ import Tool.HTML.IndexHTML.IndexHTML;
 import Tool.HTML.ProblemInfo.ProblemInfo;
 import Tool.HTML.TableHTML.TableHTML;
 import Tool.HTML.UserHTML.UserHTML;
+import Tool.HTML.UserListHTML.UserListContest;
 import Tool.HTML.UserListHTML.UserListHTML;
 import Tool.HTML.contestListHTML.contestListHTML;
 import Tool.HTML.problemHTML.problemHTML;
@@ -387,7 +392,7 @@ public class HTML {
             return havepanel?panel("Error","没有权限",null,"danger"):"没有权限";
         }
     }
-    private static String problemInfo(int pid){
+    private static String problemInfo(int pid,int cid){
         int acNum=Main.status.getProblemAcUserNum(pid);
         int submitUserNum=Main.status.getProblemSubmitUserNum(pid);
         int submitNum=Main.status.getProblemSubmitNum(pid);
@@ -401,7 +406,7 @@ public class HTML {
         table.addRow("Submit",HTML.a("Status.jsp?all=1&pid="+pid,submitNum+""));
 
         table.addRow("Ratio",(submitUserNum==0?"0.00%":(String.format("%.2f",(1.0*acNum/submitNum*100))+"%")));
-        return panelnobody("Information"+HTML.floatRight(HTML.a("ProblemInfo.jsp?pid="+pid,"详细")),"info",table.HTML());
+        return panelnobody("Information"+HTML.floatRight(HTML.a("ProblemInfo.jsp?pid="+pid+(cid==-1?"":"&cid="+cid),"详细")),"info",table.HTML());
     }
     private static String problemTagJavaScript(){
         return "";
@@ -433,8 +438,8 @@ public class HTML {
     private static String problemContest(int pid){
         return HTML.panel("出处",Main.contests.problemContest(pid),null,"info");
     }
-    public static String problemRight(int pid,boolean admin){
-        return problemInfo(pid)+problemTag(pid,admin)+problemContest(pid);
+    public static String problemRight(int pid,boolean admin,int cid){
+        return problemInfo(pid,cid)+problemTag(pid,admin)+problemContest(pid);
     }
     public static String problem(Object user,String cid,String pid){
         User _user=(User)user;
@@ -497,11 +502,11 @@ public class HTML {
                 ret += center(abtn("", "javascript:submit("+pid+");","Submit",""));//NEW
             }
             if(cidInt==-1){//
-                return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(pidInt,admin)));
+                return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(pidInt,admin,-1)));
             }else{
                 Contest c=Main.contests.getContest(cidInt);
                 if(c.getKind()==0){//练习场
-                    return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(tpid,admin)));
+                    return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(tpid,admin,cidInt)));
                 }
             }
             return ret;
@@ -608,13 +613,14 @@ public class HTML {
          if(search==null) search="";
          if(order==null) order="";
          try{
-             int page=0;
+             int page=1;
              if(pa!=null&&!pa.equals("")){
                  page=Integer.parseInt(pa);
              }
              try{
                  int cidInt=Integer.parseInt(cid);
-                 return new UserListHTML(cidInt , page, search).toHTML();
+//                 return new UserListHTML(cidInt , page, search).toHTML();
+                 return new UserListContest(cidInt,page).HTML();
              }catch(NumberFormatException e) {
                  return new UserListHTML(page, search,order,desc).toHTML();
              }
@@ -962,31 +968,31 @@ public class HTML {
         if(bo) return " class='active'";
         else return "";
     }
+    public static String li(String name,String url,String nowpage){
+        return "<li role=presentation"+active(url.equals(nowpage))+">"+a("admin.jsp?page="+url,name)+"</li>";
+    }
     public static String adminNAV(Permission p,String nowpage){
         if(p==null) return "";
         if(nowpage==null) nowpage="";
         String s="<ul class='nav nav-pills nav-stacked'>";
         if(p.getAddProblem())
-            s+="<li role=presentation"+active("AddProblem".equals(nowpage))+">"+a("admin.jsp?page=AddProblem","新增题目")+"</li>";
+            s+=li("新增题目","AddProbelm",nowpage);
         if(p.getAddLocalProblem())
-            s+="<li role=presentation"+active("AddLocalProblem".equals(nowpage))+">"+a("admin.jsp?page=AddLocalProblem","本地题目")+"</li>";
-//        if(p.getReJudge())
-//            s+="<li role=presentation"+active("ReJudge".equals(nowpage))+">"+a("admin.jsp?page=ReJudge","重判")+"</li>";
+            s+=li("本地题目","AddLocalProblem",nowpage);
         if(p.getAddContest())
-            s+="<li role=presentation"+active("AddContest".equals(nowpage))+">"+a("admin.jsp?page=AddContest","新增比赛")+"</li>";
+            s+=li("新增比赛","AddContest",nowpage);
         if(p.getAddDiscuss())
-            s+="<li role=presentation"+active("AddDiscuss".equals(nowpage))+">"+a("admin.jsp?page=AddDiscuss","新增通知")+"</li>";
+            s+=li("新增通知","AddDiscuss",nowpage);
         if(p.getAddTag())
-            s+="<li role=presentation"+active("AddTag".equals(nowpage))+">"+a("admin.jsp?page=AddTag","题目标签")+"</li>";
-        if(Main.loginUser().getUsername().equals("admin")){
-            s+="<li role=presentation"+active("SubmitterInfo".equals(nowpage))+">"+a("admin.jsp?page=SubmitterInfo","评测机")+"</li>";
-        }
-        if(p.getAwardACB()){
-            s+="<li role=presentation"+active("AwardACBAdmin".equals(nowpage))+">"+a("admin.jsp?page=AwardACBAdmin","奖励ACB")+"</li>";
-        }
-        if(p.getPermissionAdmin()){
-            s+="<li role=presentation"+active("PermissionAdmin".equals(nowpage))+">"+a("admin.jsp?page=PermissionAdmin","权限管理")+"</li>";
-        }
+            s+=li("题目标签","AddTag",nowpage);
+        if(Main.loginUser().getUsername().equals("admin"))
+            s+=li("评测机","SubmitterInfo",nowpage);
+        if(p.getAwardACB())
+            s+=li("奖励ACB","AwardACBAdmin",nowpage);
+        if(p.getChallengeAdmin())
+            s+=li("挑战模式","ChallengeAdmin",nowpage);
+        if(p.getPermissionAdmin())
+            s+=li("权限管理","PermissionAdmin",nowpage);
         s+="</ul>";
         return s;
     }
@@ -1021,9 +1027,11 @@ public class HTML {
         }else if(p!=null&&nowpage.equals("PermissionAdmin")){
             return panel("权限管理",adminPerimission());
         }else if(p!=null&&nowpage.equals("AwardACBAdmin")){
-            return panel("奖励ACB",adminAwardACB());
+            return panel("奖励ACB",adminAwardACB())+panel("比赛奖励",adminAwardContestACB());
         }else if(p!=null&&nowpage.equals("AddLocalProblem")){
             return panel("添加本地题目",adminAddLocalProblem());
+        }else if(p!=null&&nowpage.equals("ChallengeAdmin")){
+            return panel("挑战模式管理",adminChallengeAdmin());
         }
         return panel("Index","管理员界面，点击左边链接进行后台管理");
     }
@@ -1254,6 +1262,23 @@ public class HTML {
         text t3=new text("text","text");
         f.addForm(t3);
         f.setSubmitText("确定");
+        f.setCol(2, 10);
+        return f.toHTML();
+    }
+    public static String adminAwardContestACB(){
+        FormHTML f=new FormHTML();
+        f.setAction("ContestAward.action");
+        text t1=new text("cid","cid");
+        f.addForm(t1);
+
+        for(int i=0;i<5;i++){
+            text t2=new text("rank["+i+"]","rank");
+            text t3=new text("acb["+i+"]","acb");
+            f.addForm(t2);
+            f.addForm(t3);
+        }
+
+        f.setSubmitText("确定");
         f.setCol(2,10);
         return f.toHTML();
     }
@@ -1284,5 +1309,102 @@ public class HTML {
         f.addForm(t3);
         f.setCol(2,10);
         return f.toHTML();
+    }
+    public static String adminChallengeAdmin(){
+        int id=-1;
+        Problem p=null;
+        problemHTML ph=null;
+        try{
+            id=Integer.parseInt(Main.getRequest().getParameter("id"));
+            p=Main.problems.getProblem(id);
+            ph=Main.problems.getProblemHTML(id);
+        }catch(NumberFormatException ignored){}
+        if(id==-1){//模块列表
+            TableHTML table=new TableHTML();
+            table.setClass("table");
+            table.addColname("#","模块名","总积分","管理");
+            for(Integer bid: ChallengeMain.blocks.keySet()){
+                Block b=ChallengeMain.blocks.get(bid);
+                table.addRow(bid+"",b.getName(),b.getScore()+"",HTML.a("admin.jsp?page=ChallengeAdmin&id="+bid,"admin"));
+            }
+            return table.HTML();
+        }else{//模块管理
+            Block b=ChallengeMain.blocks.get(id);
+            //text
+                FormHTML textForm=new FormHTML();
+                textForm.setAction("editBlockText.action");
+                text t=new text("id","id");
+                t.setValue(id+"");
+                t.setDisabled();
+                textarea te=new textarea("text","模块说明");
+                te.setPlaceholder("支持HTML代码");
+                te.setValue(b.getText());
+                textForm.addForm(t);
+                textForm.addForm(te);
+            //condition list
+                TableHTML conditionTable=new TableHTML();
+                conditionTable.setClass("table table-bordered");
+                conditionTable.addColname("开启条件","删除");
+                for(Condition c:b.conditions){
+                    conditionTable.addRow(c.toString(),HTML.a("delCondition.action?id="+c.getId(),"删除"));
+                }
+            //condition add form
+                FormHTML addCondition=new FormHTML();
+                addCondition.setType(1);
+                addCondition.setAction("addCondition.action");
+                text t1=new text("id","id");
+                t1.setValue(id+"");
+                t1.setDisabled();
+                addCondition.addForm(t1);
+                select type=new select("type","tpye");
+                type.setType(1);
+                type.add(1,"1");
+                type.setValue("1");
+                addCondition.addForm(type);
+                select block=new select("block","block");
+                block.setType(1);
+                for(Integer bid: ChallengeMain.blocks.keySet()){
+                    Block bb=ChallengeMain.blocks.get(bid);
+                    block.add(bid,bid+"-"+bb.getName());
+                }
+                addCondition.addForm(block);
+                text num=new text("num","num");
+                addCondition.addForm(num);
+                addCondition.setSubmitText("新增条件");
+            //problem list
+                TableHTML problemList=new TableHTML();
+                problemList.setClass("table table-bordered");
+                problemList.addColname("#","pid","标题","积分","删除");
+                ResultSet rs = ChallengeSQL.getProblems(id);
+                try {
+                    while(rs.next()){
+                        List<String> row=new ArrayList<String>();
+                        row.add(rs.getInt("pid")+"");
+                        row.add(HTML.aNew("Problem.jsp?pid="+rs.getInt("tpid"),rs.getInt("tpid")+""));
+                        row.add(rs.getString("title"));
+                        row.add(rs.getInt("score")+"");
+                        row.add(HTML.a("delPorblem.action?block="+id+"&pos="+rs.getInt("pid"),"删除"));
+                        problemList.addRow(row);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            //addProblemForm
+                FormHTML addProblemForm=new FormHTML();
+                addProblemForm.setAction("addProblem.action");
+                addProblemForm.setType(1);
+                text pos=new text("pos","插入位置");
+                text bl=new text("block","block");
+                bl.setValue(id+"");
+                bl.setDisabled();
+                text pid=new text("pid","题目编号");
+                text score=new text("score","积分");
+                addProblemForm.addForm(pos);
+                addProblemForm.addForm(bl);
+                addProblemForm.addForm(pid);
+                addProblemForm.addForm(score);
+                addProblemForm.setSubmitText("添加题目");
+            return HTML.text("模块【"+b.getName() + "】<br>", 11)+textForm.toHTML()+addCondition.toHTML()+conditionTable.HTML()+addProblemForm.toHTML()+problemList.HTML();
+        }
     }
 }

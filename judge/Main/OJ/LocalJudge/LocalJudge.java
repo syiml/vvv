@@ -194,6 +194,10 @@ public class LocalJudge {
     }
     public static RES judge(Submitter s){
         RES res=new RES();
+        if(s.getSubmitInfo().language==2){//JAVA 不支持
+            res.setR(Result.ERROR);
+            return res;
+        }
         int ret=-1;
         s.showstatus="Compile";
         if(compile(s,res)){

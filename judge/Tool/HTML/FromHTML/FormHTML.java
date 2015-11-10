@@ -30,7 +30,8 @@ public class FormHTML {
         type=0;
         list = new ArrayList<form>();
         method="post";
-        col1=col2=12;
+        col1=2;
+        col2=10;
         isForm=true;
     }
     public void setType(int type){

@@ -17,4 +17,13 @@ public class _rank {
         rank.add(r);
         username.add(u);
     }
+    public int size(){
+        return Math.min(rank.size(),username.size());
+    }
+    public int getRank(int i){
+        return rank.get(i);
+    }
+    public String getUsername(int i){
+        return username.get(i);
+    }
 }

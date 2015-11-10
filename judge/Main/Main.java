@@ -160,9 +160,9 @@ public class Main {
     }
     public static String editContest(addcontest a){
         int cid=Integer.parseInt(a.cid);
+        contests.deleteMapContest(Integer.parseInt(a.cid));
         if(contests.editContest(cid,a).equals("error")) return "error";
         if(RankSQL.editRank(cid,a).equals("error")) return "error";
-        contests.deleteMapContest(Integer.parseInt(a.cid));
         return "success";
     }
     public static String registerContest(int cid){
@@ -183,6 +183,13 @@ public class Main {
             return "info";
         }
         return contests.addUserContest(cid, u.getUsername(), statu);
+    }
+    public static String contestPorblemPublc(int cid){
+        Contest c=Main.contests.getContest(cid);
+        for(int i:c.getProblemList()){
+            Main.problems.setProblemVisiable(i,1);
+        }
+        return "success";
     }
     public static Permission getPermission(String user){
         return users.getPermission(user);

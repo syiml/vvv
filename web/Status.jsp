@@ -35,7 +35,7 @@
   if(u!=null){
     user=((User)u).getUsername();
   }
-  int paInt=0;
+  int paInt=1;
   if(pa!=null) paInt=Integer.parseInt(pa);
 
   String ssuser=request.getParameter("user");
@@ -59,3 +59,15 @@
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="js/autoRefreshTable.js"></script>
+<script>
+var auto=null;
+$(window).on('hashchange', function() {
+    if(auto!=null) auto.stop();
+    if(location.hash=='#A'){
+        auto=autoRefreshTable(location.href,"table",'table');
+        auto.go("auto");
+    }
+});
+</script>

@@ -112,6 +112,14 @@ var HTML={
         var d=new Date(time);
         return d.Format("yyyy-MM-dd hh:mm:ss");
     },
+    progress:function(s){
+        //{active,jd}
+        return "<div class='progress' style='margin-bottom: 0;'>" +
+            " <div id='contest_pro' class='progress-bar progress-bar-striped " +
+            (s.active?"active":"") +
+            "' role='progressbar' style='width: "+(s.jd*100)+"%;'></div>" +
+            "</div>"
+    },
     HTMLtoString:function(s){
         s=s.replaceAll("&","&amp;");
         s=s.replaceAll("<","&lt;");

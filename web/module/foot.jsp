@@ -8,21 +8,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<style>
-  .container-fluid{
-    min-height: 510px;
-    padding-bottom: 10px;
-  }
-  .foot{
-    /*min-height: 25%;*/
-    /*position: absolute;*/
-    /*bottom: 0;*/
-    /*background-color: #AAA;*/
-    /*width: 90%;*/
-    padding: 20px 10% 20px 10% ;
-    background-color: #EEEEEE;
-  }
-</style>
 <div class="foot">
   <%=HTML.center("<h3>T^T Online Judge</h3>")%>
   <%=HTML.center("[<a href='Discuss.jsp?id=6'>BUG反馈</a>] [<a href='Discuss.jsp?id=4'>FAQ</a>]")%>

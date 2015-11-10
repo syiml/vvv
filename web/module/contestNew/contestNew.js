@@ -5,6 +5,7 @@ var cid=js_cid;
 var pnum=0;
 var contestInfo;//{cid,name,begintime,endtime,type,now,admin,rating}
 var href=location.hash;
+var AR=null;
 if(href==null||href==''){ href='#H'}
 $.getJSON("module/contestNew/info.jsp?cid="+cid,function(data) {
     contestInfo = data;
@@ -19,12 +20,17 @@ function init(){
     });
 }
 function go(){
+    if(AR!=null) AR.stop();
     if(href=='#P'){
         loadProblem(0);
     }else if(href.charAt(1)=='P'){
         loadProblem(parseInt(href.substr(2,20)));
     }else if(href=='#S'){
         loadStatus();
+    }else if(href=='#SA'){
+        loadStatus();
+        AR=autoRefreshTable("module/contestNew/status.jsp?cid="+cid,"table",'table');
+        AR.go("AR");
     }else if(href.charAt(1)=='S'){
         loadStatus(href.substr(2,20));
     }else if(href=='#R'){
@@ -158,6 +164,9 @@ function toppage(){
 function prepage(){
     loadStatus(user,pid,result,lang,page-1);
 }
+function topage(pa){
+    loadStatus(user,pid,result,lang,pa);
+}
 function seachStatus(){
     user=$('#user').val();
     pid=$('#pid').val();
@@ -170,13 +179,14 @@ function loadStatus(_user,_pid,_result,_lang,_page){
     if(!_pid) _pid="";
     if(!_result) _result="";
     if(!_lang) _lang="";
-    if(!_page) _page=0;
+    if(!_page) _page=1;
     user=_user;pid=_pid;result=_result;lang=_lang;page=_page;
     $('#NAV').find('li').removeClass("active");
     $('#statusNAV').addClass("active");
     $('#problems').hide();
     $('#main').show().html(HTML.loader)
-        .load("module/contestNew/status.jsp?user="+_user+"&pid="+_pid+"&result="+_result+"&lang="+_lang+"&cid="+cid+"&page="+_page);
+        .load("module/contestNew/status.jsp?user="+_user+"&pid="+_pid+"&result="+_result+"&lang="+_lang+"&cid="+cid+"&page="+_page,function(){
+        });
 }
 function loadRank(user){
     $('#NAV').find('li').removeClass("active");

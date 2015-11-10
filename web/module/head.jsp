@@ -55,7 +55,8 @@
     </ul>
   </li>
   <li><a href="User.jsp"><span>RANK</span></a></li>
-  <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
+    <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
+    <li><a href="Challenge.jsp"><span>CHALLENGE</span></a></li>
   <%--<li><a href="ClockIn.jsp"><span <%--%>
       <%--if(ClockInSQL.mustClockIn()>=0){--%>
         <%--out.print("style='background:red;color:white'");--%>
@@ -89,6 +90,7 @@ var ch={//对应翻译
   CONTEST:"比赛",
   RANK:"排名",
   DISCUSS:"讨论",
+  CHALLENGE:"挑战模式",
   Login:"登录",
   Register:"注册",
   MESSAGE:"消息",

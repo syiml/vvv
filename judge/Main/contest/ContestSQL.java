@@ -46,12 +46,13 @@ public class ContestSQL {
         }
     }
     public String addProblems(int cid,String s){
+        if(s.equals("")) return "success";
         //参数：s：以半角逗号分隔开的pid列表
         String[] pids=s.split(",");
         try {
             PreparedStatement p=null;
             for (int i=0;i<pids.length;i++) {
-            int tpid=Integer.parseInt(pids[i]);
+                int tpid=Integer.parseInt(pids[i]);
                 p=Main.conn.prepareStatement("INSERT INTO contestproblems values(?,?,?)");
                 p.setInt(1,cid);
                 p.setInt(2,i);

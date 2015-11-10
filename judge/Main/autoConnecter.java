@@ -31,7 +31,7 @@ public class autoConnecter implements Runnable{
     }
 
     /**
-     * 没过6小时自动连接数据库
+     * 每过6小时自动连接数据库
      */
     public void run(){
         Main.sleep(Main.autoConnectionTimeMinute * 60000);

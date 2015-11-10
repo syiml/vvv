@@ -124,6 +124,15 @@ public class MessageSQL {
         m.deadline=new Timestamp(86400000L * 30 + System.currentTimeMillis());//保留30天
         return insert(m);
     }
+    public static int addMessageBlockOpen(String user,String title,int num){
+        Message m=new Message();
+        m.user=user;
+        m.statu=0;
+        m.title="模块【"+title+"】开启，获得"+num+"ACB奖励";
+        m.text="由于模块【"+title+"】开启，您获得了"+num+"ACB奖励，请再接再厉！";
+        m.deadline=new Timestamp(86400000L * 30 + System.currentTimeMillis());//保留30天
+        return insert(m);
+    }
     public static int addMessageAwardACB(String u,int num,String text){
         Message m=new Message();
         m.user=u;

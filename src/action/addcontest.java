@@ -1,6 +1,7 @@
 package action;
 
 import Main.Main;
+import Main.User.Permission;
 
 /**
  * Created by Syiml on 2015/6/23 0023.
@@ -354,5 +355,12 @@ public class addcontest {
         if(!Main.loginUserPermission().getAddContest()) return "error";
         Main.editContest(this);
         return "success";
+    }
+    public String problemPublic(){
+        Permission p=Main.loginUserPermission();
+        if(p.getAddContest()&&p.getAddProblem()){
+            Main.contestPorblemPublc(Integer.parseInt(cid));
+        }
+        return "error";
     }
 }

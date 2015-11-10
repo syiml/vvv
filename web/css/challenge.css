@@ -1,0 +1,64 @@
+#challenge-main{
+    width:1px;
+    margin-left:50%;
+    height: 700px;
+    position: relative;
+}
+.block{
+    position: absolute;
+    border-radius: 50%;
+    transition-duration: 0.3s;
+}
+.block-close{
+    border: 1px solid #ff0900;
+}
+.block-close .title{
+    color: #999
+}
+.block:hover{
+    box-shadow: 0 0 10px #00db00;
+    /*transform: scale(1.1);*/
+}
+.block-close:hover{
+    box-shadow: 0 0 10px #ff0900;
+    /*transform: scale(1.1);*/
+}
+.block-large{
+    width:100px;
+    height: 100px;
+}
+.block-large .title{
+    height: 98px;
+    width: 98px;
+    display: table-cell;
+    font-size: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+.block-middle{
+    width:80px;
+    height: 80px;
+}
+.block-middle .title{
+    height: 78px;
+    width: 78px;
+    display: table-cell;
+    font-size: 17px;
+    text-align: center;
+    vertical-align: middle;
+}
+.block-small{
+    width:60px;
+    height: 60px;
+}
+.block-small .title{
+    height: 58px;
+    width: 58px;
+    display: table-cell;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+}
+.paragraph{
+    padding-left: 2em;
+}

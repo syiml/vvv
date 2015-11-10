@@ -150,6 +150,9 @@ public class Contest {
         }
         return s;
     }
+    public List<Integer> getProblemList(){
+        return problems;
+    }
     public String getInfo(){return  info;}
     public boolean isComputerating(){return computerating;}
     public boolean isBegin(){

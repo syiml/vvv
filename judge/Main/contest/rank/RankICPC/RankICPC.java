@@ -172,7 +172,7 @@ public class RankICPC extends Rank {
         int rank=0;
         user pu=null;
         for (user u : list) {
-            //迭代所有 非星号 用户计算排名并返回
+            //遍历所有 非星号 用户计算排名并返回
             if (u.valid) {
                 if (pu == null || !(u.getSubmitnum() == pu.getSubmitnum() && u.getPenalty() == pu.getPenalty())) {
                     rank++;

@@ -21,13 +21,6 @@ public class ProblemInfo {
         this.pid=pid;
         this.page=page;
     }
-    private static Result[] r={
-            Result.PENDDING,Result.AC,      Result.WA,
-            Result.CE,      Result.RE,      Result.TLE,
-            Result.MLE,     Result.OLE,     Result.PE,
-            Result.DANGER,  Result.RUNNING, Result.ERROR,
-            Result.JUDGING
-    };
     public String ShortCodeTop10(){
         List<String[]> list=Main.status.getProblemShortCodeTop10(pid);
         TableHTML table=new TableHTML();
@@ -67,17 +60,19 @@ public class ProblemInfo {
             from=HTML.spannull("badge", "题目将评测在：本OJ");
         }
         String s=HTML.row(HTML.col(12,HTML.text(pid + " - " + p.Title, 10)+HTML.floatRight(from)));
-        //int[] status=Main.status.getProblemStatus(pid);
-        String ss[]={"AC","WA","CE","RE","TLE","MLE","OLE","PE"};
         int ac=Main.status.getProblemAcUserNum(pid);
         int sub=Main.status.getProblemSubmitNum(pid);
         String  l =HTML.text("通过人数： ",3)+HTML.text(ac+"",8,"GREEN")+"<br>";
                 l+=HTML.text("提交人数：",3)+HTML.text(Main.status.getProblemSubmitUserNum(pid)+"",8,"GREEN")+"<br>";
                 l+=HTML.text("提交次数：",3)+HTML.text(sub+"",8,"GREEN")+"<br>";
-                l+=HTML.text("通过率：　",3)+HTML.text(String.format("%.2f",ac*100.0/sub)+"%",8)+"<br><br>";
+        if(sub==0){
+            l+=HTML.text("通过率：　",3)+HTML.text("还没有提及这题哦",8)+"<br><br>";
+        }else{
+            l+=HTML.text("通过率：　",3)+HTML.text(String.format("%.2f",ac*100.0/sub)+"%",8)+"<br><br>";
+        }
         if(Main.loginUser()!=null){
             if(Main.users.haveViewCode(Main.loginUser().getUsername(),pid)){
-                l+=HTML.text("您已经可以查看该题目的所有代码了",4)+"<br>";
+                l+=HTML.text("您已经可以查看该题目的所有代码了 "+HTML.a("Status.jsp?all=1&pid="+pid+"&result=1","点击查看"),4)+"<br>";
             }else{
                 int acb=Main.loginUser().getACB();
                 modal m=new modal("buy","确认购买","您当前ACB为："+acb+"<br>"+(acb>=100?"购买将花费100ACB购买本题的代码查看权，是否确定？":"ACB不足100不能购买"),"花100ACB购买查看代码权限");
@@ -88,9 +83,6 @@ public class ProblemInfo {
             }
         }
         String r="<div id='status_info'></div><script>$('#status_info').load('module/problemInfo.jsp?pid="+pid+"');</script>";
-        //for(int i=0;i<ss.length;i++){
-            //r+=HTML.text(ss[i],2)+HTML.text(status[i+1]+"",5)+"<br>";
-        //}
         return HTML.div("userindex",s+HTML.row(HTML.col(5,l)+HTML.col(7,r)));
     }
     public String HTML(){

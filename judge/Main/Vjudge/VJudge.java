@@ -21,7 +21,6 @@ public class VJudge {
         //System.out.println("create Main!!!");
 
         s.add(new SubmitterLocal(0,"","",-1,this));
-        s.add(new SubmitterLocal(0,"","",-1,this));
 
         String ss[]={"hdu","bnuoj","nbut","pku","hust","cf"};
         for(int j=0;j<ss.length;j++){

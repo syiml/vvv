@@ -16,7 +16,6 @@ public class RES {
         Memory="-";
         CEInfo="";
     }
-
     public void setCEInfo(String CEInfo) {
         this.CEInfo = CEInfo;
     }

@@ -21,7 +21,7 @@
     if(user!=null) per=Main.getPermission(((User)user).getUsername());
     else response.sendRedirect("Login.jsp");
 
-    if(pa!=null&&(pa.equals("AddTag")||pa.equals("PermissionAdmin"))){
+    if(pa!=null&&(pa.equals("AddTag")||pa.equals("PermissionAdmin")||pa.equals("ChallengeAdmin"))){
         Main.saveURL();
     }
 %>

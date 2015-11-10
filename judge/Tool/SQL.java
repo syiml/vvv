@@ -52,6 +52,7 @@ public class SQL {
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
+//            Main.Main.debug(p.toString());
             return p.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +62,7 @@ public class SQL {
     public static int update(String sql,Object... args){
         PreparedStatement p=null;
         try {
-            p= Main.Main.conn.prepareStatement(sql);
+            p=Main.Main.conn.prepareStatement(sql);
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
@@ -69,6 +70,14 @@ public class SQL {
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
+        }finally {
+            try {
+                if (p != null) {
+                    p.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

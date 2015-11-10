@@ -113,12 +113,12 @@ public class edit {
         this.motto = motto;
     }
     public String ed(){
-        System.out.println(motto);
+//        System.out.println(motto);
         User u=(User)Main.getSession().getAttribute("user");
         if(u==null) return "error";
         if(!newpass.equals(renewpass)) return "error";
         String ret=Main.users.login(u.getUsername(),pass);
-        System.out.println(ret);
+//        System.out.println(ret);
         if(!ret.equals("LoginSuccess")){return "error";}
         else{
             nick=nick.replace("'","''");

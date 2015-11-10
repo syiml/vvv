@@ -1,9 +1,10 @@
 <%@ page import="Main.User.User" %>
+<%@ page import="Main.Main" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   User u=(User)session.getAttribute("user");
-  if(u!=null){
-      System.out.println("->logout:" +(u.getUsername()));
+    if (u != null) {
+        Main.log("logout:" +(u.getUsername()));
   }
   session.removeAttribute("user");
 

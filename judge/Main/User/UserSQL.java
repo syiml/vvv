@@ -247,6 +247,28 @@ public class UserSQL {
             return list;
         }
     }
+    public static int getUsersNum(int cid,String serach){
+        ResultSet rs=SQL.query("select count(*) from v_contestuser where cid=? and (username like ? or nick like ?)",cid,"%"+serach+"%","%"+serach+"%");
+        try {
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public static int getUsersNum(int cid,int st){
+        ResultSet rs=SQL.query("select count(*) from contestuser where cid=? and statu=?",cid,st);
+        try {
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public String login(String user,String pass){
         try {
@@ -267,6 +289,7 @@ public class UserSQL {
         return "SystemError";
     }
     public String update(String username, edit e){
+        Main.log("Edit:"+username);
         String sql="UPDATE users set ";
         if(e.getNewpass()!=null&&!e.getNewpass().equals("")) sql+="password = md5('"+e.getNewpass()+"'),";
         sql+=" nick = '"+HTML.HTMLtoString(e.getNick())+"'";

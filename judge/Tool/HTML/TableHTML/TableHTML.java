@@ -1,9 +1,6 @@
 package Tool.HTML.TableHTML;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2015/6/8.
@@ -23,8 +20,16 @@ public class TableHTML {
     public void setColname(List<String> colname){
         this.colname=colname;
     }
+    public String getColname(int i){
+        return colname.get(i);
+    }
+    public int getColnameSize(){
+        return colname.size();
+    }
     public void addColname(String s){colname.add(s);}
-    public void addColname(String... ss){for(String s:ss)colname.add(s);}
+    public void addColname(String... ss){
+        Collections.addAll(colname, ss);
+    }
     public void addRow(List<String> row){
         this.cell.add(row);
     }

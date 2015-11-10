@@ -9,6 +9,7 @@ import Tool.HTML.FromHTML.select.select;
 import Tool.HTML.FromHTML.text.text;
 import Tool.HTML.HTML;
 import Tool.HTML.TableHTML.TableHTML;
+import Tool.HTML.pageBean;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/6/8.
  */
-public class statuListHTML {
+public class statuListHTML extends pageBean {
     String user;
     int cid;
     int num;
@@ -27,10 +28,11 @@ public class statuListHTML {
     int pid;
     int result;
     int Language;
-    String ssuser;
+    String ssuser;//筛选的用户
     boolean incontest;
     boolean all;
     List<statu> status;
+    int PageNum;
     public statuListHTML(String user,int cid,int num,int page,
                          int pid,int result,int Language,String ssuser,boolean all){
         this.user=user;
@@ -44,152 +46,80 @@ public class statuListHTML {
         this.incontest=(cid>0);
         this.all=all;
         if(this.ssuser==null) this.ssuser="";
-        status= Main.status.getStauts(this.cid,this.num*this.page,this.num+1,this.pid,this.result,this.Language,this.ssuser,all);
+        status= Main.status.getStatus(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser, all);
+        this.PageNum=Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all);
+        setCl("table table-striped table-hover table-condensed");
+        if(PageNum%num==0) PageNum/=num;
+        else PageNum=PageNum/num+1;
+        addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
     }
-    public String HTML(){
-        TableHTML table=new TableHTML();
-        table.setClass("table table-striped table-hover table-condensed");
-//        table.addColname("Run ID");
-//        table.addColname("User");
-//        table.addColname("Pid");
-//        table.addColname("Result");
-//        table.addColname("Language");
-//        table.addColname("TimeUsed");
-//        table.addColname("Memory");
-//        table.addColname("CodeLen");
-//        table.addColname("SubmitTime");
-        table.addColname("#");
-        table.addColname("用户");
-        table.addColname("题目");
-        table.addColname("评测结果");
-        table.addColname("语言");
-        table.addColname("耗时");
-        table.addColname("使用内存");
-        table.addColname("代码长");
-        table.addColname("提交时间");
-        User u=(User)Main.getSession().getAttribute("user");
-        int size;
-        if(status.size()==num+1){//当前页满，有下一页
-            size=num;
-        }else{
-            size=status.size();
-        }
-        for(int i=0;i<size;i++){
-            if(u!=null && u.getUsername().equals(status.get(i).getUser())){
-                table.addCl(i+1,-1,"info");
+
+    @Override
+    public String getTitle() {
+        return "评测列表";
+    }
+
+    @Override
+    public int getPageSize() {
+        return status.size();
+    }
+
+    @Override
+    public int getPageNum() {
+        return PageNum;
+    }
+
+    @Override
+    public int getNowPage() {
+        return page;
+    }
+
+    @Override
+    public String getCellByHead(int i, String colname) {
+        statu s=status.get(i);
+        if(colname.equals("#")){
+            return s.getRid()+"";
+        }else if(colname.equals("用户")){
+            if(s.getUser().equals(user)){
+                addClass(i+1,-1,"info");
             }
-            table.addRow(statuToRow(status.get(i),incontest));
+            return userToHtml(s);
+        }else if(colname.equals("题目")){
+            return ""+pidToHtml(s,incontest);
+        }else if(colname.equals("评测结果")){
+            if(s.getResult()== Result.CE){
+                if(incontest){
+                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", HTML.span("warning", "Compilation Error"));
+                }else{
+                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("warning", "Compilation Error"));
+                }
+            }else  return ""+s.resultToHTML(s.getResult());
+        }else if(colname.equals("语言")){
+            return LanguageToHtml(s);
+        }else if(colname.equals("耗时")){
+            return s.getTimeUsed();
+        }else if(colname.equals("使用内存")){
+            return s.getMemoryUsed();
+        }else if(colname.equals("代码长")){
+            return s.getCodelen()+"";
+        }else if(colname.equals("提交时间")){
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(s.getSbmitTime());
         }
-        String sss=HTML.floatLeft(pageHTML())+HTML.floatRight(HTML.div("right-block", formHTML()));
-        String ret=HTML.panelnobody("评测列表",HTML.div("panel-body","style='padding:5px'",sss)+table.HTML());
-        return ret;
+        return "error";
     }
-    private String LanguageToHtml(statu s){
-        int l=s.getLanguage();
-        int rid=s.getRid();
-        if(Main.canViewCode(s,user)){
-            if(!incontest){
-                if(l==0)return HTML.a("ViewCode.jsp?rid="+rid,"C++");
-                if(l==1)return HTML.a("ViewCode.jsp?rid="+rid,"C");
-                if(l==2)return HTML.a("ViewCode.jsp?rid="+rid,"JAVA");
-                return HTML.a("ViewCode.jsp?rid="+rid,"UNKNOW");
-            }else{
-                if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
-                if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
-                if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
-                return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
-            }
-        }else{
-            if(l==0)return "C++";
-            if(l==1)return "C";
-            if(l==2)return "JAVA";
-            return "UNKNOW";
-        }
-    }
-    private String pidToHtml(statu s,boolean in){
-        if(!in){
-            return HTML.a("Problem.jsp?pid="+s.getPid(),""+s.getPid());
-        }else{
-            String ss=Main.contests.getContest(cid).getProblemId(s.getPid());
-            //return HTML.a("Contest.jsp?cid="+s.getCid()+"#Problem_"+s.getPid(),ss);
-            return HTML.a("#P"+s.getContestPid(),ss);
-        }
-    }
-    private String userToHtml(statu s){
-        User u=Main.users.getUser(s.getUser());
-        if(!incontest) return u.getUsernameHTML()+"("+u.getNick()+")";
-        else return HTML.a("#R"+s.getUser(),u.getUsernameHTMLNoA())+"("+u.getNick()+")";
-    }
-    private List<String> statuToRow(statu s,boolean incontest){
-        List<String> row=new ArrayList<String>();
-        //rid
-        row.add(""+s.getRid());
-        //username
-        row.add(userToHtml(s));
-        //pid
-        row.add(""+pidToHtml(s,incontest));
-        //res
-        if(s.getResult()== Result.CE){
-            if(incontest){
-                row.add(HTML.a("javascript:ceinfo(" + s.getRid() + ");", HTML.span("warning", "Compilation Error")));
-            }else{
-                row.add(HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("warning", "Compilation Error")));
-            }
-        }else  row.add(""+s.resultToHTML(s.getResult()));
-        row.add(""+LanguageToHtml(s));
-        row.add(""+s.getTimeUsed());
-        row.add(""+s.getMemoryUsed());
-        row.add(""+s.getCodelen());
-        row.add(""+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(s.getSbmitTime()));
-        return row;
-    }
-    private String preHref(){
+
+    @Override
+    public String getLinkByPage(int page) {
         if(cid==-1){
-            return "Status.jsp?page="+(page-1)+"&pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+(all?"&all=1":"");
-        }else{
-            //return "Contest.jsp?cid="+cid+"&page="+(page-1)+"&pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+"#Status";
-            return "javascript:prepage();";
-        }
-    }
-    private String topHref(){
-        if(cid==-1){
-            return "Status.jsp"+"?pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+(all?"&all=1":"");
-        }else{
-            //return "Contest.jsp?cid="+cid+"&pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+"#Status";
-            return "javascript:toppage();";
-        }
-    }
-    private String nextHref(){
-        if(cid==-1){
-            return "Status.jsp?page="+(page+1)+"&pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+(all?"&all=1":"");
+            return "Status.jsp?page="+(page)+"&pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+(all?"&all=1":"");
         }else{
             //return "Contest.jsp?cid="+cid+"&page="+(page+1)+"&pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+"#Status";
-            return "javascript:nextpage();";
+            return "javascript:topage("+page+");";
         }
     }
-    private String pageHTML(){
-        String size="sm";
-        String s ="<div class='btn-toolbar' role='toolbar'>";
-        s+="<div class='btn-group' role='group'>";
-        s+=HTML.abtn(size,topHref(),"首页","");
-        s+="</div>";
-        s+="<div class='btn-group' role='group'>";
-        if(page!=0){
-            s+=HTML.abtn(size,preHref(),"上一页","");
-        }else{
-            s+=HTML.abtn(size,"","上一页","disabled");
-            //disabled='disabled'
-        }
-        s+=HTML.abtn(size,null,(page+1)+"","");
-        if(status.size()==num+1){
-            s+=HTML.abtn(size,nextHref(),"下一页","");
-        }else{
-            s+=HTML.abtn(size,"","下一页","disabled");
-        }
-        s+="</div></div>";
-        return s;
-    }
-    private String formHTML(){
+
+    @Override
+    public String rightForm(){
         FormHTML f=new FormHTML();
         if(cid==-1) f.setAction("Status.jsp");
         else{
@@ -266,5 +196,40 @@ public class statuListHTML {
         }
         f.setSubmitText("筛选");
         return f.toHTML();
+    }
+    private String LanguageToHtml(statu s){
+        int l=s.getLanguage();
+        int rid=s.getRid();
+        if(Main.canViewCode(s,user)){
+            if(!incontest){
+                if(l==0)return HTML.a("ViewCode.jsp?rid="+rid,"C++");
+                if(l==1)return HTML.a("ViewCode.jsp?rid="+rid,"C");
+                if(l==2)return HTML.a("ViewCode.jsp?rid="+rid,"JAVA");
+                return HTML.a("ViewCode.jsp?rid="+rid,"UNKNOW");
+            }else{
+                if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
+                if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
+                if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
+                return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
+            }
+        }else{
+            if(l==0)return "C++";
+            if(l==1)return "C";
+            if(l==2)return "JAVA";
+            return "UNKNOW";
+        }
+    }
+    private String pidToHtml(statu s,boolean in){
+        if(!in){
+            return HTML.a("Problem.jsp?pid="+s.getPid(),""+s.getPid());
+        }else{
+            String ss=Main.contests.getContest(cid).getProblemId(s.getPid());
+            return HTML.a("#P"+s.getContestPid(),ss);
+        }
+    }
+    private String userToHtml(statu s){
+        User u=Main.users.getUser(s.getUser());
+        if(!incontest) return u.getUsernameHTML()+"("+u.getNick()+")";
+        else return HTML.a("#R"+s.getUser(),u.getUsernameHTMLNoA())+"("+u.getNick()+")";
     }
 }

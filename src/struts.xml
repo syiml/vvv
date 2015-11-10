@@ -39,6 +39,10 @@
                         <result name="success" type="redirect">Contests.jsp</result>
                         <result name="error">return.jsp</result>
                 </action>
+                <action name="problemPublic" class="action.addcontest" method="problemPublic">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
                 <action name="editcontest" class="action.addcontest" method="edit">
                         <result name="success" type="redirect">Contests.jsp</result>
                         <result name="error">return.jsp</result>
@@ -135,8 +139,32 @@
                         </result>
                         <result name="error">info.jsp?info="错误"</result>
                 </action>
+                <action name="ContestAward" class="Main.contest.ContestAward" method="award">
+                        <result name="success">return.jsp</result>
+                </action>
         </package>
-        <package name="challenge" >
-                <action name="blocklist" class="Challenge.ChallengeAction" method="init"> </action>
+        <package name="challenge" extends="struts-default">
+                <action name="blocklist" class="action.ChallengeAction" method="init"> </action>
+                <action name="block" class="action.ChallengeAction" method="block"> </action>
+                <action name="editBlockText" class="action.ChallengeAction" method="editBlockText">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="addCondition" class="action.ChallengeAction" method="addCondition">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="delCondition" class="action.ChallengeAction" method="delCondition">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="addProblem" class="action.ChallengeAction" method="addProblem">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="delPorblem" class="action.ChallengeAction" method="delProblem">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
         </package>
 </struts>

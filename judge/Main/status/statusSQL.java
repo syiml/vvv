@@ -79,7 +79,7 @@ public class statusSQL {
         }
         return s;
     }
-    public List<statu> getStauts(int cid,int from,int num,
+    public List<statu> getStatus(int cid,int from,int num,
                      /*筛选信息：*/int pid,int result,int Language,String ssuser,boolean all){
         List<statu> l=new ArrayList<statu>();
         PreparedStatement p= null;
@@ -114,6 +114,39 @@ public class statusSQL {
             e.printStackTrace();
         }
         return l;
+    }
+    public int getStatusNum(int cid,
+                     /*筛选信息：*/int pid,int result,int Language,String ssuser,boolean all){
+        List<statu> l=new ArrayList<statu>();
+        int ret=1;
+        PreparedStatement p= null;
+        try {
+            String sql="select count(*) from statu where ";
+            if(!all) sql+=" cid=?";
+            else sql+=" 1";
+            //筛选
+            if(pid!=-1){
+                if(cid!=-1){
+                    sql+=" and pid="+Main.contests.getContest(cid).getGlobalPid(pid);
+                }else{
+                    sql+=" and pid="+pid;
+                }
+            }
+            if(result!=-1) sql+=" and result="+result;
+            if(Language!=-1) sql+=" and lang="+Language;
+            if(ssuser!=null&&!ssuser.equals("")) sql+=" and ruser='"+ssuser+"'";
+            p = Main.conn.prepareStatement(sql);
+            if(!all) p.setInt(1,cid);
+            ResultSet r=p.executeQuery();
+            if(r.next()){
+                ret=r.getInt(1);
+            }
+            r.close();
+            p.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
     public void setStatusResult (int rid,Result res,String time,String Meory,String CEinfo){
         //System.out.print("Change rid="+rid+" result:");

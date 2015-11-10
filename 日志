@@ -41,20 +41,13 @@
     本地判题
         SPJ
 
-    contest的置顶和隐藏（置顶用优先级，默认优先级是0，即不置顶，否则以优先级排序置顶contest）(ORDER BY pri,id)
-    contest和题目的discuss专栏（题目讨论版，和contest的提问版）
-    管理员修改密码
-    增加contest的隐藏（就像problem的隐藏一样）
-    contestuser翻页
     数据校验
-        登陆校验：用户名密码长度，用户名不能有特殊符号
         查询校验：（各个筛选的地方）
         回复discuss
         发帖
         管理员功能数据校验
     problem 增加删除sample
 
-    problem的筛选  题号、题目
     上传头像预览（裁剪）
 
     LOG：日志记录功能，同时实现部分业务逻辑
@@ -77,10 +70,32 @@
         ACB修改昵称（50ACB）
         ACB换头像（80ACB）
 
-    挑战模式
     其他rank模式...
+
+
+    contest和题目的discuss专栏（题目讨论版，和contest的提问版）
+    增加contest的隐藏（就像problem的隐藏一样）
+    管理员修改密码
+
 BUG
     rejudge后rank更新会有问题
+
+11-9
+    修复使用了pageBean后status自己的状态没变色的bug
+    修复了使用了pageBean后，比赛注册列表的性别显示不正确的bug
+11-8
+    挑战模式完成
+11-7
+    比赛奖励ACB
+    比赛一键题目public
+11-4
+    题目信息页面，若获得了代码查看权，有个链接可以查看通过记录，方便查看代码
+11-2
+    用一个pageBean修改了status和比赛注册列表的翻页显示
+    比赛注册列表添加了一些统计信息显示
+    AJAX动态刷新status
+10-30
+    修复添加和编辑contest没有题目时出现的bug
 10-21
     1.6
     新功能：本地判题上线！
