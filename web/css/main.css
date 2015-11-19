@@ -138,3 +138,10 @@ table{
     font-size: 14px;
 }
 
+.nav-pills > li > a{
+    border-radius:0;
+    transition-duration: 0.3s;
+}
+.nav-pills > li :hover{
+    padding-left:30px;
+}

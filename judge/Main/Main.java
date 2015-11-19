@@ -13,6 +13,7 @@ import Main.contest.ContestSQL;
 import Main.problem.ProblemSQL;
 import Main.User.UserSQL;
 import Main.status.Result;
+import Main.status.StatusHtmlCache;
 import Main.status.statusSQL;
 import Main.User.Permission;
 import Main.User.User;
@@ -23,6 +24,7 @@ import Main.contest.Contest;
 import Main.problem.Problem;
 import Main.status.statu;
 import Tool.FILE;
+import Tool.HTML.HTML;
 import Tool.HTML.problemHTML.problemHTML;
 import action.addLocalProblem;
 import action.addcontest;
@@ -63,6 +65,7 @@ public class Main {
     final public static int autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
     public static boolean isDebug=GV.getBoolean("debug");
     public static String version=GV.getString("version");
+    public static StatusHtmlCache shc=new StatusHtmlCache();
 
     static{
         try {
@@ -318,5 +321,16 @@ public class Main {
     public static double codeCmp(String code1,String code2){
         CPlusPlusCompare cmp = new CPlusPlusCompare();
         return cmp.getSimilarity(code1,code2);
+    }
+
+    public static void resetStatusCache(int cid,String json){
+        Main.debug("reflash cache");
+        shc.set(cid,json);
+        //HTML.StatusHTML();
+    }
+    public static String getStatsJson(int cid){
+        String ret=shc.get(cid);
+        if(ret==null) return null;
+        else return ret;
     }
 }

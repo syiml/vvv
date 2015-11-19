@@ -3,9 +3,6 @@ package action;
 import Discuss.Discuss;
 import Discuss.DiscussSQL;
 import Main.Main;
-import Main.User.User;
-
-import java.sql.Timestamp;
 
 /**
  * Created by Syiml on 2015/7/4 0004.
@@ -50,6 +47,13 @@ public class addDiscuss {
     public void setShownum(String shownum) {
         this.shownum = shownum;
     }
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
+    public int getCid() {
+        return cid;
+    }
     public String getId() {
         return id;
     }
@@ -91,6 +95,7 @@ public class addDiscuss {
     }
 
     public String id;
+    public int cid;
     public String title;
     public String text;
     public String priority;
@@ -118,7 +123,6 @@ public class addDiscuss {
         panelclass="0";
         panelnobody=null;
         showauthor="";
-        showauthor="";
         showtime="";
         shownum="-1";
         Discuss d=new Discuss(this);
@@ -132,12 +136,11 @@ public class addDiscuss {
         panelclass="0";
         panelnobody=null;
         showauthor="";
-        showauthor="";
         showtime="";
         shownum="-1";
         Discuss d=new Discuss(this);
         Main.log(Main.loginUser().getUsername()+"追加了帖子【"+d.getTitle()+"】");
-        DiscussSQL.apend(d);
+        DiscussSQL.append(d);
         return "success";
     }
 }

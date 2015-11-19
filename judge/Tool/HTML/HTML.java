@@ -192,24 +192,24 @@ public class HTML {
 
     }
     public static String abtn(String size,String href,String s,String arge){
-        String ret="<a role='button' class='btn";
+        StringBuilder ret=new StringBuilder("<a role='button' class='btn");
         if(arge.contains("btn-primary")){
-            ret+=" btn-primary";
+            ret.append(" btn-primary");
         }else{
-            ret+=" btn-default";
+            ret.append(" btn-default");
         }
-        ret+=" btn-"+size+"'";
+        ret.append(" btn-").append(size).append("'");
         if(href!=null){
-            ret+=" href='"+href+"'";
+            ret.append(" href='").append(href).append("'");
         }
         if(arge.contains("disabled")){
-            ret+=" disabled='disabled'";
+            ret.append(" disabled='disabled'");
         }
         if(arge.contains("id=")){
-            ret+=arge.substring(arge.indexOf("id="));
+            ret.append(arge.substring(arge.indexOf("id=")));
         }
-        ret+=">"+s+"</a>";
-        return ret;
+        ret.append(">").append(s).append("</a>");
+        return ret.toString();
     }
     public static String btngroup(String s){
         return "<div class='btn-group' role='group'>"+s+"</div>";
@@ -554,10 +554,12 @@ public class HTML {
     }
     public static String StatusHTML(String user,int cid,int page,
                             int pid,int Language,int result,String ssuser,boolean all){
+        if(Main.loginUser()==null){
+            return "会话超时，请重新登录";
+        }
         statuListHTML s=new statuListHTML(user,cid,Main.statuShowNum,page,
                                             pid,Language,result,ssuser,all);
-        String ret=s.HTML();
-        return ret;
+        return s.HTML();
     }
     public static String contestList(String num,String page,String statu,String name,String type,String kind){
         if(num==null||num.equals("")){num=Main.contestShowNum+"";}

@@ -103,7 +103,7 @@ public class DiscussHTML {
         f.setSubmitText("查找");
         return f.toHTML();
     }
-    public static String DiscussList(int num,String page,String seach,String user){
+    public static String DiscussList(int cid,int num,String page,String seach,String user){
         int pageInt;
         try{
             pageInt=Integer.parseInt(page);
@@ -118,7 +118,7 @@ public class DiscussHTML {
             p=new Permission();
         }
         List<Discuss> list;
-        list=DiscussSQL.getDiscussList(num*pageInt,num+1,p.getAddDiscuss(),seach,user);
+        list=DiscussSQL.getDiscussList(cid,num*pageInt,num+1,p.getAddDiscuss(),seach,user);
         TableHTML table=new TableHTML();
         table.setClass("table table-hover");
         table.addColname("#");
@@ -157,7 +157,7 @@ public class DiscussHTML {
         String head="Discuss";
         if(p.getAddDiscuss()) head+=HTML.floatRight(HTML.a("admin.jsp?page=AddDiscuss","New"));
         if(u!=null){
-            modal m=new modal("adddiscuss","发帖",addDiscussForm(-1),"发起新讨论");
+            modal m=new modal("adddiscuss","发帖",addDiscussForm(-1,-1),"发起新讨论");
             m.setAction("adddiscuss2.action");
             m.setBtnCls("link btn-xs");
 //            modal(String id,String title,String body,String btnlabel){
@@ -182,6 +182,10 @@ public class DiscussHTML {
         f0.setDisabled();
         f0.setValue(did + "");
         form.addForm(f0);
+
+        text fcid=new text("cid","cid");
+        fcid.setValue("-1");
+        form.addForm(fcid);
 
         text f1=new text("title","标题");
         if(d!=null) f1.setValue(d.title);
@@ -236,7 +240,7 @@ public class DiscussHTML {
         check f12=new check("replyhidden","回复默认隐藏");
         if(d!=null){
             if(d.replyHidden) f12.setChecked();
-        }else f12.setChecked();
+        }
         form.addForm(f12);
 
         textarea f11 = new textarea("text","text");
@@ -248,13 +252,16 @@ public class DiscussHTML {
         form.setCol(2,10);
         return form.toHTML();
     }
-    public static String addDiscussForm(int did){
+    public static String addDiscussForm(int did,int cid){
         Discuss d=null;
         if(did!=-1) d=DiscussSQL.getDiscuss(did);
 
         text f0=new text("id","id");
         f0.setDisabled();
         f0.setValue(did + "");
+        text fcid=new text("cid","cid");
+        fcid.setDisabled();
+        fcid.setValue(cid+"");
 
         text f1=null;
         if(did==-1){
@@ -268,7 +275,7 @@ public class DiscussHTML {
         f11.setValue("");
         f11.setPlaceholder("这里输入正文");
 
-        return HTML.row(f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
+        return HTML.row(fcid.toHTML()+f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
     }
     public String page(int page){
         int pagenum=(DiscussSQL.getNewReplyId(d.id)-2)/Main.discussShowNum+1;
@@ -391,7 +398,7 @@ public class DiscussHTML {
             p=new Permission();
         }
         if(u!=null&&d.username.equals(u.getUsername())){
-            modal m=new modal("adddiscuss","追加",addDiscussForm(d.id),"追加");
+            modal m=new modal("adddiscuss","追加",addDiscussForm(d.id,-1),"追加");
             m.setAction("discussappend.action");
             m.setBtnCls("link btn-xs");
 //            modal(String id,String title,String body,String btnlabel){

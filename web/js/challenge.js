@@ -106,27 +106,28 @@ var challenge=function(){
             var jd=data.blockList[i].score==0?0:data.blockList[i].userScore/data.blockList[i].score;
             //isopen = 0、关闭  1、先决已经开启 2、可开启 3、已开启
             var isOpen=data.blockList[i].isOpen;
+            var div="<div class='block'><div class='title'>"+name+"</div></div>";
             if(isOpen==3){
-                $main.append("<div class='block'><div class='title'>"+(data.isSelf?HTML.a("#B"+id,name):name)+"</div></div>")
+                $main.append((data.isSelf?HTML.a("#B"+id,div):div))
                     .find(".block").last()
                     .addClass("block-"+gv.position[id][2])
                     .css({top:gv.position[id][0]+"px",left:gv.position[id][1]+"px"})
                     .css({backgroundImage:get_jd(jd)});
             }else if(isOpen==2){
-                $main.append("<div class='block'><div class='title'>"+(data.isSelf?HTML.a("#B"+id,name):name)+"</div></div>")
+                $main.append((data.isSelf?HTML.a("#B"+id,div):div))
                     .find(".block").last()
                     .addClass("block-"+gv.position[id][2])
                     .css({top:gv.position[id][0]+"px",left:gv.position[id][1]+"px"})
                     .css({backgroundImage:get_jd(jd)});
             }else if(isOpen==1){
-                $main.append("<div class='block block-close'><div class='title'>"+HTML.a("javascript:challenge.showBlockClose("+id+")",name)+"</div></div>")
+                $main.append(HTML.a("javascript:challenge.showBlockClose("+id+")","<div class='block block-close'><div class='title'>"+name+"</div></div>"))
                     .find(".block").last()
                     .addClass("block-"+gv.position[id][2])
                     .css({top:gv.position[id][0]+"px",left:gv.position[id][1]+"px"})
                     .css({backgroundImage:get_jd(0)});
             }else{
                 if(showAll){
-                    $main.append("<div class='block block-close'><div class='title'>"+HTML.a("javascript:challenge.showBlockClose("+id+")",name)+"</div></div>")
+                    $main.append(HTML.a("javascript:challenge.showBlockClose("+id+")","<div class='block block-close'><div class='title'>"+name+"</div></div>"))
                         .find(".block").last()
                         .addClass("block-"+gv.position[id][2])
                         .css({top:gv.position[id][0]+"px",left:gv.position[id][1]+"px"})

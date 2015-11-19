@@ -62,6 +62,7 @@ public class statusSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+//        Main.resetStatusCache(s.getCid());
         return rid;
     }
     public statu getStatu(int rid){
@@ -169,6 +170,7 @@ public class statusSQL {
             if(res==Result.CE){
                 addCEInof(rid, CEinfo);
             }
+//            Main.resetStatusCache(s.getCid());
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -54,33 +54,33 @@ public abstract class pageBean {
 //        if(PageNum==1) return "";
         int k=5;//当前页往外扩展页数
         String size="sm";
-        String s ="<div class='btn-toolbar' role='toolbar'>";
-        s+="<div class='btn-group' role='group'>";
+        StringBuilder s =new StringBuilder("<div class='btn-toolbar' role='toolbar'>");
+        s.append("<div class='btn-group' role='group'>");
         if(NowPage==1){
-            s+=HTML.abtn(size,getLinkByPage(1),"<<","disabled");
+            s.append(HTML.abtn(size,getLinkByPage(1),"<<","disabled"));
         }else{
-            s+=HTML.abtn(size,getLinkByPage(1),"<<","");
+            s.append(HTML.abtn(size,getLinkByPage(1),"<<",""));
         }
         int begin=NowPage-k/2;
         if(begin<1) begin=1;
         int end=NowPage+k/2;
         if(end>PageNum) end=PageNum;
         if(begin!=1){
-            s+=HTML.abtn(size,"","...","disabled");
+            s.append(HTML.abtn(size,"","...","disabled"));
         }
         for(int i=begin;i<=end;i++){
-            s+=HTML.abtn(size,getLinkByPage(i),i+"",i==NowPage?"btn-primary":"");
+            s.append(HTML.abtn(size,getLinkByPage(i),i+"",i==NowPage?"btn-primary":""));
         }
         if(end!=PageNum){
-            s+=HTML.abtn(size,"","...","disabled");
+            s.append(HTML.abtn(size,"","...","disabled"));
         }
         if(NowPage==PageNum){
-            s+=HTML.abtn(size,getLinkByPage(PageNum),">>","disabled");
+            s.append(HTML.abtn(size,getLinkByPage(PageNum),">>","disabled"));
         }else{
-            s+=HTML.abtn(size,getLinkByPage(PageNum),">>","");
+            s.append(HTML.abtn(size,getLinkByPage(PageNum),">>",""));
         }
-        s+="</div></div>";
-        return s;
+        s.append("</div></div>");
+        return s.toString();
     }
     public String head(){
         return HTML.div("panel-body","style='padding:5px'",HTML.floatLeft(page())+HTML.floatRight(rightForm()));

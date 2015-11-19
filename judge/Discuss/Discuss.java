@@ -14,6 +14,7 @@ import java.sql.Timestamp;
  */
 public class Discuss {
     int id;
+    int cid;
     String title;
     String username;
     Timestamp time;
@@ -27,8 +28,8 @@ public class Discuss {
     boolean showauthor;
     boolean showtime;
     int shownum;
+    int replyNum=0;
     boolean isadmin=false;
-
 
     boolean replyHidden=false;
 
@@ -43,6 +44,7 @@ public class Discuss {
     public String getTitle(){return title;}
     public Discuss(ResultSet rs) throws SQLException {
         id=rs.getInt("id");
+        cid=rs.getInt("cid");
         title=rs.getString("title");
         username=rs.getString("username");
         time=rs.getTimestamp("time");
@@ -57,10 +59,12 @@ public class Discuss {
         showauthor=rs.getBoolean("showauthor");
         showtime=rs.getBoolean("showtime");
         replyHidden=rs.getBoolean("replyhidden");
+        replyNum=rs.getInt("replynum");
         //System.out.print(rs.getBoolean("panelnobody"));
     }
     public Discuss(addDiscuss ad){
         id= Integer.parseInt(ad.getId());
+        cid=ad.getCid();
         title=ad.getTitle();
         User u=((User) Main.getSession().getAttribute("user"));
         if(u==null) username="";

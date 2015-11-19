@@ -30,7 +30,7 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp?page=home"/>
-    <%=DiscussHTML.DiscussList(num,pa,seach,user)%>
+    <%=DiscussHTML.DiscussList(-1,num,pa,seach,user)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

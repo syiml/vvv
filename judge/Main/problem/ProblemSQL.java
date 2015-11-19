@@ -217,6 +217,7 @@ public class ProblemSQL {
         }else return "error";
     }
     public boolean setProblemVisiable(int pid,int z){
+        delProblem(pid);
         return (SQL.update("update problem set visiable=? where pid=?",z,pid)==1);
     }
     public List<Integer> getProblemsByOjPid(int oj,String ojspid){

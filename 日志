@@ -79,11 +79,14 @@
 
 BUG
     rejudge后rank更新会有问题
-
+11-15
+    2.01
+    pageBean和FormHTML 改成使用StringBuilder来代替String构建HTML代码
 11-9
     修复使用了pageBean后status自己的状态没变色的bug
     修复了使用了pageBean后，比赛注册列表的性别显示不正确的bug
 11-8
+    2.0
     挑战模式完成
 11-7
     比赛奖励ACB

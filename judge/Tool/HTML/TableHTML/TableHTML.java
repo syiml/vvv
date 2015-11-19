@@ -50,20 +50,20 @@ public class TableHTML {
         return "";
     }
     public String HTML(){
-        String s="<table class='"+cl+"'>";
-        s+="<thead><tr "+clsHTML(0,-1)+">";
+        StringBuilder s=new StringBuilder("<table class='"+cl+"'>");
+        s.append("<thead><tr ").append(clsHTML(0, -1)).append(">");
         for(int i=0;i<colname.size();i++){
-            s+="<th "+clsHTML(0,i)+">"+colname.get(i)+"</th>";
+            s.append("<th ").append(clsHTML(0, i)).append(">").append(colname.get(i)).append("</th>");
         }
-        s+="</tr></thead><tbody>";
+        s.append("</tr></thead><tbody>");
         for(int i=0;i<cell.size();i++){
-            s+="<tr "+clsHTML(i+1,-1)+">";
+            s.append("<tr ").append(clsHTML(i + 1, -1)).append(">");
             for(int j=0;j<colname.size()&&j<cell.get(i).size();j++){
-                s+="<td "+clsHTML(i+1,j)+">"+cell.get(i).get(j)+"</td>";
+                s.append("<td ").append(clsHTML(i + 1, j)).append(">").append(cell.get(i).get(j)).append("</td>");
             }
-            s+="</tr>";
+            s.append("</tr>");
         }
-        s+="</tbody></table>";
-        return s;
+        s.append("</tbody></table>");
+        return s.toString();
     }
 }

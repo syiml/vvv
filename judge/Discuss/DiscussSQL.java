@@ -20,7 +20,7 @@ public class DiscussSQL {
     public static Discuss getDiscuss(int id){
         try {
             PreparedStatement p=null;
-            p=Main.conn.prepareStatement("SELECT * FROM t_discuss WHERE id=?");
+            p=Main.conn.prepareStatement("SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE id=?");
             p.setInt(1,id);
             ResultSet rs=p.executeQuery();
             if(rs.next()){
@@ -35,7 +35,7 @@ public class DiscussSQL {
         List<Discuss> list=new ArrayList<Discuss>();
         try {
             PreparedStatement p=null;
-            String sql="SELECT * FROM t_discuss WHERE top=1";
+            String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE top=1";
             if(!all){
                 sql+=" AND visiable=1";
             }
@@ -51,11 +51,11 @@ public class DiscussSQL {
         }
         return null;
     }
-    public static List<Discuss> getDiscussList(int from,int num,boolean all,String seach,String user){//admin is all
+    public static List<Discuss> getDiscussList(int cid,int from,int num,boolean all,String seach,String user){//admin is all
         List<Discuss> list=new ArrayList<Discuss>();
         try {
             PreparedStatement p=null;
-            String sql="SELECT * FROM t_discuss WHERE 1";
+            String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE cid="+cid;
             if(!all){
                 sql+=" AND visiable=1";
             }
@@ -100,34 +100,35 @@ public class DiscussSQL {
         try {
             PreparedStatement p=null;
             int id=newid();
-            p=Main.conn.prepareStatement("INSERT INTO t_discuss values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            p=Main.conn.prepareStatement("INSERT INTO t_discuss values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             p.setInt(1, id);
-            if(d.isadmin) p.setString(2, d.title);
-            else p.setString(2,HTML.HTMLtoString(d.title));
-            p.setInt(3, d.panelclass);
-            p.setString(4, d.username);
-            p.setTimestamp(5, d.time);
-            if(d.isadmin)p.setString(6, d.text);
-            else p.setString(6,HTML.pre(HTML.HTMLtoString(d.text)));
+            p.setInt(2,d.cid);
+            if(d.isadmin) p.setString(3, d.title);
+            else p.setString(3,HTML.HTMLtoString(d.title));
+            p.setInt(4, d.panelclass);
+            p.setString(5, d.username);
+            p.setTimestamp(6, d.time);
+            if(d.isadmin)p.setString(7, d.text);
+            else p.setString(7,HTML.pre(HTML.HTMLtoString(d.text)));
             if(d.priority==-1){
-                p.setDouble(7,id);
+                p.setDouble(8,id);
             }else{
-                p.setDouble(7,d.priority);
+                p.setDouble(8,d.priority);
             }
-            p.setBoolean(8, d.top);
-            p.setBoolean(9, d.visiable);
-            p.setBoolean(10,d.reply);
-            p.setInt(11, d.shownum);
-            p.setBoolean(12, d.panelnobody);
-            p.setBoolean(13, d.showauthor);
-            p.setBoolean(14,d.showtime);
-            p.setBoolean(15,d.replyHidden);
+            p.setBoolean(9, d.top);
+            p.setBoolean(10, d.visiable);
+            p.setBoolean(11,d.reply);
+            p.setInt(12, d.shownum);
+            p.setBoolean(13, d.panelnobody);
+            p.setBoolean(14, d.showauthor);
+            p.setBoolean(15,d.showtime);
+            p.setBoolean(16,d.replyHidden);
             p.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public static void apend(Discuss d){
+    public static void append(Discuss d){
         try{
             PreparedStatement p=null;
             String text=getDiscuss(d.id).text;

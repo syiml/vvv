@@ -56,49 +56,49 @@ public class FormHTML {
     public void setSubmitId(String s){submitId=s;}
     public void setPartFrom(){isForm=false;}
     public String toHTML(){
-        String s="";
+        StringBuilder s=new StringBuilder();
         if(isForm){
-            s+="<form style='margin:0px' class='";
+            s.append("<form style='margin:0px' class='");
             if(type==1){
-                s+="form-inline";
+                s.append("form-inline");
             }else{
-                s+="form-horizontal";
+                s.append("form-horizontal");
             }
-            s+="'";
+            s.append("'");
             if(id!=null){
-                s+=" id='"+id+"'";
+                s.append(" id='").append(id).append("'");
             }
-            if(enctype) s+=" enctype=\"multipart/form-data\" ";
+            if(enctype) s.append(" enctype=\"multipart/form-data\" ");
             if(action!=null){
-                s+=" action='"+action+"'";
+                s.append(" action='").append(action).append("'");
             }
-            s+=" method='"+method+"'>";
+            s.append(" method='").append(method).append("'>");
         }
-        for(int i=0;i<list.size();i++){
-            if(type==0){
-                s+=list.get(i).toHTML(col1,col2);
-            }else{
-                s+=list.get(i).toHTML();
+        for (form aList : list) {
+            if (type == 0) {
+                s.append(aList.toHTML(col1, col2));
+            } else {
+                s.append(aList.toHTML());
             }
         }
         if(isForm) {
             if (type == 1)
                 if(isscript){
-                    s += HTML.abtn( "sm",action, submitText, "");
+                    s .append( HTML.abtn( "sm",action, submitText, ""));
                 }else{
                     String submitid=(submitId==null?"":"id='"+submitId+"'");
-                    s += "<button "+submitid+" type='submit' class='btn btn-default btn-sm'>" + submitText + "</button>";
+                    s.append("<button ").append(submitid).append(" type='submit' class='btn btn-default btn-sm'>").append(submitText).append("</button>");
                 }
             else {
                 if(isscript){
-                    s += HTML.abtn("md", action, submitText,  "");
+                    s .append( HTML.abtn("md", action, submitText,  ""));
                 }else{
                     String submitid=(submitId==null?"":"id='"+submitId+"'");
-                    s += HTML.div("form-group", HTML.col(col2, col1, "<input "+submitid+" class=\"submit btn btn-default\" type=\"submit\" value=\""+submitText+"\">"));
+                    s .append( HTML.div("form-group", HTML.col(col2, col1, "<input "+submitid+" class=\"submit btn btn-default\" type=\"submit\" value=\""+submitText+"\">")));
                 }
             }
-            s += "</form>";
+            s .append( "</form>");
         }
-        return s;
+        return s.toString();
     }
 }
