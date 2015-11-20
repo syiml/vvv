@@ -28,6 +28,7 @@ public class Permission {
     boolean awardACB=false;
 
     boolean challengeAdmin=false;
+    boolean resetPassword=false;
 
     /**
      * 根据数据库结果集产生
@@ -53,6 +54,7 @@ public class Permission {
                     case 11:contestRegisterAdmin=true;break;
                     case 12:addLocalProblem=true;break;
                     case 13:challengeAdmin=true;break;
+                    case 14:resetPassword=true;break;
                 }
             }
         } catch (SQLException e) {
@@ -77,6 +79,7 @@ public class Permission {
     }
     public boolean getContestRegisterAdmin(){return contestRegisterAdmin;}
     public boolean getChallengeAdmin(){return challengeAdmin;}
+    public boolean getResetPassword(){return resetPassword;}
     /**
      * 产生显示在个人页面的权限列表
      * @return 权限列表HTML代码
@@ -95,6 +98,7 @@ public class Permission {
         if(clockin) s+=(HTML.span("success","签到管理"))+" ";
         if(PermissionAdmin) s+=(HTML.span("success","权限管理"))+" ";
         if(awardACB) s+=(HTML.span("success","奖惩ACB"))+" ";
+        if(resetPassword) s+=(HTML.span("success","密码重置"))+" ";
         if(contestRegisterAdmin) s+=(HTML.span("success","审核比赛报名"))+" ";
         if(challengeAdmin) s+=(HTML.span("success","挑战模式管理"));
         return s;

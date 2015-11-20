@@ -33,6 +33,6 @@
 <jsp:include page="module/foot.jsp"/>
 </body>
 </html>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<%--<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>--%>
 <script src="js/challenge.js"></script>
 <script src="js/status.js"></script>

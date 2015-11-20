@@ -81,6 +81,37 @@ public class DiscussSQL {
         }
         return null;
     }
+    public static int getDiscussListNum(int cid,boolean all,String seach,String user){//admin is all
+        PreparedStatement p=null;
+        try {
+            String sql="SELECT count(*) FROM t_discuss WHERE cid="+cid;
+            if(!all){
+                sql+=" AND visiable=1";
+            }
+            if(seach!=null&&!seach.equals("")){
+                sql+=" AND title like '%"+seach+"%'";
+            }
+            if(user!=null&&!user.equals("")){
+                sql+=" AND username='"+user+"'";
+                if(!all){
+                    sql+=" AND showauthor=1";
+                }
+            }
+            p=Main.conn.prepareStatement(sql);
+            ResultSet rs=p.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                p.close();
+            } catch (SQLException ignored) {
+            }
+        }
+        return 0;
+    }
     public static int newid(){
         try {
             PreparedStatement p=null;

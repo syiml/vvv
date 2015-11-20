@@ -93,4 +93,10 @@ public abstract class pageBean {
     public String HTML(){
         return HTML.panelnobody(getTitle(),head()+tableHTML()+foot());
     }
+    public static int getPageNm(int Num,int everyPageNum){
+        if(Num==0) return 1;
+        if(Num%everyPageNum==0){
+            return Num/everyPageNum;
+        }else return Num/everyPageNum+1;
+    }
 }

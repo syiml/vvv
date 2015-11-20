@@ -128,4 +128,10 @@ public class edit {
             return Main.users.update(u.getUsername(),this);
         }
     }
+    public String resetPassword(){
+        if(Main.loginUserPermission().getResetPassword()){
+            Main.users.resetPassword(name);
+        }
+        return "success";
+    }
 }

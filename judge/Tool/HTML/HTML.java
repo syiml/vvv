@@ -995,6 +995,8 @@ public class HTML {
             s+=li("挑战模式","ChallengeAdmin",nowpage);
         if(p.getPermissionAdmin())
             s+=li("权限管理","PermissionAdmin",nowpage);
+        if(p.getResetPassword())
+            s+=li("密码重置","ResetPassword",nowpage);
         s+="</ul>";
         return s;
     }
@@ -1034,6 +1036,8 @@ public class HTML {
             return panel("添加本地题目",adminAddLocalProblem());
         }else if(p!=null&&nowpage.equals("ChallengeAdmin")){
             return panel("挑战模式管理",adminChallengeAdmin());
+        }else if(p!=null&&nowpage.equals("ResetPassword")){
+            return panel("密码重置",adminResetPassword());
         }
         return panel("Index","管理员界面，点击左边链接进行后台管理");
     }
@@ -1408,5 +1412,15 @@ public class HTML {
                 addProblemForm.setSubmitText("添加题目");
             return HTML.text("模块【"+b.getName() + "】<br>", 11)+textForm.toHTML()+addCondition.toHTML()+conditionTable.HTML()+addProblemForm.toHTML()+problemList.HTML();
         }
+    }
+    public static String adminResetPassword(){
+        FormHTML f=new FormHTML();
+        f.setAction("ResetPassword.action");
+        f.setSubmitText("确定");
+        text t1=new text("name","username");
+        f.addForm(t1);
+        f.setSubmitText("确定");
+        f.setCol(2, 10);
+        return f.toHTML();
     }
 }

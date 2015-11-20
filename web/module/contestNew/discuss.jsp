@@ -1,0 +1,24 @@
+<%@ page import="Discuss.DiscussHTML" %>
+<%@ page import="Main.Main" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Syiml
+  Date: 2015/11/20 0020
+  Time: 20:56
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+  int cid= Integer.parseInt(request.getParameter("cid"));
+  int id;
+  int pa=0;
+  if(request.getParameter("id")==null){
+    if(request.getParameter("page")!=null){
+      pa=Integer.parseInt(request.getParameter("page"));
+    }
+    out.print(DiscussHTML.DiscussList(cid,Main.contestShowNum,pa,"",""));
+  }else{
+    id=Integer.parseInt(request.getParameter("id"));
+    out.print(Discuss.DiscussHTML.Discuss(id+"","0"));
+  }
+%>

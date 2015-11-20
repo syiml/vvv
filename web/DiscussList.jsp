@@ -16,6 +16,7 @@
 //  }
   int num= Main.contestShowNum;
   String pa=request.getParameter("page");
+  if(pa==null||pa.equals("")) pa="1";
   String seach=request.getParameter("seach");
   String user=request.getParameter("user");
   if(seach!=null){//处理中文乱码
@@ -30,7 +31,7 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp?page=home"/>
-    <%=DiscussHTML.DiscussList(-1,num,pa,seach,user)%>
+    <%=DiscussHTML.DiscussList(-1,num,Integer.parseInt(pa),seach,user)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

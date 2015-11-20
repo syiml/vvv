@@ -41,22 +41,38 @@ function go(){
         loadRating();
     }else if(href=='#C'){
         loadCompare();
+    }else if(href.charAt(1)=='D'){
+        if(href.charAt(2)=='P'){
+            loadDiscussList(href.substr(3,20));
+        }else{
+            loadDiscuss(href.substr(2,20));
+        }
     }else{
         loadHome();
     }
 }
+var text={
+    home:"主页",
+    problem:"题目描述",
+    status:"在线评测",
+    rank:"实时排名",
+    rating:"rating",
+    codeCompare:"代码判重",
+    discuss:"在线讨论"
+};
 function loadNAV(){
     var $nav = $('#NAV').append("<ul class='nav nav-tabs'></ul>").find('.nav');
-    $nav.append("<li role='presentation' id='homeNAV'>"+HTML.a("#H","Home")+"</li>");
+    $nav.append("<li role='presentation' id='homeNAV'>"+HTML.a("#H",text.home)+"</li>");
     if(contestInfo.now>=contestInfo.begintime) {//not pendding
-        $nav.append("<li role='presentation' id='problemNAV'>"+HTML.a("#P","Problem")+"</li>");
-        $nav.append("<li role='presentation' id='statusNAV'>"+HTML.a("#S","Status")+"</li>");
-        $nav.append("<li role='presentation' id='rankNAV'>"+HTML.a("#R","Rank")+"</li>");
+        $nav.append("<li role='presentation' id='problemNAV'>"+HTML.a("#P",text.problem)+"</li>");
+        $nav.append("<li role='presentation' id='statusNAV'>"+HTML.a("#S",text.status)+"</li>");
+        $nav.append("<li role='presentation' id='rankNAV'>"+HTML.a("#R",text.rank)+"</li>");
+        $nav.append("<li role='presentation' id='discussNAV'>"+HTML.a("#DP1",text.discuss)+"</li>");
         if(contestInfo.rating){
-            $nav.append("<li role='presentation' id='ratingNAV'>"+HTML.a("#T","Rating")+"</li>");
+            $nav.append("<li role='presentation' id='ratingNAV'>"+HTML.a("#T",text.rating)+"</li>");
         }
         if(contestInfo.compare){
-            $nav.append("<li role='presentation' id='compareNAV'>"+HTML.a("#C","CodeCompare")+"</li>");
+            $nav.append("<li role='presentation' id='compareNAV'>"+HTML.a("#C",text.codeCompare)+"</li>");
         }
     }
 }
@@ -299,6 +315,18 @@ function submit(pid){
         '</div>'
     ).find('.modal-body').load("module/contestNew/submitForm.jsp?pid="+pid+"&cid="+cid);
     $('#submit').modal();
+}
+function loadDiscussList(page){
+    $('#main').show().html(HTML.loader).load("module/contestNew/discuss.jsp?cid=" + cid + "&page=" + page);
+    $('#problems').hide();
+    $('#NAV').find('li').removeClass("active");
+    $('#discussNAV').addClass("active");
+}
+function loadDiscuss(id){
+    $('#main').show().html(HTML.loader).load("module/contestNew/discuss.jsp?cid=" + cid + "&id=" + id );
+    $('#problems').hide();
+    $('#NAV').find('li').removeClass("active");
+    $('#discussNAV').addClass("active");
 }
 function loadCompare(){
     $('#main').show().html(HTML.loader).load("module/contestNew/CodeCompare.jsp?cid=" + cid+"&f=0.7");

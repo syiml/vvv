@@ -20,7 +20,5 @@ public class login {
         }
         //else return "error";
         return "none";
-
-
     }
 }

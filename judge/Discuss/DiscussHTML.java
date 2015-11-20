@@ -66,105 +66,9 @@ public class DiscussHTML {
             return HTML.panel("ERROR", "参数错误", null, "danger");
         }
     }
-    public static String page(int page,String seach,String user,boolean havanext){
-        if(seach==null) seach="";
-        if(user==null) user="";
-        String size="sm";
-        String s ="<div class='btn-toolbar' role='toolbar'>";
-        s+="<div class='btn-group' role='group'>";
-        s+=HTML.abtn(size,"DiscussList.jsp?seach="+seach+"&user="+user,"首页","");
-        s+="</div>";
-        s+="<div class='btn-group' role='group'>";
-        if(page!=0){
-            s+=HTML.abtn(size,"DiscussList.jsp?page="+(page-1)+"&seach="+seach+"&user="+user,"上一页","");
-        }else{
-            s+=HTML.abtn(size,"","上一页","disabled");
-            //disabled='disabled'
-        }
-        s+=HTML.abtn(size,null,(page+1)+"","");
-        if(havanext){
-            s+=HTML.abtn(size,"DiscussList.jsp?page="+(page+1)+"&seach="+seach+"&user="+user,"下一页","");
-        }else{
-            s+=HTML.abtn(size,"","下一页","disabled");
-        }
-        s+="</div></div>";
-        return s;
-    }
-    public static String seach(String seach,String user){
-        FormHTML f=new FormHTML();
-        f.setType(1);
-        f.setAction("DiscussList.jsp");
-        text t1=new text("seach","名称");
-        t1.setValue(seach);
-        text t2=new text("user","作者");
-        t2.setValue(user);
-        f.addForm(t1);
-        f.addForm(t2);
-        f.setSubmitText("查找");
-        return f.toHTML();
-    }
-    public static String DiscussList(int cid,int num,String page,String seach,String user){
-        int pageInt;
-        try{
-            pageInt=Integer.parseInt(page);
-        }catch(NumberFormatException e){
-            pageInt=0;
-        }
-        User u=(User)Main.getRequest().getSession().getAttribute("user");
-        Permission p;
-        if(u!=null){
-            p=Main.getPermission(u.getUsername());
-        }else{
-            p=new Permission();
-        }
-        List<Discuss> list;
-        list=DiscussSQL.getDiscussList(cid,num*pageInt,num+1,p.getAddDiscuss(),seach,user);
-        TableHTML table=new TableHTML();
-        table.setClass("table table-hover");
-        table.addColname("#");
-        table.addColname("title");
-        table.addColname("time");
-        table.addColname("author");
-        if(p.getAddDiscuss()) table.addColname("priority");
-        int size=list.size();
-        boolean havenext=(size==num+1);
-        if(havenext) size=num;
-        for(int i=0;i<size;i++){
-            Discuss d=list.get(i);
-            List<String> row=new ArrayList<String>();
-            row.add(d.id+"");
-            if(d.visiable&&d.top){
-//                row.add(HTML.a("Discuss.jsp?id="+d.id,HTML.textb(d.title,"red")));
-                row.add(HTML.textb("【顶】","red")+HTML.a("Discuss.jsp?id="+d.id,d.title));
-            }else{
-                row.add(HTML.a("Discuss.jsp?id="+d.id,d.title));
-            }
-            String timetext=d.time.toString().substring(0,16);
-            String authortext=Main.users.getUser(d.username).getUsernameHTML();
-            if(d.showtime){row.add(timetext);}
-            else if(p.getAddContest()){row.add("<em class='small'>"+timetext+"</em>");}
-            else{row.add("");}
-            if(d.showauthor){row.add(authortext);}
-            else if(p.getAddContest()){row.add("<em class='small'>"+authortext+"</em>");}
-            else{row.add("");}
-            if(p.getAddDiscuss()){
-                row.add(d.priority+"");
-                if(!d.visiable)table.addCl(i+1,-1,"active");
-            }
-            table.addRow(row);
-        }
-
-        String head="Discuss";
-        if(p.getAddDiscuss()) head+=HTML.floatRight(HTML.a("admin.jsp?page=AddDiscuss","New"));
-        if(u!=null){
-            modal m=new modal("adddiscuss","发帖",addDiscussForm(-1,-1),"发起新讨论");
-            m.setAction("adddiscuss2.action");
-            m.setBtnCls("link btn-xs");
-//            modal(String id,String title,String body,String btnlabel){
-            head+=HTML.floatRight(m.toHTML());
-        }
-        String pageandseach=HTML.floatLeft(page(pageInt,seach,user,havenext))+HTML.floatRight(seach(seach,user));
-        return HTML.panelnobody(head,HTML.div("panel-body","style='padding:5px'",pageandseach)+table.HTML());
+    public static String DiscussList(int cid,int num,int pa,String seach,String user){
+        DiscussListHTML d=new DiscussListHTML(cid,num,pa,seach,user);
+        return d.HTML();
     }
     public static String adminAddDiscussForm(){
         int did=-1;
@@ -251,31 +155,6 @@ public class DiscussHTML {
 
         form.setCol(2,10);
         return form.toHTML();
-    }
-    public static String addDiscussForm(int did,int cid){
-        Discuss d=null;
-        if(did!=-1) d=DiscussSQL.getDiscuss(did);
-
-        text f0=new text("id","id");
-        f0.setDisabled();
-        f0.setValue(did + "");
-        text fcid=new text("cid","cid");
-        fcid.setDisabled();
-        fcid.setValue(cid+"");
-
-        text f1=null;
-        if(did==-1){
-            f1=new text("title","标题");
-            f1.setId("title");
-        }
-
-        textarea f11 = new textarea("text","text");
-//        if(d!=null) f11.setValue(HTML.HTMLtoString(d.text));
-//        else
-        f11.setValue("");
-        f11.setPlaceholder("这里输入正文");
-
-        return HTML.row(fcid.toHTML()+f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
     }
     public String page(int page){
         int pagenum=(DiscussSQL.getNewReplyId(d.id)-2)/Main.discussShowNum+1;
@@ -381,6 +260,33 @@ public class DiscussHTML {
         form.setCol(0,12);
         return HTML.panel("回复",HTML.col(12,form.toHTML()),null,"primary");
     }
+
+    public static String addDiscussForm(int did,int cid){
+        Discuss d=null;
+        if(did!=-1) d=DiscussSQL.getDiscuss(did);
+
+        text f0=new text("id","id");
+        f0.setDisabled();
+        f0.setValue(did + "");
+        text fcid=new text("cid","cid");
+        fcid.setDisabled();
+        fcid.setValue(cid+"");
+
+        text f1=null;
+        if(did==-1){
+            f1=new text("title","标题");
+            f1.setId("title");
+        }
+
+        textarea f11 = new textarea("text","text");
+//        if(d!=null) f11.setValue(HTML.HTMLtoString(d.text));
+//        else
+        f11.setValue("");
+        f11.setPlaceholder("这里输入正文");
+
+        return HTML.row(fcid.toHTML()+f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
+    }
+
     public String Discuss(){
         String title=d.title;
         String s="";

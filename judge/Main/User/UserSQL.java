@@ -288,6 +288,9 @@ public class UserSQL {
         }
         return "SystemError";
     }
+    public int resetPassword(String username){
+        return SQL.update("UPDATE users set password = md5('123456') WHERE username=?",username);
+    }
     public String update(String username, edit e){
         Main.log("Edit:"+username);
         String sql="UPDATE users set ";

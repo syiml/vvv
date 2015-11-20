@@ -142,6 +142,9 @@
                 <action name="ContestAward" class="Main.contest.ContestAward" method="award">
                         <result name="success">return.jsp</result>
                 </action>
+                <action name="ResetPassword" class="action.edit" method="resetPassword">
+                        <result name="success">return.jsp</result>
+                </action>
         </package>
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>

@@ -93,10 +93,10 @@ body{
     vertical-align: top;
     padding:10px;
     height: 100%;
-    margin-left:15px;
-    margin-right: 15px;
+    /*margin-left:15px;*/
+    /*margin-right: 15px;*/
     text-align: center;
-    width: 100px;
+    /*width: 100px;*/
 }
 .discussright{
     vertical-align: top;
