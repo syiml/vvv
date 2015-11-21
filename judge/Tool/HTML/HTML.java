@@ -624,7 +624,7 @@ public class HTML {
 //                 return new UserListHTML(cidInt , page, search).toHTML();
                  return new UserListContest(cidInt,page).HTML();
              }catch(NumberFormatException e) {
-                 return new UserListHTML(page, search,order,desc).toHTML();
+                 return new UserListHTML(page, search,order,desc).HTML();
              }
          }catch (NumberFormatException ee){
              return panel("error","参数错误",null,"danger");
@@ -1206,10 +1206,10 @@ public class HTML {
 
 
         FormPart f11;
-        if(c!=null) f10=new FormPart(RankTraining.getFormHTML(c.getRank()));
-        else f10=new FormPart(RankTraining.getFormHTML(null));
-        f10.setId("training");
-        form.addForm(f10);
+        if(c!=null) f11=new FormPart(RankTraining.getFormHTML(c.getRank()));
+        else f11=new FormPart(RankTraining.getFormHTML(null));
+        f11.setId("training");
+        form.addForm(f11);
 
 
         form.setCol(2, 10);
@@ -1244,7 +1244,8 @@ public class HTML {
         text t=new text("user","user");
         f.addForm(t);
         select s=new select("perid","per");
-        ResultSet rs=SQL.query("select * from permission");
+        SQL sql=new SQL("select * from permission");
+        ResultSet rs=sql.query();
         try {
             while(rs.next()){
                 s.add(rs.getInt(1),rs.getString(2));
@@ -1252,6 +1253,7 @@ public class HTML {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql.close();
         f.addForm(s);
         f.setAction("addper.action");
         f.setType(1);

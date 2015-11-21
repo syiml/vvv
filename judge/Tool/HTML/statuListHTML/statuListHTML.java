@@ -47,10 +47,8 @@ public class statuListHTML extends pageBean {
         this.all=all;
         if(this.ssuser==null) this.ssuser="";
         status= Main.status.getStatus(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser, all);
-        this.PageNum=Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all);
+        this.PageNum=getPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all),num);
         setCl("table table-striped table-hover table-condensed");
-        if(PageNum%num==0) PageNum/=num;
-        else PageNum=PageNum/num+1;
         addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
     }
 

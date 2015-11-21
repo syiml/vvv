@@ -67,30 +67,28 @@ public class UserSQL {
         return 1;
     }
     public int getRank(String user){
-        ResultSet rs=SQL.query("select rank+1 from v_user where username=?", user);
+        SQL sql=new SQL("select rank+1 from v_user where username=?", user);
+        ResultSet rs=sql.query();
         try {
             rs.next();
             return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql.close();
         return -1;
     }
     public Permission getPermission(String username){
         if(username==null) return null;
         PreparedStatement p;
-        try{
-            p=Main.conn.prepareStatement("select perid from userper where username=?");
-            p.setString(1, username);
-            ResultSet rs=p.executeQuery();
-            return new Permission(rs);
-        }catch(SQLException e){
-            return null;
-        }
+        SQL sql=new SQL("select perid from userper where username=?",username);
+        ResultSet rs=sql.query();
+        return new Permission(rs);
     }
     public List<List<String>> getPermissionTable(){
         //user,per,admin
-        ResultSet rs=SQL.query("SELECT username,perid,(select name from permission where id=perid) as name FROM userper");
+        SQL sql=new SQL("SELECT username,perid,(select name from permission where id=perid) as name FROM userper");
+        ResultSet rs=sql.query();
         List<List<String>> table=new ArrayList<List<String>>();
         try {
             while(rs.next()){
@@ -103,13 +101,14 @@ public class UserSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql.close();
         return table;
     }
     public void addPer(String user,int per){
-        SQL.update("INSERT INTO userper values(?,?)",user,per);
+        new SQL("INSERT INTO userper values(?,?)",user,per).update();
     }
     public void delPer(String user,int per){
-        SQL.update("delete from userper where username=? and perid=?",user,per);
+        new SQL("delete from userper where username=? and perid=?",user,per).update();
     }
 
     public User getUser(String username){
@@ -119,16 +118,17 @@ public class UserSQL {
         return getUser(username,true);
     }
     private User getUser(String username,boolean rank){
-        PreparedStatement p=null;
+        SQL sql = null;
         try {
-            if(rank) p=Main.conn.prepareStatement("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user where username=? ");
-            else p=Main.conn.prepareStatement("SELECT username,nick,gender,school,Email,motto,registertime,type,Mark,rating,-1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from users where username=?");
-            p.setString(1,username);
-            ResultSet rs=p.executeQuery();
+            if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user where username=? ",username);
+            else sql=new SQL("SELECT username,nick,gender,school,Email,motto,registertime,type,Mark,rating,-1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from users where username=?",username);
+            ResultSet rs=sql.query();
             if(rs.next())
                 return new User(rs);
         } catch (SQLException e) {
             //e.printStackTrace();
+        }finally {
+            if(sql!=null) sql.close();
         }
         return null;
     }
@@ -155,6 +155,7 @@ public class UserSQL {
             while(rs.next()){
                 list.add(new User(rs));
             }
+            p.close();
             rs.close();
             return list;
         } catch (SQLException e) {
@@ -162,21 +163,25 @@ public class UserSQL {
             return list;
         }
     }
+    public int getUsersNum(String search){
+        return new SQL("select count(*) from users where (username like ? or nick like ?)","%"+search+"%","%"+search+"%").queryNum();
+    }
     public List<User> getRichTop10(){
         List<User> list=new ArrayList<User>();
         PreparedStatement p=null;
+        SQL sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user order by acb desc,rating desc " +
+                "LIMIT 0,10");
         try {
-            p=Main.conn.prepareStatement("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user order by acb desc,rating desc " +
-                    "LIMIT 0,10");
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql.query();
             while(rs.next()){
                 list.add(new User(rs));
             }
-            rs.close();
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
             return list;
+        } finally {
+            sql.close();
         }
     }
     public List<List<String>> getUsers(int cid,int from,int num,String serach,boolean is3){
@@ -240,6 +245,7 @@ public class UserSQL {
                 s.add(rs.getString("info"));
                 list.add(s);
             }
+            p.close();
             rs.close();
             return list;
         } catch (SQLException e) {
@@ -248,7 +254,8 @@ public class UserSQL {
         }
     }
     public static int getUsersNum(int cid,String serach){
-        ResultSet rs=SQL.query("select count(*) from v_contestuser where cid=? and (username like ? or nick like ?)",cid,"%"+serach+"%","%"+serach+"%");
+        SQL sql=new SQL("select count(*) from v_contestuser where cid=? and (username like ? or nick like ?)",cid,"%"+serach+"%","%"+serach+"%");
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
                 return rs.getInt(1);
@@ -256,10 +263,12 @@ public class UserSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql.close();
         return 0;
     }
     public static int getUsersNum(int cid,int st){
-        ResultSet rs=SQL.query("select count(*) from contestuser where cid=? and statu=?",cid,st);
+        SQL sql=new SQL("select count(*) from contestuser where cid=? and statu=?",cid,st);
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
                 return rs.getInt(1);
@@ -267,29 +276,36 @@ public class UserSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql.close();
         return 0;
     }
 
     public String login(String user,String pass){
+        SQL sql=new SQL("select username,password from users where username=? and password=md5(?)", user, pass);
         try {
-            ResultSet r=SQL.query("select username,password from users where username=? and password=md5(?)", user, pass);
+            ResultSet r=sql.query();
             if(r.next()){
                 return "LoginSuccess";
             }else{
-                ResultSet rs=SQL.query("select * from users where username=?", user);
+                SQL sql2=new SQL("select * from users where username=?", user);
+                ResultSet rs=sql2.query();
                 if(rs.next()){
+                    sql2.close();
                     return "WrongPassword";
                 }else{
+                    sql2.close();
                     return "NoSuchUser";
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return "SystemError";
     }
     public int resetPassword(String username){
-        return SQL.update("UPDATE users set password = md5('123456') WHERE username=?",username);
+        return new SQL("UPDATE users set password = md5('123456') WHERE username=?",username).update();
     }
     public String update(String username, edit e){
         Main.log("Edit:"+username);
@@ -307,25 +323,25 @@ public class UserSQL {
         sql+=",Email = '"+HTML.HTMLtoString(e.getEmail())+"'";
         sql+=",motto = '"+HTML.HTMLtoString(e.getMotto())+"'";
         sql+=" WHERE username=?";
-        SQL.update(sql, username);
+        new SQL(sql, username).update();
         Main.getSession().setAttribute("user",Main.users.getUser(username,false));
         return "success";
     }
 
     public boolean haveViewCode(String user,int pid){
-        ResultSet rs=SQL.query("SELECT * FROM t_viewcode WHERE username=? AND pid=?", user, pid);
+        SQL sql=new SQL("SELECT * FROM t_viewcode WHERE username=? AND pid=?", user, pid);
+        ResultSet rs=sql.query();
         try {
-            if(rs.next()){
-                return true;
-            }else{
-                return false;
-            }
+            return rs.next();
         } catch (SQLException e) {
             return false;
+        } finally {
+            sql.close();
         }
     }
     public Set<Integer> canViewCode(String user){
-        ResultSet rs=SQL.query("SELECT pid FROM t_viewcode WHERE username=?",user);
+        SQL sql=new SQL("SELECT pid FROM t_viewcode WHERE username=?",user);
+        ResultSet rs=sql.query();
         Set<Integer> list=new HashSet<Integer>();
         try {
             while(rs.next()){
@@ -333,11 +349,13 @@ public class UserSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return list;
     }
     public int addViewCode(String user,int pid){
-        return SQL.update("INSERT INTO t_viewcode VALUES(?,?)",user,pid);
+        return new SQL("INSERT INTO t_viewcode VALUES(?,?)",user,pid).update();
     }
 
     public int awardACB(String user,int num,String text){
@@ -348,10 +366,10 @@ public class UserSQL {
         return x;
     }
     public int addACB(String user,int num){
-        return SQL.update("UPDATE users SET acb=acb+? WHERE username=?",num,user);
+        return new SQL("UPDATE users SET acb=acb+? WHERE username=?",num,user).update();
     }
     public int subACB(String user,int num){
-        return SQL.update("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?",num,user,num);
+        return new SQL("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?",num,user,num).update();
     }
 
 }

@@ -23,25 +23,29 @@ import java.util.List;
  */
 public class MessageSQL {
     public static Message getMessage(int mid){
-        ResultSet rs=SQL.query("SELECT * FROM t_message WHERE mid=?", mid);
+        SQL sql=new SQL("SELECT * FROM t_message WHERE mid=?", mid);
+        ResultSet rs=sql.query();
         try {
             if(rs.next()) {
                 return new Message(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return null;
     }
     public static int insert(Message m){
-        return SQL.update("INSERT INTO t_message(user,statu,title,text,time,deadline) values(?,?,?,?,?,?)",
-                m.user,m.statu,m.title,m.text,Main.now(),m.deadline);
+        return new SQL("INSERT INTO t_message(user,statu,title,text,time,deadline) values(?,?,?,?,?,?)",
+                m.user,m.statu,m.title,m.text,Main.now(),m.deadline).update();
     }
     public static int setReaded(int mid){
-        return SQL.update("UPDATE t_message SET statu=1 WHERE mid=?",mid);
+        return new SQL("UPDATE t_message SET statu=1 WHERE mid=?",mid).update();
     }
     public static List<Message> getMessages(String user,int from,int num){
-        ResultSet rs=SQL.query("SELECT * FROM t_message WHERE user=? ORDER BY time DESC LIMIT ?,?",user,from,num);
+        SQL sql=new SQL("SELECT * FROM t_message WHERE user=? ORDER BY time DESC LIMIT ?,?",user,from,num);
+        ResultSet rs=sql.query();
         List<Message> list=new ArrayList<Message>();
         try {
             while(rs.next()){
@@ -49,11 +53,13 @@ public class MessageSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return list;
     }
     public static int setReaded(String user){
-        return SQL.update("UPDATE t_message SET statu=1 WHERE user=?",user);
+        return new SQL("UPDATE t_message SET statu=1 WHERE user=?",user).update();
     }
     public static int AddMessageDisscussReply(int cid,String append,int did,String text){
         Discuss d=DiscussSQL.getDiscuss(did);
@@ -87,15 +93,7 @@ public class MessageSQL {
         return insert(m);
     }
     public static int getNoRead(String user){
-        ResultSet rs=SQL.query("SELECT COUNT(*) FROM t_message WHERE statu=0 AND user=?",user);
-        try {
-            if(rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return new SQL("SELECT COUNT(*) FROM t_message WHERE statu=0 AND user=?",user).queryNum();
     }
     public static int AddMessageRatingChange(int cid,String user,int prating,int rating){
         Contest c=Main.contests.getContest(cid);

@@ -47,7 +47,7 @@ public class DiscussListHTML extends pageBean {
         admin=Main.loginUserPermission().getAddDiscuss();
         list=DiscussSQL.getDiscussList(cid, num * (page-1), num , admin, seach, user);
 
-        PageNum = getPageNm(DiscussSQL.getDiscussListNum(cid, admin, seach, user) , num );
+        PageNum = getPageNum(DiscussSQL.getDiscussListNum(cid, admin, seach, user) , num );
         addTableHead(ID, TITLE, TIME, AUTHOR, REPLY);
         if(admin) addTableHead(PRIORITY);
     }

@@ -242,71 +242,36 @@ public class DiscussSQL {
         return list;
     }
     public static DiscussReply getDiscussReply(int did,int rid){
-        ResultSet rs=SQL.query("SELECT * FROM t_discussreply WHERE did=? AND rid=?", did, rid);
+        SQL sql=new SQL("SELECT * FROM t_discussreply WHERE did=? AND rid=?", did, rid);
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
+                sql.close();
                 return new DiscussReply(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql.close();
         return null;
     }
     public static int getNewReplyId(int did){
-        PreparedStatement p;
-        try {
-            p=Main.conn.prepareStatement("SELECT MAX(rid) FROM t_discussreply WHERE did=?");
-            p.setInt(1,did);
-            ResultSet rs=p.executeQuery();
-            if(rs.next()){
-                return rs.getInt(1)+1;
-            }else{
-                return 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 1;
-        }
+        return new SQL("SELECT MAX(rid) FROM t_discussreply WHERE did=?",did).queryNum()+1;
     }
     public static String reply(User loginuser,int did,String text){
-        Discuss d=getDiscuss(did);
         if(loginuser==null) return "error";
-        try {
-            PreparedStatement p;
-            int newid=getNewReplyId(did);
-            String sql="INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,?,null)";
-            p=Main.conn.prepareStatement(sql);
-            p.setInt(1,newid);
-            p.setInt(2,did);
-            p.setString(3, loginuser.getUsername());
-            p.setTimestamp(4, Main.now());
-            p.setString(5, HTML.HTMLtoString(text));
-            p.setBoolean(6, !d.isReplyHidden());
-            p.setInt(7, 0);
-            //System.out.println(p);
-            p.executeUpdate();
-            MessageSQL.AddMessageDisscussReply(d.cid,loginuser.getUsername(),did,HTML.HTMLtoString(text));
-            return "success";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
-        }
+        Discuss d=getDiscuss(did);
+        if(d==null) return "error";
+        int newid=getNewReplyId(did);
+        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,?,null)",newid,did,loginuser.getUsername(),Main.now(),HTML.HTMLtoString(text),!d.isReplyHidden()).update();
+        MessageSQL.AddMessageDisscussReply(d.cid,loginuser.getUsername(),did,HTML.HTMLtoString(text));
+        return "success";
     }
     public static String hideshow(int did,int rid){
         Permission per=Main.loginUserPermission();
         if(!per.getAddDiscuss())return "error";
-        try {
-            PreparedStatement p;
-            String sql="UPDATE t_discussreply SET visiable=not visiable WHERE did=? AND rid=?";
-            p=Main.conn.prepareStatement(sql);
-            p.setInt(1,did);
-            p.setInt(2, rid);
-            p.executeUpdate();
-            return "success";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
-        }
+        new SQL("UPDATE t_discussreply SET visiable=not visiable WHERE did=? AND rid=?",did,rid).update();
+        return "success";
     }
     public static String adminReply(int did,int rid,String text){
         Permission per=Main.loginUserPermission();

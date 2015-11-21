@@ -80,8 +80,8 @@ public class Main {
         status.init();
     }
     public static int doSubmit(String user,int pid,int cid,int language,String code,Timestamp submittime){//控制提交跳转到vj还是本地
-        System.out.println("Main.doSubmit");
-        System.out.println("cid="+cid+" pid="+pid);
+        Main.debug("Main.doSubmit");
+        Main.debug("cid="+cid+" pid="+pid);
         int rid;
         if(cid!=-1){//验证user是否有权限提交
             if(contests.getContest(cid).getEndTime().before(submittime)){
@@ -89,7 +89,7 @@ public class Main {
             }
         }
         if(cid!=-1) pid=Main.contests.getContest(cid).getGlobalPid(pid);//等于全局题目编号
-        System.out.println("go=" + pid);
+        Main.debug("go=" + pid);
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = status.addStatu(s);//插入数据库，并获取rid
         if(!problems.isProblemLocal(pid)){//is vj
@@ -142,13 +142,13 @@ public class Main {
             status.setStatusResult(rid, Result.PENDDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),s.getLanguage(),s.getCode(),true);
             submitVJ(ss, problems.getOJid(pid));
-            System.out.println("Main.ReJudge Done");
+            Main.debug("Main.ReJudge Done");
             return 0;//success submit to vj
         }else{//is local
             status.setStatusResult(rid, Result.PENDDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,pid+"",s.getLanguage(),s.getCode(),true);
             m.addSubmit(ss);
-            System.out.println("Main.ReJudge Done");
+            Main.debug("Main.ReJudge Done");
             return 1;//success submit to local
         }
     }

@@ -38,7 +38,8 @@ public class RankSQL {
         return r;
     }
     public static RankShortCode RankShortCode(int cid,RankShortCode rank){
-        ResultSet rs=SQL.query("SELECT * FROM t_rank_shortcode WHERE cid=?", cid);
+        SQL sql=new SQL("SELECT * FROM t_rank_shortcode WHERE cid=?", cid);
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
                 rank.type_1=rs.getInt("mtype_1");
@@ -51,11 +52,14 @@ public class RankSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return rank;
     }
     public static RankTraining RankTraining(int cid,RankTraining rank){
-        ResultSet rs=SQL.query("SELECT * FROM t_rank_shortcode WHERE cid=?", cid);
+        SQL sql=new SQL("SELECT * FROM t_rank_training WHERE cid=?", cid);
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
                 rank.type_1=rs.getInt("mtype_1");
@@ -67,6 +71,8 @@ public class RankSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return rank;
     }

@@ -64,10 +64,12 @@ function loadNAV(){
     var $nav = $('#NAV').append("<ul class='nav nav-tabs'></ul>").find('.nav');
     $nav.append("<li role='presentation' id='homeNAV'>"+HTML.a("#H",text.home)+"</li>");
     if(contestInfo.now>=contestInfo.begintime) {//not pendding
-        $nav.append("<li role='presentation' id='problemNAV'>"+HTML.a("#P",text.problem)+"</li>");
-        $nav.append("<li role='presentation' id='statusNAV'>"+HTML.a("#S",text.status)+"</li>");
-        $nav.append("<li role='presentation' id='rankNAV'>"+HTML.a("#R",text.rank)+"</li>");
-        $nav.append("<li role='presentation' id='discussNAV'>"+HTML.a("#DP1",text.discuss)+"</li>");
+        $nav.append("<li role='presentation' id='problemNAV'>" + HTML.a("#P", text.problem) + "</li>");
+        $nav.append("<li role='presentation' id='statusNAV'>" + HTML.a("#S", text.status) + "</li>");
+        $nav.append("<li role='presentation' id='rankNAV'>" + HTML.a("#R", text.rank) + "</li>");
+    }
+    $nav.append("<li role='presentation' id='discussNAV'>"+HTML.a("#DP1",text.discuss)+"</li>");
+    if(contestInfo.now>=contestInfo.begintime) {//not pendding
         if(contestInfo.rating){
             $nav.append("<li role='presentation' id='ratingNAV'>"+HTML.a("#T",text.rating)+"</li>");
         }

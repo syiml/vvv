@@ -128,6 +128,9 @@ public class problemListHTML {
             //AC率，AC人数/提交人数    ->或改成  AC人数/提交次数 ？
             //或放进problemView内
             int ac,sub;
+
+
+
             ac=acusernum.containsKey(pid)?acusernum.get(pid):0;
 //            sub=Main.status.getProblemSubmitUserNum(pid);
             sub=submitnum.containsKey(pid)?submitnum.get(pid):0;

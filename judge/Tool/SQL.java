@@ -1,10 +1,11 @@
 package Tool;
 
-import Main.User.Permission;
+import Main.Main;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Created by Syiml on 2015/7/10 0010.
@@ -12,13 +13,27 @@ import java.sql.SQLException;
 public class SQL {
     String sql;
     Object[] args;
+    PreparedStatement p=null;
+    ResultSet rs=null;
     public SQL(String sql, Object... args){
         this.sql=sql;
         this.args=args;
     }
+    public ResultSet query(){
+        try {
+            p = Main.conn.prepareStatement(sql);
+            for(int i=0;i<args.length;i++){
+                p.setObject(i+1,args[i]);
+            }
+            return rs=p.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public ResultSet query(int from,int num){
         try {
-            PreparedStatement p=Main.Main.conn.prepareStatement(sql+" LIMIT ?,?");
+            p=Main.conn.prepareStatement(sql+" LIMIT ?,?");
             int i;
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
@@ -31,38 +46,108 @@ public class SQL {
         }
         return null;
     }
-    public int update(){
-        PreparedStatement p=null;
+    public <K,V> Map<K,V> queryMap(){
+        Map<K,V> ret=new TreeMap<K, V>();
         try {
-            p= Main.Main.conn.prepareStatement(sql);
-            for(int i=0;i<args.length;i++){
+            p=Main.conn.prepareStatement(sql);
+            int i;
+            for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
-            return p.executeUpdate();
+            rs=p.executeQuery();
+            while(rs.next()){
+                ret.put((K)rs.getObject(1),(V)rs.getObject(2));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+        } finally {
+            close();
         }
+        return ret;
     }
-
-    public static ResultSet query(String sql,Object... args){
-        PreparedStatement p= null;
+    public <T> List<T> queryList(){
+        List<T> ret=new ArrayList<T>();
         try {
-            p = Main.Main.conn.prepareStatement(sql);
-            for(int i=0;i<args.length;i++){
+            p=Main.conn.prepareStatement(sql);
+            int i;
+            for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
-//            Main.Main.debug(p.toString());
-            return p.executeQuery();
+            rs=p.executeQuery();
+            while(rs.next()){
+                ret.add((T)rs.getObject(1));
+            }
+        } catch (SQLException e) {
+//            e.printStackTrace();
+        } finally {
+            close();
+        }
+        return ret;
+    }
+    public <T> Set<T> querySet(){
+        Set<T> ret=new TreeSet<T>();
+        try {
+            p=Main.conn.prepareStatement(sql);
+            int i;
+            for(i=0;i<args.length;i++){
+                p.setObject(i+1,args[i]);
+            }
+            rs=p.executeQuery();
+            while(rs.next()){
+                ret.add((T)rs.getObject(1));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            close();
+        }
+        return ret;
+    }
+    public <T> T queryObj(){
+        rs=query();
+        try {
+            if(rs != null && rs.next()){
+                return (T)rs.getObject(1);
+            }else return null;
+        } catch (SQLException e) {
+//            Main.debug("queryNumError");
+//            e.printStackTrace();
+        } finally {
+            close();
         }
         return null;
     }
-    public static int update(String sql,Object... args){
-        PreparedStatement p=null;
+    public int queryNum(){
+        rs=query();
         try {
-            p=Main.Main.conn.prepareStatement(sql);
+            if(rs != null && rs.next()){
+                return rs.getInt(1);
+            }else return 0;
+        } catch (SQLException e) {
+//            Main.debug("queryNumError");
+//            e.printStackTrace();
+        } finally {
+            close();
+        }
+        return 0;
+    }
+    public String queryString(){
+        rs=query();
+        try {
+            if(rs != null && rs.next()){
+                return rs.getString(1);
+            }else return "";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+        return "";
+    }
+    public int update(){
+        p=null;
+        try {
+            p= Main.conn.prepareStatement(sql);
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
@@ -70,14 +155,18 @@ public class SQL {
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
-        }finally {
-            try {
-                if (p != null) {
-                    p.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } finally {
+            close();
+        }
+    }
+    public void close(){
+        try {
+            p.close();
+        } catch (SQLException ignored) {
+        }
+        try {
+            rs.close();
+        } catch (SQLException ignored) {
         }
     }
 }

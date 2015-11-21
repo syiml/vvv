@@ -13,6 +13,7 @@ import java.util.List;
 public abstract class pageBean {
     private String cl="table";
     TableHTML table = new TableHTML();
+    List<String> Colname = new ArrayList<String>();
 
     public abstract String getTitle();
     public abstract int getPageSize();//当前页大小
@@ -25,20 +26,23 @@ public abstract class pageBean {
 
     public String getTableClass(){return cl;}
     public void setCl(String cl){this.cl=cl;}
-    protected void setTableHead(List<String> tableHead) {
-        table.setColname(tableHead);
-    }
     protected void addTableHead(String... ss){
-        table.addColname(ss);
+        Collections.addAll(Colname,ss);
+    }
+    protected String getColname(String colname){
+        return colname;
     }
 
     public String tableHTML(){
+        for (String aColname : Colname) {
+            table.addColname(getColname(aColname));
+        }
         table.setClass(getTableClass());
         int PageSize=getPageSize();
         for(int i=0;i<PageSize;i++){
             List<String> row=new ArrayList<String>();
             for(int j=0;j<table.getColnameSize();j++){
-                String colname=table.getColname(j);
+                String colname=Colname.get(j);
                 row.add(getCellByHead(i,colname));
             }
             table.addRow(row);
@@ -93,7 +97,7 @@ public abstract class pageBean {
     public String HTML(){
         return HTML.panelnobody(getTitle(),head()+tableHTML()+foot());
     }
-    public static int getPageNm(int Num,int everyPageNum){
+    public static int getPageNum(int Num,int everyPageNum){
         if(Num==0) return 1;
         if(Num%everyPageNum==0){
             return Num/everyPageNum;

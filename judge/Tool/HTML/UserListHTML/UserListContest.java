@@ -43,11 +43,7 @@ public class UserListContest extends pageBean {
         c=Main.contests.getContest(cid);
         list2=Main.users.getUsers(cid, (NowPage-1) * num, num, "", c.getKind() == 3);
         RegisterUserNum=UserSQL.getUsersNum(c.getCid(),"");
-        if(RegisterUserNum%Main.userShowNum==0){
-            PageNum=RegisterUserNum/Main.userShowNum;
-        }else{
-            PageNum=RegisterUserNum/Main.userShowNum+1;
-        }
+        PageNum=getPageNum(RegisterUserNum,Main.userShowNum);
     }
 
     public String getTableClass(){

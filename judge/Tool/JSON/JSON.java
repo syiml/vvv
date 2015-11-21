@@ -11,6 +11,7 @@ import Main.Main;
 import Message.MessageSQL;
 import Tool.HTML.problemListHTML.problemListFilterHTML.problemListFilterHTML;
 import Tool.HTML.problemListHTML.problemView;
+import Tool.SQL;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -169,6 +170,17 @@ public class JSON {
             jo.put("submit",sb_ja);
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                rsAc.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                rsSubmit.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return jo.toString();
     }

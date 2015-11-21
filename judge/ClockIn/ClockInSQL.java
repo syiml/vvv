@@ -121,32 +121,39 @@ public class ClockInSQL {
             Timestamp r;
             if(times.get(x).get(0)<times.get(x).get(2)) r=new Timestamp(nowdate+times.get(x).get(2));
             else r=new Timestamp(nowdate+times.get(x).get(2)+1000*60*60*24);
-            ResultSet rs=SQL.query("SELECT * FROM t_clock_in WHERE time<=? AND time>=? AND username=? ",r,l,u.getUsername());
+            SQL sql=new SQL("SELECT * FROM t_clock_in WHERE time<=? AND time>=? AND username=? ",r,l,u.getUsername());
+            ResultSet rs=sql.query();
             try {
                 return rs.next();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }finally {
+                sql.close();
             }
         }
         return true;
     }
     public static List<ClockInRecord> getClockInStatus(String username){
         List<ClockInRecord> list=new ArrayList<ClockInRecord>();
-        ResultSet rs=SQL.query("SELECT * FROM t_clock_in WHERE username=?",username);
+        SQL sql=new SQL("SELECT * FROM t_clock_in WHERE username=?",username);
+        ResultSet rs=sql.query();
         try {
             while(rs.next()){
                 list.add(new ClockInRecord(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return list;
     }
     public static String ClockInStatus(String username,Long day,int times){
 //        System.out.rintln(new Timestamp((day + 1) * (1000 * 60 * 60 * 24)-(1000*60*60*8)).toString()
 //                +" "+new Timestamp((day * (1000 * 60 * 60 * 24)-(1000*60*60*8))).toString() +" "+times);
-        ResultSet rs=SQL.query("SELECT * FROM t_clock_in WHERE username=? AND todytimes=? AND time<=? AND time>=?",
+        SQL sql=new SQL("SELECT * FROM t_clock_in WHERE username=? AND todytimes=? AND time<=? AND time>=?",
                 username, times, getR(day), getL(day));
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
                 ClockInRecord cir=new ClockInRecord(rs);
@@ -160,19 +167,20 @@ public class ClockInSQL {
         return "未知";
     }
     public static void add(ClockInRecord cir){
-        SQL.update("INSERT INTO t_clock_in(username,time,sign,ip,todytimes) VALUES(?,?,?,?,?)",
-                cir.username,cir.time,cir.sign,cir.ip,cir.todytimes);
+        new SQL("INSERT INTO t_clock_in(username,time,sign,ip,todytimes) VALUES(?,?,?,?,?)",
+                cir.username,cir.time,cir.sign,cir.ip,cir.todytimes).update();
     }
     public static void del(int id){
-        SQL.update("DELETE FROM t_clock_in WHERE id=?",id);
+        new SQL("DELETE FROM t_clock_in WHERE id=?",id).update();
     }
     public static void update(int id,ClockInRecord cir){
-        SQL.update("UPDATE t_clock_in SET username=?,sign=?",cir.username,cir.sign);
+        new SQL("UPDATE t_clock_in SET username=?,sign=?",cir.username,cir.sign).update();
     }
     public static List<ClockInRecord> get(long day,int times){
         Timestamp l=getL(day);
         Timestamp r=getR(day);
-        ResultSet rs=SQL.query("SELECT * FROM t_clock_in WHERE time<=? AND time>=? AND todytimes=? ORDER BY time",r,l,times);
+        SQL sql=new SQL("SELECT * FROM t_clock_in WHERE time<=? AND time>=? AND todytimes=? ORDER BY time",r,l,times);
+        ResultSet rs=sql.query();
         List<ClockInRecord> list=new ArrayList<ClockInRecord>();
         try {
             while(rs.next()){
@@ -180,11 +188,14 @@ public class ClockInSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return list;
     }
     public static List<ClockInRecord> getWithUser(String user){
-        ResultSet rs=SQL.query("SELECT * FROM t_clock_in WHERE username=? ORDER BY time desc", user);
+        SQL sql=new SQL("SELECT * FROM t_clock_in WHERE username=? ORDER BY time desc", user);
+        ResultSet rs=sql.query();
         List<ClockInRecord> list=new ArrayList<ClockInRecord>();
         try {
             while(rs.next()){
@@ -192,6 +203,8 @@ public class ClockInSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return list;
     }

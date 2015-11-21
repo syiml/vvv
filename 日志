@@ -79,7 +79,14 @@
 
 BUG
     rejudge后rank更新会有问题
+11-21
+    2.03
+    比赛未开始也能进入比赛讨论
+    Rank页面也使用pagebean
+    锁定adminNAV样式，避免contest内problem导航样式被改变
+    比赛内的Discuss被别人回复会发送不同的系统消息
 11-20
+    2.02
     比赛内讨论版
     权限：重置密码
 11-15

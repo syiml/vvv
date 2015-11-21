@@ -6,7 +6,7 @@ import Main.User.User;
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class register {
+public class register extends BaseAction{
     public String username;
     public String password;
     public String rpass;
@@ -16,27 +16,27 @@ public class register {
     public String email="";
     public String motto="";//座右铭
     public String reg(){
-        if(username==null) return "error";
-        if(password==null) return "error";
-        if(rpass==null) return "error";
-        if(username.length()<5) return "error";
-        if(username.length()>15) return "error";
-        if(password.length()<5) return "error";
-        if(password.length()>15) return "error";
-        if(!rpass.equals(password)) return "error";
-        if(nick.length()>20) return "error";
+        if(username==null) return ERROR;
+        if(password==null) return ERROR;
+        if(rpass==null) return ERROR;
+        if(username.length()<5) return ERROR;
+        if(username.length()>15) return ERROR;
+        if(password.length()<5) return ERROR;
+        if(password.length()>15) return ERROR;
+        if(!rpass.equals(password)) return ERROR;
+        if(nick.length()>20) return ERROR;
         if(nick.equals("")) nick=username;
-        if(school.length()>30) return "error";
-        if(motto.length()>50) return "error";
+        if(school.length()>30) return ERROR;
+        if(motto.length()>50) return ERROR;
         User u=new User(this);
         int ret=Main.users.register(u);
         if(ret==1){
             Main.log("Register:"+username);
-            return "success";
+            return SUCCESS;
         }else if(ret==-1){
-            return "error";//用户名已存在
+            return ERROR;//用户名已存在
         }else{
-            return "error";
+            return ERROR;
         }
     }
 }

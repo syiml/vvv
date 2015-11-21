@@ -218,19 +218,22 @@ public class ProblemSQL {
     }
     public boolean setProblemVisiable(int pid,int z){
         delProblem(pid);
-        return (SQL.update("update problem set visiable=? where pid=?",z,pid)==1);
+        SQL sql=new SQL("update problem set visiable=? where pid=?",z,pid);
+        boolean ret=(sql.update()==1);
+        sql.close();
+        return ret;
     }
     public List<Integer> getProblemsByOjPid(int oj,String ojspid){
-        ResultSet rs=SQL.query("SELECT pid FROM problem WHERE ojid=? AND ojspid=?",oj,ojspid);
+        SQL sql=new SQL("SELECT pid FROM problem WHERE ojid=? AND ojspid=?",oj,ojspid);
+        ResultSet rs=sql.query();
         List<Integer> ret=new ArrayList<Integer>();
         try {
             while(rs.next()){
                 ret.add(rs.getInt(1));
             }
-            return ret;
-        } catch (SQLException e) {
-            return ret;
-        }
+            sql.close();
+        } catch (SQLException ignored) {}
+        return ret;
     }
 
     public boolean isProblemLocal(int pid){
@@ -340,22 +343,27 @@ public class ProblemSQL {
         return "success";
     }
     public boolean delProblemDis(int pid){
-        SQL.update("delete from t_problemview where pid=?",pid);
-        SQL.update("delete from t_problem_sample where pid=?",pid);
+        SQL sql=new SQL("delete from t_problemview where pid=?",pid);
+        sql.update();
+        sql.close();
+        sql=new SQL("delete from t_problem_sample where pid=?",pid);
+        sql.update();
+        sql.close();
         return true;
     }
     public boolean addSample(int pid){
-        return SQL.update("insert into t_problem_sample " +
+        SQL sql=new SQL("insert into t_problem_sample " +
                 "values(?,0,'<pre style=\"padding:0px;border-style:none;background-color:transparent\"></pre>'" +
-                ",'<pre style=\"padding:0px;border-style:none;background-color:transparent\"></pre>')",pid)==1;
+                ",'<pre style=\"padding:0px;border-style:none;background-color:transparent\"></pre>')",pid);
+        boolean ret=(sql.update()==1);
+        sql.close();
+        return ret;
     }
     public problemHTML getProblemHTML(int pid){
         problemHTML ph=new problemHTML(pid);
-        PreparedStatement p= null;
         try {
-            p=Main.conn.prepareStatement("SELECT pid,timelimit,MenoryLimit,Int64,spj,Dis,Input,Output FROM t_problemview WHERE pid= ? ");
-            p.setInt(1, pid);
-            ResultSet s=p.executeQuery();
+            SQL sql=new SQL("SELECT pid,timelimit,MenoryLimit,Int64,spj,Dis,Input,Output FROM t_problemview WHERE pid= ?",pid);
+            ResultSet s=sql.query();
             if(s.next()){
                 ph.setTitle(getTitle(pid));
                 ph.setTimeLimit(s.getString(2));
@@ -365,13 +373,13 @@ public class ProblemSQL {
                 ph.setDis(s.getString(6));
                 ph.setInput(s.getString(7));
                 ph.setOutput(s.getString(8));
-                p=Main.conn.prepareStatement("SELECT input,output FROM t_problem_sample WHERE pid=? ORDER BY id");
-                p.setInt(1,pid);
-                s=p.executeQuery();
+                sql.close();
+                sql=new SQL("SELECT input,output FROM t_problem_sample WHERE pid=? ORDER BY id",pid);
+                s=sql.query();
                 while(s.next()) {
                     ph.addSample(s.getString(1), s.getString(2));
                 }
-                s.close();
+                sql.close();
                 return ph;
             }else{
                 return null;
@@ -381,7 +389,8 @@ public class ProblemSQL {
         }
     }
     public Pair<Integer,Integer> getProblemLimit(int pid){
-        ResultSet rs=SQL.query("SELECT timelimit,MenoryLimit FROM t_problemview WHERE pid=?",pid);
+        SQL sql=new SQL("SELECT timelimit,MenoryLimit FROM t_problemview WHERE pid=?",pid);
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
                 String timeLimitStr=rs.getString("timelimit");
@@ -393,6 +402,7 @@ public class ProblemSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql.close();
         return new Pair<Integer, Integer>(0,0);
     }
     public String toHref(int pid,int cid){
@@ -428,6 +438,6 @@ public class ProblemSQL {
         String username;
         if (u != null) username = u.getUsername();
         else username = "";
-        return SQL.query(sql, username, tagid, from, num);
+        return new SQL(sql, username, tagid, from, num).query();
     }
 }

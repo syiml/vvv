@@ -150,9 +150,9 @@ public class ContestSQL {
     public RegisterUser getRegisterStatu(String username,int cid){
         //null 未注册
         PreparedStatement p= null;
-        int ret=0;
+        SQL sql=new SQL("SELECT * FROM contestuser WHERE username=? AND cid=?",username,cid);
         try {
-            ResultSet rs= SQL.query("SELECT * FROM contestuser WHERE username=? AND cid=?",username,cid);
+            ResultSet rs= sql.query();
             if(rs.next()){
                 return new RegisterUser(rs);
             }else{
@@ -161,6 +161,8 @@ public class ContestSQL {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            sql.close();
         }
     }
     public String addUserContest(int cid,String username,int statu){
@@ -193,10 +195,10 @@ public class ContestSQL {
         }
         if(statu!=3){
             MessageSQL.addMessageRegisterContest(username,cid,statu);
-            SQL.update("UPDATE contestuser set statu=? WHERE cid=? AND username=?",statu,cid,username);
+            new SQL("UPDATE contestuser set statu=? WHERE cid=? AND username=?",statu,cid,username).update();
         }else{
             MessageSQL.addMessageRegisterContest(username,cid,statu);
-            SQL.update("UPDATE contestuser set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username);
+            new SQL("UPDATE contestuser set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username).update();
         }
         Main.contests.getContest(cid).reSetUsers();
         return "success";
@@ -257,20 +259,7 @@ public class ContestSQL {
         cSQL.remove(cid);
     }
     public int getNewId(){
-        PreparedStatement p= null;
-        int ret=0;
-        try {
-            p = Main.conn.prepareStatement("select MAX(id)+1 from contest");
-            ResultSet rs=p.executeQuery();
-            while(rs.next()){
-                ret=rs.getInt(1);
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-//        System.out.println(ret);
-        return ret;
+        return new SQL("select MAX(id)+1 from contest").queryNum();
     }
     public int size(){
         return cSQL.size();
@@ -338,16 +327,7 @@ public class ContestSQL {
         return list;
     }
     public List<Integer> getAcRidFromCid(int cid){
-        List<Integer> list=new ArrayList<Integer>();
-        ResultSet rs=SQL.query("SELECT id FROM statu WHERE cid=? AND result=1", cid);
-        try {
-            while(rs.next()){
-                list.add(rs.getInt(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
+        return new SQL("SELECT id FROM statu WHERE cid=? AND result=1", cid).queryList();
     }
     public String toHTML(int cid,Contest c){
         return   "<tr><td>"+cid+ "</td>"
@@ -368,7 +348,8 @@ public class ContestSQL {
      * @return 返回题目连接和名称的超链接
      */
     public String problemContest(int pid){
-        ResultSet rs=SQL.query("SELECT * FROM `contestproblems` left join contest on cid=id WHERE tpid=? order by begintime limit 0,1",pid);
+        SQL sql=new SQL("SELECT * FROM `contestproblems` left join contest on cid=id WHERE tpid=? order by begintime limit 0,1",pid);
+        ResultSet rs=sql.query();
         try {
             if(rs.next()){
                 Timestamp begintime=rs.getTimestamp("begintime");
@@ -382,6 +363,8 @@ public class ContestSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return "无";
     }

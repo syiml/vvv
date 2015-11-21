@@ -12,24 +12,24 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.sql.Timestamp;
 /**
- * Created by Administrator on 2015/5/19.
- */
+* Created by Administrator on 2015/5/19.
+        */
 public class submit {
     public String code;
     public String pid;
     public String language;
     public String cid;
-//    public String user;
+    //    public String user;
     public HttpClient hc = new DefaultHttpClient();
     public void print(HttpResponse r){
         HttpEntity entity = r.getEntity();
-        System.out.println(r.getStatusLine());
+        Main.debug(r.getStatusLine().toString());
         if (entity != null) {
-            System.out.println("Response content lenght:"  + entity.getContentLength());
+            Main.debug("Response content lenght:"  + entity.getContentLength());
             String content = null;
             try {
                 content = EntityUtils.toString(entity);
-                System.out.println("Response content:"  +content);
+                Main.debug("Response content:"  +content);
                 //System.out.println("Response content:"   + new String(content.getBytes("ISO-8859-1"),"UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();
