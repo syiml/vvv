@@ -79,6 +79,9 @@
 
 BUG
     rejudge后rank更新会有问题
+11-20
+    比赛内讨论版
+    权限：重置密码
 11-15
     2.01
     pageBean和FormHTML 改成使用StringBuilder来代替String构建HTML代码

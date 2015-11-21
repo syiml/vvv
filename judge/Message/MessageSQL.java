@@ -55,15 +55,23 @@ public class MessageSQL {
     public static int setReaded(String user){
         return SQL.update("UPDATE t_message SET statu=1 WHERE user=?",user);
     }
-    public static int AddMessageDisscussReply(String append,int did,String text){
+    public static int AddMessageDisscussReply(int cid,String append,int did,String text){
         Discuss d=DiscussSQL.getDiscuss(did);
         User u=Main.users.getUser(append);
         Message m=new Message();
         m.user=d.getUsername();
         if(m.user.equals(append)) return 0;
         m.statu=0;
-        m.title="你的帖子【"+d.getTitle()+"】有新回复";
-        m.text=u.getUsernameHTML()+"("+u.getNick()+")回复了你的帖子【"+d.getTitle()+"】：</br>"+text+"</br>"+HTML.a("Discuss.jsp?id="+did,"查看帖子");
+        if(cid==-1){
+            m.title="你的帖子【"+d.getTitle()+"】有新回复";
+        }else{
+            Contest c=Main.contests.getContest(cid);
+            m.title="你在比赛【"+c.getName()+"】中的提问【"+d.getTitle()+"】有新回复";
+        }
+        String url;
+        if(cid==-1) url="Discuss.jsp?id="+did;
+        else url="Contest.jsp?cid="+cid+"#D"+did;
+        m.text=u.getUsernameHTML()+"("+u.getNick()+")回复了你的帖子【"+d.getTitle()+"】：</br>"+text+"</br>"+HTML.a(url,"查看帖子");
         m.deadline=new Timestamp(86400000L * 30 + System.currentTimeMillis());//保留30天
         return insert(m);
     }

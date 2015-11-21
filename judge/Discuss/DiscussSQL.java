@@ -285,7 +285,7 @@ public class DiscussSQL {
             p.setInt(7, 0);
             //System.out.println(p);
             p.executeUpdate();
-            MessageSQL.AddMessageDisscussReply(loginuser.getUsername(),did,HTML.HTMLtoString(text));
+            MessageSQL.AddMessageDisscussReply(d.cid,loginuser.getUsername(),did,HTML.HTMLtoString(text));
             return "success";
         } catch (SQLException e) {
             e.printStackTrace();
