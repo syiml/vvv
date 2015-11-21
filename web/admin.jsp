@@ -32,7 +32,7 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp"/>
-      <div style='width:14%;float:left'>
+      <div style='width:14%;float:left' class="adminNAV">
           <%=HTML.adminNAV(per,pa)%>
       </div>
       <div style='width:84%;float:right'>
