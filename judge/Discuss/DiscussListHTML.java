@@ -130,7 +130,7 @@ public class DiscussListHTML extends pageBean {
 
     @Override
     public String rightForm() {
-        if(cid==-1) return "";
+        if(cid!=-1) return "";
         return HTML.floatRight(seach(seach,user));
     }
 
