@@ -1,7 +1,7 @@
 package ProblemTag;
 
 import Main.Main;
-import Tool.SQL;
+import Tool.SQL.SQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

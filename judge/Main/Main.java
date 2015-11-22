@@ -23,6 +23,7 @@ import Main.contest.rank.RankSQL;
 import Main.contest.Contest;
 import Main.problem.Problem;
 import Main.status.statu;
+import Tool.DBConnectionPool;
 import Tool.FILE;
 import Tool.HTML.HTML;
 import Tool.HTML.problemHTML.problemHTML;
@@ -48,7 +49,8 @@ import java.util.Date;
  */
 public class Main {
     public static final JSONObject GV=GlobalVariables.read();
-    public static Connection conn = null;
+//    public static Connection conn = null;
+    public static DBConnectionPool conns = new DBConnectionPool();
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
     public static ContestSQL contests = new ContestSQL();

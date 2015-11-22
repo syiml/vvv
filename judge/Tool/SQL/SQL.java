@@ -1,7 +1,9 @@
-package Tool;
+package Tool.SQL;
 
 import Main.Main;
+import Tool.Pair;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,14 +16,16 @@ public class SQL {
     String sql;
     Object[] args;
     PreparedStatement p=null;
-    ResultSet rs=null;
+    Connection conn;
+    protected ResultSet rs=null;
     public SQL(String sql, Object... args){
         this.sql=sql;
         this.args=args;
+        conn=Main.conns.getConn();
     }
     public ResultSet query(){
         try {
-            p = Main.conn.prepareStatement(sql);
+            p = conn.prepareStatement(sql);
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
@@ -33,7 +37,7 @@ public class SQL {
     }
     public ResultSet query(int from,int num){
         try {
-            p=Main.conn.prepareStatement(sql+" LIMIT ?,?");
+            p=conn.prepareStatement(sql+" LIMIT ?,?");
             int i;
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
@@ -46,17 +50,43 @@ public class SQL {
         }
         return null;
     }
+    protected Object getObject(int i) throws SQLException {
+        return rs.getObject(i);
+    }
     public <K,V> Map<K,V> queryMap(){
         Map<K,V> ret=new TreeMap<K, V>();
         try {
-            p=Main.conn.prepareStatement(sql);
+            p=conn.prepareStatement(sql);
             int i;
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
             rs=p.executeQuery();
             while(rs.next()){
-                ret.put((K)rs.getObject(1),(V)rs.getObject(2));
+                Object key=getObject(1);
+                Object value=getObject(2);
+                ret.put((K)key,(V)value);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+        return ret;
+    }
+    public <K,V> List<Pair<K,V>> queryPairList(){
+        List<Pair<K,V>> ret=new ArrayList<Pair<K,V>>();
+        try {
+            p=conn.prepareStatement(sql);
+            int i;
+            for(i=0;i<args.length;i++){
+                p.setObject(i+1,args[i]);
+            }
+            rs=p.executeQuery();
+            while(rs.next()){
+                Object key=getObject(1);
+                Object value=getObject(2);
+                ret.add(new Pair<K, V>((K)key,(V)value));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,14 +98,14 @@ public class SQL {
     public <T> List<T> queryList(){
         List<T> ret=new ArrayList<T>();
         try {
-            p=Main.conn.prepareStatement(sql);
+            p=conn.prepareStatement(sql);
             int i;
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
             rs=p.executeQuery();
             while(rs.next()){
-                ret.add((T)rs.getObject(1));
+                ret.add((T)getObject(1));
             }
         } catch (SQLException e) {
 //            e.printStackTrace();
@@ -87,14 +117,14 @@ public class SQL {
     public <T> Set<T> querySet(){
         Set<T> ret=new TreeSet<T>();
         try {
-            p=Main.conn.prepareStatement(sql);
+            p=conn.prepareStatement(sql);
             int i;
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
             rs=p.executeQuery();
             while(rs.next()){
-                ret.add((T)rs.getObject(1));
+                ret.add((T)getObject(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -147,7 +177,7 @@ public class SQL {
     public int update(){
         p=null;
         try {
-            p= Main.conn.prepareStatement(sql);
+            p= conn.prepareStatement(sql);
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
@@ -156,16 +186,23 @@ public class SQL {
             e.printStackTrace();
             return -1;
         } finally {
-            close();
+            pClose();
         }
     }
     public void close(){
-        try {
-            p.close();
-        } catch (SQLException ignored) {
-        }
+        pClose();
+        cClose();
+        Main.conns.putCondition(conn);
+    }
+    private void cClose(){
         try {
             rs.close();
+        } catch (SQLException ignored) {
+        }
+    }
+    private void pClose(){
+        try {
+            p.close();
         } catch (SQLException ignored) {
         }
     }

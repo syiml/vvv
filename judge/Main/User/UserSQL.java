@@ -1,14 +1,10 @@
 package Main.User;
 
 import Main.Main;
-import Main.User.Permission;
-import Main.User.User;
 import Main.contest.RegisterUser;
-import Main.status.Result;
-import Message.Message;
 import Message.MessageSQL;
 import Tool.HTML.HTML;
-import Tool.SQL;
+import Tool.SQL.SQL;
 import action.edit;
 
 import java.sql.PreparedStatement;
@@ -31,39 +27,30 @@ public class UserSQL {
     * */
     public int register(User u){
         PreparedStatement p= null;
+        SQL sql1=new SQL("select * from users where username=?",u.getUsername());
         try {
-            p = Main.conn.prepareStatement("select * from users where username=?");
-            p.setString(1, u.getUsername());
-            ResultSet s=p.executeQuery();
+            ResultSet s=sql1.query();
             s.next();
             if(s.isLast()) return -1;//已存在
-            p = Main.conn.prepareStatement("insert into users values(?,md5(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            p.setString(1, u.getUsername());
-            p.setString(2, u.getPassword());
-            p.setString(3, HTML.HTMLtoString(u.getNick()));
-            p.setInt(4, u.getGender());
-            p.setString(5, HTML.HTMLtoString(u.getSchool()));
-            p.setString(6, HTML.HTMLtoString(u.getEmail()));
-            p.setString(7, HTML.HTMLtoString(u.getMotto()));
-            p.setTimestamp(8, u.getRegistertime());
-            p.setInt(9, u.getType());
-            p.setString(10, HTML.HTMLtoString(u.getMark()));
-            p.setInt(11, -100000);
-            p.setInt(12,0);
-            p.setInt(13, 0);
-            p.setString(14, "");
-            p.setString(15,"");
-            p.setString(16,"");
-            p.setString(17,"");
-            p.setString(18,"");
-            p.setString(19,"");
-            p.setInt(20,0);
-            p.executeUpdate();
-            MessageSQL.addMessageWelcome(u);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (SQLException e){
             return 0;
+        }finally {
+            sql1.close();
         }
+        new SQL("insert into users values(?,md5(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                , u.getUsername()
+                , u.getPassword()
+                , HTML.HTMLtoString(u.getNick())
+                , u.getGender()
+                , HTML.HTMLtoString(u.getSchool())
+                , HTML.HTMLtoString(u.getEmail())
+                , HTML.HTMLtoString(u.getMotto())
+                , u.getRegistertime()
+                , u.getType()
+                , HTML.HTMLtoString(u.getMark())
+                , -100000
+                , 0,0,"","","","","","",0).update();
+        MessageSQL.addMessageWelcome(u);
         return 1;
     }
     public int getRank(String user){
@@ -80,10 +67,11 @@ public class UserSQL {
     }
     public Permission getPermission(String username){
         if(username==null) return null;
-        PreparedStatement p;
         SQL sql=new SQL("select perid from userper where username=?",username);
         ResultSet rs=sql.query();
-        return new Permission(rs);
+        Permission p=new Permission(rs);
+        sql.close();
+        return p;
     }
     public List<List<String>> getPermissionTable(){
         //user,per,admin
@@ -137,30 +125,29 @@ public class UserSQL {
             order="rank";
         }
         List<User> list=new ArrayList<User>();
+        SQL sql;
         PreparedStatement p=null;
+        if(serach==null||serach.equals("")){
+            sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone " +
+                    " from v_user "+
+                    (order==null||order.equals("")?"":" ORDER BY "+order+(desc?" desc ":" "))+
+                    " LIMIT "+from+","+num);
+        }else{
+            sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone  from v_user where  (username like ? or nick like ?)  " +
+                    (order==null||order.equals("")?"":" ORDER BY "+order+(desc?" desc ":" "))+
+                    " LIMIT "+from+","+num,"%"+serach+"%","%"+serach+"%");
+        }
         try {
-            if(serach==null||serach.equals("")){
-                p=Main.conn.prepareStatement("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone " +
-                        " from v_user "+
-                                (order==null||order.equals("")?"":" ORDER BY "+order+(desc?" desc ":" "))+
-                        " LIMIT "+from+","+num);
-            }else{
-                p=Main.conn.prepareStatement("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone  from v_user where  (username like ? or nick like ?)  " +
-                        (order==null||order.equals("")?"":" ORDER BY "+order+(desc?" desc ":" "))+
-                        " LIMIT "+from+","+num);
-                p.setString(1,"%"+serach+"%");
-                p.setString(2,"%"+serach+"%");
-            }
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql.query();
             while(rs.next()){
                 list.add(new User(rs));
             }
-            p.close();
-            rs.close();
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
             return list;
+        }finally {
+            sql.close();
         }
     }
     public int getUsersNum(String search){
@@ -186,14 +173,10 @@ public class UserSQL {
     }
     public List<List<String>> getUsers(int cid,int from,int num,String serach,boolean is3){
         List<List<String>> list=new ArrayList<List<String>>();
-        PreparedStatement p=null;
+        SQL sql=new SQL("select * from v_contestuser where cid=? and (username like ? or nick like ?) ORDER BY time desc" +
+                " LIMIT "+from+","+num,cid,"%"+serach+"%","%"+serach+"%");
         try {
-            p=Main.conn.prepareStatement("select * from v_contestuser where cid=? and (username like ? or nick like ?) ORDER BY time desc" +
-                    " LIMIT "+from+","+num);
-            p.setInt(1,cid);
-            p.setString(2,"%"+serach+"%");
-            p.setString(3,"%"+serach+"%");
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql.query();
             while(rs.next()){
                 List<String> s=new ArrayList<String>();
                 String nick=rs.getString("nick");
@@ -245,12 +228,12 @@ public class UserSQL {
                 s.add(rs.getString("info"));
                 list.add(s);
             }
-            p.close();
-            rs.close();
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
             return list;
+        }finally {
+            sql.close();
         }
     }
     public static int getUsersNum(int cid,String serach){

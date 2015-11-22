@@ -2,15 +2,14 @@ package Main.rating;
 
 import Main.Main;
 import Main.User.User;
-import Main.contest.Contest;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import Message.MessageSQL;
+import Tool.SQL.SQL;
 import com.google.gson.Gson;
 
 /**
@@ -18,60 +17,40 @@ import com.google.gson.Gson;
  */
 public class ratingSQL {
     public static void save(RatingCase r){
-        Contest c=Main.contests.getContest(r.cid);
-        PreparedStatement p;
-        try{
-            p= Main.conn.prepareStatement("INSERT INTO t_rating VALUES(?,?,?,?,?,?,?) ");
-            p.setString(1, r.username);
-            p.setTimestamp(2, r.getTime());
-            p.setInt(3, r.cid);
-            p.setInt(4,r.prating);
-            p.setInt(5,r.rating);
-            p.setInt(6,r.ratingnum);
-            p.setInt(7,r.rank);
-            p.executeUpdate();
-
-            p= Main.conn.prepareStatement("UPDATE users set ratingnum=ratingnum+1,rating=? WHERE username=?");
-            p.setInt(1,r.rating);
-            p.setString(2,r.username);
-
-            int prating=Main.users.getUser(r.username).getShowRating();
-            p.executeUpdate();
-            int newrating=Main.users.getUser(r.username).getShowRating();
-            MessageSQL.AddMessageRatingChange(r.cid,r.username,prating,newrating);
-            System.out.println(r.username + ":" + r.rating);
-        }catch(SQLException e){
-            System.out.println("rating uptate error");
-        }
+        new SQL("INSERT INTO t_rating VALUES(?,?,?,?,?,?,?) ",r.username,r.getTime(),r.cid,r.prating,r.rating,r.ratingnum,r.rank).update();
+        new SQL("UPDATE users set ratingnum=ratingnum+1,rating=? WHERE username=?",r.rating,r.username).update();
+        int prating=Main.users.getUser(r.username).getShowRating();
+        int newrating=Main.users.getUser(r.username).getShowRating();
+        MessageSQL.AddMessageRatingChange(r.cid,r.username,prating,newrating);
+        System.out.println(r.username + ":" + r.rating);
     }
     public static List<RatingCase> getRating(int cid){
         List<RatingCase> list=new ArrayList<RatingCase>();
-        PreparedStatement p;
+        SQL sql=new SQL("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE cid=? order by rank",cid);
         try {
-            p= Main.conn.prepareStatement("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE cid=? order by rank");
-            p.setInt(1,cid);
-            //System.out.println(p);
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql.query();
             while(rs.next()){
                 list.add(new RatingCase(rs.getString(1),rs.getTimestamp(2),rs.getInt(3),rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getString("cname")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return list;
     }
     public static List<RatingCase> getRating(String username){
         List<RatingCase> list=new ArrayList<RatingCase>();
-        PreparedStatement p;
+        SQL sql=new SQL("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE username=? order by ratingnum desc",username);
         try {
-            p= Main.conn.prepareStatement("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE username=? order by ratingnum desc");
-            p.setString(1, username);
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql.query();
             while(rs.next()){
                 list.add(new RatingCase(rs.getString(1),rs.getTimestamp(2),rs.getInt(3),rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getString("cname")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return list;
     }

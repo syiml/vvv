@@ -11,13 +11,11 @@ import Main.Main;
 import Message.MessageSQL;
 import Tool.HTML.problemListHTML.problemListFilterHTML.problemListFilterHTML;
 import Tool.HTML.problemListHTML.problemView;
-import Tool.SQL;
+import Tool.Pair;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -132,56 +130,41 @@ public class JSON {
      */
     public static String getSubmitCount(String user,int num,int sec){
         if(num>1000) num=1000;
-        ResultSet rsSubmit=Main.status.getSubmitCount(user, num, sec);
-        ResultSet rsAc=Main.status.getAcCount(user, num, sec);
+        List<Pair<Integer,Integer>> rsSubmit=Main.status.getSubmitCount(user, num, sec);
+        List<Pair<Integer,Integer>> rsAc=Main.status.getAcCount(user, num, sec);
         JSONObject jo=new JSONObject();
         if(user!=null)jo.put("user",user);
         jo.put("num",num);
         jo.put("sec",sec);
         JSONArray sb_ja=new JSONArray();
         JSONArray ac_ja=new JSONArray();
-        try {
-            int now=0;
-            while(rsSubmit.next()&&now<num){
-                int t=rsSubmit.getInt("T");
-                int count=rsSubmit.getInt("count");
-                while(now<t&&now<num){
-                    sb_ja.add(0);
-                    now++;
-                }
-                if(now==t)sb_ja.add(count);
+        int now=0;
+        for(Pair<Integer,Integer> ep:rsSubmit){
+            int t=ep.getKey();
+            int count=ep.getValue();
+            while(now<t&&now<num){
+                sb_ja.add(0);
                 now++;
             }
-            while(now<num){sb_ja.add(0);now++;}
-            now=0;
-            while(rsAc.next()&&now<num){
-                int t=rsAc.getInt("T");
-                int count=rsAc.getInt("count");
-                while(now<t&&now<num){
-                    ac_ja.add(0);
-                    now++;
-                }
-                if(now==t)ac_ja.add(count);
-                now++;
-            }
-            while(now<num) {
-                ac_ja.add(0);now++;}
-            jo.put("ac",ac_ja);
-            jo.put("submit",sb_ja);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                rsAc.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                rsSubmit.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            if(now==t)sb_ja.add(count);
+            now++;
         }
+        while(now<num){sb_ja.add(0);now++;}
+        now=0;
+        for(Pair<Integer,Integer> ep:rsAc){
+            int t=ep.getKey();
+            int count=ep.getValue();
+            while(now<t&&now<num){
+                ac_ja.add(0);
+                now++;
+            }
+            if(now==t)ac_ja.add(count);
+            now++;
+        }
+        while(now<num) {
+            ac_ja.add(0);now++;}
+        jo.put("ac",ac_ja);
+        jo.put("submit",sb_ja);
         return jo.toString();
     }
 }

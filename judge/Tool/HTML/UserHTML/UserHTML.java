@@ -10,7 +10,6 @@ import Tool.HTML.FromHTML.text.text;
 import Tool.HTML.HTML;
 import Tool.HTML.TableHTML.TableHTML;
 import Tool.HTML.modal.modal;
-import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,28 +24,6 @@ public class UserHTML {
     public UserHTML(User showuser,User user){
         this.showuser=showuser;
         this.user=user;
-    }
-    public String userInfo(){
-        TableHTML table=new TableHTML();
-        table.setClass("table table-condensed userinfo");
-        table.addColname("user:");
-        table.addColname(showuser.getUsernameHTMLNoA());
-        List<String> row=new ArrayList<String>();
-        table.addRow("nick:", showuser.getNick());
-        table.addRow("school:", showuser.getSchool());
-        table.addRow("motto:", showuser.getMotto());
-        table.addRow("email:",showuser.getEmail());
-        int rank=Main.users.getRank(showuser.getUsername());
-        table.addRow("rank:",rank==-1?"":rank+"");
-        table.addRow("rating:",User.ratingToHTML(showuser.getShowRating()));
-        table.addRow("AC:",Main.status.getAcNum(showuser.getUsername())+"");
-        table.addRow("Submit:",Main.status.getSubmitTime(showuser.getUsername())+"");
-        table.addRow("Discuss",HTML.a("DiscussList.jsp?user="+showuser.getUsername(),"他的帖子"));
-
-        String script="<script>$('.userinfo tr').each(function(){$(this).children('td:last,th:last').css('word-break','break-all');});</script>";
-        String title="UserInfo ";
-        if(user!=null&&user.getUsername().equals(showuser.getUsername())) title+=HTML.floatRight(HTML.a("EditInfo.jsp", "Edit"));
-        return HTML.panelnobody(title,table.HTML())+script;
     }
     public String UserInfo2(){
         String headimg;
@@ -221,6 +198,7 @@ public class UserHTML {
         return HTML.panelnobody("提交统计", "primary",script);//+rr
     }
     public String HTML(){
+        Main.debug("=start=");
 //        String left=userInfo()+Permissions()+Mark();
 //        String right=Rating()+SolvedProblems()+NotSolvedProblems();
         return UserInfo2()+Rating()+SubmitCount()+ SolvedProblems()+NotSolvedProblems()+AcNotTag();

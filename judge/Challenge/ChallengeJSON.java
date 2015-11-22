@@ -2,12 +2,9 @@ package Challenge;
 
 import Main.Main;
 import Message.MessageSQL;
-import Tool.SQL;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.Set;
 
@@ -89,22 +86,7 @@ public class ChallengeJSON {
             conditions.add(aCondition);
         }
         ret.put("conditions",conditions);
-        JSONArray problemList=new JSONArray();
-        ResultSet ps= ChallengeSQL.getProblems(user,id);
-        try {
-            while(ps.next()){
-                JSONObject aProblem=new JSONObject();
-                aProblem.put("solved",ps.getInt("solved"));
-                aProblem.put("pid",ps.getInt("pid"));
-                aProblem.put("tpid",ps.getInt("tpid"));
-                aProblem.put("title",ps.getString("title"));
-                aProblem.put("score",ps.getString("score"));
-                problemList.add(aProblem);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ret.put("problemList",problemList);
+        ret.put("problemList",ChallengeSQL.getProblems(user,id));
         return ret.toString();
     }
 }

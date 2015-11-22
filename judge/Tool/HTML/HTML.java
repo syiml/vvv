@@ -44,7 +44,7 @@ import Tool.HTML.problemHTML.problemHTML;
 import Tool.HTML.problemListHTML.problemListFilterHTML.ProblemListFilter;
 import Tool.HTML.problemListHTML.problemListHTML;
 import Tool.HTML.statuListHTML.statuListHTML;
-import Tool.SQL;
+import Tool.SQL.SQL;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -328,11 +328,11 @@ public class HTML {
             }
             Permission p = user.getPermission();
             if(p.getViewCode()){
-                return Main.status.getCEInofHTML(Integer.parseInt(rid),havepanel);
+                return Main.status.getCEInfoHTML(Integer.parseInt(rid),havepanel);
             }else{
                 statu st=Main.status.getStatu(ridInt);
                 if(st.getUser().equals(user.getUsername())){
-                    return Main.status.getCEInofHTML(Integer.parseInt(rid),havepanel);
+                    return Main.status.getCEInfoHTML(Integer.parseInt(rid),havepanel);
                 }else{
                     return havepanel?panel("Error","没有权限",null,"danger"):"没有权限";
                 }
@@ -442,6 +442,7 @@ public class HTML {
         return problemInfo(pid,cid)+problemTag(pid,admin)+problemContest(pid);
     }
     public static String problem(Object user,String cid,String pid){
+        Main.debug("in problem");
         User _user=(User)user;
         boolean admin=false;
         if(cid==null) cid="-1";
@@ -554,9 +555,9 @@ public class HTML {
     }
     public static String StatusHTML(String user,int cid,int page,
                             int pid,int Language,int result,String ssuser,boolean all){
-        if(Main.loginUser()==null){
-            return "会话超时，请重新登录";
-        }
+//        if(Main.loginUser()==null){
+//            return "会话超时，请重新登录";
+//        }
         statuListHTML s=new statuListHTML(user,cid,Main.statuShowNum,page,
                                             pid,Language,result,ssuser,all);
         return s.HTML();
@@ -978,7 +979,7 @@ public class HTML {
         if(nowpage==null) nowpage="";
         String s="<ul class='nav nav-pills nav-stacked'>";
         if(p.getAddProblem())
-            s+=li("新增题目","AddProbelm",nowpage);
+            s+=li("新增题目","AddProblem",nowpage);
         if(p.getAddLocalProblem())
             s+=li("本地题目","AddLocalProblem",nowpage);
         if(p.getAddContest())
@@ -1380,23 +1381,7 @@ public class HTML {
                 addCondition.addForm(num);
                 addCondition.setSubmitText("新增条件");
             //problem list
-                TableHTML problemList=new TableHTML();
-                problemList.setClass("table table-bordered");
-                problemList.addColname("#","pid","标题","积分","删除");
-                ResultSet rs = ChallengeSQL.getProblems(id);
-                try {
-                    while(rs.next()){
-                        List<String> row=new ArrayList<String>();
-                        row.add(rs.getInt("pid")+"");
-                        row.add(HTML.aNew("Problem.jsp?pid="+rs.getInt("tpid"),rs.getInt("tpid")+""));
-                        row.add(rs.getString("title"));
-                        row.add(rs.getInt("score")+"");
-                        row.add(HTML.a("delPorblem.action?block="+id+"&pos="+rs.getInt("pid"),"删除"));
-                        problemList.addRow(row);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                TableHTML problemList=ChallengeSQL.getProblems(id);
             //addProblemForm
                 FormHTML addProblemForm=new FormHTML();
                 addProblemForm.setAction("addProblem.action");

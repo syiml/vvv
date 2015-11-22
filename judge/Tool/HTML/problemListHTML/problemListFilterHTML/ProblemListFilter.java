@@ -9,7 +9,7 @@ import Tool.HTML.FromHTML.select.select;
 import Tool.HTML.FromHTML.text.text;
 import Tool.HTML.HTML;
 import Tool.HTML.ResultSetPageHtml;
-import Tool.SQL;
+import Tool.SQL.SQL;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

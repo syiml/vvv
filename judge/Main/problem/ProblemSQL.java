@@ -2,11 +2,10 @@ package Main.problem;
 
 import Main.Main;
 import Main.User.User;
-import Main.problem.Problem;
 import Tool.HTML.HTML;
 import Tool.HTML.problemHTML.problemHTML;
 import Tool.HTML.problemListHTML.problemView;
-import Tool.SQL;
+import Tool.SQL.SQL;
 import action.editproblem;
 import javafx.util.Pair;
 
@@ -46,31 +45,28 @@ public class ProblemSQL {
         if(pSQL.size()>=MAXSIZE) pSQL.clear();
         Problem pr=pSQL.get(pid);
         if(pr!=null) return pr;
+        SQL sql=new SQL("select pid,ptype,title,ojid,ojspid,visiable from problem where pid = ? ",pid);
         try {
-            PreparedStatement p=null;
-            p = Main.conn.prepareStatement("select pid,ptype,title,ojid,ojspid,visiable from problem where pid = ? ");
-            p.setInt(1, pid);
-            ResultSet r=p.executeQuery();
+            ResultSet r=sql.query();
             r.next();
             Problem pro=new Problem(r);
             Insert(pid,pro);
             return pro;
         } catch (SQLException e) {
             return null;
+        }finally {
+            sql.close();
         }
     }
     public List<problemView> getProblems(int pid1,int pid2,boolean showhide){
         List<problemView> ret=new ArrayList<problemView>();
-        PreparedStatement p= null;
+        String sql="select pid,title,visiable,0,0 from problem where pid>=? and pid<=?";
+        if(!showhide){
+            sql+=" and visiable=1";
+        }
+        SQL sql1=new SQL(sql,pid1,pid2);
         try {
-            String sql="select pid,title,visiable,0,0 from problem where pid>=? and pid<=?";
-            if(!showhide){
-                sql+=" and visiable=1";
-            }
-            p=Main.conn.prepareStatement(sql);
-            p.setInt(1,pid1);
-            p.setInt(2, pid2);
-            ResultSet r=p.executeQuery();
+            ResultSet r=sql1.query();
             while(r.next()){
                 ret.add(new problemView(r));
             }
@@ -78,44 +74,42 @@ public class ProblemSQL {
         } catch (SQLException e) {
             return ret;
             //e.printStackTrace();
+        }finally {
+            sql1.close();
         }
         return ret;
     }
     public List<problemView> getProblems(int cid){
         List<problemView> list = new ArrayList<problemView>();
-        PreparedStatement p=null;
+        //pid,title,visiable,ac,submit
+        String sql="SELECT tt.pid as pid,title,0,acuser,count(username) as submit\n" +
+                "FROM contestusersolve_view\n" +
+                "RIGHT JOIN\n" +
+                "    (SELECT t4.pid as pid,t4.title,count(username) acuser\n" +
+                "     FROM\n" +
+                "        (SELECT pid,username \n" +
+                "         FROM contestusersolve_view \n" +
+                "         WHERE cid=? AND solved=1\n" +
+                "        )t1\n" +
+                "     RIGHT JOIN\n" +
+                "        (SELECT t.pid as pid,problem.title as title \n" +
+                "         FROM \n" +
+                "            (SELECT pid,tpid \n" +
+                "             FROM contestproblems \n" +
+                "             WHERE cid=? order by pid\n" +
+                "            )t,\n" +
+                "            problem \n" +
+                "         WHERE t.tpid=problem.pid \n" +
+                "         ORDER BY t.pid\n" +
+                "        )t4\n" +
+                "     ON t1.pid=t4.pid \n" +
+                "     GROUP BY t4.pid\n" +
+                "    )tt\n" +
+                "ON tt.pid=contestusersolve_view.pid and contestusersolve_view.cid=?\n" +
+                "GROUP BY pid";
+        SQL sql1=new SQL(sql,cid,cid,cid);
         try {
-            //pid,title,visiable,ac,submit
-            String sql="SELECT tt.pid as pid,title,0,acuser,count(username) as submit\n" +
-                    "FROM contestusersolve_view\n" +
-                    "RIGHT JOIN\n" +
-                    "    (SELECT t4.pid as pid,t4.title,count(username) acuser\n" +
-                    "     FROM\n" +
-                    "        (SELECT pid,username \n" +
-                    "         FROM contestusersolve_view \n" +
-                    "         WHERE cid=? AND solved=1\n" +
-                    "        )t1\n" +
-                    "     RIGHT JOIN\n" +
-                    "        (SELECT t.pid as pid,problem.title as title \n" +
-                    "         FROM \n" +
-                    "            (SELECT pid,tpid \n" +
-                    "             FROM contestproblems \n" +
-                    "             WHERE cid=? order by pid\n" +
-                    "            )t,\n" +
-                    "            problem \n" +
-                    "         WHERE t.tpid=problem.pid \n" +
-                    "         ORDER BY t.pid\n" +
-                    "        )t4\n" +
-                    "     ON t1.pid=t4.pid \n" +
-                    "     GROUP BY t4.pid\n" +
-                    "    )tt\n" +
-                    "ON tt.pid=contestusersolve_view.pid and contestusersolve_view.cid=?\n" +
-                    "GROUP BY pid";
-            p=Main.conn.prepareStatement(sql);
-            p.setInt(1,cid);
-            p.setInt(2,cid);
-            p.setInt(3,cid);
-            ResultSet r=p.executeQuery();
+            ResultSet r=sql1.query();
             while(r.next()){
                 list.add(new problemView(r));
             }
@@ -123,97 +117,40 @@ public class ProblemSQL {
             return list;
         } catch (SQLException e) {
             return list;
+        }finally {
+            sql1.close();
         }
     }
     public int getPageNum(int num,boolean showHide){
-        PreparedStatement p= null;
-        try {
-            String sql="select MAX(pid) from problem where pid<10000";
-            if(!showHide) {
-                sql+=" and visiable=1";
-            }
-            p=Main.conn.prepareStatement(sql);
-            ResultSet r=p.executeQuery();
-            r.next();
-            int maxpid=r.getInt(1);
-            r.close();
-            return (maxpid-1000)/num+1;
-        } catch (SQLException e) {//没有任何题目默认有一页为空
-            return 1;
-            //e.printStackTrace();
+        String sql="select MAX(pid) from problem where pid<10000";
+        if(!showHide) {
+            sql+=" and visiable=1";
         }
-        //return 1;
+        int maxpid=new SQL(sql).queryNum();
+        if(maxpid==0) return 1;
+        return (maxpid-1000)/num+1;//没有任何题目默认有一页为空
     }
     public void editProblem(int pid,Problem pro){
-        PreparedStatement p;
-        try {
-            p = Main.conn.prepareStatement("UPDATE problem SET title=?,ojid=?,ojspid=? WHERE pid=?");
-            p.setString(1,pro.getTitle());
-            p.setInt(2, pro.getOjid());
-            p.setString(3, pro.getOjspid());
-            p.setInt(4, pid);
-            p.executeUpdate();
-            Main.problems.delProblem(pid);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        new SQL("UPDATE problem SET title=?,ojid=?,ojspid=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pid).update();
     }
     public int addProblem(int pid,Problem pro){
         PreparedStatement p;
         int newpid=1000;
         if(pid==-1){
-            try {
-                p = Main.conn.prepareStatement("select MAX(pid)+1 from problem");
-                ResultSet rs=p.executeQuery();
-                rs.next();
-                newpid=rs.getInt(1);
-                System.out.println("newpid:"+newpid);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                newpid=1000;
-            } catch (NullPointerException e){
-                e.printStackTrace();
-                return -1;
-            }
+            newpid=new SQL("select MAX(pid)+1 from problem").queryNum();
         }else{
             editProblem(pid,pro);
             return pid;
         }
-        try {
-            p = Main.conn.prepareStatement("Insert into problem values(?,?,?,?,?,?)");
-            if(pid==-1) p.setString(1, newpid + "");
-            else p.setString(1, pid + "");
-            p.setString(2, pro.getType()+"");
-            p.setString(3, pro.getTitle());
-            p.setString(4, pro.getOjid()+"");
-            p.setString(5, pro.getOjspid()+"");
-            p.setInt(6,0);
-            p.executeUpdate();
-            Insert(pid,pro);//插入缓存 和 数据库
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e){
-            e.printStackTrace();
-        }
+        new SQL("Insert into problem values(?,?,?,?,?,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0).update();
+        Insert(pid,pro);//插入缓存 和 数据库
         return newpid;
     }
     public void delProblem(int pid){pSQL.remove(pid);}
     public String setProblemVisiable(int pid){
-        PreparedStatement p;
         if(pid!=-1){
-            try {
-                p = Main.conn.prepareStatement("update problem set visiable=1-visiable where pid=?");
-                p.setInt(1, pid);
-                p.executeUpdate();
-                delProblem(pid);
-                return "success";
-            } catch (SQLException e) {
-                return "error";
-            } catch (NullPointerException e){
-                return "error";
-            }
+            new SQL("update problem set visiable=1-visiable where pid=?",pid).update();
+            return "success";
         }else return "error";
     }
     public boolean setProblemVisiable(int pid,int z){
@@ -251,33 +188,12 @@ public class ProblemSQL {
     public String getTitle(int pid) { return getProblem(pid).getTitle();}
     public void saveProblemHTML(int pid,problemHTML ph){
         if(ph==null) return ;
-        PreparedStatement p= null;
-        try {
-            String sql="INSERT INTO t_problemview VALUES(?,?,?,?,?,?,?,?)";
-            p=Main.conn.prepareStatement(sql);
-            p.setInt(1,pid);
-            p.setString(2,ph.getTimeLimit());
-            p.setString(3,ph.getMenoryLimit());
-            p.setString(4,ph.getInt64());
-            p.setInt(5, ph.getSpj());
-            p.setString(6, ph.getDis());
-            p.setString(7,ph.getInput());
-            p.setString(8,ph.getOutput());
-            p.executeUpdate();
-            List<String> in=ph.getSampleInput();
-            List<String> out=ph.getSampleOutput();
-            for(int i=0;i<in.size();i++){
-                sql="INSERT INTO t_problem_sample VALUES(?,?,?,?)";
-                p=Main.conn.prepareStatement(sql);
-                p.setInt(1,pid);
-                p.setInt(2,i);
-                p.setString(3, in.get(i));
-                p.setString(4, out.get(i));
-                System.out.println(p);
-                p.executeUpdate();
-            }
-        } catch (SQLException ignored) {
-            System.out.println("saveerror");
+        new SQL("INSERT INTO t_problemview VALUES(?,?,?,?,?,?,?,?)"
+                ,pid,ph.getTimeLimit(),ph.getMenoryLimit(),ph.getInt64(),ph.getSpj(),ph.getDis(),ph.getInput(),ph.getOutput()).update();
+        List<String> in=ph.getSampleInput();
+        List<String> out=ph.getSampleOutput();
+        for(int i=0;i<in.size();i++){
+            new SQL("INSERT INTO t_problem_sample VALUES(?,?,?,?)",pid,i,in.get(i),out.get(i)).update();
         }
     }
     public String getP(int pid,String edit,int num){
@@ -300,45 +216,20 @@ public class ProblemSQL {
         return "";
     }
     public String editProlem(editproblem ep){
-        try {
-            PreparedStatement p=null;
-            String sql;
-            if(ep.getEdit().equals("dis")){
-                sql="update t_problemview set Dis=? WHERE pid=?";
-                p = Main.conn.prepareStatement(sql);
-                p.setString(1,ep.getS());
-                p.setInt(2, Integer.parseInt(ep.getPid()));
-            }
-            if(ep.getEdit().equals("input")){
-                sql="update t_problemview set Input=? WHERE pid=?";
-                p = Main.conn.prepareStatement(sql);
-                p.setString(1,ep.getS());
-                p.setInt(2,Integer.parseInt(ep.getPid()));
-            }
-            if(ep.getEdit().equals("output")){
-                sql="update t_problemview set Output=? WHERE pid=?";
-                p = Main.conn.prepareStatement(sql);
-                p.setString(1,ep.getS());
-                p.setInt(2,Integer.parseInt(ep.getPid()));
-            }
-            if(ep.getEdit().equals("sampleinput")){
-                sql="update t_problem_sample set input=? WHERE pid=? AND id=?";
-                p = Main.conn.prepareStatement(sql);
-                p.setString(1,ep.getS());
-                p.setInt(2, Integer.parseInt(ep.getPid()));
-                p.setInt(3,Integer.parseInt(ep.getNum()));
-            }
-            if(ep.getEdit().equals("sampleoutput")){
-                sql="update t_problem_sample set output=? WHERE pid=? AND id=?";
-                p = Main.conn.prepareStatement(sql);
-                p.setString(1,ep.getS());
-                p.setInt(2,Integer.parseInt(ep.getPid()));
-                p.setInt(3,Integer.parseInt(ep.getNum()));
-            }
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
+        if(ep.getEdit().equals("dis")){
+            new SQL("update t_problemview set Dis=? WHERE pid=?",ep.getS(),Integer.parseInt(ep.getPid())).update();
+        }
+        if(ep.getEdit().equals("input")){
+            new SQL("update t_problemview set Input=? WHERE pid=?",ep.getS(),Integer.parseInt(ep.getPid())).update();
+        }
+        if(ep.getEdit().equals("output")){
+            new SQL("update t_problemview set Output=? WHERE pid=?",ep.getS(),Integer.parseInt(ep.getPid())).update();
+        }
+        if(ep.getEdit().equals("sampleinput")){
+            new SQL("update t_problem_sample set input=? WHERE pid=? AND id=?",ep.getS(),Integer.parseInt(ep.getPid()),Integer.parseInt(ep.getNum())).update();
+        }
+        if(ep.getEdit().equals("sampleoutput")){
+            new SQL("update t_problem_sample set output=? WHERE pid=? AND id=?",ep.getS(),Integer.parseInt(ep.getPid()),Integer.parseInt(ep.getNum())).update();
         }
         return "success";
     }
@@ -361,8 +252,8 @@ public class ProblemSQL {
     }
     public problemHTML getProblemHTML(int pid){
         problemHTML ph=new problemHTML(pid);
+        SQL sql=new SQL("SELECT pid,timelimit,MenoryLimit,Int64,spj,Dis,Input,Output FROM t_problemview WHERE pid= ?",pid);
         try {
-            SQL sql=new SQL("SELECT pid,timelimit,MenoryLimit,Int64,spj,Dis,Input,Output FROM t_problemview WHERE pid= ?",pid);
             ResultSet s=sql.query();
             if(s.next()){
                 ph.setTitle(getTitle(pid));
@@ -373,19 +264,20 @@ public class ProblemSQL {
                 ph.setDis(s.getString(6));
                 ph.setInput(s.getString(7));
                 ph.setOutput(s.getString(8));
-                sql.close();
-                sql=new SQL("SELECT input,output FROM t_problem_sample WHERE pid=? ORDER BY id",pid);
-                s=sql.query();
+                SQL sql1=new SQL("SELECT input,output FROM t_problem_sample WHERE pid=? ORDER BY id",pid);
+                s=sql1.query();
                 while(s.next()) {
                     ph.addSample(s.getString(1), s.getString(2));
                 }
-                sql.close();
+                sql1.close();
                 return ph;
             }else{
                 return null;
             }
         } catch (SQLException ignored) {
             return null;
+        }finally {
+            sql.close();
         }
     }
     public Pair<Integer,Integer> getProblemLimit(int pid){

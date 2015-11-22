@@ -5,9 +5,8 @@ import Main.User.User;
 import Main.Main;
 import Message.MessageSQL;
 import Tool.HTML.HTML;
-import Tool.SQL;
+import Tool.SQL.SQL;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,226 +17,178 @@ import java.util.List;
  */
 public class DiscussSQL {
     public static Discuss getDiscuss(int id){
+        SQL sql=new SQL("SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE id=?",id);
         try {
-            PreparedStatement p=null;
-            p=Main.conn.prepareStatement("SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE id=?");
-            p.setInt(1,id);
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql.query();
             if(rs.next()){
                 return new Discuss(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return null;
     }
     public static List<Discuss> getDiscussTOP(boolean all){
         List<Discuss> list=new ArrayList<Discuss>();
+        String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE top=1";
+        if(!all){
+            sql+=" AND visiable=1";
+        }
+        sql+=" ORDER BY priority DESC";
+        SQL sql1=new SQL(sql);
         try {
-            PreparedStatement p=null;
-            String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE top=1";
-            if(!all){
-                sql+=" AND visiable=1";
-            }
-            sql+=" ORDER BY priority DESC";
-            p=Main.conn.prepareStatement(sql);
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql1.query();
             while(rs.next()){
                  list.add(new Discuss(rs));
             }
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql1.close();
         }
         return null;
     }
     public static List<Discuss> getDiscussList(int cid,int from,int num,boolean all,String seach,String user){//admin is all
         List<Discuss> list=new ArrayList<Discuss>();
-        try {
-            PreparedStatement p=null;
-            String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE cid="+cid;
+        String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE cid="+cid;
+        if(!all){
+            sql+=" AND visiable=1";
+        }
+        if(seach!=null&&!seach.equals("")){
+            sql+=" AND title like '%"+seach+"%'";
+        }
+        if(user!=null&&!user.equals("")){
+            sql+=" AND username='"+user+"'";
             if(!all){
-                sql+=" AND visiable=1";
+                sql+=" AND showauthor=1";
             }
-            if(seach!=null&&!seach.equals("")){
-                sql+=" AND title like '%"+seach+"%'";
-            }
-            if(user!=null&&!user.equals("")){
-                sql+=" AND username='"+user+"'";
-                if(!all){
-                    sql+=" AND showauthor=1";
-                }
-            }
-            sql+=" ORDER BY priority DESC";
-            sql+=" LIMIT "+from+","+num;
-            p=Main.conn.prepareStatement(sql);
-            ResultSet rs=p.executeQuery();
+        }
+        sql+=" ORDER BY priority DESC";
+        sql+=" LIMIT "+from+","+num;
+        SQL sql1=new SQL(sql);
+        try {
+            ResultSet rs=sql1.query();
             while(rs.next()){
                 list.add(new Discuss(rs));
             }
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql1.close();
         }
         return null;
     }
     public static int getDiscussListNum(int cid,boolean all,String seach,String user){//admin is all
-        PreparedStatement p=null;
-        try {
-            String sql="SELECT count(*) FROM t_discuss WHERE cid="+cid;
+        String sql="SELECT count(*) FROM t_discuss WHERE cid="+cid;
+        if(!all){
+            sql+=" AND visiable=1";
+        }
+        if(seach!=null&&!seach.equals("")){
+            sql+=" AND title like '%"+seach+"%'";
+        }
+        if(user!=null&&!user.equals("")){
+            sql+=" AND username='"+user+"'";
             if(!all){
-                sql+=" AND visiable=1";
+                sql+=" AND showauthor=1";
             }
-            if(seach!=null&&!seach.equals("")){
-                sql+=" AND title like '%"+seach+"%'";
-            }
-            if(user!=null&&!user.equals("")){
-                sql+=" AND username='"+user+"'";
-                if(!all){
-                    sql+=" AND showauthor=1";
-                }
-            }
-            p=Main.conn.prepareStatement(sql);
-            ResultSet rs=p.executeQuery();
+        }
+        SQL sql1=new SQL(sql);
+        try {
+            ResultSet rs=sql1.query();
             if(rs.next()){
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                p.close();
-            } catch (SQLException ignored) {
-            }
+            sql1.close();
         }
         return 0;
     }
     public static int newid(){
-        try {
-            PreparedStatement p=null;
-            p=Main.conn.prepareStatement("SELECT max(id)+1 FROM t_discuss");
-            ResultSet rs=p.executeQuery();
-            if(rs.next()){
-                return rs.getInt(1);
-            }else{
-                return 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 1;
+        return new SQL("SELECT max(id)+1 FROM t_discuss").queryNum();
     }
     public static void addDiscuss(Discuss d){
-        try {
-            PreparedStatement p=null;
-            int id=newid();
-            p=Main.conn.prepareStatement("INSERT INTO t_discuss values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            p.setInt(1, id);
-            p.setInt(2,d.cid);
-            if(d.isadmin) p.setString(3, d.title);
-            else p.setString(3,HTML.HTMLtoString(d.title));
-            p.setInt(4, d.panelclass);
-            p.setString(5, d.username);
-            p.setTimestamp(6, d.time);
-            if(d.isadmin)p.setString(7, d.text);
-            else p.setString(7,HTML.pre(HTML.HTMLtoString(d.text)));
-            if(d.priority==-1){
-                p.setDouble(8,id);
-            }else{
-                p.setDouble(8,d.priority);
-            }
-            p.setBoolean(9, d.top);
-            p.setBoolean(10, d.visiable);
-            p.setBoolean(11,d.reply);
-            p.setInt(12, d.shownum);
-            p.setBoolean(13, d.panelnobody);
-            p.setBoolean(14, d.showauthor);
-            p.setBoolean(15,d.showtime);
-            p.setBoolean(16,d.replyHidden);
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        int id=newid();
+        new SQL("INSERT INTO t_discuss values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                ,id
+                ,d.cid
+                ,d.isadmin?d.title:HTML.HTMLtoString(d.title)
+                ,d.panelclass
+                ,d.username
+                ,d.time
+                ,d.isadmin?d.text:HTML.pre(HTML.HTMLtoString(d.text))
+                ,d.priority==-1?id:d.priority
+                ,d.top
+                ,d.visiable
+                ,d.reply
+                ,d.shownum
+                ,d.panelnobody
+                ,d.showauthor
+                ,d.showtime
+                ,d.replyHidden).update();
     }
     public static void append(Discuss d){
-        try{
-            PreparedStatement p=null;
-            String text=getDiscuss(d.id).text;
-//            text+=HTML.textb("--------------------------------------","black")+"<br>";
-            text+="<hr/>以下内容于["+HTML.textb(Main.now().toString().substring(0,19),"blue")+"]补充";
-//            text+=HTML.textb("--------------------------------------","black")+"<br>";
-            text+=HTML.pre(HTML.HTMLtoString(d.text));
-            String sql="UPDATE t_discuss SET";
-            sql+=" text=?";
-            sql+="WHERE id=?";
-            p=Main.conn.prepareStatement(sql);
-            p.setString(1,text);
-            p.setInt(2,d.id);
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String text=getDiscuss(d.id).text;
+        text+="<hr/>以下内容于["+HTML.textb(Main.now().toString().substring(0,19),"blue")+"]补充";
+        text+=HTML.pre(HTML.HTMLtoString(d.text));
+        String sql="UPDATE t_discuss SET";
+        sql+=" text=?";
+        sql+="WHERE id=?";
+        new SQL(sql,text,d.id).update();
     }
     public static void editDiscuss(Discuss d){
-        try {
-            PreparedStatement p=null;
-            String sql="UPDATE t_discuss SET ";
-            sql+=" title=?";
-            sql+=",panelclass=?";
-            sql+=",text=?";
-            sql+=",priority=?";
-            sql+=",top=?";
-            sql+=",visiable=?";
-            sql+=",reply=?";
-            sql+=",shownum=?";
-            sql+=",panelnobody=?";
-            sql+=",showauthor=?";
-            sql+=",showtime=?";
-            sql+=",replyhidden=?";
-            sql+=" WHERE id=?";
-            p=Main.conn.prepareStatement(sql);
-            if(d.isadmin) p.setString(1, d.title);
-            else p.setString(1,HTML.HTMLtoString(d.title));
-            p.setInt(2, d.panelclass);
-//            p.setString(3, d.text);
-            if(d.isadmin)p.setString(3, d.text);
-            else p.setString(3,HTML.pre(HTML.HTMLtoString(d.text)));
-            if(d.priority==-1){
-                p.setDouble(4,d.id);
-            }else{
-                p.setDouble(4,d.priority);
-            }
-            p.setBoolean(5, d.top);
-            p.setBoolean(6, d.visiable);
-            p.setBoolean(7, d.reply);
-            p.setInt(8, d.shownum);
-            p.setBoolean(9, d.panelnobody);
-            p.setBoolean(10, d.showauthor);
-            p.setBoolean(11, d.showtime);
-            p.setBoolean(12, d.replyHidden);
-            p.setInt(13, d.id);
-//            System.out.println(p);
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            String sql="UPDATE t_discuss SET "+
+                        " title=?"+
+                        ",panelclass=?"+
+                        ",text=?"+
+                        ",priority=?"+
+                        ",top=?"+
+                        ",visiable=?"+
+                        ",reply=?"+
+                        ",shownum=?"+
+                        ",panelnobody=?"+
+                        ",showauthor=?"+
+                        ",showtime=?"+
+                        ",replyhidden=?"+
+                        " WHERE id=?";
+            new SQL(sql
+                    ,d.isadmin?d.title:HTML.HTMLtoString(d.title)
+                    ,d.panelclass
+                    ,d.username
+                    ,d.time
+                    ,d.isadmin?d.text:HTML.pre(HTML.HTMLtoString(d.text))
+                    ,d.priority==-1?d.id:d.priority
+                    ,d.top
+                    ,d.visiable
+                    ,d.reply
+                    ,d.shownum
+                    ,d.panelnobody
+                    ,d.showauthor
+                    ,d.showtime
+                    ,d.replyHidden
+                    ,d.id).update();
     }
     ////////////////discuss replay///////////////////
     public static List<DiscussReply> getDiscussReplay(int did,int from,int to){
         List<DiscussReply> list=new ArrayList<DiscussReply>();
+        String sql="SELECT * FROM t_discussreply WHERE did=?";
+        sql+=" AND rid>="+from+" AND rid<="+to;
+        SQL sql1=new SQL(sql,did);
         try {
-            PreparedStatement p;
-            String sql="SELECT * FROM t_discussreply WHERE did=?";
-            sql+=" AND rid>="+from+" AND rid<="+to;
-            p=Main.conn.prepareStatement(sql);
-            p.setInt(1,did);
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql1.query();
             while(rs.next()){
                 list.add(new DiscussReply(rs));
             }
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql1.close();
         }
         return list;
     }
@@ -277,19 +228,9 @@ public class DiscussSQL {
         Permission per=Main.loginUserPermission();
         if(!per.getAddDiscuss())return "error";
         if(text.equals("")) text=null;
-        try {
-            PreparedStatement p;
-            String sql="UPDATE t_discussreply SET adminreplay=? WHERE did=? AND rid=?";
-            p=Main.conn.prepareStatement(sql);
-            p.setString(1,text);
-            p.setInt(2,did);
-            p.setInt(3,rid);
-            p.executeUpdate();
-            MessageSQL.AddMessageDiscussReplyAdmin(did, rid, text);
-            return "success";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
-        }
+        String sql="UPDATE t_discussreply SET adminreplay=? WHERE did=? AND rid=?";
+        new SQL(sql,text,did,rid).update();
+        MessageSQL.AddMessageDiscussReplyAdmin(did, rid, text);
+        return "success";
     }
 }

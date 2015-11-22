@@ -1,6 +1,10 @@
 package Challenge;
 
-import Tool.SQL;
+import Tool.HTML.HTML;
+import Tool.HTML.TableHTML.TableHTML;
+import Tool.SQL.SQL;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -83,15 +87,53 @@ public class ChallengeSQL {
     static boolean isOpen(String user,int block){
         return new SQL("SELECT * from t_challenge_openblock where username=? and block=?",user,block).queryObj();
     }
-    static ResultSet getProblems(String user,int id){
-        return  new SQL("select solved+1 as solved,t_challenge_problem.pid,tpid,(select title from problem where pid=t_challenge_problem.tpid) as title,score " +
+    static JSONArray getProblems(String user,int id){
+        SQL sql=new SQL("select solved+1 as solved,t_challenge_problem.pid,tpid,(select title from problem where pid=t_challenge_problem.tpid) as title,score " +
                 "from t_challenge_problem left join usersolve_view on usersolve_view.pid=t_challenge_problem.tpid and username=? " +
-                "where t_challenge_problem.id=?",user,id).query();
+                "where t_challenge_problem.id=?",user,id);
+        JSONArray problemList=new JSONArray();
+        ResultSet ps= sql.query();
+        try {
+            while(ps.next()){
+                JSONObject aProblem=new JSONObject();
+                aProblem.put("solved",ps.getInt("solved"));
+                aProblem.put("pid",ps.getInt("pid"));
+                aProblem.put("tpid",ps.getInt("tpid"));
+                aProblem.put("title",ps.getString("title"));
+                aProblem.put("score",ps.getString("score"));
+                problemList.add(aProblem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            sql.close();
+        }
+        return problemList;
     }
-    public static ResultSet getProblems(int id){
-        return new SQL("select pid,tpid,(select title from problem where pid=t_challenge_problem.tpid) as title,score " +
+    public static TableHTML getProblems(int id){
+        TableHTML problemList=new TableHTML();
+        problemList.setClass("table table-bordered");
+        problemList.addColname("#","pid","标题","积分","删除");
+        SQL sql=new SQL("select pid,tpid,(select title from problem where pid=t_challenge_problem.tpid) as title,score " +
                 "from t_challenge_problem " +
-                "where id=?",id).query();
+                "where id=?",id);
+        ResultSet rs = sql.query();
+        try {
+            while(rs.next()){
+                List<String> row=new ArrayList<String>();
+                row.add(rs.getInt("pid")+"");
+                row.add(HTML.aNew("Problem.jsp?pid="+rs.getInt("tpid"),rs.getInt("tpid")+""));
+                row.add(rs.getString("title"));
+                row.add(rs.getInt("score")+"");
+                row.add(HTML.a("delPorblem.action?block="+id+"&pos="+rs.getInt("pid"),"删除"));
+                problemList.addRow(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            sql.close();
+        }
+        return problemList;
     }
     static int getUserScore(String user,int id){
         return new SQL("" +

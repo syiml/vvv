@@ -6,7 +6,7 @@ import Main.contest.rank.RankShortCode.RankShortCode;
 import Main.contest.Contest;
 import Main.contest.rank.RankTraining.RankTraining;
 import Main.status.statu;
-import Tool.SQL;
+import Tool.SQL.SQL;
 import action.addcontest;
 
 import java.sql.PreparedStatement;
@@ -18,11 +18,9 @@ import java.sql.SQLException;
  */
 public class RankSQL {
     public static RankICPC ICPCRank(int cid,RankICPC r){
-        PreparedStatement p=null;
+        SQL sql=new SQL("SELECT cid,penalty,mtype_1,m1,mtype_2,m2,mtype_3,m3 FROM t_rank_icpc WHERE cid=?",cid);
         try {
-            p= Main.conn.prepareStatement("SELECT cid,penalty,mtype_1,m1,mtype_2,m2,mtype_3,m3 FROM t_rank_icpc WHERE cid=?");
-            p.setInt(1,cid);
-            ResultSet rs=p.executeQuery();
+            ResultSet rs=sql.query();
             if(rs.next()){
                 r.setPenalty(rs.getInt(2));
                 r.setType_1(rs.getInt(3));
@@ -34,6 +32,8 @@ public class RankSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return r;
     }
@@ -107,21 +107,16 @@ public class RankSQL {
     }
     public static String addIcpcRank(int cid, addcontest a){
         try {
-            PreparedStatement p=null;
-            p= Main.conn.prepareStatement("INSERT INTO t_rank_icpc values(?,?,?,?,?,?,?,?)");
-            p.setInt(1,cid);
-            p.setInt(2,Integer.parseInt(a.getIcpc_penalty()));
-            p.setInt(3,Integer.parseInt(a.getIcpc_m1_s()));
-            p.setInt(4,Integer.parseInt(a.getIcpc_m1_t()));
-            p.setInt(5,Integer.parseInt(a.getIcpc_m2_s()));
-            p.setInt(6,Integer.parseInt(a.getIcpc_m2_t()));
-            p.setInt(7,Integer.parseInt(a.getIcpc_m3_s()));
-            p.setInt(8,Integer.parseInt(a.getIcpc_m3_t()));
-            p.executeUpdate();
+            new SQL("INSERT INTO t_rank_icpc values(?,?,?,?,?,?,?,?)"
+                ,cid
+                ,Integer.parseInt(a.getIcpc_penalty())
+                ,Integer.parseInt(a.getIcpc_m1_s())
+                ,Integer.parseInt(a.getIcpc_m1_t())
+                ,Integer.parseInt(a.getIcpc_m2_s())
+                ,Integer.parseInt(a.getIcpc_m2_t())
+                ,Integer.parseInt(a.getIcpc_m3_s())
+                ,Integer.parseInt(a.getIcpc_m3_t())).update();
             return "success";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
         }catch (NumberFormatException e){
             e.printStackTrace();
             return "error";
@@ -129,21 +124,16 @@ public class RankSQL {
     }
     public static String addShortCodeRank(int cid, addcontest a){
         try {
-            PreparedStatement p=null;
-            p= Main.conn.prepareStatement("INSERT INTO t_rank_shortcode values(?,?,?,?,?,?,?,?)");
-            p.setInt(1,cid);
-            p.setInt(2,Integer.parseInt(a.getShortcode_m1_s()));
-            p.setInt(3,Integer.parseInt(a.getShortcode_m1_t()));
-            p.setInt(4,Integer.parseInt(a.getShortcode_m2_s()));
-            p.setInt(5,Integer.parseInt(a.getShortcode_m2_t()));
-            p.setInt(6,Integer.parseInt(a.getShortcode_m3_s()));
-            p.setInt(7,Integer.parseInt(a.getShortcode_m3_t()));
-            p.setInt(8,Integer.parseInt(a.getShortcode_chengfa()));
-            p.executeUpdate();
+            new SQL("INSERT INTO t_rank_shortcode values(?,?,?,?,?,?,?,?)"
+                    ,cid
+                    ,Integer.parseInt(a.getIcpc_m1_s())
+                    ,Integer.parseInt(a.getIcpc_m1_t())
+                    ,Integer.parseInt(a.getIcpc_m2_s())
+                    ,Integer.parseInt(a.getIcpc_m2_t())
+                    ,Integer.parseInt(a.getIcpc_m3_s())
+                    ,Integer.parseInt(a.getIcpc_m3_t())
+                    ,Integer.parseInt(a.getShortcode_chengfa())).update();
             return "success";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
         }catch (NumberFormatException e){
             e.printStackTrace();
             return "error";
@@ -151,20 +141,15 @@ public class RankSQL {
     }
     public static String addTrainingRank(int cid,addcontest a){
         try {
-            PreparedStatement p=null;
-            p= Main.conn.prepareStatement("INSERT INTO t_rank_training values(?,?,?,?,?,?,?)");
-            p.setInt(1,cid);
-            p.setInt(2,Integer.parseInt(a.getTraining_m1_s()));
-            p.setInt(3,Integer.parseInt(a.getTraining_m1_t()));
-            p.setInt(4,Integer.parseInt(a.getTraining_m2_s()));
-            p.setInt(5,Integer.parseInt(a.getTraining_m2_t()));
-            p.setInt(6,Integer.parseInt(a.getTraining_m3_s()));
-            p.setInt(7,Integer.parseInt(a.getTraining_m3_t()));
-            p.executeUpdate();
+            new SQL("INSERT INTO t_rank_training values(?,?,?,?,?,?,?)"
+                    ,cid
+                    ,Integer.parseInt(a.getTraining_m1_s())
+                    ,Integer.parseInt(a.getTraining_m1_t())
+                    ,Integer.parseInt(a.getTraining_m2_s())
+                    ,Integer.parseInt(a.getTraining_m2_t())
+                    ,Integer.parseInt(a.getTraining_m3_s())
+                    ,Integer.parseInt(a.getTraining_m3_t())).update();
             return "success";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
         }catch (NumberFormatException e){
             e.printStackTrace();
             return "error";
@@ -189,18 +174,7 @@ public class RankSQL {
         }else if(a.getRank().equals("2")){
             s="t_rank_training";
         }
-        try {
-            PreparedStatement p=null;
-            p= Main.conn.prepareStatement("delete from "+s+" where cid=?");
-            p.setInt(1,cid);
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "error";
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-            return "error";
-        }
+        new SQL("delete from "+s+" where cid=?").update();
         return addRank(cid,a);
     }
 }

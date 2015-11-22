@@ -2,11 +2,10 @@ package ClockIn;
 
 import Main.Main;
 import Main.User.User;
-import Tool.SQL;
+import Tool.SQL.SQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;

@@ -6,11 +6,9 @@ import Discuss.DiscussReply;
 import Main.User.User;
 import Main.contest.Contest;
 import Main.contest.RegisterUser;
-import Main.status.Result;
 import Tool.HTML.HTML;
-import Tool.SQL;
+import Tool.SQL.SQL;
 import Main.Main;
-import com.google.gson.Gson;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
