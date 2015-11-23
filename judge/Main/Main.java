@@ -110,12 +110,13 @@ public class Main {
         return 1;
     }
     public static String addProblem(addproblem1 action){
-        Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle());
+        Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle(),action.getAuthor());
         problems.addProblem(action.getPid(), p);
         return "success";
     }
     public static String addLocalProblem(addLocalProblem action){
         Problem p=new Problem(action.title);
+        p.Author=action.getAuthor();
         int newpid=problems.addProblem(-1,p);
         problemHTML ph=new problemHTML();
         ph.setInt64("%I64d");
@@ -129,6 +130,7 @@ public class Main {
         int pid=Integer.parseInt(action.getPid());
         Problem p=Main.problems.getProblem(pid);
         p.Title=action.getTitle();
+        p.Author=action.getAuthor();
         Main.problems.editProblem(pid,p);
         problemHTML ph=Main.problems.getProblemHTML(pid);
         ph.setTimeLimit(action.getTime()+"MS");

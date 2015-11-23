@@ -19,7 +19,13 @@ public class addproblem1 {
     public String getTitle() {
         return title;
     }
+    public String getAuthor() {
+        return author;
+    }
 
+    public void setAuthor(String author) {
+        this.author = author;
+    }
     public void setPid(String pid) {
         this.pid = pid;
     }
@@ -37,6 +43,7 @@ public class addproblem1 {
     String ojid;
     String ojspid;
     String title;
+    String author;
 
     public String addproblem1(){
         if(!Main.loginUserPermission().getAddProblem()) return "error";

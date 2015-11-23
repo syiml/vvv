@@ -55,6 +55,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * HTML类 产生HTML代码供页面显示
@@ -311,6 +313,19 @@ public class HTML {
     public static String headImg(String username,int size){
         return "<img src='pic/head/"+username+".jpg' class='head-"+size+"' onerror='this.src=\"pic/defaulthead.jpg\"' />";
     }
+    public static String replaceAt(String s){
+        Pattern p = Pattern.compile("(@[_0-9a-zA-Z]+)");
+        Matcher m = p.matcher(s);
+        while(m.find()){
+            String group=m.group();
+            String name=group.substring(1,group.length());
+            User u=Main.users.getUser(name);
+            if(u!=null){
+                s=s.replaceAll(group,HTML.a("UserInfo.jsp?user="+u.getUsername(),"@"+u.getUsernameHTMLNoA())/*+"("+u.getName()+")"*/);
+            }
+        }
+        return s;
+    }
 
     public static String ceInfo(String rid,boolean havepanel){
         if(rid==null){
@@ -438,11 +453,15 @@ public class HTML {
     private static String problemContest(int pid){
         return HTML.panel("出处",Main.contests.problemContest(pid),null,"info");
     }
-    public static String problemRight(int pid,boolean admin,int cid){
-        return problemInfo(pid,cid)+problemTag(pid,admin)+problemContest(pid);
+    private static String problemAuthor(String author){
+        if(author==null||author.equals("")) return "";
+        return panel("作者",replaceAt(author),null,"info");
+    }
+    public static String problemRight(Problem p,int pid,boolean admin,int cid){
+        return problemInfo(pid,cid)+problemTag(pid,admin)+problemContest(pid)+problemAuthor(p.getAuthor());
     }
     public static String problem(Object user,String cid,String pid){
-        Main.debug("in problem");
+//        Main.debug("in problem");
         User _user=(User)user;
         boolean admin=false;
         if(cid==null) cid="-1";
@@ -503,11 +522,11 @@ public class HTML {
                 ret += center(abtn("", "javascript:submit("+pid+");","Submit",""));//NEW
             }
             if(cidInt==-1){//
-                return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(pidInt,admin,-1)));
+                return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(p,pidInt,admin,-1)));
             }else{
                 Contest c=Main.contests.getContest(cidInt);
                 if(c.getKind()==0){//练习场
-                    return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(tpid,admin,cidInt)));
+                    return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(p,tpid,admin,cidInt)));
                 }
             }
             return ret;
@@ -934,7 +953,7 @@ public class HTML {
         try{
             int pidInt=Integer.parseInt(pid);
             FormHTML f=new FormHTML();
-            int numInt=0;
+            int numInt;
             try{
                 numInt=Integer.parseInt(num);
             }catch(NumberFormatException a){
@@ -1067,12 +1086,6 @@ public class HTML {
         for(int i=0;i<Main.ojs.length;i++){
             f2.add(i,Main.ojs[i].getName());
         }
-//        f2.add(0,"HDU");
-//        f2.add(1,"BNUOJ");
-//        f2.add(2,"NBUT");
-//        f2.add(3,"PKU");
-//        f2.add(4,"FJUT");
-//        f2.add(5,"CF");
         f2.setId("ojid");
         if(p!=null) f2.setValue(p.getOjid()+"");
         f.addForm(f2);
@@ -1081,6 +1094,12 @@ public class HTML {
         f3.setId("ojspid");
         if(p!=null) f3.setValue(p.getOjspid());
         f.addForm(f3);
+
+        text f5=new text("author","作者");
+        f5.setId("author");
+        f5.setPlaceholder("可以为空");
+        if(p!=null) f5.setValue(p.getAuthor());
+        f.addForm(f5);
 
         text f4=new text("title",abtn("","#","Title","id='getProblemTitle'"));
         f4.setId("title");
@@ -1313,20 +1332,23 @@ public class HTML {
         if(ph!=null) t2.setValue(ph.getTime()+"");
         text t3=new text("memory","空间限制(MB)");
         if(ph!=null) t3.setValue(ph.getMemory()+"");
+
+        text f5=new text("author","作者");
+        f5.setId("author");
+        f5.setPlaceholder("可以为空");
+        if(p!=null) f5.setValue(p.getAuthor());
+
         f.addForm(t1);
         f.addForm(t2);
         f.addForm(t3);
+        f.addForm(f5);
         f.setCol(2,10);
         return f.toHTML();
     }
     public static String adminChallengeAdmin(){
         int id=-1;
-        Problem p=null;
-        problemHTML ph=null;
         try{
             id=Integer.parseInt(Main.getRequest().getParameter("id"));
-            p=Main.problems.getProblem(id);
-            ph=Main.problems.getProblemHTML(id);
         }catch(NumberFormatException ignored){}
         if(id==-1){//模块列表
             TableHTML table=new TableHTML();

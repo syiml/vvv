@@ -13,50 +13,33 @@ import java.sql.SQLException;
 public class Problem {
     int type;//LOCAL OR OTHEROJ OR ONLYDES
     public String Title;
-    //local  des
-    public String Description;//题目描述
-    public String Input;
-    public String Output;
-    public String SampleInput;
-    public String SampleOutput;
-    public String Hint;//提示
     public String Author;//作者
     public int visiable;//0隐藏1可见
     //otheroj
     int ojid;
     String ojspid;
-    public Problem(int ojid,String ojspid,String title){
+    public Problem(int ojid,String ojspid,String title,String author){
         this.ojid=ojid;
         this.ojspid=ojspid;
         this.Title=title;
         this.type=1;
+        this.Author=author;
     }
     public Problem(String title){
         this.ojid=0;
         this.ojspid="0";
         this.Title=title;
         this.type=0;
-    }
-    public Problem(Problem p){
-        type=p.type;
-        Title=p.getTitle();
-        Description=p.Description;
-        Input=p.Input;
-        Output=p.Output;
-        SampleInput=p.SampleInput;
-        SampleOutput=p.SampleOutput;
-        Hint=p.Hint;
-        Author=p.Author;
-        ojid=p.ojid;
-        ojspid=p.ojspid;
+        this.Author="";
     }
     public Problem(ResultSet r) throws SQLException {
-        //pid,type,title,ojid,ojspid,visiable
+        //pid,type,title,ojid,ojspid,visiable,author
             type=r.getInt(2);
             Title=r.getString(3);
             ojid=r.getInt(4);
             ojspid=r.getString(5);
             visiable=r.getInt(6);
+            Author=r.getString(7);
     }
     public Problem(ResultSet r,int prid){
         // id,Title
@@ -70,6 +53,7 @@ public class Problem {
         return Title;
     }
     public String getOjspid() { return ojspid; }
+    public String getAuthor(){return Author;}
     public boolean isLocal(){return type==LOCAL;}
     public int getOjid() { return ojid; }
     public int getType(){

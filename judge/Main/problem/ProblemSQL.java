@@ -45,7 +45,7 @@ public class ProblemSQL {
         if(pSQL.size()>=MAXSIZE) pSQL.clear();
         Problem pr=pSQL.get(pid);
         if(pr!=null) return pr;
-        SQL sql=new SQL("select pid,ptype,title,ojid,ojspid,visiable from problem where pid = ? ",pid);
+        SQL sql=new SQL("select * from problem where pid = ? ",pid);
         try {
             ResultSet r=sql.query();
             r.next();
@@ -131,7 +131,7 @@ public class ProblemSQL {
         return (maxpid-1000)/num+1;//没有任何题目默认有一页为空
     }
     public void editProblem(int pid,Problem pro){
-        new SQL("UPDATE problem SET title=?,ojid=?,ojspid=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pid).update();
+        new SQL("UPDATE problem SET title=?,ojid=?,ojspid=?,author=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pid).update();
     }
     public int addProblem(int pid,Problem pro){
         PreparedStatement p;
@@ -142,7 +142,7 @@ public class ProblemSQL {
             editProblem(pid,pro);
             return pid;
         }
-        new SQL("Insert into problem values(?,?,?,?,?,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0).update();
+        new SQL("Insert into problem values(?,?,?,?,?,?,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0,pro.getAuthor()).update();
         Insert(pid,pro);//插入缓存 和 数据库
         return newpid;
     }
@@ -234,12 +234,8 @@ public class ProblemSQL {
         return "success";
     }
     public boolean delProblemDis(int pid){
-        SQL sql=new SQL("delete from t_problemview where pid=?",pid);
-        sql.update();
-        sql.close();
-        sql=new SQL("delete from t_problem_sample where pid=?",pid);
-        sql.update();
-        sql.close();
+        new SQL("delete from t_problemview where pid=?",pid).update();
+        new SQL("delete from t_problem_sample where pid=?",pid).update();
         return true;
     }
     public boolean addSample(int pid){
