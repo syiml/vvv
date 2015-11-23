@@ -175,6 +175,13 @@ public class HTML {
                 "<code class='viewcode language-"+language+"'>"+code+"</code>"+
                 "</pre>";
     }
+    public static String codeSimple(String rid1,String rid2){
+        try{
+            return "相似度："+String.format("%.2f",100*Main.codeCmp(Main.getCode(Integer.parseInt(rid1)), Main.getCode(Integer.parseInt(rid2))))+"%";
+        }catch (NumberFormatException e){
+            return "";
+        }
+    }
     public static String a(String href,String s){
         return "<a href="+href+">"+s+"</a>";
     }
@@ -375,33 +382,33 @@ public class HTML {
             String code=Main.getCode(ridInt);
             if(p.getReJudge()){
                 return havepanel?
-                        panel("View Code"+copyCode()+reJudgeForm(s.getRid())+HTML.floatRight(u.getUsernameHTML()+"("+u.getNick()+")"),code("/**" +
-                                "\nrid: "+s.getRid()+
-                                "\nuser: "+u.getUsername()+
-                                "\ntime: "+s.getSbmitTime().toString().substring(0,19)+
-                                "\nresult: "+s.getResultString()+
-                                "\n*/\n"+code, true, s.getLanguage()))
-                        :copyCode()+reJudgeForm(s.getRid())+code("/**" +
-                        "\nrid: "+s.getRid()+
-                        "\nuser: "+u.getUsername()+
-                        "\ntime: "+s.getSbmitTime().toString().substring(0,19)+
-                        "\nresult: "+s.getResultString()+
-                        "\n*/\n"+code, true, s.getLanguage());
+                        panel("View Code"+copyCode()+reJudgeForm(s.getRid())+HTML.floatRight(u.getUsernameHTML()+"("+u.getNick()+")"),HTML.pre("/**" +
+                                "<br>rid: "+s.getRid()+
+                                "<br>user: "+u.getUsername()+
+                                "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
+                                "<br>result: "+s.getResultString()+
+                                "<br>*/")+code(code, true, s.getLanguage()))
+                        :copyCode()+reJudgeForm(s.getRid())+HTML.pre("/**" +
+                        "<br>rid: "+s.getRid()+
+                        "<br>user: "+u.getUsername()+
+                        "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
+                        "<br>result: "+s.getResultString()+
+                        "<br>*/")+code(code, true, s.getLanguage());
             }else{
                 return havepanel?
-                        panel("View Code"+copyCode()+HTML.floatRight(u.getUsernameHTML()+"("+u.getNick()+")"),code("/**" +
-                                "\nrid: "+s.getRid()+
-                                "\nuser: "+u.getUsername()+
-                                "\ntime: "+s.getSbmitTime().toString().substring(0,19)+
-                                "\nresult: "+s.getResultString()+
-                                "\n*/\n"+code,true,s.getLanguage()))
-                        :copyCode()+
-                        code("/**" +
-                                "\nrid: "+s.getRid()+
-                                "\nuser: "+u.getUsername()+
-                                "\ntime: "+s.getSbmitTime().toString().substring(0,19)+
-                                "\nresult: "+s.getResultString()+
-                                "\n*/\n"+code, true,s.getLanguage());
+                        panel("View Code"+copyCode()+HTML.floatRight(u.getUsernameHTML()+"("+u.getNick()+")"),HTML.pre("/**" +
+                                "<br>rid: "+s.getRid()+
+                                "<br>user: "+u.getUsername()+
+                                "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
+                                "<br>result: "+s.getResultString()+
+                                "<br>*/")+code(code,true,s.getLanguage()))
+                        :copyCode()+HTML.pre("/**" +
+                        "<br>rid: "+s.getRid()+
+                        "<br>user: "+u.getUsername()+
+                        "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
+                        "<br>result: "+s.getResultString()+
+                        "<br>*/")+
+                        code(code, true,s.getLanguage());
             }
         }else{
             return havepanel?panel("Error","没有权限",null,"danger"):"没有权限";
