@@ -15,7 +15,7 @@ public class DBConnectionPool {
     BlockingQueue<Connection> conns=new ArrayBlockingQueue<Connection>(10);
     public DBConnectionPool(){}
     private Connection getNew(){
-        Main.log(conns.size()+" 新建连接");
+        Main.debug(conns.size()+" 新建连接");
         num++;
         try {
             return DriverManager.getConnection(Main.GV.get("sqlconnstring").toString(), Main.GV.get("sqlusername").toString(), Main.GV.get("sqlpassword").toString());
@@ -29,7 +29,7 @@ public class DBConnectionPool {
         if(ret==null){
             ret=getNew();
         }else{
-            Main.log("取出连接 "+conns.size());
+            Main.debug("取出连接 "+conns.size());
         }
         return ret;
     }
@@ -37,11 +37,11 @@ public class DBConnectionPool {
         if(!conns.offer(c)){
             try {
                 c.close();
-                Main.log(conns.size()+"删除连接");
+                Main.debug(conns.size()+"删除连接");
                 num--;
             } catch (SQLException ignored) {}
         }else{
-            Main.log("存入连接"+conns.size()+"/"+num);
+            Main.debug("存入连接"+conns.size()+"/"+num);
         }
     }
     public void clear(){

@@ -186,7 +186,7 @@ public class SQL {
             e.printStackTrace();
             return -1;
         } finally {
-            pClose();
+            close();
         }
     }
     public void close(){
@@ -196,13 +196,13 @@ public class SQL {
     }
     private void cClose(){
         try {
-            rs.close();
+            if(rs!=null)rs.close();
         } catch (SQLException ignored) {
         }
     }
     private void pClose(){
         try {
-            p.close();
+            if(p!=null) p.close();
         } catch (SQLException ignored) {
         }
     }

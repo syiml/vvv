@@ -69,19 +69,7 @@ public class ProblemTagSQL {
         return list;
     }
     public static int getTagNum(String user){//给多少题目贴过标签
-        SQL sql=new SQL("select count(pid) from (select username,pid from t_problem_tag_record group by username,pid)t WHERE username=? group by username ", user);
-        ResultSet rs=sql.query();
-        try {
-            if(rs.next()){
-                return rs.getInt(1);
-            }else{
-                return 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        sql.close();
-        return 0;
+        return new SQL("select count(pid) from (select username,pid from t_problem_tag_record group by username,pid)t WHERE username=? group by username ", user).queryNum();
     }
     public static void addTag(int pid,String username,int tagid){
         int rating= Main.users.getUser(username).getShowRating();

@@ -19,8 +19,8 @@
   String rid2 = request.getParameter("rid2");
   Object user=session.getAttribute("user");
 %>
-<link href="js/prism/css.css" rel="stylesheet" />
-<script src="js/prism/js.js"></script>
+<%--<link href="js/prism/css.css" rel="stylesheet" />--%>
+<%--<script src="js/prism/js.js"></script>--%>
 <html>
 <head>
   <title>代码对比 - T^T Online Judge</title>
@@ -28,13 +28,37 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp"/>
-    相似度：<%=String.format("%.2f",100*Main.codeCmp(Main.getCode(Integer.parseInt(rid)), Main.getCode(Integer.parseInt(rid2))))+"%"%>
+    <form style="margin:15px" class="form-inline" action="code2.jsp" method="get">
+        <div class="form-group">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon">rid1</span>
+                <input type="text" class="form-control " name="rid">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon">rid2</span>
+                <input type="text" class="form-control " name="rid2">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">submit</button>
+    </form>
+    <%=HTML.codeSimple(rid,rid2)%>
     <div class="row">
-    <div class="col-sm-6">
-      <%=HTML.viewCode(rid,user,true)%>
-    </div><div class="col-sm-6">
-      <%=HTML.viewCode(rid2,user,true)%>
-    </div></div>
+        <div class="col-sm-6">
+          <%=HTML.viewCode(rid,user,true)%>
+        </div>
+        <div class="col-sm-6">
+          <%=HTML.viewCode(rid2,user,true)%>
+        </div>
+    </div>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>
+<script src="../js/codeCmp.js"></script>
+<script>
+    var $v=$(".viewcode");
+    var ret=comp($v.first().text(),$v.last().text());
+    $v.first().html(ret.s1);
+    $v.last().html(ret.s2);
+</script>

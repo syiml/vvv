@@ -74,7 +74,7 @@ var gv={
 
         999:[]
     },
-    draggable:true
+    draggable:false
 };
 var challenge=function(){
     var $main=$('#challenge-main');
@@ -240,7 +240,7 @@ function go(){
     }else if(href=='#ALL'){
         challenge.init2(true);
     }else{
-        challenge.init2();
+        challenge.init2(false);
     }
 }
 $(window).on('hashchange', function() {

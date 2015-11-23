@@ -18,6 +18,15 @@ public class addLocalProblem {
     public String getPid() {
         return pid;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -35,6 +44,8 @@ public class addLocalProblem {
     public String time;
     public String memory;
     public String pid;
+    String author;
+
 
     public String add(){
         if(!Main.loginUserPermission().getAddLocalProblem()) return "error";

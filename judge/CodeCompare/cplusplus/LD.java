@@ -35,7 +35,7 @@ public class LD {
 	        }   
 	        for (i = 1; i <= n; i++)   
 	        {
-				d[i%2][0]=0;
+				d[i%2][0]=i;
 	            ch1 = str1.charAt(i - 1);   
 	            //match str2      
 	            for (j = 1; j <= m; j++)   

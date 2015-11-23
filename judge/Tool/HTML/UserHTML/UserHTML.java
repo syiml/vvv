@@ -198,7 +198,6 @@ public class UserHTML {
         return HTML.panelnobody("提交统计", "primary",script);//+rr
     }
     public String HTML(){
-        Main.debug("=start=");
 //        String left=userInfo()+Permissions()+Mark();
 //        String right=Rating()+SolvedProblems()+NotSolvedProblems();
         return UserInfo2()+Rating()+SubmitCount()+ SolvedProblems()+NotSolvedProblems()+AcNotTag();

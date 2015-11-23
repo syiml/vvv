@@ -159,8 +159,6 @@ public class DiscussSQL {
             new SQL(sql
                     ,d.isadmin?d.title:HTML.HTMLtoString(d.title)
                     ,d.panelclass
-                    ,d.username
-                    ,d.time
                     ,d.isadmin?d.text:HTML.pre(HTML.HTMLtoString(d.text))
                     ,d.priority==-1?d.id:d.priority
                     ,d.top

@@ -230,7 +230,7 @@ public class DiscussHTML {
         TableHTML table=new TableHTML();
         table.addColname("","");
         table.addCl(0, -1, "hidden");
-        table.addRow(l, HTML.pre(r.text)+(footer!=null?HTML.div("adminreply",footer):""));
+        table.addRow(l, HTML.pre(HTML.replaceAt(r.text))+(footer!=null?HTML.div("adminreply",footer):""));
         table.addCl(1, 1, "discussright");
         table.addCl(1,0,"discussleft");
         String body=table.HTML();
@@ -320,7 +320,7 @@ public class DiscussHTML {
             l+= HTML.div("", HTML.headImg(lz.getUsername(), 1));
             l+=HTML.center(HTML.a("UserInfo.jsp?user=" + lz.getUsername(), lz.getNick()));
             l+=HTML.center("Rating:"+lz.getRatingHTML());
-            String r=d.text;
+            String r=HTML.replaceAt(d.text);
 
             TableHTML t=new TableHTML();
             t.addColname("","");

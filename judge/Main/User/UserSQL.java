@@ -245,8 +245,9 @@ public class UserSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
-        sql.close();
         return 0;
     }
     public static int getUsersNum(int cid,int st){
@@ -258,8 +259,9 @@ public class UserSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
-        sql.close();
         return 0;
     }
 
