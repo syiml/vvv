@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 /**
  * Created by Syiml on 2015/7/3 0003.
  */
-public class Discuss {
+public class Discuss implements IBeanResultSetCreate<Discuss>{
     /**
      * id 主键
      */
@@ -87,6 +87,29 @@ public class Discuss {
      */
     boolean isAdmin=false;
 
+    public Discuss(){}
+    @Override
+    public Discuss init(ResultSet rs) throws SQLException {
+        id=rs.getInt("id");
+        cid=rs.getInt("cid");
+        title=rs.getString("title");
+        username=rs.getString("username");
+        time=rs.getTimestamp("time");
+        text=rs.getString("text");
+        priority=rs.getDouble("priority");
+        top=rs.getBoolean("top");
+        shownum=rs.getInt("shownum");
+        visiable=rs.getBoolean("visiable");
+        reply=rs.getBoolean("reply");
+        panelclass=rs.getInt("panelclass");
+        panelnobody=rs.getBoolean("panelnobody");
+        showauthor=rs.getBoolean("showauthor");
+        showtime=rs.getBoolean("showtime");
+        replyHidden=rs.getBoolean("replyhidden");
+        replyNum=rs.getInt("replynum");
+        return this;
+    }
+
     public boolean isReplyHidden() {
         return replyHidden;
     }
@@ -98,6 +121,8 @@ public class Discuss {
     public String getUsername(){return username;}
     public String getTitle(){return title;}
     public int getId(){return id;}
+
+
     public Discuss(ResultSet rs) throws SQLException {
         id=rs.getInt("id");
         cid=rs.getInt("cid");

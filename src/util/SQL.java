@@ -1,5 +1,7 @@
 package util;
 
+import entity.IBeanResultSetCreate;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +9,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
+ * SQL工具类，在query后务必调用close()来归还连接池
  * Created by Syiml on 2015/7/10 0010.
  */
 public class SQL {
@@ -20,6 +23,7 @@ public class SQL {
         this.args=args;
         conn= Main.conns.getConn();
     }
+
     public ResultSet query(){
         try {
             p = conn.prepareStatement(sql);
@@ -47,8 +51,16 @@ public class SQL {
         }
         return null;
     }
+
+    /**
+     * 使用queryList、queryMap、querySet、queryPairList方法时，要重写本方法来正确获取指定类型的数据
+     * @param i 第i个参数
+     * @return 返回指定类型的数据
+     * @throws SQLException
+     */
     protected Object getObject(int i) throws SQLException {
-        return rs.getObject(i);
+        throw new SQLException("必须重写SQL类的getObject方法");
+//        return rs.getObject(i);
     }
     public <K,V> Map<K,V> queryMap(){
         Map<K,V> ret=new TreeMap<K, V>();
@@ -137,13 +149,18 @@ public class SQL {
                 return (T)rs.getObject(1);
             }else return null;
         } catch (SQLException e) {
-//            Main.debug("queryNumError");
+            Main.debug("queryNumError");
 //            e.printStackTrace();
         } finally {
             close();
         }
         return null;
     }
+
+    /**
+     * 通过sql语句查询出一个整数
+     * @return 查询结果
+     */
     public int queryNum(){
         rs=query();
         try {
@@ -171,6 +188,48 @@ public class SQL {
         }
         return "";
     }
+
+    public <T extends IBeanResultSetCreate> T queryBean(Class<T> cls){
+        rs=query();
+        T ret=null;
+        try {
+            if(rs != null && rs.next()){
+                ret=cls.newInstance();
+                ret.init(rs);
+            }
+        } catch (SQLException e) {
+//            Main.debug("queryNumError");
+//            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+        return ret;
+    }
+    public <T extends IBeanResultSetCreate> List<T> queryBeanList(Class<T> cls){
+        List<T> list=new ArrayList<T>();
+        rs=query();
+        try {
+            while(rs.next()){
+                T aBean=cls.newInstance();
+                aBean.init(rs);
+                list.add(aBean);
+            }
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            close();
+        }
+        return list;
+    }
+
     public int update(){
         p=null;
         try {
@@ -191,6 +250,7 @@ public class SQL {
         cClose();
         Main.conns.putCondition(conn);
     }
+
     private void cClose(){
         try {
             if(rs!=null)rs.close();

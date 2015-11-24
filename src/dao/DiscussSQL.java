@@ -19,42 +19,16 @@ import java.util.List;
  */
 public class DiscussSQL {
     public static Discuss getDiscuss(int id){
-        SQL sql=new SQL("SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE id=?",id);
-        try {
-            ResultSet rs=sql.query();
-            if(rs.next()){
-                return new Discuss(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return null;
+        return new SQL("SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE id=?",id)
+                .queryBean(Discuss.class);
     }
     public static List<Discuss> getDiscussTOP(boolean all){
-        List<Discuss> list=new ArrayList<Discuss>();
-        String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE top=1";
-        if(!all){
-            sql+=" AND visiable=1";
-        }
-        sql+=" ORDER BY priority DESC";
-        SQL sql1=new SQL(sql);
-        try {
-            ResultSet rs=sql1.query();
-            while(rs.next()){
-                 list.add(new Discuss(rs));
-            }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql1.close();
-        }
-        return null;
+        String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE top=1"+
+                (all?"":" AND visiable=1")+
+                " ORDER BY priority DESC";
+        return new SQL(sql).queryBeanList(Discuss.class);
     }
     public static List<Discuss> getDiscussList(int cid,int from,int num,boolean all,String seach,String user){//admin is all
-        List<Discuss> list=new ArrayList<Discuss>();
         String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE cid="+cid;
         if(!all){
             sql+=" AND visiable=1";
@@ -70,19 +44,7 @@ public class DiscussSQL {
         }
         sql+=" ORDER BY priority DESC";
         sql+=" LIMIT "+from+","+num;
-        SQL sql1=new SQL(sql);
-        try {
-            ResultSet rs=sql1.query();
-            while(rs.next()){
-                list.add(new Discuss(rs));
-            }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql1.close();
-        }
-        return null;
+        return new SQL(sql).queryBeanList(Discuss.class);
     }
     public static int getDiscussListNum(int cid,boolean all,String seach,String user){//admin is all
         String sql="SELECT count(*) FROM t_discuss WHERE cid="+cid;
@@ -98,18 +60,7 @@ public class DiscussSQL {
                 sql+=" AND showauthor=1";
             }
         }
-        SQL sql1=new SQL(sql);
-        try {
-            ResultSet rs=sql1.query();
-            if(rs.next()){
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            sql1.close();
-        }
-        return 0;
+        return new SQL(sql).queryNum();
     }
     public static int newid(){
         return new SQL("SELECT max(id)+1 FROM t_discuss").queryNum();
@@ -145,67 +96,43 @@ public class DiscussSQL {
         new SQL(sql,text, d.getId()).update();
     }
     public static void editDiscuss(Discuss d){
-            String sql="UPDATE t_discuss SET "+
-                        " title=?"+
-                        ",panelclass=?"+
-                        ",text=?"+
-                        ",priority=?"+
-                        ",top=?"+
-                        ",visiable=?"+
-                        ",reply=?"+
-                        ",shownum=?"+
-                        ",panelnobody=?"+
-                        ",showauthor=?"+
-                        ",showtime=?"+
-                        ",replyhidden=?"+
-                        " WHERE id=?";
-            new SQL(sql
-                    ,d.isadmin()? d.getTitle() :HTML.HTMLtoString(d.getTitle())
-                    , d.getPanelclass()
-                    ,d.isadmin()? d.getText() :HTML.pre(HTML.HTMLtoString(d.getText()))
-                    , d.getPriority() ==-1? d.getId() : d.getPriority()
-                    , d.isTop()
-                    , d.isVisiable()
-                    , d.isReply()
-                    , d.getShownum()
-                    , d.isPanelnobody()
-                    , d.isShowauthor()
-                    , d.isShowtime()
-                    , d.isReplyHidden()
-                    , d.getId()).update();
+        String sql="UPDATE t_discuss SET "+
+                " title=?"+
+                ",panelclass=?"+
+                ",text=?"+
+                ",priority=?"+
+                ",top=?"+
+                ",visiable=?"+
+                ",reply=?"+
+                ",shownum=?"+
+                ",panelnobody=?"+
+                ",showauthor=?"+
+                ",showtime=?"+
+                ",replyhidden=?"+
+                " WHERE id=?";
+        new SQL(sql
+                ,d.isadmin()? d.getTitle() :HTML.HTMLtoString(d.getTitle())
+                , d.getPanelclass()
+                ,d.isadmin()? d.getText() :HTML.pre(HTML.HTMLtoString(d.getText()))
+                , d.getPriority() ==-1? d.getId() : d.getPriority()
+                , d.isTop()
+                , d.isVisiable()
+                , d.isReply()
+                , d.getShownum()
+                , d.isPanelnobody()
+                , d.isShowauthor()
+                , d.isShowtime()
+                , d.isReplyHidden()
+                , d.getId()).update();
     }
     ////////////////discuss replay///////////////////
     public static List<DiscussReply> getDiscussReplay(int did, int from, int to){
-        List<DiscussReply> list=new ArrayList<DiscussReply>();
-        String sql="SELECT * FROM t_discussreply WHERE did=?";
-        sql+=" AND rid>="+from+" AND rid<="+to;
-        SQL sql1=new SQL(sql,did);
-        try {
-            ResultSet rs=sql1.query();
-            while(rs.next()){
-                list.add(new DiscussReply(rs));
-            }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql1.close();
-        }
-        return list;
+        return new SQL("SELECT * FROM t_discussreply WHERE did=? AND rid>="+from+" AND rid<="+to,did)
+                .queryBeanList(DiscussReply.class);
     }
     public static DiscussReply getDiscussReply(int did,int rid){
-        SQL sql=new SQL("SELECT * FROM t_discussreply WHERE did=? AND rid=?", did, rid);
-        ResultSet rs=sql.query();
-        try {
-            if(rs.next()){
-                sql.close();
-                return new DiscussReply(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        sql.close();
-        return null;
+        return new SQL("SELECT * FROM t_discussreply WHERE did=? AND rid=?",did,rid)
+                .queryBean(DiscussReply.class);
     }
     public static int getNewReplyId(int did){
         return new SQL("SELECT MAX(rid) FROM t_discussreply WHERE did=?",did).queryNum()+1;
