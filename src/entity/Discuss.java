@@ -13,30 +13,85 @@ import java.sql.Timestamp;
  * Created by Syiml on 2015/7/3 0003.
  */
 public class Discuss {
+    /**
+     * id 主键
+     */
     int id;
+    /**
+     * cid 所属contest编号，-1表示不属于任何contest（即全局）
+     */
     int cid;
+    /**
+     * 标题
+     */
     String title;
+    /**
+     * 发布人
+     */
     String username;
+    /**
+     * 发布时间
+     */
     Timestamp time;
+    /**
+     * 内容，支持HTML代码
+     */
     String text;
+    /**
+     * 优先级
+     */
     double priority;
+    /**
+     * 置顶，true则在首页显示
+     */
     boolean top;
+    /**
+     * 可见，false即为隐藏
+     */
     boolean visiable;
+    /**
+     * 可以回复，true即可以回复
+     */
     boolean reply;
+    /**
+     * 所属panel的calss样式
+     */
     int panelclass;
+    /**
+     * 所示panel不显示body，一般来讲如果内容是一个表格的话，为true
+     */
     boolean panelnobody=false;
+    /**
+     * 显示作者。为false则一般看不见作者
+     */
     boolean showauthor;
+    /**
+     * 显示时间。为false则一般用户看不见发布时间
+     */
     boolean showtime;
+    /**
+     * 首页显示字数。top==true时有效，实际上是在首页显示时取出text字符串的前shownum个字符。-1为全部显示。bug：会截断HTML代码。。。
+     */
     int shownum;
-    int replyNum=0;
-    boolean isadmin=false;
-
+    /**
+     * 回复默认隐藏。如果为true则新发表的回复默认是隐藏的
+     */
     boolean replyHidden=false;
+    /**
+     * 回复的数量
+     */
+    int replyNum=0;
+
+    /**
+     * 当前登录是否有admin权限
+     */
+    boolean isAdmin=false;
 
     public boolean isReplyHidden() {
         return replyHidden;
     }
-    public void setAdmin(){isadmin=true;}
+    public void setAdmin(){
+        isAdmin =true;}
 //    public Discuss(){
 //
 //    }
@@ -170,8 +225,8 @@ public class Discuss {
         this.replyNum = replyNum;
     }
 
-    public void setIsadmin(boolean isadmin) {
-        this.isadmin = isadmin;
+    public void setAdmin(boolean admin) {
+        this.isAdmin = admin;
     }
 
     public void setReplyHidden(boolean replyHidden) {
@@ -235,7 +290,7 @@ public class Discuss {
     }
 
     public boolean isadmin() {
-        return isadmin;
+        return isAdmin;
     }
 
     public static String[] getPanelClass() {
