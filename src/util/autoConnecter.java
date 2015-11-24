@@ -1,7 +1,5 @@
 package util;
 
-import util.Main;
-
 /**
  * Created by Syiml on 2015/7/10 0010.
  * 自动连接数据库类

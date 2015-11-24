@@ -1,6 +1,5 @@
 package servise;
 
-import util.Main;
 import entity.User;
 import entity.Discuss;
 import dao.DiscussSQL;
@@ -10,6 +9,7 @@ import dao.MessageSQL;
 import entity.DiscussReply;
 import entity.Message;
 import util.HTML.HTML;
+import util.Main;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -37,7 +37,7 @@ public class MessageMain {
             String group=m.group();
             String name=group.substring(1,group.length());
             if(users.contains(name)) break;//重复@只发送一条
-            User u=Main.users.getUser(name);
+            User u= Main.users.getUser(name);
             if(u!=null){
                 users.add(name);
                 if(isReply){

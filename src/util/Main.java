@@ -69,7 +69,7 @@ public class Main {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        Main.autoConnecter cn=new Main.autoConnecter();
+        autoConnecter cn=new autoConnecter();
         cn.conn();
         Thread connection=new Thread(cn);
         connection.start();

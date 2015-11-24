@@ -18,7 +18,7 @@ public class SQL {
     public SQL(String sql, Object... args){
         this.sql=sql;
         this.args=args;
-        conn=Main.conns.getConn();
+        conn= Main.conns.getConn();
     }
     public ResultSet query(){
         try {
