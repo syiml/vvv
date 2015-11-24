@@ -2,6 +2,7 @@ package action;
 
 import util.Main;
 import entity.Contest;
+import util.Tool;
 import util.rating._rank;
 
 import java.util.List;
@@ -35,8 +36,8 @@ public class ContestAward {
     List<Integer> acb;
 
     public String award(){
-        Main.debug("award: cid="+cid);
-        Main.debug("award: size="+rank.size());
+        Tool.debug("award: cid="+cid);
+        Tool.debug("award: size="+rank.size());
         Contest c= Main.contests.getContest(cid);
         _rank r=c.getRank().get_rank();
         for(int i=0;i<r.size();i++){

@@ -4,6 +4,7 @@ import util.Main;
 import dao.DiscussSQL;
 import servise.MessageMain;
 import action.addDiscuss;
+import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -173,14 +174,14 @@ public class Discuss implements IBeanResultSetCreate<Discuss>{
         if(u==null) return "error";
         else username=u.getUsername();
         if(id==-1){
-            Main.log(Main.loginUser().getUsername()+"发表了新帖子 【"+title+"】");
+            Tool.log(Main.loginUser().getUsername()+"发表了新帖子 【"+title+"】");
             int id= DiscussSQL.addDiscuss(this);
             if(visiable){
                 this.id=id;
                 MessageMain.discussAt(id,text,false);
             }
         }else{
-            Main.log(Main.loginUser().getUsername()+"修改了帖子 【"+title+"】");
+            Tool.log(Main.loginUser().getUsername()+"修改了帖子 【"+title+"】");
             DiscussSQL.editDiscuss(this);
         }
         return "error";

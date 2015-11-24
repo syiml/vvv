@@ -1,10 +1,11 @@
 <%@ page import="entity.User" %>
 <%@ page import="util.Main" %>
+<%@ page import="util.Tool" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   User u=(User)session.getAttribute("user");
     if (u != null) {
-        Main.log("logout:" +(u.getUsername()));
+        Tool.log("logout:" +(u.getUsername()));
   }
   session.removeAttribute("user");
 

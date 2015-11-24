@@ -3,6 +3,7 @@ package action;
 import entity.Discuss;
 import dao.DiscussSQL;
 import util.Main;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/7/4 0004.
@@ -139,7 +140,7 @@ public class addDiscuss {
         showtime="";
         shownum="-1";
         Discuss d=new Discuss(this);
-        Main.log(Main.loginUser().getUsername()+"追加了帖子【"+d.getTitle()+"】");
+        Tool.log(Main.loginUser().getUsername()+"追加了帖子【"+d.getTitle()+"】");
         DiscussSQL.append(d);
         return "success";
     }

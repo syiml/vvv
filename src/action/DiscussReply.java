@@ -5,6 +5,7 @@ import dao.DiscussSQL;
 import entity.User;
 import util.Main;
 import servise.MessageMain;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/7/5 0005.
@@ -36,7 +37,7 @@ public class DiscussReply {
     public String dr(){
         try{
             User u=Main.loginUser();
-            Main.log(u.getUsername()+"回复了id为"+id+"的帖子");
+            Tool.log(u.getUsername()+"回复了id为"+id+"的帖子");
             MessageMain.discussAt(id,text,true);
             return DiscussSQL.reply(u,id,text);
         }catch(NumberFormatException e){
@@ -47,7 +48,7 @@ public class DiscussReply {
         return DiscussSQL.hideshow(id,rid);
     }
     public String adminReply(){
-        Main.log("管理员"+Main.loginUser().getUsername()+"回复了id为"+id+"的回复");
+        Tool.log("管理员"+Main.loginUser().getUsername()+"回复了id为"+id+"的回复");
         return DiscussSQL.adminReply(id,rid,text);
     }
 }

@@ -54,13 +54,13 @@ public class ContestSQL {
         new SQL("INSERT INTO contest values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 ,id
                 ,a.getName()
-                ,Main.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
-                ,Main.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
+                , Tool.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
+                , Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
                 ,Integer.parseInt(a.getRank())
                 ,type
                 ,type==1?a.getPass():""
-                ,type==3||type==4?Main.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()): Tool.now()
-                ,type==3||type==4?Main.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m()):Main.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
+                ,type==3||type==4? Tool.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()): Tool.now()
+                ,type==3||type==4? Tool.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m()): Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
                 ,a.getInfo()
                 ,a.getComputerating()!=null
                 ,user
@@ -75,13 +75,13 @@ public class ContestSQL {
                 "rankType=?,ctype=?,password=?,registerstarttime=?,registerendtime=?,info=?,computerating=?," +
                 "kind=? where id=?"
                 ,a.getName()
-                ,Main.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
-                ,Main.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
+                , Tool.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
+                , Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
                 ,Integer.parseInt(a.getRank())
                 ,type
                 ,type==1?a.getPass():""
-                ,type==3||type==4?Main.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()):Tool.now()
-                ,type==3||type==4?Main.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m()):Main.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
+                ,type==3||type==4? Tool.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()):Tool.now()
+                ,type==3||type==4? Tool.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m()): Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
                 ,a.getInfo()
                 ,a.getComputerating()!=null
                 ,Integer.parseInt(a.getKind())

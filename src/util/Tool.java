@@ -24,4 +24,18 @@ public class Tool {
     public static Timestamp now(){
         return new Timestamp(System.currentTimeMillis());
     }
+
+    public static void log(String s){
+        System.out.println(now()+"-> "+s);
+    }
+    public static void debug(String s){
+        if(Main.isDebug){
+            System.out.println(now()+"=> "+s);
+        }
+    }
+
+    public static Timestamp getTimestamp(String d,String s,String m){
+        //System.out.println(d + " " + s + ":" + m + ":00");
+        return Timestamp.valueOf(d + " " + s + ":" + m + ":00");
+    }
 }

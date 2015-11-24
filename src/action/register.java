@@ -2,6 +2,7 @@ package action;
 
 import util.Main;
 import entity.User;
+import util.Tool;
 
 /**
  * Created by Administrator on 2015/6/3.
@@ -31,7 +32,7 @@ public class register extends BaseAction{
         User u=new User(this);
         int ret=Main.users.register(u);
         if(ret==1){
-            Main.log("Register:"+username);
+            Tool.log("Register:"+username);
             return SUCCESS;
         }else if(ret==-1){
             return ERROR;//用户名已存在

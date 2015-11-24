@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import util.Tool;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -23,13 +24,13 @@ public class submit {
     public HttpClient hc = new DefaultHttpClient();
     public void print(HttpResponse r){
         HttpEntity entity = r.getEntity();
-        Main.debug(r.getStatusLine().toString());
+        Tool.debug(r.getStatusLine().toString());
         if (entity != null) {
-            Main.debug("Response content lenght:"  + entity.getContentLength());
+            Tool.debug("Response content lenght:"  + entity.getContentLength());
             String content = null;
             try {
                 content = EntityUtils.toString(entity);
-                Main.debug("Response content:"  +content);
+                Tool.debug("Response content:"  +content);
                 //System.out.println("Response content:"   + new String(content.getBytes("ISO-8859-1"),"UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -60,11 +61,11 @@ public class submit {
             }
             if(cid.equals("-1")){
                 //System.out.println("->submit:"+user+" contest:"+cid+" pid="+pid);
-                Main.log("submit:"+user+"提交了"+pid);
+                Tool.log("submit:"+user+"提交了"+pid);
                 return "success1";
             }else{
                 //System.out.println("->submit:"+user+" pid="+pid);
-                Main.log("submit:" + user + "提交了比赛"+cid+"的"+ pid);
+                Tool.log("submit:" + user + "提交了比赛"+cid+"的"+ pid);
                 Main.saveURL("Contest.jsp?cid="+cid+"#Status");
                 return "success2";
             }

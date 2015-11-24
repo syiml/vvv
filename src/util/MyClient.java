@@ -54,7 +54,7 @@ public class MyClient {
                 String content;
                 try {
                     content = EntityUtils.toString(entity);
-                    Main.debug("Response content:" + content);
+                    Tool.debug("Response content:" + content);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return 0;

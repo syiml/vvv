@@ -3,15 +3,13 @@ package dao;
 import util.Main;
 import entity.User;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import entity.RatingCase;
 import servise.MessageMain;
 import util.SQL;
 import com.google.gson.Gson;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/7/3 0003.
@@ -23,7 +21,7 @@ public class ratingSQL {
         int prating=Main.users.getUser(r.getUsername()).getShowRating();
         int newrating=Main.users.getUser(r.getUsername()).getShowRating();
         MessageMain.addMessageRatingChange(r.getCid(), r.getUsername(),prating,newrating);
-        Main.log(r.getUsername() + ":" + r.getRating());
+        Tool.log(r.getUsername() + ":" + r.getRating());
     }
     public static List<RatingCase> getRating(int cid){
         return new SQL("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE cid=? order by rank",cid)

@@ -1,7 +1,7 @@
 package action;
 
 import ClockIn.*;
-import util.Main;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/7/27 0027.
@@ -64,7 +64,7 @@ public class ClockIn {
         ClockInRecord cir=new ClockInRecord();
         cir.username=username;
         cir.sign=sign.equals("0")?"请假"+info:sign.equals("1")?"正常":"迟到";
-        cir.time=Main.getTimestamp(ttime_d, "23", "59");
+        cir.time= Tool.getTimestamp(ttime_d, "23", "59");
         cir.todytimes=Integer.parseInt(todytimes);
         cir.ip="";
         ClockInSQL.add(cir);

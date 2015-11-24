@@ -49,7 +49,7 @@ public class FILE {
         File file = new File(rootPath+"data\\"+pid+"\\"+filename);
         if(file.isFile()) {
             if(!file.delete()) {
-                Main.log("Can not delete file:" + file.getAbsolutePath());
+                Tool.log("Can not delete file:" + file.getAbsolutePath());
                 return false;
             }
             return true;
@@ -80,7 +80,7 @@ public class FILE {
             return new FileInputStream(rootPath+"data\\"+pid+"\\"+filename);
         } catch (FileNotFoundException e) {
             //e.printStackTrace();
-            Main.debug(rootPath+"data\\"+pid+"\\"+filename+"文件未找到");
+            Tool.debug(rootPath+"data\\"+pid+"\\"+filename+"文件未找到");
         }
         return null;
     }

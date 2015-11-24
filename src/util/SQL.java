@@ -149,7 +149,7 @@ public class SQL {
                 return (T)rs.getObject(1);
             }else return null;
         } catch (SQLException e) {
-            Main.debug("queryNumError");
+            Tool.debug("queryNumError");
 //            e.printStackTrace();
         } finally {
             close();

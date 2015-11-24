@@ -8,6 +8,7 @@ import servise.MessageMain;
 import util.HTML.HTML;
 import util.SQL;
 import action.edit;
+import util.Tool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -295,7 +296,7 @@ public class UserSQL {
         return new SQL("UPDATE users set password = md5('123456') WHERE username=?",username).update();
     }
     public String update(String username, edit e){
-        Main.log("Edit:"+username);
+        Tool.log("Edit:"+username);
         String sql="UPDATE users set ";
         if(e.getNewpass()!=null&&!e.getNewpass().equals("")) sql+="password = md5('"+e.getNewpass()+"'),";
         sql+=" nick = '"+HTML.HTMLtoString(e.getNick())+"'";
@@ -349,7 +350,7 @@ public class UserSQL {
         if(num<=0) return 0;
         addACB(user,num);
         int x=MessageMain.addMessageAwardACB(user,num,text);
-        Main.log("管理员给"+user+" "+num+"ACB"+" 备注："+text);
+        Tool.log("管理员给"+user+" "+num+"ACB"+" 备注："+text);
         return x;
     }
     public int addACB(String user,int num){

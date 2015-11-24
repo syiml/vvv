@@ -82,7 +82,7 @@ public class Submitter implements Runnable{
                     return;
                 }
                 prid = oj.getRid(username);//获得原来的rid
-                Main.debug(submitterID+":prid="+prid);
+                Tool.debug(submitterID+":prid="+prid);
                 showstatus="get"+z+" prid="+prid;
             }while(prid.equals("error"));
             String nrid ;

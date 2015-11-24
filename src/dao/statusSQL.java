@@ -6,6 +6,7 @@ import entity.statu;
 import util.HTML.HTML;
 import util.Pair;
 import util.SQL;
+import util.Tool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -121,7 +122,7 @@ public class statusSQL {
     }
     public void setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
         new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?",statu.resultToInt(res),time,Meory,rid).update();
-        Main.log(rid+"->"+res);
+        Tool.log(rid+"->"+res);
         statu s=getStatu(rid);
         if(s.getCid()!=-1&&s.getResult()!=Result.JUDGING){
             Main.contests.getContest(s.getCid()).getRank().add(s,Main.contests.getContest(s.getCid()));

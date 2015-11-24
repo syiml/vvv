@@ -28,14 +28,11 @@ import action.addcontest;
 import action.addproblem1;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
-import org.jsoup.Jsoup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2015/5/21.
@@ -61,7 +58,6 @@ public class Main {
     final public static int autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
     public static boolean isDebug=GV.getBoolean("debug");
     public static String version=GV.getString("version");
-    public static StatusHtmlCache shc=new StatusHtmlCache();
 
     static{
         try {
@@ -76,8 +72,8 @@ public class Main {
         status.init();
     }
     public static int doSubmit(String user,int pid,int cid,int language,String code,Timestamp submittime){//控制提交跳转到vj还是本地
-        Main.debug("Main.doSubmit");
-        Main.debug("cid="+cid+" pid="+pid);
+        Tool.debug("Main.doSubmit");
+        Tool.debug("cid="+cid+" pid="+pid);
         int rid;
         if(cid!=-1){//验证user是否有权限提交
             if(contests.getContest(cid).getEndTime().before(submittime)){
@@ -85,7 +81,7 @@ public class Main {
             }
         }
         if(cid!=-1) pid=Main.contests.getContest(cid).getGlobalPid(pid);//等于全局题目编号
-        Main.debug("go=" + pid);
+        Tool.debug("go=" + pid);
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = status.addStatu(s);//插入数据库，并获取rid
         if(!problems.isProblemLocal(pid)){//is vj
@@ -140,13 +136,13 @@ public class Main {
             status.setStatusResult(rid, Result.PENDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),s.getLanguage(),s.getCode(),true);
             submitVJ(ss, problems.getOJid(pid));
-            Main.debug("Main.ReJudge Done");
+            Tool.debug("Main.ReJudge Done");
             return 0;//success submit to vj
         }else{//is local
             status.setStatusResult(rid, Result.PENDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,pid+"",s.getLanguage(),s.getCode(),true);
             m.addSubmit(ss);
-            Main.debug("Main.ReJudge Done");
+            Tool.debug("Main.ReJudge Done");
             return 1;//success submit to local
         }
     }
@@ -199,21 +195,10 @@ public class Main {
         return status.getStatu(rid).getCode();
     }
 
-    public static void log(String s){
-        System.out.println(Tool.now()+"-> "+s);
-    }
-    public static void debug(String s){
-        if(isDebug){
-            System.out.println(Tool.now()+"=> "+s);
-        }
-    }
     public static String getRealPath(String s){
         return getSession().getServletContext().getRealPath(s);
     }
-    public static Timestamp getTimestamp(String d,String s,String m){
-        //System.out.println(d + " " + s + ":" + m + ":00");
-        return Timestamp.valueOf(d + " " + s + ":" + m + ":00");
-    }
+
     public static String uploadFile(File upload,String path) throws IOException {
         InputStream is=new FileInputStream(upload);
         OutputStream os=new FileOutputStream(path);
@@ -280,9 +265,8 @@ public class Main {
         Contest c=Main.contests.getContest(cid);
         return c.isBegin();
     }
-    public static boolean canViewCode(statu s,String user){
-        if(user==null) return false;
-        return user.equals(s.getUser())||Main.users.haveViewCode(user,s.getPid())||getPermission(user).getViewCode();
+    public static boolean canViewCode(statu s,String user) {
+        return user != null && (user.equals(s.getUser()) || Main.users.haveViewCode(user, s.getPid()) || getPermission(user).getViewCode());
     }
     public static String getIP(){
         return getRequest().getRemoteAddr();

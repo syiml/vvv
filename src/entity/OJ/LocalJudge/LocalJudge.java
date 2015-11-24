@@ -1,5 +1,6 @@
 package entity.OJ.LocalJudge;
 
+import util.Tool;
 import util.Vjudge.Submitter;
 import entity.RES;
 import entity.Result;
@@ -33,7 +34,7 @@ public class LocalJudge {
         }
     }
     private static void createFile(String path,String text) throws IOException {
-        Main.debug(path);
+        Tool.debug(path);
         File outFile = null;
         outFile = new File(path);
         outFile.createNewFile();
@@ -45,7 +46,7 @@ public class LocalJudge {
     private static void deleteFile(File file){
         if(file.isFile()) {
             if(!file.delete()) {
-                Main.log("Can not delete file:" + file.getAbsolutePath());
+                Tool.log("Can not delete file:" + file.getAbsolutePath());
             }
         } else if(file.isDirectory()) {
             File[] var2 = file.listFiles();
@@ -53,7 +54,7 @@ public class LocalJudge {
                 deleteFile(var2[var3]);
             }
             if(!file.delete()) {
-                Main.log("Can not delete file:" + file.getAbsolutePath());
+                Tool.log("Can not delete file:" + file.getAbsolutePath());
             }
         }
     }
@@ -74,7 +75,7 @@ public class LocalJudge {
                 Process pro = rt.exec(shell);
                 OutputStream proOutStr = pro.getOutputStream();
                 proOutStr.write((cmd + "\n").getBytes());
-            Main.debug(cmd);
+            Tool.debug(cmd);
                 proOutStr.flush();
                 BufferedReader br = new BufferedReader(new InputStreamReader(pro.getErrorStream()));
                 String errorInfo = "";
@@ -130,28 +131,28 @@ public class LocalJudge {
             int FileListSize = inFileList.size();
             Pair<Integer,Integer> limit=Main.problems.getProblemLimit(Integer.parseInt(s.getSubmitInfo().pid));
             runExeOutputStream.write((limit.getKey()+"\n").getBytes());//时限(MS)
-        Main.debug("时限"+limit.getKey()+"MS");
+        Tool.debug("时限"+limit.getKey()+"MS");
             runExeOutputStream.write(("30000\n").getBytes());//单点时限
-        Main.debug(("30000"));
+        Tool.debug(("30000"));
             file = new File(fixPath(outPath) + s.getSubmitInfo().getRid());
             try {
                 String filename = "Main";
                 long exMemory = 0L;
                 runExeOutputStream.write(((limit.getValue()*1024L +  exMemory) * 1024L + "\n").getBytes());//内存限制MB
-            Main.debug("内存限制"+(limit.getValue()*1024L +  exMemory) * 1024L + "B");
+            Tool.debug("内存限制"+(limit.getValue()*1024L +  exMemory) * 1024L + "B");
                 String mainExe = filename+".exe";
                 runExeOutputStream.write((file.getAbsolutePath()+"\\"+mainExe + "\n").getBytes());
-            Main.debug((file.getAbsolutePath() + "\\" + mainExe));
+            Tool.debug((file.getAbsolutePath() + "\\" + mainExe));
                 runExeOutputStream.write((file.getAbsolutePath() + "\\\n").getBytes());
-            Main.debug(file.getAbsolutePath() + "\\");
+            Tool.debug(file.getAbsolutePath() + "\\");
                 runExeOutputStream.write((FileListSize + "\n").getBytes());
-            Main.debug(FileListSize + "");
+            Tool.debug(FileListSize + "");
                 long TimeUsed = 0L;
                 long MemoryUsed = 0L;
                 try {
                     for(i = 0; i < FileListSize; ++i) {
                         runExeOutputStream.write(( inFileList.get(i) + "\n").getBytes());
-                    Main.debug(inFileList.get(i));
+                    Tool.debug(inFileList.get(i));
                         File var20 = new File(outFileList.get(i));
                         runExeOutputStream.write((fixPath(file.getAbsolutePath()) + var20.getName() + "\n").getBytes());
                         runExeOutputStream.write((var20.getAbsolutePath() + "\n").getBytes());
@@ -208,7 +209,7 @@ public class LocalJudge {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Main.debug("LocalJudge ret="+ret);
+            Tool.debug("LocalJudge ret="+ret);
             switch (ret){
                 case 0: res.setR(Result.AC); break;
                 case 1: res.setR(Result.PE); break;

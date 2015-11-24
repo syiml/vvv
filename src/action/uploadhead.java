@@ -2,6 +2,7 @@ package action;
 
 import java.io.*;
 import util.Main;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/9/28 0028.
@@ -25,7 +26,7 @@ public class uploadhead {
     public static long maxHeadImgSize=Main.GV.getLong("maxHeadImgSize");
 
     public String upload() throws Exception{
-        Main.debug("上传头像文件大小：" + upload.length());
+        Tool.debug("上传头像文件大小：" + upload.length());
         if(upload.length()>=maxHeadImgSize){
             return "toobig";
         }

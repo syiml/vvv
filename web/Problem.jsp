@@ -1,5 +1,4 @@
 <%@ page import="util.Main" %>
-<%@ page import="util.ProblemGetter" %>
 <%@ page import="util.HTML.HTML" %>
 <%@ page import="org.apache.struts2.ServletActionContext" %>
 <%--
