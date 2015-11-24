@@ -34,7 +34,7 @@ public class statu {
         this.Code = code;
         this.codelen = Code.replaceAll(" ","").replaceAll("\n","").replaceAll("\r","").replaceAll("\t","").length();
         this.SubmitTime = time;
-        this.result = Result.PENDDING;
+        this.result = Result.PENDING;
         this.TimeUsed = "-";
         this.MemoryUsed = "-";
     }
@@ -81,7 +81,7 @@ public class statu {
         if(s==Result.MLE) return "Memory Limit Exceeded";
         if(s==Result.OLE) return"Output Limit Exceeded";
         if(s==Result.PE) return "Presentation Error";
-        if(s==Result.PENDDING) return "Pendding...";
+        if(s==Result.PENDING) return "Pendding...";
         if(s==Result.JUDGING) return "Judging...";
         if(s==Result.RE) return "Runtime Error";
         if(s==Result.RUNNING) return "Running...";
@@ -115,7 +115,7 @@ public class statu {
         if(s==Result.MLE) return HTML.span("danger","Memory Limit Exceeded");
         if(s==Result.OLE) return HTML.span("danger","Output Limit Exceeded");
         if(s==Result.PE) return HTML.span("warning","Presentation Error");
-        if(s==Result.PENDDING) return HTML.span("default","Pendding...");
+        if(s==Result.PENDING) return HTML.span("default","Pendding...");
         if(s==Result.JUDGING) return HTML.span("default","Judging...");
         if(s==Result.RE) return HTML.span("danger","Runtime Error");
         if(s==Result.RUNNING) return HTML.span("default","Running...");
@@ -125,7 +125,7 @@ public class statu {
         return HTML.span("primary","System Error");
     }
     private static Result[] r={
-            Result.PENDDING,Result.AC,      Result.WA,
+            Result.PENDING,Result.AC,      Result.WA,
             Result.CE,      Result.RE,      Result.TLE,
             Result.MLE,     Result.OLE,     Result.PE,
             Result.DANGER,  Result.RUNNING, Result.ERROR,

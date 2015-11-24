@@ -4,7 +4,7 @@ package entity;
  * Created by Administrator on 2015/5/22.
  */
 public enum Result{
-        PENDDING,
+        PENDING,
         JUDGING,
         AC,
         WA,

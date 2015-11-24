@@ -59,8 +59,8 @@ public class SQL {
      * @throws SQLException
      */
     protected Object getObject(int i) throws SQLException {
-        throw new SQLException("必须重写SQL类的getObject方法");
-//        return rs.getObject(i);
+//        Main.log("必须重写SQL类的getObject方法");
+        return rs.getObject(i);
     }
     public <K,V> Map<K,V> queryMap(){
         Map<K,V> ret=new TreeMap<K, V>();

@@ -155,14 +155,14 @@ public class CF extends OTHOJ {
         if(s.contains("Compilation error")) return Result.CE;
         if(s.contains("Idleness limit exceeded")) return Result.RE;
         if(s.contains("Skipped")) return Result.ERROR;
-        if(s.contains("In queue")) return Result.PENDDING;
+        if(s.contains("In queue")) return Result.PENDING;
         if(s.contains("Running")) return Result.RUNNING;
         return Result.ERROR;
     }
     @Override
     public RES getResult(Submitter s) {
         RES res=new RES();
-        res.setR(Result.PENDDING);
+        res.setR(Result.PENDING);
         Document doc;
         try {
             doc = Jsoup.connect(URL+"/submissions/"+s.getUsername()).get();

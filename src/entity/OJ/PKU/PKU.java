@@ -156,7 +156,7 @@ public class PKU extends OTHOJ {
             d = Jsoup.connect(url + "/status?user_id=" + s.getUsername()).get();
         } catch (IOException e1) {
             e1.printStackTrace();
-            r.setR(Result.PENDDING);
+            r.setR(Result.PENDING);
             return r;
         }
         e = d.select(".a tr").get(1);

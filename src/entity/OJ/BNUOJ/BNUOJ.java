@@ -42,8 +42,8 @@ public class BNUOJ extends OTHOJ {
     public BNUOJ(){
         resultMap = new HashMap<String, Result>();
 
-        resultMap.put("Waiting",Result.PENDDING);
-        resultMap.put("Judging",Result.PENDDING);
+        resultMap.put("Waiting",Result.PENDING);
+        resultMap.put("Judging",Result.PENDING);
         resultMap.put("Accepted",Result.AC);
         resultMap.put("Wrong Answer",Result.WA);
         resultMap.put("Runtime Error",Result.RE);
@@ -177,7 +177,7 @@ public class BNUOJ extends OTHOJ {
             d = Jsoup.connect(getStatusURL(s.getUsername())).get();
         } catch (IOException e1) {
             e1.printStackTrace();
-            r.setR(Result.PENDDING);
+            r.setR(Result.PENDING);
             return r;
         }
         e = d.select(statuSelect).first();

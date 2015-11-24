@@ -136,7 +136,7 @@ public class RankTraining extends Rank {
     }
     public  void add(statu s,Contest c){
         if(s.getResult()== Result.DANGER||
-                s.getResult()==Result.PENDDING||
+                s.getResult()==Result.PENDING ||
                 s.getResult()==Result.JUDGING||
                 s.getResult()==Result.ERROR)return ;
         if(s.getCid()!=c.getCid()) return;

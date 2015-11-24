@@ -11,7 +11,7 @@ public class RES {
     String CEInfo;
 
     public RES(){
-        R=Result.PENDDING;
+        R=Result.PENDING;
         Time="-";
         Memory="-";
         CEInfo="";
@@ -29,7 +29,7 @@ public class RES {
         Memory = memory;
     }
     public boolean canReturn(){
-        return R!=Result.PENDDING&&R!=Result.JUDGING&&R!=Result.RUNNING;
+        return R!=Result.PENDING &&R!=Result.JUDGING&&R!=Result.RUNNING;
     }
 
     public String getCEInfo() {

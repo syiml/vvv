@@ -94,7 +94,7 @@ public class RankICPC extends Rank {
     public void add(statu s,Contest c){
         //去掉无效结果
         if(s.getResult()==Result.DANGER||
-           s.getResult()==Result.PENDDING||
+           s.getResult()==Result.PENDING ||
            s.getResult()==Result.JUDGING||
            s.getResult()==Result.ERROR) return;
         if(s.getCid()!=cid) return;

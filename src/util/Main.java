@@ -137,13 +137,13 @@ public class Main {
         statu s=status.getStatu(rid);
         int pid=s.getPid();
         if(!problems.isProblemLocal(pid)){//is vj
-            status.setStatusResult(rid, Result.PENDDING,"-","-",null);
+            status.setStatusResult(rid, Result.PENDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),s.getLanguage(),s.getCode(),true);
             submitVJ(ss, problems.getOJid(pid));
             Main.debug("Main.ReJudge Done");
             return 0;//success submit to vj
         }else{//is local
-            status.setStatusResult(rid, Result.PENDDING,"-","-",null);
+            status.setStatusResult(rid, Result.PENDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,pid+"",s.getLanguage(),s.getCode(),true);
             m.addSubmit(ss);
             Main.debug("Main.ReJudge Done");

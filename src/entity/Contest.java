@@ -228,7 +228,7 @@ public class Contest {
     public String getStatuHTML(){
         Timestamp now=new Timestamp(System.currentTimeMillis());
         if(begintime.after(now)){
-            return "<b style='color:green'>未开始</b>";//PENDDING
+            return "<b style='color:green'>未开始</b>";//PENDING
         }else if(endtime.before(now)){
             return "<b>已结束</b>";//END
         }else{

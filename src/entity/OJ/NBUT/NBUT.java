@@ -171,7 +171,7 @@ public class NBUT extends OTHOJ {
             d = Jsoup.connect(url+"/Problem/status.xhtml?username="+s.getUsername()).get();
         } catch (IOException e1) {
             e1.printStackTrace();
-            r.setR(Result.PENDDING);
+            r.setR(Result.PENDING);
             return r;
         }
         e =  d.select("#prob-list-wrapper tbody tr").first();

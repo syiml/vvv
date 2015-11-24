@@ -40,9 +40,9 @@ public class HDU extends OTHOJ {
     private static String Int64="%I64d";
     public HDU(){
         resultMap = new HashMap<String, Result>();
-        resultMap.put("Queuing",Result.PENDDING);
-        resultMap.put("Compiling",Result.PENDDING);
-        resultMap.put("Running",Result.PENDDING);
+        resultMap.put("Queuing",Result.PENDING);
+        resultMap.put("Compiling",Result.PENDING);
+        resultMap.put("Running",Result.PENDING);
         resultMap.put("Accepted",Result.AC);
         resultMap.put("Wrong Answer",Result.WA);
         resultMap.put("Runtime Error (ACCESS_VIOLATION)",Result.RE);
@@ -157,7 +157,7 @@ public class HDU extends OTHOJ {
             d = Jsoup.connect(getStatusURL(s.getUsername())).get();
         } catch (IOException e1) {
             e1.printStackTrace();
-            r.setR(Result.PENDDING);
+            r.setR(Result.PENDING);
             return r;
         }
         e = d.select(statuSelect).first();
