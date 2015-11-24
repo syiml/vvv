@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by Syiml on 2015/7/10 0010.
  */
-public class Message {
+public class Message implements IBeanResultSetCreate {
     int mid;
     String user;
     int statu;
@@ -18,7 +18,9 @@ public class Message {
     public Message(){
 
     }
-    public Message(ResultSet rs) throws SQLException {
+
+    @Override
+    public Message init(ResultSet rs) throws SQLException {
         mid=rs.getInt("mid");
         title=rs.getString("title");
         user=rs.getString("user");
@@ -26,6 +28,7 @@ public class Message {
         text=rs.getString("text");
         time=rs.getTimestamp("time").getTime();
         deadline=rs.getTimestamp("deadline");
+        return this;
     }
 
     public int getMid() {
@@ -83,4 +86,5 @@ public class Message {
     public void setDeadline(Timestamp deadline) {
         this.deadline = deadline;
     }
+
 }
