@@ -231,8 +231,8 @@ public class ContestSQL {
         }
         return list;
     }
-    public List<Integer> getAcRidFromCid(int cid){
-        return new SQL("SELECT id FROM statu WHERE cid=? AND result=1", cid).queryList();
+    public List<Integer> getAcRidFromCidPid(int cid,int pid){
+        return new SQL("SELECT id FROM statu WHERE cid=? AND pid=? AND result=1", cid,pid).queryList();
     }
     public String toHTML(int cid,Contest c){
         return   "<tr><td>"+cid+ "</td>"

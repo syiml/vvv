@@ -9,6 +9,7 @@ import sun.net.www.http.HttpCaptureOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
@@ -19,6 +20,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
     protected  HttpServletRequest request;
     protected HttpServletResponse response;
     protected HttpSession session;
+    protected PrintWriter out;
 
 
     @Override
@@ -30,6 +32,11 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
     @Override
     public void setServletResponse(HttpServletResponse httpServletResponse) {
         response=httpServletResponse;
+        try {
+            out=response.getWriter();
+        } catch (IOException e) {
+            out=null;
+        }
     }
 
     public boolean isGet() {

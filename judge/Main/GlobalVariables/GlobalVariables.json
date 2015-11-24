@@ -14,8 +14,8 @@
   "localJudgeWorkPath":"C:\\T_TOJ\\",
   "maxHeadImgSize":524288,
   "maxSampleFileSize":10737418240,
-  "debug":true,
-  "version":"2.02",
+  "debug":false,
+  "version":"2.03",
 
   "hdu":{
     "URL":"http://acm.hdu.edu.cn",

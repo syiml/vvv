@@ -7,8 +7,8 @@ var login={
     },
     login:function(){
         var loginsuccess=function () {
-            location.href="return.jsp";
             $('#loginsubmit').val("登录成功，正在跳转回登录前页面...");
+            location.href="return.jsp";
         };
         var loginerror=function(s){
             alert(s);

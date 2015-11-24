@@ -55,7 +55,7 @@
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>
-<script src="../js/codeCmp.js"></script>
+<script src="js/codeCmp.js"></script>
 <script>
     var $v=$(".viewcode");
     var ret=comp($v.first().text(),$v.last().text());

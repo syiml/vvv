@@ -9,7 +9,7 @@
                 <action name="sb" class="action.submit" method="submitProblem">
                         <result name="success1" type="redirect">Status.jsp</result>
                         <result name="success2">return.jsp</result>
-                        <result name="OutOfContest">/module/ErrorInfo/OutOfContest.jsp</result>
+                        <result name="OutOfContest">module/ErrorInfo/OutOfContest.jsp</result>
                         <result name="login" type="redirect">Login.jsp</result>
                         <result name="nopermission" type="redirect">Error.jsp?name=NoPermission</result>
                         <result name="argerror" type="redirect">Error.jsp?name=ArgError</result>
@@ -19,8 +19,6 @@
                         <result name="error">Register.jsp</result>
                 </action>
                 <action name="login" class="action.login" method="login">
-                        <result name="success">return.jsp</result>
-                        <result name="error" type="redirect">Login.jsp</result>
                 </action>
                 <action name="addproblem1" class="action.addproblem1" method="addproblem1">
                         <result name="success">return.jsp</result>

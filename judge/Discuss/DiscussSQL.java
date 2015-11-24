@@ -212,7 +212,7 @@ public class DiscussSQL {
         Discuss d=getDiscuss(did);
         if(d==null) return "error";
         int newid=getNewReplyId(did);
-        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,?,null)",newid,did,loginuser.getUsername(),Main.now(),HTML.HTMLtoString(text),!d.isReplyHidden()).update();
+        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,?,null)",newid,did,loginuser.getUsername(),Main.now(),HTML.HTMLtoString(text),!d.isReplyHidden(),d.panelclass).update();
         MessageSQL.AddMessageDisscussReply(d.cid,loginuser.getUsername(),did,HTML.HTMLtoString(text));
         return "success";
     }

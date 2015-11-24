@@ -13,12 +13,10 @@ public class login extends BaseAction{
         if(ret.equals("LoginSuccess")) {
             Main.log("Login:"+user+" IP:"+Main.getIP());
             session.setAttribute("user", Main.users.getUser(user));
-            Main.getOut().println("{\"ret\":\"LoginSuccess\"}");
-            //return "success";
+            out.println("{\"ret\":\"LoginSuccess\"}");
         }else {
-            Main.getOut().println("{\"ret\":\""+ret+"\"}");
+            out.println("{\"ret\":\""+ret+"\"}");
         }
-        //else return "error";
-        return NONE;
+        return null;
     }
 }
