@@ -1,4 +1,4 @@
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.HTML.HTML" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

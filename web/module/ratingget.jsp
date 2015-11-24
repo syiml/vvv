@@ -1,4 +1,4 @@
-<%@ page import="Main.rating.ratingSQL" %>
+<%@ page import="dao.ratingSQL" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

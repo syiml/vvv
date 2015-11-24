@@ -1,4 +1,4 @@
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.HTML.HTML" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

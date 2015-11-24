@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="Main.Main" %>
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.Main" %>
+<%@ page import="util.HTML.HTML" %>
 <%
   if(session.getAttribute("user")==null){
     response.sendRedirect("Login.jsp");

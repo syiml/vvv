@@ -1,7 +1,7 @@
 package action;
 
-import Main.Main;
-import Main.User.User;
+import util.Main;
+import entity.User;
 
 /**
  * Created by Syiml on 2015/8/18 0018.

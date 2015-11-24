@@ -1,5 +1,5 @@
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.Main"%>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%--
   Created by IntelliJ IDEA.

@@ -1,8 +1,7 @@
 package action;
 
-import Main.Main;
-import Tool.FILE;
-import org.apache.struts2.ServletActionContext;
+import util.Main;
+import util.FILE;
 
 import java.io.File;
 import java.io.InputStream;

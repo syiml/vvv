@@ -1,5 +1,5 @@
-<%@ page import="Discuss.DiscussHTML" %>
-<%@ page import="Main.Main" %>
+<%@ page import="util.HTML.DiscussHTML" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -19,6 +19,6 @@
     out.print(DiscussHTML.DiscussList(cid,Main.contestShowNum,pa,"",""));
   }else{
     id=Integer.parseInt(request.getParameter("id"));
-    out.print(Discuss.DiscussHTML.Discuss(id+"","0"));
+    out.print(DiscussHTML.Discuss(id+"","0"));
   }
 %>

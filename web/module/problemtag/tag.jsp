@@ -1,5 +1,6 @@
-<%@ page import="Main.User.User" %>
-<%@ page import="ProblemTag.ProblemTagHTML" %>
+<%@ page import="entity.User" %>
+<%@ page import="util.HTML.ProblemTagHTML" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -15,7 +16,7 @@
   }else{
     int pidint=Integer.parseInt(pid);
     User u=(User)session.getAttribute("user");
-    if(u!=null&&Main.Main.status.sbumitResult(pidint,u.getUsername())==1){
+    if(u!=null&& Main.status.sbumitResult(pidint,u.getUsername())==1){
       out.print(ProblemTagHTML.problemTagJson(pidint,u.getUsername()));
     }
   }

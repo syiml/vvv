@@ -1,4 +1,4 @@
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.HTML.HTML" %>
 <%@ page import="ClockIn.ClockInHTML" %>
 <%--
   Created by IntelliJ IDEA.

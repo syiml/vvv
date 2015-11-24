@@ -1,9 +1,7 @@
 package action;
 
-import Main.Main;
-import Main.User.Permission;
-import Main.User.User;
-import Main.rating.Computer;
+import util.Main;
+import util.rating.Computer;
 
 /**
  * Created by Syiml on 2015/7/3 0003.

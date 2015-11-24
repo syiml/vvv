@@ -1,4 +1,5 @@
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%--
   Created by IntelliJ IDEA.
@@ -15,8 +16,8 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp?page=home"/>
-      <%=HTML.headImg(Main.Main.loginUser().getUsername(),1)%>
-      <%=HTML.headImg(Main.Main.loginUser().getUsername(),2)%>
+      <%=HTML.headImg(Main.loginUser().getUsername(),1)%>
+      <%=HTML.headImg(Main.loginUser().getUsername(),2)%>
       <%=HTML.uploadHead()%>
 </div>
 <jsp:include page="module/foot.jsp"/>

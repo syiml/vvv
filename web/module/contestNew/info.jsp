@@ -1,4 +1,4 @@
-<%@ page import="Tool.JSON.JSON" %>
+<%@ page import="util.JSON.JSON" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

@@ -1,8 +1,8 @@
 package action;
 
-import Discuss.Discuss;
-import Discuss.DiscussSQL;
-import Main.Main;
+import entity.Discuss;
+import dao.DiscussSQL;
+import util.Main;
 
 /**
  * Created by Syiml on 2015/7/4 0004.

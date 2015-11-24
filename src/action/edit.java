@@ -1,9 +1,7 @@
 package action;
 
-import Main.Main;
-import Main.User.User;
-
-import java.io.UnsupportedEncodingException;
+import util.Main;
+import entity.User;
 
 /**
  * Created by Syiml on 2015/6/27 0027.

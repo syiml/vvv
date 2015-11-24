@@ -1,4 +1,4 @@
-<%@ page import="Main.Main" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

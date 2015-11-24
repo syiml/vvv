@@ -1,6 +1,6 @@
 <%@ page import="java.sql.Timestamp" %>
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.Main" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main" %>
 <!--
   所需参数：cid  不能为空
 -->

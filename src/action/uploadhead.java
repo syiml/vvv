@@ -1,7 +1,7 @@
 package action;
 
 import java.io.*;
-import Main.Main;
+import util.Main;
 
 /**
  * Created by Syiml on 2015/9/28 0028.

@@ -1,4 +1,4 @@
-<%@ page import="ProblemTag.ProblemTagSQL" %>
+<%@ page import="dao.ProblemTagSQL" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

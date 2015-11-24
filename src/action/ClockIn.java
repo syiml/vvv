@@ -1,8 +1,7 @@
 package action;
 
-import java.sql.Timestamp;
 import ClockIn.*;
-import Main.Main;
+import util.Main;
 
 /**
  * Created by Syiml on 2015/7/27 0027.

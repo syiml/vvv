@@ -1,6 +1,7 @@
-<%@ page import="Main.User.User" %>
-<%@ page import="Main.User.Permission" %>
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="entity.User" %>
+<%@ page import="entity.Permission" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -20,7 +21,7 @@
   User user=(User)session.getAttribute("user");
   if(user==null) response.sendRedirect("Login.jsp");
   else{
-    Permission p=Main.Main.getPermission(user.getUsername());
+    Permission p= Main.getPermission(user.getUsername());
 %>
 <html>
 <head>

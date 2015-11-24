@@ -1,4 +1,4 @@
-<%@ page import="Tool.MyClient.MyClient" %>
+<%@ page import="util.MyClient" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

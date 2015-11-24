@@ -1,6 +1,6 @@
 package action;
 
-import Main.Main;
+import util.Main;
 
 /**
  * Created by Administrator on 2015/6/4.

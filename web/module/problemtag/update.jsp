@@ -1,5 +1,5 @@
-<%@ page import="ProblemTag.ProblemTagSQL" %>
-<%@ page import="Main.User.User" %>
+<%@ page import="dao.ProblemTagSQL" %>
+<%@ page import="entity.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

@@ -1,6 +1,6 @@
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.Main" %>
-<%@ page import="ProblemTag.ProblemTagHTML" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main" %>
+<%@ page import="util.HTML.ProblemTagHTML" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

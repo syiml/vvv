@@ -1,7 +1,7 @@
-<%@ page import="Main.status.statu" %>
-<%@ page import="Main.Main" %>
-<%@ page import="Main.User.Permission" %>
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="entity.statu" %>
+<%@ page import="util.Main" %>
+<%@ page import="entity.Permission" %>
+<%@ page import="util.HTML.HTML" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator

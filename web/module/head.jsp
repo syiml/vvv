@@ -1,6 +1,6 @@
-<%@ page import="Main.User.User" %>
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Message.MessageSQL" %>
+<%@ page import="entity.User" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="dao.MessageSQL" %>
 <%@ page import="action.ClockIn" %>
 <%@ page import="ClockIn.*" %>
 <%@page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>

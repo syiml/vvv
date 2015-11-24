@@ -1,4 +1,4 @@
-<%@ page import="Main.Main" %>
+<%@ page import="util.Main" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   所需参数:cid

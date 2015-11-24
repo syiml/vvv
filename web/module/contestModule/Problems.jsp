@@ -1,5 +1,5 @@
-<%@ page import="Main.Main" %>
-<%@ page import="Main.problem.ProblemSQL" %>
+<%@ page import="util.Main" %>
+<%@ page import="dao.ProblemSQL" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
     所需参数：cid  不能为空

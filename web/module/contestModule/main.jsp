@@ -1,6 +1,6 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="Main.User.*" %>
-<%@ page import="Main.Main" %>
+<%@ page import="util.Main" %>
 <%--
   所需参数：cid
   如果未登录，要登录

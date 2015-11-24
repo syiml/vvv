@@ -5,8 +5,8 @@
   Time: 23:25
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.Main"%>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   Main.saveURL();

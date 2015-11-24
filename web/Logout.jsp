@@ -1,5 +1,5 @@
-<%@ page import="Main.User.User" %>
-<%@ page import="Main.Main" %>
+<%@ page import="entity.User" %>
+<%@ page import="util.Main" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   User u=(User)session.getAttribute("user");

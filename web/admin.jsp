@@ -1,7 +1,7 @@
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.User.Permission" %>
-<%@ page import="Main.Main" %>
-<%@ page import="Main.User.User" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="entity.Permission" %>
+<%@ page import="util.Main" %>
+<%@ page import="entity.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

@@ -1,6 +1,6 @@
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Tool.HTML.FromHTML.FormHTML" %>
-<%@ page import="Tool.HTML.FromHTML.text.text" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.HTML.FromHTML.FormHTML" %>
+<%@ page import="util.HTML.FromHTML.text.text" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

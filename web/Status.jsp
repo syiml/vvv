@@ -1,8 +1,8 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ page import="Main.Main" %>
-<%@ page import="Main.status.statusSQL" %>
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.User.User" %>
+<%@ page import="util.Main" %>
+<%@ page import="dao.statusSQL" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="entity.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator

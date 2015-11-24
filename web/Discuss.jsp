@@ -1,5 +1,5 @@
-<%@ page import="Discuss.DiscussHTML" %>
-<%@ page import="Main.Main"%>
+<%@ page import="util.HTML.DiscussHTML" %>
+<%@ page import="util.Main"%>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

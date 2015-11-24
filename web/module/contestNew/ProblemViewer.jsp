@@ -1,4 +1,5 @@
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   Created by IntelliJ IDEA.
@@ -16,5 +17,5 @@
   Object user=session.getAttribute("user");
   //System.out.println(user);
 %>
-<%=Main.Main.canShowProblem(Integer.parseInt(cid))?(HTML.problem(user,cid, pid)):""%>
+<%=Main.canShowProblem(Integer.parseInt(cid))?(HTML.problem(user,cid, pid)):""%>
 

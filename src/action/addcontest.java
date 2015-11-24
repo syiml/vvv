@@ -1,7 +1,7 @@
 package action;
 
-import Main.Main;
-import Main.User.Permission;
+import util.Main;
+import entity.Permission;
 
 /**
  * Created by Syiml on 2015/6/23 0023.

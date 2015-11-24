@@ -1,8 +1,8 @@
-<%@ page import="Main.Main" %>
-<%@ page import="Main.User.User" %>
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.User.Permission" %>
-<%@ page import="Main.contest.Contest" %>
+<%@ page import="util.Main" %>
+<%@ page import="entity.User" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="entity.Permission" %>
+<%@ page import="entity.Contest" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator

@@ -1,5 +1,7 @@
 package action;
 
+import util.Main;
+
 /**
  * Created by Syiml on 2015/7/4 0004.
  */
@@ -16,6 +18,6 @@ public class RegisterContest {
 
     public String regCon(){
         int cidInt=Integer.parseInt(cid);
-        return Main.Main.registerContest(cidInt);
+        return Main.registerContest(cidInt);
     }
 }

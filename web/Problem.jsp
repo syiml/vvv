@@ -1,6 +1,6 @@
-<%@ page import="Main.Main" %>
-<%@ page import="Main.problem.ProblemGetter" %>
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.Main" %>
+<%@ page import="util.ProblemGetter" %>
+<%@ page import="util.HTML.HTML" %>
 <%@ page import="org.apache.struts2.ServletActionContext" %>
 <%--
   Created by IntelliJ IDEA.

@@ -1,8 +1,8 @@
 package action;
 
-import Main.Main;
-import Main.User.Permission;
-import Main.User.User;
+import util.Main;
+import entity.Permission;
+import entity.User;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

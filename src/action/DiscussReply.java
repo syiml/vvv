@@ -1,51 +1,53 @@
 package action;
 
 
-import Discuss.DiscussSQL;
-import Main.User.User;
-import Main.Main;
+import dao.DiscussSQL;
+import entity.User;
+import util.Main;
+import servise.MessageMain;
 
 /**
  * Created by Syiml on 2015/7/5 0005.
  */
 public class DiscussReply {
-    public String getId() {
-        return id;
-    }
     public String getText() {
         return text;
-    }
-    public String getRid() {
-        return rid;
     }
     public void setText(String text) {
         this.text = text;
     }
-    public void setId(String did) {
-        this.id = did;
+    public void setId(int id) {
+        this.id = id;
     }
-    public void setRid(String rid) {
+    public void setRid(int rid) {
         this.rid = rid;
+    }
+    public int getId() {
+        return id;
+    }
+    public int getRid() {
+        return rid;
     }
 
     public String text;
-    public String id;
-    public String rid;//replay id
+    public int id;//discuss id
+    public int rid;//replay id
 
     public String dr(){
         try{
             User u=Main.loginUser();
             Main.log(u.getUsername()+"回复了id为"+id+"的帖子");
-            return DiscussSQL.reply(u,Integer.parseInt(id),text);
+            MessageMain.discussAt(id,text,true);
+            return DiscussSQL.reply(u,id,text);
         }catch(NumberFormatException e){
             return "error";
         }
     }
     public String hideshow(){
-        return DiscussSQL.hideshow(Integer.parseInt(id),Integer.parseInt(rid));
+        return DiscussSQL.hideshow(id,rid);
     }
     public String adminReply(){
         Main.log("管理员"+Main.loginUser().getUsername()+"回复了id为"+id+"的回复");
-        return DiscussSQL.adminReply(Integer.parseInt(id),Integer.parseInt(rid),text);
+        return DiscussSQL.adminReply(id,rid,text);
     }
 }

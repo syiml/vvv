@@ -1,4 +1,5 @@
-<%@ page import="Challenge.ChallengeJSON" %>
+<%@ page import="util.JSON.ChallengeJSON" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -8,7 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-  Main.Main.saveURL();
+  Main.saveURL();
   if(session.getAttribute("user")==null){
     response.sendRedirect("Login.jsp");
     return;

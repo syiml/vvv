@@ -137,7 +137,7 @@
                         </result>
                         <result name="error">info.jsp?info="错误"</result>
                 </action>
-                <action name="ContestAward" class="Main.contest.ContestAward" method="award">
+                <action name="ContestAward" class="action.ContestAward" method="award">
                         <result name="success">return.jsp</result>
                 </action>
                 <action name="ResetPassword" class="action.edit" method="resetPassword">

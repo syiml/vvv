@@ -1,9 +1,8 @@
 package action;
 
-import Challenge.ChallengeJSON;
-import Challenge.ChallengeMain;
-import Challenge.ChallengeSQL;
-import Main.Main;
+import util.JSON.ChallengeJSON;
+import dao.ChallengeSQL;
+import util.Main;
 import org.apache.struts2.ServletActionContext;
 
 /**

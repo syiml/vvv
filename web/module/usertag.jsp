@@ -1,5 +1,5 @@
-<%@ page import="Tool.JSON.JSON" %>
-<%@ page import="ProblemTag.ProblemTagSQL" %>
+<%@ page import="util.JSON.JSON" %>
+<%@ page import="dao.ProblemTagSQL" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

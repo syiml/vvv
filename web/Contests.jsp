@@ -1,5 +1,5 @@
-<%@ page import="Main.Main" %>
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="util.Main" %>
+<%@ page import="util.HTML.HTML" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator

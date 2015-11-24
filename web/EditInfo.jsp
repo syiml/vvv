@@ -1,5 +1,5 @@
-<%@ page import="Main.User.User" %>
-<%@ page import="Tool.HTML.HTML" %>
+<%@ page import="entity.User" %>
+<%@ page import="util.HTML.HTML" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

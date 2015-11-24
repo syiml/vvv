@@ -1,5 +1,5 @@
-<%@ page import="Tool.JSON.JSON" %>
-<%@ page import="ProblemTag.ProblemTagHTML" %>
+<%@ page import="util.JSON.JSON" %>
+<%@ page import="util.HTML.ProblemTagHTML" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

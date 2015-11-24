@@ -1,4 +1,4 @@
-<%@ page import="Main.User.User" %>
+<%@ page import="entity.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator

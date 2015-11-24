@@ -1,4 +1,4 @@
-<%@ page import="Tool.HTML.ProblemInfo.ProblemInfo" %>
+<%@ page import="util.HTML.ProblemInfo" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

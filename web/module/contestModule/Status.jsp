@@ -1,5 +1,5 @@
-<%@ page import="Tool.HTML.HTML" %>
-<%@ page import="Main.User.User" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="entity.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   所需参数：cid、from
