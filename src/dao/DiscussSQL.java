@@ -8,6 +8,7 @@ import entity.DiscussReply;
 import servise.MessageMain;
 import util.HTML.HTML;
 import util.SQL;
+import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -88,7 +89,7 @@ public class DiscussSQL {
     }
     public static void append(Discuss d){
         String text= getDiscuss(d.getId()).getText();
-        text+="<hr/>以下内容于["+HTML.textb(Main.now().toString().substring(0,19),"blue")+"]补充";
+        text+="<hr/>以下内容于["+HTML.textb(Tool.now().toString().substring(0,19),"blue")+"]补充";
         text+=HTML.pre(HTML.HTMLtoString(d.getText()));
         String sql="UPDATE t_discuss SET";
         sql+=" text=?";
@@ -142,7 +143,7 @@ public class DiscussSQL {
         Discuss d=getDiscuss(did);
         if(d==null) return "error";
         int newid=getNewReplyId(did);
-        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,?,null)",newid,did,loginuser.getUsername(),Main.now(),HTML.HTMLtoString(text),!d.isReplyHidden(), d.getPanelclass()).update();
+        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,?,null)",newid,did,loginuser.getUsername(),Tool.now(),HTML.HTMLtoString(text),!d.isReplyHidden(), d.getPanelclass()).update();
         MessageMain.addMessageDisscussReply(d.getCid(),loginuser.getUsername(),did,HTML.HTMLtoString(text));
         return "success";
     }

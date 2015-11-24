@@ -4,6 +4,7 @@ import util.Main;
 import entity.rank.Rank;
 import entity.rank.RankSQL;
 import util.HTML.HTML;
+import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -154,7 +155,7 @@ public class Contest {
     public String getInfo(){return  info;}
     public boolean isComputerating(){return computerating;}
     public boolean isBegin(){
-        return getBeginDate().before(Main.now());
+        return getBeginDate().before(Tool.now());
     }
     public boolean isPending(){
         Timestamp now = new Timestamp(System.currentTimeMillis());

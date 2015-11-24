@@ -3,6 +3,7 @@ package ClockIn;
 import util.Main;
 import entity.User;
 import util.SQL;
+import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,7 +62,7 @@ public class ClockInSQL {
     }
     public static int mustClockIn(){
         if(Main.loginUser()==null) return -1;//未登录
-        Timestamp now=Main.now();
+        Timestamp now= Tool.now();
         int z=getTimeNum(now);
 //        System.out.println("z="+z);
         if(z>=0){//签到时间
@@ -97,7 +98,7 @@ public class ClockInSQL {
         if(z!=-1){
             ClockInRecord cir=new ClockInRecord();
             cir.ip=Main.getIP();
-            Timestamp now=Main.now();
+            Timestamp now=Tool.now();
             cir.time=now;
             cir.username=Main.loginUser().getUsername();
             cir.todytimes=z;
@@ -111,7 +112,7 @@ public class ClockInSQL {
     }
     public static boolean haveClockIn(){
         User u=Main.loginUser();
-        Timestamp now=Main.now();
+        Timestamp now=Tool.now();
         int x=getTimeNum(now);
         if(x!=-1){
             long nowtime=(now.getTime()+(1000*60*60*8))%(1000*60*60*24);
@@ -133,19 +134,7 @@ public class ClockInSQL {
         return true;
     }
     public static List<ClockInRecord> getClockInStatus(String username){
-        List<ClockInRecord> list=new ArrayList<ClockInRecord>();
-        SQL sql=new SQL("SELECT * FROM t_clock_in WHERE username=?",username);
-        ResultSet rs=sql.query();
-        try {
-            while(rs.next()){
-                list.add(new ClockInRecord(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return list;
+        return new SQL("SELECT * FROM t_clock_in WHERE username=?",username).queryBeanList(ClockInRecord.class);
     }
     public static String ClockInStatus(String username,Long day,int times){
 //        System.out.rintln(new Timestamp((day + 1) * (1000 * 60 * 60 * 24)-(1000*60*60*8)).toString()
@@ -155,7 +144,8 @@ public class ClockInSQL {
         ResultSet rs=sql.query();
         try {
             if(rs.next()){
-                ClockInRecord cir=new ClockInRecord(rs);
+                ClockInRecord cir=new ClockInRecord();
+                cir.init(rs);
                 return cir.sign;
             }else{
                 return "旷课";
@@ -179,33 +169,10 @@ public class ClockInSQL {
         Timestamp l=getL(day);
         Timestamp r=getR(day);
         SQL sql=new SQL("SELECT * FROM t_clock_in WHERE time<=? AND time>=? AND todytimes=? ORDER BY time",r,l,times);
-        ResultSet rs=sql.query();
-        List<ClockInRecord> list=new ArrayList<ClockInRecord>();
-        try {
-            while(rs.next()){
-                list.add(new ClockInRecord(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return list;
+        return sql.queryBeanList(ClockInRecord.class);
     }
     public static List<ClockInRecord> getWithUser(String user){
-        SQL sql=new SQL("SELECT * FROM t_clock_in WHERE username=? ORDER BY time desc", user);
-        ResultSet rs=sql.query();
-        List<ClockInRecord> list=new ArrayList<ClockInRecord>();
-        try {
-            while(rs.next()){
-                list.add(new ClockInRecord(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return list;
+        return new SQL("SELECT * FROM t_clock_in WHERE username=? ORDER BY time desc", user).queryBeanList(ClockInRecord.class);
     }
     public static boolean ipCan(String ip){
         int len=ClockInSQL.ip.length();

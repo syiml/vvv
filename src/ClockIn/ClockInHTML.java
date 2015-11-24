@@ -10,6 +10,7 @@ import util.HTML.FromHTML.text.text;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
 import util.HTML.modal.modal;
+import util.Tool;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class ClockInHTML {
         String url="ClockIn.jsp?";
         if(user!=null) url+="user="+user+"&";
         String preurl;
-        if(ClockInSQL.getDay(Main.now())<day||(ClockInSQL.getDay(Main.now())==day&&ClockInSQL.getTimeNum2(Main.now())<=times)){
+        if(ClockInSQL.getDay(Tool.now())<day||(ClockInSQL.getDay(Tool.now())==day&&ClockInSQL.getTimeNum2(Tool.now())<=times)){
             preurl=null;
         }else{
             if(times==2){
@@ -114,7 +115,7 @@ public class ClockInHTML {
         form.addForm(s);
 
         date d=new date("ttime","日期");
-        d.setValue(Main.now().toString().substring(0, 10));
+        d.setValue(Tool.now().toString().substring(0, 10));
         form.addForm(d);
 
         select  sel2 = new select("todytimes","时间段");
@@ -231,7 +232,7 @@ public class ClockInHTML {
         List<Integer> l5=new ArrayList<Integer>();//积分
         List<List<String>> tablerows=new ArrayList<List<String>>();
         Long beginday=16644L;
-        Long day=(Main.now().getTime()+(1000*60*60*8))/(1000*60*60*24);
+        Long day=(Tool.now().getTime()+(1000*60*60*8))/(1000*60*60*24);
         for(int i=0;i<showusers.size();i++){
             l1.add(0);
             l2.add(0);

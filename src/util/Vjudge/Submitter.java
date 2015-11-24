@@ -4,6 +4,7 @@ import util.Main;
 import entity.OJ.OTHOJ;
 import entity.RES;
 import entity.Result;
+import util.Tool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,13 +99,13 @@ public class Submitter implements Runnable{
                         this.status=IDLE;
                         return;
                     }
-                    Main.sleep(1000);
+                    Tool.sleep(1000);
                     //System.out.println(submitterID+":doSubmit error");
                     showstatus="doSubmit"+num;
                 }
                 num = 0;
                 do {
-                    Main.sleep(1000);
+                    Tool.sleep(1000);
                     nrid = oj.getRid(username);
                     //System.out.println(submitterID+":get rid "+num+"=" + nrid);
                     showstatus="get rid"+num+"="+nrid;
@@ -118,7 +119,7 @@ public class Submitter implements Runnable{
             }else{
                 ojsrid = nrid;
                 do{
-                    Main.sleep(1000);
+                    Tool.sleep(1000);
                     r=oj.getResult(this);
                     //System.out.println(submitterID+":get res="+r.getR());
                     showstatus="get res="+r.getR();

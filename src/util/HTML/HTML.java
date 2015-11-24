@@ -11,6 +11,7 @@ import util.Main;
 import entity.OJ.OTHOJ;
 import entity.Permission;
 import entity.User;
+import util.Tool;
 import util.Vjudge.Submitter;
 import entity.rank.RankICPC.RankICPC;
 import entity.rank.RankShortCode.RankShortCode;
@@ -736,15 +737,15 @@ public class HTML {
         return c.table(-1);
     }
     public static String clockIn(String user,String day,String times){
-        if(day==null) day=ClockInSQL.getDay(Main.now())+"";
+        if(day==null) day=ClockInSQL.getDay(Tool.now())+"";
         long dint;
         int tint;
         try{
             dint=Long.parseLong(day);
             tint=Integer.parseInt(times);
         }catch(NumberFormatException e){
-            dint=ClockInSQL.getDay(Main.now());
-            tint=ClockInSQL.getTimeNum2(Main.now());
+            dint=ClockInSQL.getDay(Tool.now());
+            tint=ClockInSQL.getTimeNum2(Tool.now());
         }
         return ClockInHTML.HTML(user,dint,tint);
     }
@@ -1142,12 +1143,12 @@ public class HTML {
 
         date f2=new date("begintime","开始时间");
         if(c!=null) f2.setValue(c.getBeginDate());
-        else f2.setValue(Main.nowDate());
+        else f2.setValue(Tool.nowDate());
         form.addForm(f2);
 
         date f3=new date("endtime","结束时间");
         if(c!=null) f3.setValue(c.getEndTime());
-        else f3.setValue(Main.nowDate());
+        else f3.setValue(Tool.nowDate());
         form.addForm(f3);
 
         select f4=new select("type","类型");

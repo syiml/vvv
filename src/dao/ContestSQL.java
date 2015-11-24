@@ -8,6 +8,7 @@ import servise.MessageMain;
 import util.HTML.HTML;
 import util.SQL;
 import action.addcontest;
+import util.Tool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class ContestSQL {
                 ,Integer.parseInt(a.getRank())
                 ,type
                 ,type==1?a.getPass():""
-                ,type==3||type==4?Main.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()):Main.now()
+                ,type==3||type==4?Main.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()): Tool.now()
                 ,type==3||type==4?Main.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m()):Main.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
                 ,a.getInfo()
                 ,a.getComputerating()!=null
@@ -79,7 +80,7 @@ public class ContestSQL {
                 ,Integer.parseInt(a.getRank())
                 ,type
                 ,type==1?a.getPass():""
-                ,type==3||type==4?Main.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()):Main.now()
+                ,type==3||type==4?Main.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()):Tool.now()
                 ,type==3||type==4?Main.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m()):Main.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
                 ,a.getInfo()
                 ,a.getComputerating()!=null
@@ -109,7 +110,7 @@ public class ContestSQL {
         }
     }
     public String addUserContest(int cid,String username,int statu){
-        new SQL("INSERT INTO contestuser VALUES(?,?,?,?,?)",cid,username,statu,"",Main.now()).update();
+        new SQL("INSERT INTO contestuser VALUES(?,?,?,?,?)",cid,username,statu,"",Tool.now()).update();
         Main.contests.getContest(cid).reSetUsers();
         return "success";
     }
@@ -260,7 +261,7 @@ public class ContestSQL {
         try {
             if(rs.next()){
                 Timestamp begintime=rs.getTimestamp("begintime");
-                if(begintime.after(Main.now())){
+                if(begintime.after(Tool.now())){
                     return "无";
                 }else{
                     return HTML.a("Contest.jsp?cid="+rs.getInt("id"),rs.getString("name"));

@@ -2,6 +2,7 @@ package entity.OJ.BNUOJ;
 
 import entity.OJ.OTHOJ;
 import util.Main;
+import util.Tool;
 import util.Vjudge.Submitter;
 import entity.RES;
 import entity.Result;
@@ -90,7 +91,7 @@ public class BNUOJ extends OTHOJ {
             e1.printStackTrace();
         } catch(NullPointerException e2){
             bo=true;
-            Main.sleep(1000);
+            Tool.sleep(1000);
         }
         if(bo) return "0";
         return "error";

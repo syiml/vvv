@@ -15,6 +15,7 @@ import util.Pair;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import util.Tool;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class JSON {
         ret.put("begintime",c.getBeginDate().getTime());
         ret.put("endtime",c.getEndTime().getTime());
         ret.put("type",c.getType());
-        ret.put("now",Main.now().getTime());
+        ret.put("now", Tool.now().getTime());
         Permission p=Main.loginUserPermission();
         ret.put("admin", p.getAddContest());
         List<RatingCase> list= ratingSQL.getRating(cid);

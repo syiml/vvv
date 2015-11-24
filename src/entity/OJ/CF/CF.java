@@ -2,6 +2,7 @@ package entity.OJ.CF;
 
 import util.Main;
 import entity.OJ.OTHOJ;
+import util.Tool;
 import util.Vjudge.Submitter;
 import entity.RES;
 import entity.Result;
@@ -128,7 +129,7 @@ public class CF extends OTHOJ {
      * @return 返回一段注释代码，里面包含了当前时间
      */
     String getRandomCode(){
-        return "/*"+Main.now()+"*/";
+        return "/*"+ Tool.now()+"*/";
     }
     @Override
     public String submit(Submitter s) {

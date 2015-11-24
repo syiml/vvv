@@ -12,6 +12,7 @@ import util.HTML.FromHTML.text.text;
 import util.HTML.FromHTML.text_in.text_in;
 import util.HTML.HTML;
 import util.HTML.pageBean;
+import util.Tool;
 
 import java.util.List;
 
@@ -172,9 +173,9 @@ public class UserListContest extends pageBean {
             if(u!=null){
                 RegisterUser z=Main.contests.getRegisterStatu(u.getUsername(),c.getCid());
                 if(z==null){
-                    if(c.getRegisterendtime().before(Main.now())){
+                    if(c.getRegisterendtime().before(Tool.now())){
                         ss+="报名已经结束";
-                    }else if(c.getRegisterstarttime().after(Main.now())) {
+                    }else if(c.getRegisterstarttime().after(Tool.now())) {
                         ss+="报名还没开始";
                     }else{
                         ss+= HTML.a("registercontest.action?cid=" + c.getCid(), "立即报名");
@@ -183,9 +184,9 @@ public class UserListContest extends pageBean {
                     ss+="已报名，状态："+RegisterUser.statuToHTML(z.getStatu());
                 }
             }else{
-                if(c.getRegisterendtime().after(Main.now())){
+                if(c.getRegisterendtime().after(Tool.now())){
                     ss+="报名前先"+HTML.a("Login.jsp","登录");
-                }else if(c.getRegisterstarttime().after(Main.now())){
+                }else if(c.getRegisterstarttime().after(Tool.now())){
                     ss+="报名还未开始";
                 }else{
                     ss+="报名已经结束";

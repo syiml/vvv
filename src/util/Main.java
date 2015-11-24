@@ -171,7 +171,7 @@ public class Main {
         if(u==null) return "login";
         int statu=0;
         Contest c=contests.getContest(cid);
-        if(c.getRegisterendtime().before(Main.now())||c.getRegisterstarttime().after(Main.now())){
+        if(c.getRegisterendtime().before(Tool.now())||c.getRegisterstarttime().after(Tool.now())){
             return "error";
         }
         if(c.getType()==3){
@@ -195,48 +195,20 @@ public class Main {
     public static Permission getPermission(String user){
         return users.getPermission(user);
     }
-    public static String getURL(String URL){
-        return Jsoup.connect(URL).toString();
-    }
     public static String getCode(int rid){
         return status.getStatu(rid).getCode();
     }
 
-    public static String TimeToString(long t){
-        long s=t/1000%60;
-        long m=t/60000%60;
-        long h=t/3600000%24;
-        long d=t/(3600000*24);
-        String ret="";
-        if(d>0) ret+=d+"days ";
-        ret+=h+":"+m+":"+s;
-        return ret;
-    }
-    public static int sleep(int t){
-        try {
-            Thread.sleep(t);
-        } catch (InterruptedException e) {
-            return 1;
-        }
-        return 1;
-    }
     public static void log(String s){
-        System.out.println(Main.now()+"-> "+s);
+        System.out.println(Tool.now()+"-> "+s);
     }
     public static void debug(String s){
         if(isDebug){
-            System.out.println(Main.now()+"=> "+s);
+            System.out.println(Tool.now()+"=> "+s);
         }
     }
     public static String getRealPath(String s){
         return getSession().getServletContext().getRealPath(s);
-    }
-    public static String nowDate(){
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        return df.format(new Date());
-    }
-    public static Timestamp now(){
-        return new Timestamp(System.currentTimeMillis());
     }
     public static Timestamp getTimestamp(String d,String s,String m){
         //System.out.println(d + " " + s + ":" + m + ":00");
@@ -319,16 +291,5 @@ public class Main {
     public static double codeCmp(String code1,String code2){
         CPlusPlusCompare cmp = new CPlusPlusCompare();
         return cmp.getSimilarity(code1,code2);
-    }
-
-    public static void resetStatusCache(int cid,String json){
-        Main.debug("reflash cache");
-        shc.set(cid,json);
-        //HTML.StatusHTML();
-    }
-    public static String getStatsJson(int cid){
-        String ret=shc.get(cid);
-        if(ret==null) return null;
-        else return ret;
     }
 }

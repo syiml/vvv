@@ -3,6 +3,7 @@ package dao;
 import entity.Message;
 import util.SQL;
 import util.Main;
+import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ public class MessageSQL {
     }
     public static int save(Message m){
         return new SQL("INSERT INTO t_message(user,statu,title,text,time,deadline) values(?,?,?,?,?,?)",
-                m.getUser(),m.getStatu(),m.getTitle(),m.getText(),Main.now(),m.getDeadline()).update();
+                m.getUser(),m.getStatu(),m.getTitle(),m.getText(), Tool.now(),m.getDeadline()).update();
     }
     public static int setReaded(int mid){
         return new SQL("UPDATE t_message SET statu=1 WHERE mid=?",mid).update();

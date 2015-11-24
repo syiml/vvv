@@ -32,10 +32,10 @@ public class autoConnecter implements Runnable{
      * 每过6小时自动连接数据库
      */
     public void run(){
-        Main.sleep(Main.autoConnectionTimeMinute * 60000);
+        Tool.sleep(Main.autoConnectionTimeMinute * 60000);
         while(true){
             conn();
-            Main.sleep(Main.autoConnectionTimeMinute * 60000);
+            Tool.sleep(Main.autoConnectionTimeMinute * 60000);
 //            Main.conn.close();
         }
     }
