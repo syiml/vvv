@@ -22,53 +22,23 @@ public class ProblemTagSQL {
         return problemTag.get(tagid);
     }
     public static void readTag(){
-        problemTag=new ArrayList<ProblemTag>();
-        SQL sql=new SQL("SELECT * FROM t_problem_tag ORDER BY id");
-        ResultSet rs= sql.query();
-        try {
-            while(rs.next()){
-                problemTag.add(new ProblemTag(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        sql.close();
+        problemTag=new SQL("SELECT * FROM t_problem_tag ORDER BY id").queryBeanList(ProblemTag.class);
     }
     public static List<ProblemTagRecord> getProblemTags(int pid){
         return getProblemTags(pid,null);
     }
     public static List<ProblemTagRecord> getProblemTags(int pid, String user){
-        List<ProblemTagRecord> list=new ArrayList<ProblemTagRecord>();
         SQL sql;
         if(user==null){
             sql=new SQL("SELECT * FROM t_problem_tag_record WHERE pid=?",pid);
         }else{
             sql=new SQL("SELECT * FROM t_problem_tag_record WHERE pid=? AND username=?",pid,user);
         }
-        ResultSet rs=sql.query();
-        try {
-            while(rs.next()){
-                list.add(new ProblemTagRecord(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        sql.close();
-        return list;
+        return sql.queryBeanList(ProblemTagRecord.class);
     }
     public static List<ProblemTagRecord> getProblemTags(int pid, int from, int num){
         SQL sql=new SQL("SELECT * FROM t_problem_tag_record WHERE pid=? order by rating desc,username  limit ?,?",pid,from,num);
-        List<ProblemTagRecord> list=new ArrayList<ProblemTagRecord>();
-        ResultSet rs=sql.query();
-        try {
-            while(rs.next()){
-                list.add(new ProblemTagRecord(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        sql.close();
-        return list;
+        return sql.queryBeanList(ProblemTagRecord.class);
     }
     public static int getTagNum(String user){//给多少题目贴过标签
         return new SQL("select count(pid) from (select username,pid from t_problem_tag_record group by username,pid)t WHERE username=? group by username ", user).queryNum();
@@ -111,9 +81,10 @@ public class ProblemTagSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql1.close();
+            sql2.close();
         }
-        sql1.close();
-        sql2.close();
         String ret="[";
         for(int i=0;i<=6;i++){
             if(i!=0) ret+=",";

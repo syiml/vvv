@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Created by Syiml on 2015/7/24 0024.
  */
-public class ProblemTag {
+public class ProblemTag implements IBeanResultSetCreate{
     public int getId() {
         return id;
     }
@@ -23,17 +23,16 @@ public class ProblemTag {
     private int id;
     private String name;
 
-    public ProblemTag(ResultSet rs){
-        //id,name
-        try {
-            id=rs.getInt("id");
-            name=rs.getString("name");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public ProblemTag init(ResultSet rs) throws SQLException {
+        id=rs.getInt("id");
+        name=rs.getString("name");
+        return this;
     }
+
     public ProblemTag(int id,String name){
         this.id=id;
         this.name=name;
     }
+
 }

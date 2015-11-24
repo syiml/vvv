@@ -16,10 +16,10 @@ import java.util.*;
  * Created by Administrator on 2015/5/23.
  */
 public class statusSQL {
-    /*
+    /**
     * statu(id,ruser,pid,cid,lang,submitTime,result,timeUsed,memoryUsed,code)
     * ceinfo(rid,info)
-    * */
+    */
     private int maxRID;
     public void init(){
         maxRID=getNewRid();

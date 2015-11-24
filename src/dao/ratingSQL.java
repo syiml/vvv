@@ -23,37 +23,15 @@ public class ratingSQL {
         int prating=Main.users.getUser(r.getUsername()).getShowRating();
         int newrating=Main.users.getUser(r.getUsername()).getShowRating();
         MessageMain.addMessageRatingChange(r.getCid(), r.getUsername(),prating,newrating);
-        System.out.println(r.getUsername() + ":" + r.getRating());
+        Main.log(r.getUsername() + ":" + r.getRating());
     }
     public static List<RatingCase> getRating(int cid){
-        List<RatingCase> list=new ArrayList<RatingCase>();
-        SQL sql=new SQL("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE cid=? order by rank",cid);
-        try {
-            ResultSet rs=sql.query();
-            while(rs.next()){
-                list.add(new RatingCase(rs.getString(1),rs.getTimestamp(2),rs.getInt(3),rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getString("cname")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return list;
+        return new SQL("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE cid=? order by rank",cid)
+                .queryBeanList(RatingCase.class);
     }
     public static List<RatingCase> getRating(String username){
-        List<RatingCase> list=new ArrayList<RatingCase>();
-        SQL sql=new SQL("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE username=? order by ratingnum desc",username);
-        try {
-            ResultSet rs=sql.query();
-            while(rs.next()){
-                list.add(new RatingCase(rs.getString(1),rs.getTimestamp(2),rs.getInt(3),rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getString("cname")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return list;
+        return new SQL("SELECT username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname FROM t_rating WHERE username=? order by ratingnum desc",username)
+                .queryBeanList(RatingCase.class);
     }
     public static String getJson(String username,boolean t){
         List<RatingCase> list=getRating(username);

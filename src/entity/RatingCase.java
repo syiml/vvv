@@ -1,11 +1,13 @@
 package entity;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
  * Created by Syiml on 2015/7/3 0003.
  */
-public class RatingCase {
+public class RatingCase implements IBeanResultSetCreate{
     public String getUsername() {
         return username;
     }
@@ -48,6 +50,20 @@ public class RatingCase {
         this.text= cname + " rank:" + rank;
     }
 
+    @Override
+    public Object init(ResultSet rs) throws SQLException {
+        //username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname
+        username=rs.getString("username");
+        time=rs.getTimestamp("time").getTime();
+        cid=rs.getInt("cid");
+        prating=rs.getInt("prating");
+        rating=rs.getInt("rating");
+        ratingnum=rs.getInt("ratingnum");
+        rank=rs.getInt("rank");
+        text=rs.getString("cname")+ " rank:" + rank;
+        return this;
+    }
+
     public String getText() {
         return text;
     }
@@ -83,4 +99,5 @@ public class RatingCase {
     public void setText(String text) {
         this.text = text;
     }
+
 }

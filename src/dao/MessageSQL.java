@@ -19,7 +19,7 @@ public class MessageSQL {
     public static List<Message> getMessages(String user,int from,int num){
         return new SQL("SELECT * FROM t_message WHERE user=? ORDER BY time DESC LIMIT ?,?",user,from,num).queryBeanList(Message.class);
     }
-    public static int insert(Message m){
+    public static int save(Message m){
         return new SQL("INSERT INTO t_message(user,statu,title,text,time,deadline) values(?,?,?,?,?,?)",
                 m.getUser(),m.getStatu(),m.getTitle(),m.getText(),Main.now(),m.getDeadline()).update();
     }

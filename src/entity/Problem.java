@@ -55,6 +55,7 @@ public class Problem {
     public int getType(){
         return type;
     }
+
     static public int LOCAL=0;
     static public int OTHEROJ=1;
     static public int ONLYDES=2;

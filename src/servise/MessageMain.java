@@ -56,7 +56,7 @@ public class MessageMain {
         m.setTitle("[有人@你]" + d.getUsername() + "在帖子【" + d.getTitle() + "】中提到了你");
         m.setText(d.getUsername() + "在帖子【" + d.getTitle() + "】中提到了你。" + HTML.a("Discuss.jsp?id=" + d.getId(), "立即查看"));
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageDiscussReplyAt(Discuss d,String user){
         Message m=new Message();
@@ -65,7 +65,7 @@ public class MessageMain {
         m.setTitle("[有人@你]"+d.getUsername()+"在帖子【"+d.getTitle()+"】的回复中提到了你");
         m.setText(d.getUsername()+"在帖子【"+d.getTitle()+"】的回复中提到了你。"+ HTML.a("Discuss.jsp?id="+d.getId(),"立即查看"));
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageDisscussReply(int cid, String append, int did, String text){
         Discuss d=DiscussSQL.getDiscuss(did);
@@ -85,7 +85,7 @@ public class MessageMain {
         else url="Contest.jsp?cid="+cid+"#D"+did;
         m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")回复了你的帖子【" + d.getTitle() + "】：</br>" + text + "</br>" + HTML.a(url, "查看帖子"));
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageDiscussReplyAdmin(int did, int rid, String text){//管理员回复
         DiscussReply dr=DiscussSQL.getDiscussReply(did,rid);
@@ -96,7 +96,7 @@ public class MessageMain {
         m.setTitle("管理员回复了你在帖子【" + d.getTitle() + "】的回复");
         m.setText("管理员回复了你在帖子【" + d.getTitle() + "】的回复：</br>" + text + "</br>" + HTML.a("Discuss.jsp?id=" + did, "查看帖子"));
         m.setDeadline(new Timestamp(System.currentTimeMillis() + 86400000L * 30L));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageRatingChange(int cid, String user, int prating, int rating){
         Contest c=Main.contests.getContest(cid);
@@ -111,7 +111,7 @@ public class MessageMain {
 
         }
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageRegisterContest(String user,int cid,int statu){
         Contest c=Main.contests.getContest(cid);
@@ -121,7 +121,7 @@ public class MessageMain {
         m.setTitle("你注册的比赛【" + c.getName() + "】已经审核完成了");
         m.setText("你注册的比赛【" + c.getName() + "】已经审核完成了：</br>审核结果：" + RegisterUser.statuToHTML(statu) + "<br>" + HTML.a("User.jsp?cid=" + cid, "点击查看"));
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageWelcome(User u){
         Message m=new Message();
@@ -130,7 +130,7 @@ public class MessageMain {
         m.setTitle("欢迎新用户");
         m.setText(u.getNick() + "，欢迎您入驻T^T Online Judge，当前OJ是测试版，如有发现BUG，可以提交到【" + HTML.a("Discuss.jsp?id=6", "BUG和建议收集") + "】贴<br>"+"更多新用户帮助，可以查看【"+HTML.a("Discuss.jsp?id=4","FAQ")+"】也可以直接在底下回复提问。");
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageBlockOpen(String user,String title,int num){
         Message m=new Message();
@@ -139,7 +139,7 @@ public class MessageMain {
         m.setTitle("模块【" + title + "】开启，获得" + num + "ACB奖励");
         m.setText("由于模块【" + title + "】开启，您获得了" + num + "ACB奖励，请再接再厉！");
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
     public static int addMessageAwardACB(String u,int num,String text){
         Message m=new Message();
@@ -148,6 +148,6 @@ public class MessageMain {
         m.setTitle("您收到了" + num + "ACB奖励");
         m.setText("您收到了" + num + "ACB奖励：<br>备注信息：" + text);
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
-        return MessageSQL.insert(m);
+        return MessageSQL.save(m);
     }
 }

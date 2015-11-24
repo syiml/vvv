@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * Created by Syiml on 2015/6/14 0014.
  */
 
-public class Permission {
+public class Permission{
     boolean addProblem=false;
     boolean addLocalProblem=false;
     boolean viewCode=false;

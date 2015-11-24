@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Created by Syiml on 2015/7/24 0024.
  */
-public class ProblemTagRecord implements Comparable<ProblemTagRecord>{
+public class ProblemTagRecord implements Comparable<ProblemTagRecord>,IBeanResultSetCreate {
     public int getPid() {
         return pid;
     }
@@ -43,17 +43,14 @@ public class ProblemTagRecord implements Comparable<ProblemTagRecord>{
     String username;
     int tagid;
     int rating;
-    public ProblemTagRecord(ResultSet rs){
-        //pid,username,tagid,rating
-        try {
-            pid=rs.getInt("pid");
-            username=rs.getString("username");
-            tagid=rs.getInt("tagid");
-            rating=rs.getInt("rating");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+    @Override
+    public ProblemTagRecord init(ResultSet rs) throws SQLException {
+        pid=rs.getInt("pid");
+        username=rs.getString("username");
+        tagid=rs.getInt("tagid");
+        rating=rs.getInt("rating");
+        return this;
     }
     public ProblemTagRecord(int pid,String username,int tagid,int rating){
         this.pid=pid;
@@ -64,4 +61,5 @@ public class ProblemTagRecord implements Comparable<ProblemTagRecord>{
     public int compareTo(ProblemTagRecord u){
         return u.rating-rating;
     }
+
 }
