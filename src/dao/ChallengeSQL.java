@@ -62,24 +62,17 @@ public class ChallengeSQL {
      * @return key是BlockId，value是得分
      */
     public static Map<Integer,Integer> getUserScore(String user){
-        Map<Integer,Integer> ret=new HashMap<Integer, Integer>();
         SQL sql=new SQL("" +
                 "SELECT id,sum(score) as score " +
                 "FROM t_challenge_problem " +
                 "JOIN usersolve_view " +
                 "ON t_challenge_problem.tpid = usersolve_view.pid AND username = ? AND solved=1 " +
-                "GROUP BY id",user);
-        ResultSet rsUserScore=sql.query();
-        try {
-            while(rsUserScore.next()){
-                ret.put(rsUserScore.getInt("id"),rsUserScore.getInt("score"));
+                "GROUP BY id",user){
+            protected Integer getObject(int i) throws SQLException {
+                return rs.getInt(i);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return ret;
+        };
+        return sql.queryMap();
     }
     public static Set<Integer> getOpenBlocks(String user){
         return new SQL("Select block from t_challenge_openblock where username=?",user).querySet();
@@ -140,7 +133,7 @@ public class ChallengeSQL {
     }
     public static int getUserScore(String user, int id){
         return new SQL("" +
-                "SELECT id,sum(score) as score " +
+                "SELECT sum(score) as score " +
                 "FROM t_challenge_problem " +
                 "JOIN usersolve_view " +
                 "ON t_challenge_problem.tpid = usersolve_view.pid AND username = ? AND solved=1 " +
