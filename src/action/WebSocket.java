@@ -1,6 +1,7 @@
 package action;
 
 import WebSocket.SocketServer;
+import util.Main;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
@@ -24,7 +25,9 @@ public class WebSocket extends BaseAction{
                 e.printStackTrace();
             }
         }
-        SocketServer.sendMessage(cid,text);
+        if(Main.loginUserPermission().getAddContest()){
+            SocketServer.sendMessage(cid,text);
+        }
         return SUCCESS;
     }
     public String getOnlieUserList(){

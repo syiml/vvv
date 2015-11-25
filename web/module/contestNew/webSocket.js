@@ -1,6 +1,6 @@
 /**
  * Created by Administrator on 2015/11/25 0025.
- */
+*/
 var ws;//webSocket
 var contestId=-1;
 if (!window.WebSocket && window.MozWebSocket)

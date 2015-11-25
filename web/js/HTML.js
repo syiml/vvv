@@ -73,7 +73,7 @@ var HTML={
     },
     abtn:function(size,href,s,arge){
         var ret="<a role='button' class='btn";
-        if(arge&&arge.contains("btn-primary")){
+        if(arge&&arge.indexOf("btn-primary")!=-1){
             ret+=" btn-primary";
         }else{
             ret+=" btn-default";
@@ -82,10 +82,10 @@ var HTML={
         if(href!=null){
             ret+=" href='"+href+"'";
         }
-        if(arge&&arge.contains("disabled")){
+        if(arge&&arge.indexOf("disabled")!=-1){
             ret+=" disabled='disabled'";
         }
-        if(arge&&arge.contains("id=")){
+        if(arge&&arge.indexOf("id=")!=-1){
             ret+=arge.substring(arge.indexOf("id="));
         }
         ret+=">"+s+"</a>";
@@ -197,6 +197,7 @@ function formToHTML(json){
     if(json.action) ret+="action='"+json.action+"' ";
     if(json.onSubmit) ret+="onsubmit='"+json.onSubmit+"' ";
     if(!json.method) json.method="post";
+    if(json.id) ret+=" id='"+json.id+"' ";
     ret+="method='"+json.method+"'";
     ret+=">";
     if(!json.col) json.col=[2,10];
@@ -223,10 +224,12 @@ function _formToHTML(d,col){
     }else if(d.type=="submit"){
         if(!d.class) d.class="btn btn-primary";
         ret+="<div class='col-xs-"+col[1]+" col-xs-offset-"+col[0]+"'>";
-        ret+="<button class='"+d.class+"' type='submit' id='loginsubmit'>"+d.label+"</button>";
+        ret+="<button class='"+d.class+"' type='submit' ";
+        if(d.id) ret+="id='"+d.id+"";
+        ret+="'>"+d.label+"</button>";
         ret+="</div>";
     }else if(d.type=="hidden"){
-        return "<input type='hidden' name='"+ d.name+"' value='"+ d.value+"'>";
+        return "<input type='hidden' name='"+ d.name+"' value='"+ d.value+"' id='"+ d.id+"'>";
     }else if(d.type=="textarea"){
         if(d.label) ret+="<label for='"+d.id+"' class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
         if(d.label) ret+="<div class='col-xs-"+col[1]+"'>";
@@ -234,11 +237,18 @@ function _formToHTML(d,col){
         if(d.type=="password") ret+="type='password' ";
         ret+="name='"+d.name+"' class='form-control' ";
         if(d.rows) ret+=" rows="+ d.rows+" ";
-        if(d.value) ret+="value='"+ d.value +"' " ;
-        if(d.id) ret+="id='"+d.id+"' ";
-        if(d.placeholder) ret+="placeholder='"+d.placeholder+"' ";
-        ret+="'></textarea>";
+        if(d.value) ret+=" value='"+ d.value +"' " ;
+        if(d.id) ret+=" id='"+d.id+"' ";
+        if(d.placeholder) ret+=" placeholder='"+d.placeholder+"' ";
+        ret+=" ></textarea>";
         if(d.label) ret+="</div>";
+    }else if(d.type=="button"){
+        if(!d.class) d.class="btn btn-primary";
+        ret+="<div class='col-xs-"+col[1]+" col-xs-offset-"+col[0]+"'>";
+        ret+="<button class='"+d.class+"' type='button' ";
+        if(d.onclick) ret+=" onclick='"+ d.onclick+"' ";
+        ret+=" >"+d.label+"</button>";
+        ret+="</div>";
     }
     ret+="</div>";
     return ret;

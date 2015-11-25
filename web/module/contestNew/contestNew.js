@@ -236,26 +236,32 @@ function loadRating() {
     $('#NAV').find('li').removeClass("active");
     $('#ratingNAV').addClass("active");
 }
+function sendsubmit(){
+    $.post("sendToContest.action",{cid:$('#sendcid').val(),text:$('#sendtext').val()});
+    return false;
+}
 function sendMessageForm(){
     return formToHTML({
         col:[2,10],
-        action:"sendToContest.action",
+       // action:"sendToContest.action",
         method:"post",
-        onSubmit:"",
+        id:"send-form",
+        onSubmit:"return sendsubmit();",
         list:[
             {
                 type:"hidden",
                 name:"cid",
+                id:'sendcid',
                 value:contestInfo.cid
             },{
                 label:"发送消息",
                 type:"textarea",
                 name:"text",
-                id:"text",
+                id:"sendtext",
                 rows:15
             },{
                 type:"submit",
-                label:"确定"
+                label:"发送"
             }
         ]
     });
@@ -386,7 +392,7 @@ $(window).on('hashchange', function() {
 });
 function notice(text){
     $('#notics').html("<div class='notics-body'><div class='text'></div></div>").show().find(".notics-body")
-        .append(HTML.center(HTML.abtn("md","javascript:closenotics()","确定"))).find('.text').text(text);
+        .append(HTML.center(HTML.abtn("md","javascript:closenotics()","已阅","btn-primary"))).find('.text').text(text);
 }
 function closenotics(){
     $('#notics').hide();
