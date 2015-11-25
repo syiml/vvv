@@ -44,6 +44,7 @@ public class ProblemTagRecord implements Comparable<ProblemTagRecord>,IBeanResul
     int tagid;
     int rating;
 
+    public ProblemTagRecord(){}
     @Override
     public ProblemTagRecord init(ResultSet rs) throws SQLException {
         pid=rs.getInt("pid");

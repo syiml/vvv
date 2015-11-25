@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="tomcat7-websocket">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/tomcat7-websocket.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,6 +1,7 @@
 <%@ page import="entity.User" %>
 <%@ page import="util.HTML.HTML" %>
 <%@ page import="util.Main" %>
+<%@ page import="util.Tool" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -31,7 +32,7 @@
   if(lang!=null&&!lang.equals("")) langInt=Integer.parseInt(lang);
   if(cid!=null)
   {
-    long t=Main.now().getTime();
+    long t= Tool.now().getTime();
     out.println(HTML.StatusHTML(user, cidInt, paInt, pidInt, resultInt, langInt, ssuser,false));
   }
 %>

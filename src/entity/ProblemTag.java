@@ -34,5 +34,6 @@ public class ProblemTag implements IBeanResultSetCreate{
         this.id=id;
         this.name=name;
     }
+    public ProblemTag(){}
 
 }

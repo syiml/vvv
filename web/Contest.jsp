@@ -3,6 +3,7 @@
 <%@ page import="util.HTML.HTML" %>
 <%@ page import="entity.Permission" %>
 <%@ page import="entity.Contest" %>
+<%@ page import="util.Tool" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -84,7 +85,7 @@
       <h2 style="text-align:center"><%=Main.contests.getContest(qcid).getName()%></h2>
         <%//进度条
             Contest c = Main.contests.getContest(qcid);
-            long time=Main.now().getTime()-c.getBeginDate().getTime();
+            long time= Tool.now().getTime()-c.getBeginDate().getTime();
             long alltime=c.getEndTime().getTime() - c.getBeginDate().getTime();
             if(time>=0&&time<=alltime){
                 out.print(HTML.progress(time, alltime, "contest_pro",""));
@@ -108,3 +109,6 @@
 </html>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <script src='js/problemTag.js'></script>
+<script>
+    $(startWebSocket(<%=cid%>));
+</script>

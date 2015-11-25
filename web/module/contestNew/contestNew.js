@@ -47,6 +47,8 @@ function go(){
         }else{
             loadDiscuss(href.substr(2,20));
         }
+    }else if(href=="#ADMIN"){
+        loadAdmin();
     }else{
         loadHome();
     }
@@ -58,7 +60,8 @@ var text={
     rank:"实时排名",
     rating:"rating",
     codeCompare:"代码判重",
-    discuss:"在线讨论"
+    discuss:"在线讨论",
+    admin:"后台管理"
 };
 function loadNAV(){
     var $nav = $('#NAV').append("<ul class='nav nav-tabs'></ul>").find('.nav');
@@ -75,6 +78,7 @@ function loadNAV(){
         }
         if(contestInfo.compare){
             $nav.append("<li role='presentation' id='compareNAV'>"+HTML.a("#C",text.codeCompare)+"</li>");
+            $nav.append("<li role='presentation' id='adminNAV'>"+HTML.a("#ADMIN",text.admin)+"</li>");
         }
     }
 }
@@ -232,6 +236,46 @@ function loadRating() {
     $('#NAV').find('li').removeClass("active");
     $('#ratingNAV').addClass("active");
 }
+function sendMessageForm(){
+    return formToHTML({
+        col:[2,10],
+        action:"sendToContest.action",
+        method:"post",
+        onSubmit:"",
+        list:[
+            {
+                type:"hidden",
+                name:"cid",
+                value:contestInfo.cid
+            },{
+                label:"发送消息",
+                type:"textarea",
+                name:"text",
+                id:"text",
+                rows:15
+            },{
+                type:"submit",
+                label:"确定"
+            }
+        ]
+    });
+}
+function loadAdmin(){
+    //功能：管理员发送消息
+    //     显示当前在线人数
+    $main=$('#main');
+    $main.show().html(HTML.loader);
+    $.getJSON("getOnlineUserWithContest.action?cid="+cid,function(data){
+        var s="<h4>在线列表：</h4>";
+        for(var i=0;i<data.length;i++){
+            s+=data[i]+"<br>";
+        }
+        $main.html("").append(HTML.row(HTML.col(2,0,"",s)+HTML.col(10,0,"",sendMessageForm())));
+    });
+    $('#problems').hide();
+    $('#NAV').find('li').removeClass("active");
+    $('#adminNAV').addClass("active");
+}
 function ceinfo(rid){
     $('#info').html("").append(
     '<div class="modal fade" id="ceinfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">'+
@@ -324,7 +368,7 @@ function loadDiscussList(page){
     $('#NAV').find('li').removeClass("active");
     $('#discussNAV').addClass("active");
 }
-function loadDiscuss(id){
+function loadDiscuss(id) {
     $('#main').show().html(HTML.loader).load("module/contestNew/discuss.jsp?cid=" + cid + "&id=" + id );
     $('#problems').hide();
     $('#NAV').find('li').removeClass("active");
@@ -340,3 +384,10 @@ $(window).on('hashchange', function() {
     href=location.hash;
     go();
 });
+function notice(text){
+    $('#notics').html("<div class='notics-body'><div class='text'></div></div>").show().find(".notics-body")
+        .append(HTML.center(HTML.abtn("md","javascript:closenotics()","确定"))).find('.text').text(text);
+}
+function closenotics(){
+    $('#notics').hide();
+}

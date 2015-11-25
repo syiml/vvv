@@ -1,0 +1,48 @@
+<component name="libraryTable">
+  <library name="annotations-api">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/annotations-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/asm-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/asm-commons-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/asm-tree-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina-ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina-ha.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina-tribes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-beanutils-1.8.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-collections-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-fileupload-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-io-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-lang3-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-lang-2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/ecj-4.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/el-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/ezmorph-1.0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/freemarker-2.3.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/gson-2.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jasper.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jasper-el.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/javassist-3.11.0.GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/json-lib-2.4-jdk15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jsp-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/junit-4.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/mysql-connector-java-5.1.35-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/ognl-3.0.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/org.apache.commons.logging_1.1.1.v201101211721.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/servlet-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/struts2-core-2.3.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/tomcat7-websocket.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/tomcat-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/tomcat-coyote.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/tomcat-dbcp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/tomcat-jdbc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/tomcat-util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/websocket-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/xwork-core-2.3.4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/gson-2.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

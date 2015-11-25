@@ -75,5 +75,9 @@
     <orderEntry type="library" name="commons-collections-3.2.1" level="project" />
     <orderEntry type="library" name="ezmorph-1.0.6" level="project" />
     <orderEntry type="library" name="commons-lang-2.5" level="project" />
+    <orderEntry type="library" name="websocket-api" level="project" />
+    <orderEntry type="library" name="tomcat7-websocket" level="project" />
+    <orderEntry type="library" name="annotations-api" level="project" />
+    <orderEntry type="library" name="catalina" level="project" />
   </component>
 </module>

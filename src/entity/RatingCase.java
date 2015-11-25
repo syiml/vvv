@@ -39,6 +39,7 @@ public class RatingCase implements IBeanResultSetCreate{
     int rank;
     String text;
 
+    public RatingCase(){}
     public RatingCase(String u,Timestamp t,int cid,int prating,int rating,int ratingnum,int rank,String cname){
         username=u;
         time=t.getTime();
@@ -51,7 +52,7 @@ public class RatingCase implements IBeanResultSetCreate{
     }
 
     @Override
-    public Object init(ResultSet rs) throws SQLException {
+    public RatingCase init(ResultSet rs) throws SQLException {
         //username,time,cid,prating,rating,ratingnum,rank,(select name from contest where id=cid) as cname
         username=rs.getString("username");
         time=rs.getTimestamp("time").getTime();

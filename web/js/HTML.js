@@ -73,7 +73,7 @@ var HTML={
     },
     abtn:function(size,href,s,arge){
         var ret="<a role='button' class='btn";
-        if(arge.contains("btn-primary")){
+        if(arge&&arge.contains("btn-primary")){
             ret+=" btn-primary";
         }else{
             ret+=" btn-default";
@@ -82,10 +82,10 @@ var HTML={
         if(href!=null){
             ret+=" href='"+href+"'";
         }
-        if(arge.contains("disabled")){
+        if(arge&&arge.contains("disabled")){
             ret+=" disabled='disabled'";
         }
-        if(arge.contains("id=")){
+        if(arge&&arge.contains("id=")){
             ret+=arge.substring(arge.indexOf("id="));
         }
         ret+=">"+s+"</a>";
@@ -161,9 +161,6 @@ var HTML={
             "<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>"
     }
 };
-/**
- * Created by Syiml on 2015/7/11 0011.
- */
 var TableHTML=function(s){
     var ss="<table class='"+ s.class+"'>";
     ss+="<thead>";
@@ -230,6 +227,18 @@ function _formToHTML(d,col){
         ret+="</div>";
     }else if(d.type=="hidden"){
         return "<input type='hidden' name='"+ d.name+"' value='"+ d.value+"'>";
+    }else if(d.type=="textarea"){
+        if(d.label) ret+="<label for='"+d.id+"' class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
+        if(d.label) ret+="<div class='col-xs-"+col[1]+"'>";
+        ret+="<textarea ";
+        if(d.type=="password") ret+="type='password' ";
+        ret+="name='"+d.name+"' class='form-control' ";
+        if(d.rows) ret+=" rows="+ d.rows+" ";
+        if(d.value) ret+="value='"+ d.value +"' " ;
+        if(d.id) ret+="id='"+d.id+"' ";
+        if(d.placeholder) ret+="placeholder='"+d.placeholder+"' ";
+        ret+="'></textarea>";
+        if(d.label) ret+="</div>";
     }
     ret+="</div>";
     return ret;
