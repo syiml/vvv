@@ -7,6 +7,7 @@
     z-index: 999999;
     background-color: rgba(0,0,0,0.8);
     display: none;
+    overflow-y: auto;
 }
 #notics .notics-body{
     width:800px;

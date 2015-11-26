@@ -61,7 +61,7 @@ public class ProblemSQL {
     }
     public List<problemView> getProblems(int pid1,int pid2,boolean showhide){
         List<problemView> ret=new ArrayList<problemView>();
-        String sql="select pid,title,visiable,0,0 from problem where pid>=? and pid<=?";
+        String sql="select pid,title,visiable,acusernum,submitnum from v_problem where pid>=? and pid<=?";
         if(!showhide){
             sql+=" and visiable=1";
         }
@@ -83,31 +83,7 @@ public class ProblemSQL {
     public List<problemView> getProblems(int cid){
         List<problemView> list = new ArrayList<problemView>();
         //pid,title,visiable,ac,submit
-        String sql="SELECT tt.pid as pid,title,0,acuser,count(username) as submit\n" +
-                "FROM contestusersolve_view\n" +
-                "RIGHT JOIN\n" +
-                "    (SELECT t4.pid as pid,t4.title,count(username) acuser\n" +
-                "     FROM\n" +
-                "        (SELECT pid,username \n" +
-                "         FROM contestusersolve_view \n" +
-                "         WHERE cid=? AND solved=1\n" +
-                "        )t1\n" +
-                "     RIGHT JOIN\n" +
-                "        (SELECT t.pid as pid,problem.title as title \n" +
-                "         FROM \n" +
-                "            (SELECT pid,tpid \n" +
-                "             FROM contestproblems \n" +
-                "             WHERE cid=? order by pid\n" +
-                "            )t,\n" +
-                "            problem \n" +
-                "         WHERE t.tpid=problem.pid \n" +
-                "         ORDER BY t.pid\n" +
-                "        )t4\n" +
-                "     ON t1.pid=t4.pid \n" +
-                "     GROUP BY t4.pid\n" +
-                "    )tt\n" +
-                "ON tt.pid=contestusersolve_view.pid and contestusersolve_view.cid=?\n" +
-                "GROUP BY pid";
+        String sql="SELECT pid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";
         SQL sql1=new SQL(sql,cid,cid,cid);
         try {
             ResultSet r=sql1.query();

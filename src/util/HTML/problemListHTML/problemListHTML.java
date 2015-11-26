@@ -108,8 +108,6 @@ public class problemListHTML {
         if(user!=null&&list.size()>=1) submitResult=Main.status.sbumitResult(user.getUsername(),list.get(0).pid, list.get(list.size()-1).pid);
         else submitResult=new HashMap<Integer, Integer>();
 
-        Map<Integer,Integer> acusernum=Main.status.getProblemACUserNum(list.get(0).pid, list.get(list.size()-1).pid);
-        Map<Integer,Integer> submitnum=Main.status.getProblemSubmitNum(list.get(0).pid, list.get(list.size() - 1).pid);
         for(int i=0;i<list.size();i++){
             int pid=list.get(i).pid;
             List<String> row=new ArrayList<String>();
@@ -130,9 +128,9 @@ public class problemListHTML {
 
 
 
-            ac=acusernum.containsKey(pid)?acusernum.get(pid):0;
+            ac=list.get(i).ac;
 //            sub=Main.status.getProblemSubmitUserNum(pid);
-            sub=submitnum.containsKey(pid)?submitnum.get(pid):0;
+            sub=list.get(i).submit;
             if(sub!=0){
                 row.add(String.format("%.2f", 1.0*ac/sub*100)+
                         "%("+

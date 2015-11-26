@@ -26,13 +26,11 @@ import java.util.List;
  * 可以实现先登录，然后获取登录后页面的操作
  * Created by Administrator on 2015/6/7.
  */
-public class MyClient {
-    HttpClient hc;
+public class MyClient extends DefaultHttpClient{
     public MyClient(){
-        hc = new DefaultHttpClient();
-        HttpClientParams.setCookiePolicy(hc.getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
+        super();
+        HttpClientParams.setCookiePolicy(getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
     }
-
     /**
      * 对url提交一个post请求
      * @param URL 提交地址
@@ -47,7 +45,7 @@ public class MyClient {
             httppost.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
             httppost.setEntity(entity);
             HttpResponse hr;
-            hr = hc.execute(httppost);
+            hr = execute(httppost);
             entity = hr.getEntity();
             if (entity != null) {
                 //System.out.println("Response content lenght:"  + entity.getContentLength());
@@ -72,7 +70,6 @@ public class MyClient {
         }
         return 1;
     }
-
     /**
      * 获取指定url的内容，指定了utf-8编码
      * 要获取登录后才能显示的页面，要先用Post提交登录表单，然后get指定页面
@@ -85,7 +82,7 @@ public class MyClient {
         try {
             HttpGet httpget = new HttpGet(URL);
             httpget.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-            HttpResponse hr=hc.execute(httpget);
+            HttpResponse hr=execute(httpget);
             entity = hr.getEntity();
             return Jsoup.parse(entity.getContent(), "utf-8", "");
         } catch (UnsupportedEncodingException e) {

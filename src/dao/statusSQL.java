@@ -168,15 +168,6 @@ public class statusSQL {
             }
         }.queryMap();
     }
-    public Map<Integer,Integer> getProblemACUserNum(int pidl,int pidr){
-        return getProblemUserNum(pidl,pidr,1,"username");
-    }
-    public Map<Integer,Integer> getProblemSubmitUserNum(int pidl,int pidr){
-        return getProblemUserNum(pidl,pidr,0,"username");
-    }
-    public Map<Integer,Integer> getProblemSubmitNum(int pidl,int pidr){
-        return getProblemUserNum(pidl,pidr,0,"pid");
-    }
     public int getProblemAcUserNum(int pid){
         return new SQL("SELECT COUNT(username) FROM usersolve_view WHERE pid=? AND solved=1",pid).queryNum();
     }
@@ -263,7 +254,7 @@ public class statusSQL {
         //1->AC
         //0->submit but no AC
         //-1->no submit
-        return new SQL("select MAX(result=1)+2 from statu where ruser=? AND cid=? AND pid=?",username,cid,pid).queryNum()-1;
+        return new SQL("select MAX(result=1)+1 from statu where ruser=? AND cid=? AND pid=?",username,cid,pid).queryNum()-1;
     }
     public int sbumitResult(int pid,String username){
         //1->AC
