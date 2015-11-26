@@ -65,38 +65,12 @@ public class ProblemSQL {
         if(!showhide){
             sql+=" and visiable=1";
         }
-        SQL sql1=new SQL(sql,pid1,pid2);
-        try {
-            ResultSet r=sql1.query();
-            while(r.next()){
-                ret.add(new problemView(r));
-            }
-            r.close();
-        } catch (SQLException e) {
-            return ret;
-            //e.printStackTrace();
-        }finally {
-            sql1.close();
-        }
-        return ret;
+        return new SQL(sql,pid1,pid2).queryBeanList(problemView.class);
     }
     public List<problemView> getProblems(int cid){
-        List<problemView> list = new ArrayList<problemView>();
         //pid,title,visiable,ac,submit
         String sql="SELECT tpid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";
-        SQL sql1=new SQL(sql,cid,cid,cid);
-        try {
-            ResultSet r=sql1.query();
-            while(r.next()){
-                list.add(new problemView(r));
-            }
-            r.close();
-            return list;
-        } catch (SQLException e) {
-            return list;
-        }finally {
-            sql1.close();
-        }
+        return new SQL(sql,cid,cid,cid).queryBeanList(problemView.class);
     }
     public int getPageNum(int num,boolean showHide){
         String sql="select MAX(pid) from problem where pid<10000";
@@ -111,10 +85,10 @@ public class ProblemSQL {
         new SQL("UPDATE problem SET title=?,ojid=?,ojspid=?,author=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pid).update();
     }
     public int addProblem(int pid,Problem pro){
-        PreparedStatement p;
-        int newpid=1000;
+        int newpid;
         if(pid==-1){
             newpid=new SQL("select MAX(pid)+1 from problem").queryNum();
+            newpid=newpid==0?1000:newpid;
         }else{
             editProblem(pid,pro);
             return pid;
@@ -138,16 +112,13 @@ public class ProblemSQL {
         return ret;
     }
     public List<Integer> getProblemsByOjPid(int oj,String ojspid){
-        SQL sql=new SQL("SELECT pid FROM problem WHERE ojid=? AND ojspid=?",oj,ojspid);
-        ResultSet rs=sql.query();
-        List<Integer> ret=new ArrayList<Integer>();
-        try {
-            while(rs.next()){
-                ret.add(rs.getInt(1));
+        SQL sql=new SQL("SELECT pid FROM problem WHERE ojid=? AND ojspid=?",oj,ojspid){
+            @Override
+            protected Object getObject(int i) throws SQLException {
+                return rs.getInt(i);
             }
-            sql.close();
-        } catch (SQLException ignored) {}
-        return ret;
+        };
+        return sql.queryList();
     }
 
     public boolean isProblemLocal(int pid){

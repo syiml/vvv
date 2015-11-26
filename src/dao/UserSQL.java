@@ -109,70 +109,34 @@ public class UserSQL {
         return getUser(username,true);
     }
     private User getUser(String username,boolean rank){
-        SQL sql = null;
-        try {
-            if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user where username=? ",username);
-            else sql=new SQL("SELECT username,nick,gender,school,Email,motto,registertime,type,Mark,rating,-1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from users where username=?",username);
-            ResultSet rs=sql.query();
-            if(rs.next())
-                return new User(rs);
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }finally {
-            if(sql!=null) sql.close();
-        }
-        return null;
+        SQL sql;
+        if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user where username=? ",username);
+        else sql=new SQL("SELECT username,nick,gender,school,Email,motto,registertime,type,Mark,rating,-1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from users where username=?",username);
+        return sql.queryBean(User.class);
     }
     public List<User> getUsers(int from,int num,String serach,String order,boolean desc){
         if(order==null||order.equals("")){
             order="rank";
         }
-        List<User> list=new ArrayList<User>();
         SQL sql;
-        PreparedStatement p=null;
         if(serach==null||serach.equals("")){
             sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone " +
                     " from v_user "+
-                    (order==null||order.equals("")?"":" ORDER BY "+order+(desc?" desc ":" "))+
+                    " ORDER BY "+order+(desc?" desc ":" ")+
                     " LIMIT "+from+","+num);
         }else{
             sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone  from v_user where  (username like ? or nick like ?)  " +
-                    (order==null||order.equals("")?"":" ORDER BY "+order+(desc?" desc ":" "))+
+                    " ORDER BY "+order+(desc?" desc ":" ")+
                     " LIMIT "+from+","+num,"%"+serach+"%","%"+serach+"%");
         }
-        try {
-            ResultSet rs=sql.query();
-            while(rs.next()){
-                list.add(new User(rs));
-            }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return list;
-        }finally {
-            sql.close();
-        }
+        return sql.queryBeanList(User.class);
     }
     public int getUsersNum(String search){
         return new SQL("select count(*) from users where (username like ? or nick like ?)","%"+search+"%","%"+search+"%").queryNum();
     }
     public List<User> getRichTop10(){
-        List<User> list=new ArrayList<User>();
-        PreparedStatement p=null;
-        SQL sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user order by acb desc,rating desc " +
-                "LIMIT 0,10");
-        try {
-            ResultSet rs=sql.query();
-            while(rs.next()){
-                list.add(new User(rs));
-            }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return list;
-        } finally {
-            sql.close();
-        }
+        return new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone from v_user order by acb desc,rating desc " +
+                "LIMIT 0,10").queryBeanList(User.class);
     }
     public List<List<String>> getUsers(int cid,int from,int num,String serach,boolean is3){
         List<List<String>> list=new ArrayList<List<String>>();

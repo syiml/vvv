@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class User {
+public class User implements IBeanResultSetCreate{
     String username;
     String password;
     String nick;
@@ -56,6 +56,7 @@ public class User {
         return phone;
     }
 
+    public User(){}
     public User(register r){
         username=r.username;
         password=r.password;
@@ -72,43 +73,40 @@ public class User {
         //acproblems=new HashSet<Integer>();
         acb=0;
     }
-    public User(ResultSet rs) {
+    public User init(ResultSet rs) throws SQLException {
         //username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank,ratingnum,acnum,acb
+        this.username=rs.getString("username");
+        this.nick=rs.getString("nick");
+        this.gender=rs.getInt("gender");
+        this.school=rs.getString("school");
+        this.email=rs.getString("Email");
+        this.motto=rs.getString("motto");
+        this.registertime=rs.getTimestamp("registertime");
+        this.type=rs.getInt("type");
+        this.mark=rs.getString("Mark");
+        this.rating=rs.getInt("rating");
+        this.ratingnum=rs.getInt("ratingnum");
+        this.acb=rs.getInt("acb");
+
+        this.name=rs.getString("name");
+        this.faculty=rs.getString("faculty");
+        this.major=rs.getString("major");
+        this.cla=rs.getString("cla");
+        this.no=rs.getString("no");
+        this.phone=rs.getString("phone");
+
         try{
-            this.username=rs.getString("username");
-            this.nick=rs.getString("nick");
-            this.gender=rs.getInt("gender");
-            this.school=rs.getString("school");
-            this.email=rs.getString("Email");
-            this.motto=rs.getString("motto");
-            this.registertime=rs.getTimestamp("registertime");
-            this.type=rs.getInt("type");
-            this.mark=rs.getString("Mark");
-            this.rating=rs.getInt("rating");
-            this.ratingnum=rs.getInt("ratingnum");
-            this.acb=rs.getInt("acb");
-
-            this.name=rs.getString("name");
-            this.faculty=rs.getString("faculty");
-            this.major=rs.getString("major");
-            this.cla=rs.getString("cla");
-            this.no=rs.getString("no");
-            this.phone=rs.getString("phone");
-
-            try{
-                this.acnum=rs.getInt("acnum");
-            }catch(SQLException e){
-                this.acnum=-1;
-            }
-            try{
-                this.rank=rs.getInt("rank");
-            }catch(SQLException e){
-                this.rank=-1;
-            }
-            permission=Main.getPermission(username);
+            this.acnum=rs.getInt("acnum");
+        }catch(SQLException e){
+            this.acnum=-1;
+        }
+        try{
+            this.rank=rs.getInt("rank");
         }catch(SQLException e){
             this.rank=-1;
         }
+        permission=Main.getPermission(username);
+        return this;
     }
     public int getAcnum(){return acnum;}
     public int getACB(){

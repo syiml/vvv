@@ -114,8 +114,8 @@ public class HUST extends OTHOJ {
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("user_id",s.getUsername()));
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
-        System.out.println("user_id" + s.getUsername());
-        System.out.println("password"+s.getPassword());
+//        System.out.println("user_id" + s.getUsername());
+//        System.out.println("password"+s.getPassword());
         hc.Post(url+"/login.php", formparams);
     }
     private String getLanguage(int l){

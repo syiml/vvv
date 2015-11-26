@@ -33,12 +33,12 @@ public class MessageWebSocket extends MessageInbound {
     }
     @Override
     protected void onOpen(WsOutbound outbound) {
-        Tool.log(username+"->open");
+        //Tool.log(username+"->open");
         this.outbound=outbound;
     }
     @Override
     protected void onClose(int status) {
-        Tool.log(username+"->close "+status);
+        Tool.log(username+"->close cid="+cid+"&username="+username);
         SocketServer.sockets.remove(this);
     }
     public void send(String text){
