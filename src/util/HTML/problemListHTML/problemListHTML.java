@@ -10,6 +10,7 @@ import util.HTML.FromHTML.select.select;
 import util.HTML.FromHTML.text.text;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
+import util.Tool;
 
 import java.util.*;
 
@@ -35,14 +36,14 @@ public class problemListHTML {
         list= Main.problems.getProblems((page-1)*num+1000,(page-1)*num+1000+num-1,p.getShowHideProblem());
         incontest=false;
     }
-    public problemListHTML(int cid,Object user){
+    public problemListHTML(int cid){
         if(user==null){
             this.user=null;
             return ;
         }
         list=Main.problems.getProblems(cid);
         incontest=true;
-        this.user=(User)user;
+        this.user=Main.loginUser();
         p=this.user.getPermission();
         this.cid=cid;
     }
@@ -62,6 +63,7 @@ public class problemListHTML {
             List<String> row=new ArrayList<String>();
             if(user!=null){
                 int result=Main.status.sbumitResult(cid,pid,user.getUsername());
+                Tool.log(cid+"-"+pid+"-"+user.getUsername()+"-"+result);
                 if(result==1){
                     row.add(HTML.text("✔","green"));
                 }else if(result==0){

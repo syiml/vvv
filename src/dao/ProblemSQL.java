@@ -83,7 +83,7 @@ public class ProblemSQL {
     public List<problemView> getProblems(int cid){
         List<problemView> list = new ArrayList<problemView>();
         //pid,title,visiable,ac,submit
-        String sql="SELECT pid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";
+        String sql="SELECT tpid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";
         SQL sql1=new SQL(sql,cid,cid,cid);
         try {
             ResultSet r=sql1.query();

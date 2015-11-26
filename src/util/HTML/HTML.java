@@ -608,9 +608,9 @@ public class HTML {
         problemListHTML p=new problemListHTML(num,page,user);
         return p.HTML();
     }
-    public static String problemList(String cid,Object user){
+    public static String problemList(String cid){
         try{
-            problemListHTML p=new problemListHTML(Integer.parseInt(cid),user);
+            problemListHTML p=new problemListHTML(Integer.parseInt(cid));
             return p.HTMLincontest();
         }catch (NumberFormatException e){
             return panel("error","参数错误",null,"danger");

@@ -100,9 +100,9 @@ function loadProblemList($main,rollback){
                     row.push(HTML.textb("✘","red"));
                 }else row.push("");
                 if(data.length>26){
-                    row.push(data[i].pid+1);
+                    row.push(i+1);
                 }else{
-                    row.push(String.fromCharCode(data[i].pid+65));
+                    row.push(String.fromCharCode(i+65));
                 }
                 row.push(HTML.a("#P"+i+"",data[i].title) );
                 var ratio=(data[i].acnum/data[i].submitnum*100).toFixed(2);
