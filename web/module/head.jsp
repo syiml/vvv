@@ -82,7 +82,15 @@
     %>
 </ul>
 </div>
-<script type="text/javascript">$(".modern-menu").modernMenu();
+<script type="text/javascript">
+  //alert(location.href);
+  if(location.href.indexOf("acm.fjut.edu.cn/vj")!=-1){
+    location.href=location.href.replace("acm.fjut.edu.cn/vj","210.34.193.66:8080/vj");
+  }
+  if(location.href.indexOf("acm.fjut.edu.cn")!=-1){
+    location.href=location.href.replace("acm.fjut.edu.cn/vj","210.34.193.66:8080/vj");
+  }
+$(".modern-menu").modernMenu();
 var ch={//对应翻译
   HOME:"主页",
   PROBLEM:"题目",
