@@ -53,7 +53,20 @@ public abstract class pageBean {
         int PageNum=getPageNum();
         int NowPage=getNowPage();
 //        if(PageNum==1) return "";
-        int k=5;//当前页往外扩展页数
+        int k=4;//当前页往外扩展页数
+        int l=NowPage;
+        int r=NowPage;
+        while(k>0&&(l>1||r<PageNum)){
+            if(l>1){
+                l--;
+                k--;
+            }
+            if(r<PageNum){
+                r++;
+                k--;
+            }
+        }
+
         String size="sm";
         StringBuilder s =new StringBuilder("<div class='btn-toolbar' role='toolbar'>");
         s.append("<div class='btn-group' role='group'>");
@@ -62,18 +75,14 @@ public abstract class pageBean {
         }else{
             s.append(HTML.abtn(size,getLinkByPage(1),"<<",""));
         }
-        int begin=NowPage-k/2;
-        if(begin<1) begin=1;
-        int end=NowPage+k/2;
-        if(end>PageNum) end=PageNum;
-        if(begin!=1){
+        if(l!=1){
             s.append(HTML.abtn(size,"","...","disabled"));
         }
-        for(int i=begin;i<=end;i++){
+        for(int i=l;i<=r;i++){
             s.append(HTML.abtn(size,getLinkByPage(i),i+"",i==NowPage?"btn-primary":""));
         }
-        if(end!=PageNum){
-            s.append(HTML.abtn(size,"","...","disabled"));
+        if(r!=PageNum) {
+            s.append(HTML.abtn(size, "", "...", "disabled"));
         }
         if(NowPage==PageNum){
             s.append(HTML.abtn(size,getLinkByPage(PageNum),">>","disabled"));

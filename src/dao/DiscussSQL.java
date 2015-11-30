@@ -143,7 +143,7 @@ public class DiscussSQL {
         Discuss d=getDiscuss(did);
         if(d==null) return "error";
         int newid=getNewReplyId(did);
-        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,?,null)",newid,did,loginuser.getUsername(),Tool.now(),HTML.HTMLtoString(text),!d.isReplyHidden(), d.getPanelclass()).update();
+        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,0,null)",newid,did,loginuser.getUsername(),Tool.now(),HTML.HTMLtoString(text),!d.isReplyHidden()).update();
         MessageMain.addMessageDisscussReply(d.getCid(),loginuser.getUsername(),did,HTML.HTMLtoString(text));
         return "success";
     }
