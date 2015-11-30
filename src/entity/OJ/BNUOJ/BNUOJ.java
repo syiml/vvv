@@ -1,6 +1,9 @@
 package entity.OJ.BNUOJ;
 
 import entity.OJ.OTHOJ;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 import util.Main;
 import util.Tool;
 import util.Vjudge.Submitter;
@@ -29,14 +32,9 @@ public class BNUOJ extends OTHOJ {
     private static String submitURL="/v3/ajax/problem_submit.php";
     private static String problemURL="/v3/problem_show.php";
     private static String TitleSelect="h2";
-    private static String statusURL="/contest/status.php";
-    private static String statusFormUser="showname";
-    private static String statuSelect="center table:nth-child(3) tr:nth-child(2)";
     private static String DesSelect=".content-wrapper";
-    private static String SampleInputSelect="#showproblem pre";
     private static String loginURL="/v3/ajax/login.php";
     private static MyClient hc = new MyClient();
-    private static String Int64="%lld";
 
     private static Map<String,Result> resultMap;
     private static Map<String,String>  languageMap;
@@ -69,32 +67,19 @@ public class BNUOJ extends OTHOJ {
     private static String getLoginURL() {
         return URL+loginURL;
     }
-    private static String getStatusURL(String user){
-        return URL+statusURL+"?"+statusFormUser+"="+user;
-    }
     public String getProblemURL(String pid){ return URL+problemURL+"?pid="+pid; }
     private Result getResultMap(String v){
         return resultMap.get(v);
     }
 
     public String getRid(String user){
-        Element e=null;
-        Document d = null;
-        RES r=new RES();
-        boolean bo;
-        bo=false;
-        try {
-            d = Jsoup.connect(getStatusURL(user)).get();
-            e = d.select(statuSelect).first();
-            return (e.select("td:nth-child(2)").first().text());
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } catch(NullPointerException e2){
-            bo=true;
-            Tool.sleep(1000);
+        JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0="+user).select("body").html());
+        JSONArray aadata=jo.getJSONArray("aaData");
+        if(aadata.size()==0){
+            return "0";
+        }else{
+            return aadata.getJSONArray(0).getString(1);
         }
-        if(bo) return "0";
-        return "error";
     }
     public String getTitle(String pid){
         Document doc;
@@ -171,27 +156,24 @@ public class BNUOJ extends OTHOJ {
         return "success";
     }
     public RES getResult(Submitter s) {
-        Element e;
-        Document d = null;
         RES r=new RES();
-        try {
-            d = Jsoup.connect(getStatusURL(s.getUsername())).get();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0="+s.getUsername()).select("body").html());
+        JSONArray aadata=jo.getJSONArray("aaData");
+        if(aadata.size()==0){
             r.setR(Result.PENDING);
             return r;
+        }else{
+            JSONArray data=aadata.getJSONArray(0);
+            r.setR(getResultMap(data.getString(3)));
+            if(r.canReturn()){
+                r.setTime(data.getString(5).replaceAll(" ms","MS"));
+                r.setMemory(data.getString(6).replaceAll(" KB","KB"));
+            }
+            if(r.getR()==Result.CE){
+                r.setCEInfo(getCEInfo(s));
+            }
+            return r;
         }
-        e = d.select(statuSelect).first();
-        //System.out.println("get:"+e.html());
-        r.setR(getResultMap(e.select("td:nth-child(4)").first().text()));
-        if(r.canReturn()){
-            r.setTime(e.select("td:nth-child(6)").first().text().replaceAll(" ms","MS"));
-            r.setMemory(e.select("td:nth-child(7)").first().text().replaceAll(" KB","KB"));
-        }
-        if(r.getR()==Result.CE){
-            r.setCEInfo(getCEInfo(s));
-        }
-        return r;
     }
     public String Login(Submitter s){
         //登录
@@ -203,14 +185,11 @@ public class BNUOJ extends OTHOJ {
         return "success";
     }
     public String getCEInfo(Submitter s){
-        Element e;
-        Document d = null;
-        try {
-            d = Jsoup.connect("http://www.bnuoj.com/contest/show_ce_info.php?runid="+s.getOjsrid()).get();
-            return d.select("pre").first().html();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            return "none";
+        try{
+            JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/get_ceinfo.php?runid="+s.getOjsrid()).select("body").html());
+            return jo.getString("msg");
+        }catch (JSONException e){
+            return "未获取到";
         }
     }
 }

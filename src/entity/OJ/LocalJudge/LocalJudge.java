@@ -200,6 +200,7 @@ public class LocalJudge {
         }
         int ret=-1;
         s.showstatus="Compile";
+        delFile(outPath + s.getSubmitInfo().rid+"\\");
         if(compile(s,res)){
             s.showstatus="CompileSuccess";
             try {

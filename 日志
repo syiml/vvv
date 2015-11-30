@@ -78,6 +78,9 @@
 
 BUG
     rejudge后rank更新会有问题
+11-30
+    修复由于判题文件删除不干净造成rejudge不成功的bug
+    修复由于bnuoj改动造成的bnuoj判题不正确
 11-26
     contest内的题目列表的Radio改成（ac人数/提交数）
 11-25
