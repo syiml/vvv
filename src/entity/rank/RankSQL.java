@@ -172,7 +172,7 @@ public class RankSQL {
         }else if(a.getRank().equals("2")){
             s="t_rank_training";
         }
-        new SQL("delete from "+s+" where cid=?").update();
+        new SQL("delete from "+s+" where cid=?",cid).update();
         return addRank(cid,a);
     }
 }
