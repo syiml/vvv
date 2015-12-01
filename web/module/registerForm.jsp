@@ -6,7 +6,7 @@
   }
 %>
 <div class="panel panel-default">
-  <div class="panel-heading">Register</div>
+  <div class="panel-heading">注册</div>
   <div class="panel-body">
     <%=HTML.registerForm()%>
   </div>

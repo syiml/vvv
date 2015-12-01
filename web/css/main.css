@@ -145,3 +145,12 @@ table{
 .adminNAV .nav-pills > li :hover{
     padding-left:30px;
 }
+.btn-toolbar .btn-group .btn{
+    transition-duration: 0.2s;
+}
+/*.btn-toolbar .btn-group .btn-default:hover{*/
+    /*background-color: skyblue;*/
+/*}*/
+/*.btn-toolbar .btn-group .btn-default:hover{*/
+    /*background-color: skyblue;*/
+/*}*/

@@ -18,7 +18,7 @@ import java.util.List;
 /*
 * 赛选条件：状态、名字、type
 * */
-public class contestListHTML {
+public class contestListHTML extends pageBean{
     //筛选条件
     private int num;//每页个数
     private int page;//第几页
@@ -27,6 +27,7 @@ public class contestListHTML {
     private int type;//类型
     private int kind;
     List<Contest> list;//显示列表
+    private int pageNum=0;
     public contestListHTML(int num, int page){
         this.num=num;
         this.page=page;
@@ -43,36 +44,10 @@ public class contestListHTML {
         this.list=list;
     }
     public void setKind(int kind){this.kind=kind;}
-    public String table(int kind){
-        TableHTML table=new TableHTML();
-        table.setClass("table table-striped table-hover");
-        table.addColname("#");
-        table.addColname("名称");
-        table.addColname("开始时间");
-        table.addColname("结束时间");
-        table.addColname("权限");
-        table.addColname("状态");
-        if(kind==-1) table.addColname("类型");
-        String s="";
-        int size;
-        if(havenext()){
-            size=list.size()-1;
-        }else size=list.size();
-        for(int i=0;i<size;i++){
-            table.addRow(contestToRow(list.get(i),kind==-1));
-        }
-        return table.HTML();
-    }
-    public String HTML(){
-        User u=(User)Main.getSession().getAttribute("user");
-        Permission p;
-        if(u==null){
-            p=new Permission();
-        }else{
-            p=Main.getPermission(u.getUsername());
-        }
-        if(list==null) list=Main.contests.getContests(page*num,num+1,status,name,type,kind);
-        String sss=HTML.floatLeft(pageHTML())+HTML.floatRight(HTML.div("right-block",formHTML()));
+
+    public String getTableClass(){return "table table-striped table-hover";}
+    @Override
+    public String getTitle() {
         String head="比赛列表";
         if(kind==-1){
             head="比赛列表";
@@ -85,36 +60,76 @@ public class contestListHTML {
         }else if(kind==3){
             head=HTML.textb("比赛列表 - 正式","orange");
         }
+        Permission p;
+        User u=(User)Main.getSession().getAttribute("user");
+        if(u==null){
+            p=new Permission();
+        }else{
+            p=Main.getPermission(u.getUsername());
+        }
         if(p.getAddContest()){
             head+=HTML.floatRight(HTML.a("admin.jsp?page=AddContest","New"));
         }
-        return HTML.panelnobody(head,HTML.div("panel-body","style='padding:5px'",sss) + table(kind));
+        return head;
     }
-    private List<String> contestToRow(Contest c,boolean showkind){
-        List<String> l=new ArrayList<String>();
-        l.add(c.getCid() + "");
-        String name=HTML.a("Contest.jsp?cid=" + c.getCid(), c.getName());
-        if(c.getType()==3||c.getType()==4) name+=HTML.floatRight("["+HTML.a("User.jsp?cid="+c.getCid(),"报名")+"]");
-        l.add(name);
-        l.add(c.getBeginTimeString());
-        l.add(c.getEndTimeString());
-        l.add(c.getTypeHTML());
-        l.add(c.getStatuHTML());
-        if(showkind){
+
+    @Override
+    public int getPageSize() {
+        return list.size();
+    }
+
+    @Override
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    @Override
+    public int getNowPage() {
+        return page;
+    }
+
+    @Override
+    public String getCellByHead(int i, String colname) {
+        Contest c=list.get(i);
+        if(colname.equals("#")){
+            return c.getCid()+"";
+        }else if(colname.equals("名称")){
+            String name=HTML.a("Contest.jsp?cid=" + c.getCid(), c.getName());
+            if(c.getType()==3||c.getType()==4) name+=HTML.floatRight("["+HTML.a("User.jsp?cid="+c.getCid(),"报名")+"]");
+            return name;
+        }else if(colname.equals("开始时间")){
+            return c.getBeginTimeString();
+        }else if(colname.equals("结束时间")){
+            return c.getEndTimeString();
+        }else if(colname.equals("权限")){
+            return c.getTypeHTML();
+        }else if(colname.equals("状态")){
+            return c.getStatuHTML();
+        }else if(colname.equals("类型")){
             int k=c.getKind();
             if(k==0){
-                l.add(HTML.textb("练习","green"));
+                return HTML.textb("练习","green");
             }else if(k==1){
-                l.add(HTML.textb("积分","blue"));
+                return HTML.textb("积分","blue");
             }else if(k==2){
-                l.add(HTML.textb("趣味",""));
+                return HTML.textb("趣味","");
             }else if(k==3){
-                l.add(HTML.textb("正式","orange"));
+                return HTML.textb("正式","orange");
             }
         }
-        return l;
+        return "=ERROR=";
     }
-    private String formHTML(){
+
+    @Override
+    public String getLinkByPage(int page) {
+        String url="Contests.jsp?statu="+status+"&type="+type+"&kind="+kind;
+        if(name!=null) url+="&name="+name ;
+        url+="&page="+(page);
+        return url;
+    }
+
+    @Override
+    public String rightForm() {
         FormHTML f = new FormHTML();
         f.setType(1);
         text f1=new text("name","名称");
@@ -150,33 +165,12 @@ public class contestListHTML {
         f.setSubmitText("筛选");
         return f.toHTML();
     }
-    boolean havenext(){
-        return list.size()==num+1;
-    }
-    private String pageHTML(){
-        String url="Contests.jsp" +
-                "?statu="+status;
-        if(name!=null) url+="&name="+name ;
-        url+="&type="+type;
-        url+="&kind="+kind;
-        String preurl;
-        if(page==0){
-            preurl=null;
-        }else{
-            preurl=url+"&page="+(page-1);
-        }
-        String nexturl;
-        if(havenext()){
-            nexturl=url+"&page="+(page+1);
-        }else {
-            nexturl = null;
-        }
-        String s="<div class='btn-toolbar' role='toolbar'>"+HTML.btngroup(HTML.abtn("sm",url,"首页",""));
-        s+=HTML.btngroup(
-                HTML.abtn("sm",preurl,"上一页",preurl==null?"disabled":"")+
-                HTML.abtn("sm",null,page+1+"","")+
-                HTML.abtn("sm",nexturl,"下一页",nexturl==null?"disabled":"")
-        );
-        return s+"</div>";
+
+    public String HTML(){
+        if(list==null) list=Main.contests.getContests((page-1)*num,num,status,name,type,kind);
+        pageNum=getPageNum(Main.contests.getContestsNum(status,name,type,kind),num);
+        addTableHead("#","名称","开始时间","结束时间","权限","状态");
+        if(kind==-1) addTableHead("类型");
+        return super.HTML();
     }
 }

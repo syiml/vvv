@@ -213,6 +213,28 @@ public class ContestSQL {
         }
         return list;
     }
+    public int getContestsNum(int statu,String name,int type,int kind){
+        String sql="";
+        sql+="select count(*)";
+        sql+=" from contest where 1";
+        if(type!=-1){
+            sql+=" and ctype="+type;
+        }
+        if(statu==0){//pending
+            sql+=" and NOW()<beginTime";
+        }else if(statu==1){//RUNNING
+            sql+=" and NOW()>=beginTime and NOW()<endTime";
+        }else if(statu==2){//end
+            sql+=" and NOW()>=endTime";
+        }
+        if(name!=null&&!name.equals("")){
+            sql+=" and name like '%"+name+"%'";
+        }
+        if(kind!=-1){
+            sql+=" and kind="+kind;
+        }
+        return new SQL(sql).queryNum();
+    }
     public List<Contest> getRecentlyContests(int num){
         List<Contest> list=new ArrayList<Contest>();
         PreparedStatement p1=null;

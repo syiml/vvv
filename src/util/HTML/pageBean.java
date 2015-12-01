@@ -49,6 +49,16 @@ public abstract class pageBean {
     public void addClass(int r,int c,String cls){
         table.addCl(r,c,cls);
     }
+
+    public String btn(String href,String text){
+        return HTML.abtn("sm",href,text,"");
+    }
+    public String btn_disabled(String href,String text){
+        return HTML.abtn("sm",href,text,"disabled");
+    }
+    public String btn_active(String href,String text){
+        return HTML.abtn("sm",href,text,"btn-primary");
+    }
     public String page(){
         int PageNum=getPageNum();
         int NowPage=getNowPage();
@@ -66,28 +76,40 @@ public abstract class pageBean {
                 k--;
             }
         }
-
-        String size="sm";
         StringBuilder s =new StringBuilder("<div class='btn-toolbar' role='toolbar'>");
         s.append("<div class='btn-group' role='group'>");
         if(NowPage==1){
-            s.append(HTML.abtn(size,getLinkByPage(1),"<<","disabled"));
+            s.append(btn_disabled(getLinkByPage(1),"<<"));
         }else{
-            s.append(HTML.abtn(size,getLinkByPage(1),"<<",""));
+            s.append(btn(getLinkByPage(1),"<<"));
+        }
+        if(NowPage==1){
+            s.append(btn_disabled(getLinkByPage(1),"＜"));
+        }else{
+            s.append(btn(getLinkByPage(NowPage-1),"＜"));
         }
         if(l!=1){
-            s.append(HTML.abtn(size,"","...","disabled"));
+            s.append(btn_disabled("","..."));
         }
         for(int i=l;i<=r;i++){
-            s.append(HTML.abtn(size,getLinkByPage(i),i+"",i==NowPage?"btn-primary":""));
+            if(i==NowPage){
+                s.append(btn_active(getLinkByPage(i),i+""));
+            }else{
+                s.append(btn(getLinkByPage(i),i+""));
+            }
         }
         if(r!=PageNum) {
-            s.append(HTML.abtn(size, "", "...", "disabled"));
+            s.append(btn_disabled("", "..."));
         }
         if(NowPage==PageNum){
-            s.append(HTML.abtn(size,getLinkByPage(PageNum),">>","disabled"));
+            s.append(btn_disabled(getLinkByPage(PageNum),"＞"));
         }else{
-            s.append(HTML.abtn(size,getLinkByPage(PageNum),">>",""));
+            s.append(btn(getLinkByPage(NowPage+1),"＞"));
+        }
+        if(NowPage==PageNum){
+            s.append(btn_disabled(getLinkByPage(PageNum),">>"));
+        }else{
+            s.append(btn(getLinkByPage(PageNum),">>"));
         }
         s.append("</div></div>");
         return s.toString();

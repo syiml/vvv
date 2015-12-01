@@ -583,7 +583,7 @@ public class HTML {
     }
     public static String contestList(String num,String page,String statu,String name,String type,String kind){
         if(num==null||num.equals("")){num=Main.contestShowNum+"";}
-        if(page==null||page.equals("")){page="0";}
+        if(page==null||page.equals("")){page="1";}
         if(statu==null||statu.equals("")){statu="-1";}
         if(name==null) name="";
         if(type==null||type.equals(""))type="-1";
@@ -734,7 +734,8 @@ public class HTML {
     public static String recentlyContestTable(int num){
         contestListHTML c=new contestListHTML(num,0);
         c.setList(Main.contests.getRecentlyContests(num+1));
-        return c.table(-1);
+        c.addTableHead("#","名称","开始时间","结束时间","权限","状态","类型");
+        return c.tableHTML();
     }
     public static String clockIn(String user,String day,String times){
         if(day==null) day=ClockInSQL.getDay(Tool.now())+"";
