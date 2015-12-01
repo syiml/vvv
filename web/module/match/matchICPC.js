@@ -104,6 +104,7 @@ var matchICPC=function(cid){
         if(j>=rank[i].score[s.pid].length){
             rank[i].score[s.pid].push({rid: s.rid,result: s.result,time: s.time});
         }
+        var statu=rank[i].score[s.pid][j];
         if(s.result==-1){
 
         }else if(s.result==1){
