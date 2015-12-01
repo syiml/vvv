@@ -81,7 +81,7 @@ var matchICPC=function(cid){
         user.W=W;
     };
     var putStatus=function(s){
-        //有一个新的status状态改变，可能是一个新的提交，或者是提交结果有变化。s:{rid,pid,username,result}
+        //有一个新的status状态改变，可能是一个新的提交，或者是提交结果有变化。s:{rid,pid,username,result,time}
         //同步改变rank和网页布局
         //如果这个username没出现过，则发送请求，单独获取它的信息
         rankDynameick.log("接收提交：{rid:"+ s.rid+",pid:"+ s.pid+",username:"+ s.username+",result:"+ s.result +"}");
@@ -89,8 +89,20 @@ var matchICPC=function(cid){
         for(i=0;i<rank.length;i++){
             if(rank[i].username== s.username) break;
         }
-        if(i<rank.length){
-            //rank[i].score
+        if(i>=rank.length){
+            rank[i]={rank:i,username: s.username,S:0,W:0,score:[]};
+            for(var j=0;j<pnum;j++){
+                rank[i].score[j]=[];
+            }
+        }
+        var j;
+        for(j=0;j<rank[i].score[s.pid].length;j++){
+            if(rank[i].score[s.pid][j].rid== s.rid){
+                break;
+            }
+        }
+        if(j>=rank[i].score[s.pid].length){
+            rank[i].score[s.pid].push({rid: s.rid,result: s.result,time: s.time});
         }
         if(s.result==-1){
 
