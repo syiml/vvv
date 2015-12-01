@@ -1,0 +1,79 @@
+.debug{
+    width:300px;
+    height:200px;
+    background-color: #ff828c;
+    border-radius: 5px;
+    border: 2px solid red;
+    position:fixed;
+    bottom:50px;
+    right:10px;
+}
+.debug .title{
+    background-color: #ff5d61;
+    margin-bottom: 3px;
+    text-align: center;
+    font-size: 20px;
+}
+.debug .body{
+    height:165px;
+    word-break: break-all;
+    overflow-y:auto;
+    padding:3px;
+}
+.debug-switch{
+    width:300px;
+    height:30px;
+    line-height: 30px;
+    position:fixed;
+    bottom:10px;
+    right:10px;
+    text-align: center;
+    border: 2px solid red;
+    border-radius: 5px;
+}
+.debug-switch.open{
+    background-color: #ffcad8;
+}
+.debug-switch.close{
+    background-color: #ff5461;
+ }
+.row{
+    position: absolute;
+}
+.row .col{
+    background-color: #c9cacc;
+    float:left;
+    margin-right: 3px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    display:table-cell;
+    vertical-align:middle;
+}
+.row .col.ac{
+    background-color: #00ab00;
+}
+.row .col.wa{
+    background-color: #ff5f5f;
+}
+.row .col.nores{
+    background-color: mediumslateblue;
+}
+.col.rank{
+    width:30px;
+}
+.col.username{
+    width:150px;
+}
+.col.nick{
+    width:150px;
+}
+.col.S{
+    width:30px;
+}
+.col.W{
+    width:50px;
+}
+.col.pro{
+    width:70px;
+}

@@ -20,9 +20,12 @@
 <html>
 <head>
     <title><%=c.getName()%> - 观战模式</title>
+    <link href="match.css" rel="stylesheet">
 </head>
 <body>
 <div class="main"></div>
+<div class="debug"><div class="title">debug</div><div class="body"></div></div>
+<div class="debug-switch open">Debug</div>
 </body>
 </html>
 <script src="matchICPC.js"></script>
