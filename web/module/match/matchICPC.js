@@ -12,7 +12,8 @@ var matchICPC=function(cid){
     var user;
     var rank=[];
     var pnum;
-    var init=function(){//刚刚启动时做的初始化工作
+    var init=function(){
+        //刚刚启动时做的初始化工作
         //获取status列表 = {pnum,status:[{rid,pid,username,result,time},...]}
         $.getJSON("/StatusJson.action?cid="+cid,function(data){
             pnum=data.pnum;
@@ -53,7 +54,8 @@ var matchICPC=function(cid){
         //显示
         $main= $(".main");
         for(var i=0;i<rank.length;i++){
-            $main.append("<div class='row'>"+rank[i].username+"["+rank[i].S+"]"+"["+rank[i].W+"]"+"</div>");
+            rankDynameick.newRow([rank[i].username,rank[i].S,rank[i].W]);
+            //$main.append("<div class='row'>"+rank[i].username+"["+rank[i].S+"]"+"["+rank[i].W+"]"+"</div>");
         }
     };
     var computeSW=function(user){

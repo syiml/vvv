@@ -1,6 +1,3 @@
-<%@ page import="entity.statu" %>
-<%@ page import="util.Main" %>
-<%@ page import="entity.Permission" %>
 <%@ page import="util.HTML.HTML" %>
 <%--
   Created by IntelliJ IDEA.

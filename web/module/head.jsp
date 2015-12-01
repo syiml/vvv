@@ -84,8 +84,8 @@
 </div>
 <script type="text/javascript">
   //alert(location.href);
-  if(location.href.indexOf("acm.fjut.edu.cn/vj")!=-1){
-    location.href=location.href.replace("acm.fjut.edu.cn/vj","210.34.193.66:8080/vj");
+  if(location.href.indexOf("acm.fjut.edu.cn\/vj")!=-1){
+    location.href=location.href.replace("acm.fjut.edu.cn\/vj","210.34.193.66:8080/vj");
   }
   if(location.href.indexOf("acm.fjut.edu.cn")!=-1){
     location.href=location.href.replace("acm.fjut.edu.cn/vj","210.34.193.66:8080/vj");
