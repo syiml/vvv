@@ -7,7 +7,34 @@ var rankDynameick=function(){
     var padding=2;
     var offset_x=10;
     var offset_y=10;
+    var width;
+    function init(){
+        $('.debug-switch').click(function(){
+            if($(this).hasClass("open")){
+                $('.debug').hide();
+                $(this).removeClass("open").addClass("close");
+            }else{
+                $('.debug').show();
+                $(this).removeClass("close").addClass("open");
+            }
+        });
+        $('.chat-switch').click(function(){
+            if($(this).hasClass("open")){
+                $('.chat').hide();
+                $(this).removeClass("open").addClass("close");
+            }else{
+                $('.chat').show();
+                $(this).removeClass("close").addClass("open");
+            }
+        });
+        $('#chat-submit').click(function(){
+            match.send($('#chat-text').val());
+            $('#chat-text').val("");
+        });
+    }
+    init();
     function buildHead(pnum){
+        width=30+150+30+50+pnum*70+(pnum+4)*padding;
         var $row=$("<div id='head' class='row head' style='left:"+offset_x+"px;top:"+(offset_y)+"px'></div>");
         $row.append("<div class='col rank'>#</div>")
             .append("<div class='col username'>username</div>")
@@ -16,6 +43,7 @@ var rankDynameick=function(){
         for(var i=0;i<pnum;i++){
             $row.append("<div class='col pro'>"+String.fromCharCode(i+65)+"</div>")
         }
+        $row.css("width",width+"px");
         $(".main").append($row);
     }
     function newRow(data){
@@ -60,7 +88,8 @@ var rankDynameick=function(){
                 $row.append("<div class='col pro pro-"+i+"'></div>");
             }
         }
-        $(".main").append($row);
+        $row.css("width",width+"px");
+        $(".main").append($row).css("height",(rowNum+3)*(25+padding)+"px");
     }
     function editSW(username,S,W){
         var $row=$(".row-"+username);
@@ -117,12 +146,31 @@ var rankDynameick=function(){
     function log(s){
         $(".debug .body").append(s+"<br>");
     }
+    function chat(user,text){
+        $(".chat-body").append("<b>"+user+":</b>"+text+"<br>").scrollTop(10000);
+    }
+    function chat_log(text){
+        $(".chat-body").append(text);
+    }
+    function addOnline(user){
+        var $ol=$(".online");
+        if($ol.find("#online-"+user).length<=0){
+            $ol.append("<div id='online-"+user+"'>"+user+"</div>");
+        }
+    }
+    function delOnline(user){
+        $(".online").find("#online-"+user).remove();
+    }
     return {
         editSW:editSW,
         editCell:editCell,
         moveRow:moveRow,
         bulidHead:buildHead,
         newRow:newRow,
-        log:log
+        log:log,
+        chat:chat,
+        addOnline:addOnline,
+        delOnline:delOnline,
+        chat_log:chat_log
     }
 }();

@@ -233,7 +233,7 @@ public class Contest {
         }else if(endtime.before(now)){
             return "<b>已结束</b>";//END
         }else{
-            return "<b style='color:red'>进行中</b>";//RUNNING
+            return HTML.a("match/?cid="+cid,"<b style='color:red'>可观战</b>");//RUNNING
         }
     }
     public int canin(String user){//判断用户是否有权限进入比赛

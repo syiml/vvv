@@ -12,11 +12,15 @@ var matchICPC=function(cid){
     var user;
     var rank=[];
     var pnum;
+    var ws;
+    function send(text){
+        console.log("Send:"+text);
+        ws.send(text);
+    }
     var init=function(){
         //刚刚启动时做的初始化工作
         //获取status列表 = {pnum,status:[{rid,pid,username,result,time},...]}
         $.getJSON("/StatusJson.action?cid="+cid,function(data){
-
             pnum=data.pnum;
             for(var i=0;i<data.status.length;i++){
                 putStatusToRank(data.status[i]);
@@ -24,17 +28,12 @@ var matchICPC=function(cid){
             rankToHtml();
             startWebSocket(cid);
 
-            var ws;//webSocket
+            //ws;//webSocket
             var contestId=-1;
             if (!window.WebSocket && window.MozWebSocket)
                 window.WebSocket=window.MozWebSocket;
             if (!window.WebSocket)
                 alert("你的浏览器不支持动态更新，要使用该功能请使用其他浏览器（比如谷歌浏览器）");
-            function send(data)//发送消息
-            {
-                console.log("Send:"+data);
-                ws.send(data);
-            }
             function startWebSocket(cid)
             {
                 contestId=cid;
@@ -48,10 +47,20 @@ var matchICPC=function(cid){
                     var data=(new Function("","return "+event.data))();
                     if(data.type=="login"){
                         rankDynameick.log("login:"+data.user);
+                        rankDynameick.addOnline(data.user);
+                        rankDynameick.chat_log("<b>"+data.user+"</b>进入观战<br>");
                     }else if(data.type=="logout"){
                         rankDynameick.log("logout:"+data.user);
+                        rankDynameick.delOnline(data.user);
+                        rankDynameick.chat_log("<b>"+data.user+"</b>离开观战<br>");
                     }else if(data.type=="status"){
                         putStatus(data);
+                    }else if(data.type=="chat"){
+                        rankDynameick.chat(data.user,data.text);
+                    }else if(data.type=="OnlineUser"){
+                        for(var i=0;i<data.data.length;i++){
+                            rankDynameick.addOnline(data.data[i]);
+                        }
                     }
                 };
                 ws.onclose = function(event) {
@@ -167,4 +176,7 @@ var matchICPC=function(cid){
         rank[k+1].rank=k+2;
         rankDynameick.moveRow(i+1,k+2);
     };
+    return {
+        send:send
+    }
 };

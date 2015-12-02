@@ -97,16 +97,16 @@ public class MatchServer extends WebSocketServlet {
      * @param cid cid
      * @param mws 用户socket
      */
-    private void sendOnlineUser(int cid,MatchWebSocket mws){
+    public void sendOnlineUser(int cid,MatchWebSocket mws){
         JSONObject jo=new JSONObject();
-        jo.put("type","OnleUser");
+        jo.put("type","OnlineUser");
         JSONArray ja=new JSONArray();
         Set<String> set=getOnlineUser(cid);
         for(String s:set){
             ja.add(s);
         }
         jo.put("data",ja);
-        mws.send(ja.toString());
+        mws.send(jo.toString());
     }
     /**
      * 给用户发送上线通知 {"type":"login","user":username}
@@ -142,6 +142,20 @@ public class MatchServer extends WebSocketServlet {
         jo.put("username",username);
         jo.put("result",result);
         jo.put("time",time);
+        sendMessage(cid,jo.toString());
+    }
+
+    /**
+     * 发送聊天消息
+     * @param cid 比赛id
+     * @param user 说话人
+     * @param text 内容
+     */
+    public void sendChat(int cid,String user,String text){
+        JSONObject jo=new JSONObject();
+        jo.put("type","chat");
+        jo.put("user",user);
+        jo.put("text",text);
         sendMessage(cid,jo.toString());
     }
 }
