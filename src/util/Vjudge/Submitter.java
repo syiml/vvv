@@ -125,6 +125,7 @@ public class Submitter implements Runnable{
                     showstatus="get res="+r.getR();
                 }while(!r.canReturn());
                 Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo());
+                Main.onSubmitDone(info.rid);
             }
             this.status=IDLE;
         }catch(NullPointerException e){

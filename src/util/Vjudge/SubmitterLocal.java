@@ -18,6 +18,7 @@ public class SubmitterLocal extends Submitter {
         showstatus="go";
         RES res= LocalJudge.judge(this);
         Main.status.setStatusResult(info.rid,res.getR(),res.getTime(),res.getMemory(),res.getCEInfo());
+        Main.onSubmitDone(info.rid);
     }
     public void run(){//开始执行线程
         try {

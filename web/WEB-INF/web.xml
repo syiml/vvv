@@ -10,7 +10,7 @@
         <filter-class>util.ReDispatcherFilter</filter-class>
         <init-param>
             <param-name>includeServlets</param-name>
-            <param-value>WebSocket</param-value>
+            <param-value>WebSocket,MatchWebSocket</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -38,6 +38,19 @@
         <servlet-name>WebSocket</servlet-name>
         <url-pattern>/WebSocket</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MatchWebSocket</servlet-name>
+        <servlet-class>
+            WebSocket.MatchServer
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MatchWebSocket</servlet-name>
+        <url-pattern>/MatchWebSocket</url-pattern>
+    </servlet-mapping>
+
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

@@ -1,5 +1,6 @@
 package util;
 
+import WebSocket.MatchServer;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
 import entity.OJ.BNUOJ.BNUOJ;
@@ -58,6 +59,8 @@ public class Main {
     final public static int autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
     public static boolean isDebug=GV.getBoolean("debug");
     public static String version=GV.getString("version");
+    public static MatchServer matchServer=null;
+
 
     static{
         try {
@@ -80,10 +83,14 @@ public class Main {
                 return -1;//超出比赛结束时间
             }
         }
+        int ppid=pid;
         if(cid!=-1) pid=Main.contests.getContest(cid).getGlobalPid(pid);//等于全局题目编号
         Tool.debug("go=" + pid);
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = status.addStatu(s);//插入数据库，并获取rid
+        if(cid!=-1){//提交发送到观战模式
+            matchServer.sendStatus(cid,rid,ppid,user,-1,submittime.getTime());
+        }
         if(!problems.isProblemLocal(pid)){//is vj
             SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),language,code,false);
             submitVJ(ss, problems.getOJid(pid));
@@ -92,6 +99,19 @@ public class Main {
             SubmitInfo ss=new SubmitInfo(rid,pid+"",language,code,false);
             m.addSubmit(ss);
             return 1;//success submit to local
+        }
+    }
+    public static void onSubmitDone(int rid){
+        if(matchServer==null) return;
+        statu s=status.getStatu(rid);
+        if(s.getCid()!=-1){
+            Contest c=Main.contests.getContest(s.getCid());
+            int ppid=c.getcpid(s.getPid());
+            if(s.getResult()==Result.AC){
+                matchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),1,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
+            }else{
+                matchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),0,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
+            }
         }
     }
     public static int submitVJ(SubmitInfo info,int oj){

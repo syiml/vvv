@@ -36,6 +36,7 @@ public class SocketServer extends WebSocketServlet {
             return mw;
         }
     }
+
     public static void sendMessage(int cid,String text){
         Tool.log("发送消息：cid="+cid+"&text="+text);
         for(MessageWebSocket mw:sockets){

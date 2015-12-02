@@ -6,9 +6,9 @@ import entity.Problem;
 import util.HTML.HTML;
 import util.HTML.problemHTML;
 import util.HTML.problemListHTML.problemView;
+import util.Pair;
 import util.SQL;
 import action.editproblem;
-import javafx.util.Pair;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

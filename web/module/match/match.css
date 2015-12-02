@@ -43,12 +43,15 @@
 .row .col{
     background-color: #c9cacc;
     float:left;
-    margin-right: 3px;
+    margin-right: 2px;
     height: 25px;
     line-height: 25px;
     text-align: center;
     display:table-cell;
     vertical-align:middle;
+}
+.row.head .col{
+    background-color: #b6b3ff;
 }
 .row .col.ac{
     background-color: #00ab00;

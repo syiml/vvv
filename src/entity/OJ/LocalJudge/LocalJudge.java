@@ -1,11 +1,11 @@
 package entity.OJ.LocalJudge;
 
+import util.Pair;
 import util.Tool;
 import util.Vjudge.Submitter;
 import entity.RES;
 import entity.Result;
 import util.Main;
-import javafx.util.Pair;
 
 import java.io.*;
 import java.util.ArrayList;

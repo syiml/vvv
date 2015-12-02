@@ -72,7 +72,7 @@ public class user implements Comparable<user>{
     public int compareTo(user u){
         int z=0;
         if(this.submitnum==u.submitnum){
-            return (int)(this.penalty - u.penalty);
+            return (this.penalty - u.penalty)>0?1:-1;
         }else{
             return u.submitnum-this.submitnum;
         }
