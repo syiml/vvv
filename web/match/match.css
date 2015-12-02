@@ -1,7 +1,7 @@
 .chat{
     width:300px;
     height:400px;
-    background-color: #8896ff;
+    background-color: rgba(136, 150, 255, 0.6);
     border-radius: 5px;
     border: 2px solid #0f6dff;
     position:fixed;
