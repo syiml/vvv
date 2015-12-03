@@ -150,4 +150,13 @@ public class MessageMain {
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }
+    public static int subMessageAwardACB(String u,int num,String text){
+        Message m=new Message();
+        m.setUser(u);
+        m.setStatu(0);
+        m.setTitle("您被扣去了" + num + "ACB");
+        m.setText("您被扣去了" + num + "ACB<br>备注信息：" + text);
+        m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
+        return MessageSQL.save(m);
+    }
 }

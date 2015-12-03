@@ -116,7 +116,8 @@ pre {
      word-wrap: break-word;
  }
 .userindex{
-    background: url("../pic/userindex.jpg") round;
+    background-image: url("../pic/userindex.jpg");
+    background-repeat: round;
     padding: 30px 30px 30px 30px;
     color:white;
     margin-bottom: 20px;

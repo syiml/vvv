@@ -30,6 +30,19 @@
 <div class="debug"><div class="body"></div></div>
 <div class="debug-switch open">Debug</div>
 
+<div class="setting" style="display: none;">
+    <input type="checkbox" id="setting-nick"/> 昵称<br>
+    <input type="checkbox" id="setting-name"/> 姓名<br>
+    <input type="checkbox" id="setting-gender"/> 性别<br>
+    <input type="checkbox" id="setting-faculty"/> 学院<br>
+    <input type="checkbox" id="setting-major"/> 专业<br>
+    <input type="checkbox" id="setting-cla"/> 班级<br>
+    <input type="checkbox" id="setting-no"/> 学号<br>
+    <input type="button" id="setting-submit" value="确定"/><br>
+    <input type="button" id="setting-autowidth" value="自动调整表格宽度"/>
+</div>
+<div class="setting-switch close">Setting</div>
+
 <div class="chat">
     <div class="online"></div>
     <div class="chat-body"></div>

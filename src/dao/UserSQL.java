@@ -203,6 +203,30 @@ public class UserSQL {
             sql.close();
         }
     }
+    public List<User> getRegisterUsers(int cid){
+        SQL sql=new SQL("select * from v_contestuser where cid=?",cid);
+        List<User> list=new ArrayList<User>();
+        ResultSet rs=sql.query();
+        try {
+            while(rs.next()){
+                User u=new User();
+                u.setNick(rs.getString("nick"));
+                u.setUsername(rs.getString("username"));
+                u.setName(rs.getString("name"));
+                u.setGender(rs.getInt("gender"));
+                u.setFaculty(rs.getString("faculty"));
+                u.setMajor(rs.getString("major"));
+                u.setCla(rs.getString("cla"));
+                u.setNo(rs.getString("no"));
+                list.add(u);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            sql.close();
+        }
+        return list;
+    }
     public static int getUsersNum(int cid,String serach){
         SQL sql=new SQL("select count(*) from v_contestuser where cid=? and (username like ? or nick like ?)",cid,"%"+serach+"%","%"+serach+"%");
         ResultSet rs=sql.query();
@@ -311,7 +335,15 @@ public class UserSQL {
     }
 
     public int awardACB(String user,int num,String text){
-        if(num<=0) return 0;
+        if(num<0){
+            num=-num;
+            int ret=subACB(user,num);
+            if(ret>0){
+                MessageMain.subMessageAwardACB(user,num,text);
+                Tool.log("管理员扣去"+user+" "+num+"ACB"+" 备注："+text);
+            }
+            return ret;
+        }
         addACB(user,num);
         int x=MessageMain.addMessageAwardACB(user,num,text);
         Tool.log("管理员给"+user+" "+num+"ACB"+" 备注："+text);

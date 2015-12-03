@@ -190,4 +190,48 @@ public class User implements IBeanResultSetCreate{
     public boolean canRegisterOfficalContest(){
         return gender!=0&&!name.equals("")&&!faculty.equals("")&&!major.equals("")&&!cla.equals("")&&!no.equals("")&&!phone.equals("");
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public void setCla(String cla) {
+        this.cla = cla;
+    }
+
+    public void setNo(String no) {
+        this.no = no;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

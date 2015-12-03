@@ -33,5 +33,6 @@ public class MatchWebSocket extends MessageWebSocket {
     protected void onOpen(WsOutbound outbound) {
         this.outbound=outbound;
         Main.matchServer.sendOnlineUser(cid,this);
+        Main.matchServer.sendRegisterUserInfo(cid,this);
     }
 }

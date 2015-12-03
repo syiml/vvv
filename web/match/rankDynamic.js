@@ -7,7 +7,6 @@ var rankDynameick=function(){
     var padding=2;
     var offset_x=10;
     var offset_y=10;
-    var width;
     function init(){
         $('.debug-switch').click(function(){
             if($(this).hasClass("open")){
@@ -27,35 +26,115 @@ var rankDynameick=function(){
                 $(this).removeClass("close").addClass("open");
             }
         });
+        $('.setting-switch').click(function(){
+            if($(this).hasClass("open")){
+                $('.setting').hide();
+                $(this).removeClass("open").addClass("close");
+            }else{
+                $('.setting').show();
+                $(this).removeClass("close").addClass("open");
+            }
+        });
         $('#chat-submit').click(function(){
-            match.send($('#chat-text').val());
-            $('#chat-text').val("");
+            var $chatText=$('#chat-text');
+            if($chatText.val().length>0){
+                match.send($chatText.val());
+                $chatText.val("");
+            }
+        });
+        $('#setting-submit').click(function(){
+            match.refresh();
+        });
+        $("#setting-autowidth").click(function(){
+            autoWidth();
         });
     }
     init();
-    function buildHead(pnum){
-        width=30+150+30+50+pnum*70+(pnum+4)*padding;
+    function buildHead(pnum,head){
+        rowNum=0;
         var $row=$("<div id='head' class='row head' style='left:"+offset_x+"px;top:"+(offset_y)+"px'></div>");
-        $row.append("<div class='col rank'>#</div>")
-            .append("<div class='col username'>username</div>")
-            .append("<div class='col S'>S</div>")
-            .append("<div class='col W'>W</div>");
+        for(var i=0;i<head.length;i++){
+            if(head[i]=="rank"){
+                $row.append("<div class='col rank'>#</div>");
+            }else if(head[i]=="username"){
+                $row.append("<div class='col username'>用户名</div>");
+            }else if(head[i]=="S"){
+                $row.append("<div class='col S'>S</div>");
+            }else if(head[i]=="W"){
+                $row.append("<div class='col W'>W</div>");
+            }else if(head[i]=="nick"){
+                $row.append("<div class='col nick'>昵称</div>");
+            }else if(head[i]=="name"){
+                $row.append("<div class='col name'>姓名</div>");
+            }else if(head[i]=="gender"){
+                $row.append("<div class='col gender'>性别</div>");
+            }else if(head[i]=="faculty"){
+                $row.append("<div class='col faculty'>学院</div>");
+            }else if(head[i]=="major"){
+                $row.append("<div class='col major'>专业</div>");
+            }else if(head[i]=="cla"){
+                $row.append("<div class='col cla'>班级</div>");
+            }else if(head[i]=="no"){
+                $row.append("<div class='col no'>学号</div>");
+            }
+        }
         for(var i=0;i<pnum;i++){
             $row.append("<div class='col pro'>"+String.fromCharCode(i+65)+"</div>")
         }
+        var width=0;
+        $(".main").append($row).find(".col").each(function(){
+            width+=$(this).width();
+            //alert($(this).css("width"));
+            width+=padding;
+        });
         $row.css("width",width+"px");
-        $(".main").append($row);
+        return width;
     }
-    function newRow(data){
+    function newRow(data,head,userinfo,width){
         //{rank,username,nick,name,gender,faculty,major,cla,no,S,W,score[[{rid,result,time}],[{rid,result,time}]]}
         rowNum++;
         var $row=$("<div id='row-"+data.rank+"' class='row row-"+data.username+"' style='left:"+offset_x+"px;top:"+(offset_y+(height+padding)*rowNum)+"px'></div>");
-        $row.append("<div class='col rank'>"+data.rank+"</div>");
-        $row.append("<div class='col username'>"+data.username+"</div>");
-        //$row.append("<div class='col nick'>"+data.nick+"</div>");
+        var user;
+        if(userinfo.hasOwnProperty(data.username))
+            user=userinfo[data.username];
+        else{
+            user=null;
+        }
+        if(user==null){
+            user={nick:"",name:"",gender:"",faculty:"",major:"",cla:"",no:""};
+        }
+        for(var i=0;i<head.length;i++){
+            if(head[i]=="rank"){
+                $row.append("<div class='col rank'>"+data.rank+"</div>");
+            }else if(head[i]=="username"){
+                $row.append("<div class='col username'>"+data.username+"</div>");
+            }else if(head[i]=="S"){
+                $row.append("<div class='col S'>"+data.S+"</div>");
+            }else if(head[i]=="W"){
+                $row.append("<div class='col W'>"+parseInt(data.W/60)+"</div>");
+            }else if(head[i]=="nick"){
+                $row.append("<div class='col nick'>"+user.nick+"</div>");
+            }else if(head[i]=="name"){
+                $row.append("<div class='col name'>"+user.name+"</div>");
+            }else if(head[i]=="gender"){
+                var text="";
+                if(user.gender==1){
+                    text="男"
+                }else if(user.gender==2){
+                    text="女";
+                }
+                $row.append("<div class='col gender'>"+text+"</div>");
+            }else if(head[i]=="faculty"){
+                $row.append("<div class='col faculty'>"+user.faculty+"</div>");
+            }else if(head[i]=="major"){
+                $row.append("<div class='col major'>"+user.major+"</div>");
+            }else if(head[i]=="cla"){
+                $row.append("<div class='col cla'>"+user.cla+"</div>");
+            }else if(head[i]=="no"){
+                $row.append("<div class='col no'>"+user.no+"</div>");
+            }
+        }
 
-        $row.append("<div class='col S'>"+data.S+"</div>");
-        $row.append("<div class='col W'>"+parseInt(data.W/60)+"</div>");
         for(var i=0;i<data.score.length;i++){
             var res=data.score[i];
             //[{rid,result,time}],[{rid,result,time}]
@@ -147,10 +226,10 @@ var rankDynameick=function(){
         $(".debug .body").append(s+"<br>");
     }
     function chat(user,text){
-        $(".chat-body").append("<b>"+user+":</b>"+text+"<br>").scrollTop(10000);
+        $(".chat-body").append("<b>"+user+":</b>"+text+"<br>").scrollTop(1000000000);
     }
     function chat_log(text){
-        $(".chat-body").append(text);
+        $(".chat-body").append(text).scrollTop(1000000000);
     }
     function addOnline(user){
         var $ol=$(".online");
@@ -160,6 +239,32 @@ var rankDynameick=function(){
     }
     function delOnline(user){
         $(".online").find("#online-"+user).remove();
+    }
+    function autoWidth(){
+        $(".col").css("width","auto");
+        var widths=[];
+        $(".row").each(function(i){
+            $(this).find(".col").each(function(j){
+                if(i==0){
+                    widths[j]=$(this).width();
+                }else{
+                    widths[j]=$(this).width()>widths[j]?$(this).width():widths[j];
+                }
+            })
+        });
+        $(".row").each(function(i){
+            $(this).find(".col").each(function(j){
+                $(this).css("width",(widths[j]+5)+"px");
+            })
+        });
+
+        var width=0;
+        $(".head").find(".col").each(function(){
+            width+=$(this).width();
+            //alert($(this).css("width"));
+            width+=padding;
+        });
+        $(".row").css("width",width+"px");
     }
     return {
         editSW:editSW,
@@ -171,6 +276,7 @@ var rankDynameick=function(){
         chat:chat,
         addOnline:addOnline,
         delOnline:delOnline,
-        chat_log:chat_log
+        chat_log:chat_log,
+        autoWidth:autoWidth
     }
 }();

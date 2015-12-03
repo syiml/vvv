@@ -108,6 +108,32 @@ public class MatchServer extends WebSocketServlet {
         jo.put("data",ja);
         mws.send(jo.toString());
     }
+
+    /**
+     * 给指定用户发送注册信息
+     * @param cid cid
+     * @param mws 用户socket
+     */
+    public void sendRegisterUserInfo(int cid,MatchWebSocket mws){
+        List<User> list=Main.users.getRegisterUsers(cid);
+        JSONObject jo=new JSONObject();
+        jo.put("type","RegisterUserInfo");
+        JSONObject ja=new JSONObject();
+        for (User aList : list) {
+            JSONObject user = new JSONObject();
+            User u = aList;
+            user.put("nick", u.getNick());
+            user.put("name", u.getName());
+            user.put("gender", u.getGender());
+            user.put("faculty", u.getFaculty());
+            user.put("major", u.getMajor());
+            user.put("cla", u.getCla());
+            user.put("no", u.getNo());
+            ja.put(u.getUsername(), user);
+        }
+        jo.put("data",ja);
+        mws.send(jo.toString());
+    }
     /**
      * 给用户发送上线通知 {"type":"login","user":username}
      * @param cid 比赛id
