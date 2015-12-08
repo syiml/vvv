@@ -152,6 +152,7 @@ var matchICPC=function(cid){
         //同步改变rank和网页布局
         //如果这个username没出现过，则发送请求，单独获取它的信息
         rankDynameick.log("接收提交：{rid:"+ s.rid+",pid:"+ s.pid+",username:"+ s.username+",result:"+ s.result +"}");
+        if(s.pid<0|| s.pid>=pnum) return;
         if(s.result==-1){
             rankDynameick.chat_log("<font color='#5B18C3'><b>"+s.username+"</b>提交了"+ String.fromCharCode(s.pid+65) +"题</font><br>");
         }else if(s.result==1){

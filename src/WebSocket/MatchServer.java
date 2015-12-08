@@ -5,6 +5,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.catalina.websocket.StreamInbound;
 import org.apache.catalina.websocket.WebSocketServlet;
+import org.apache.commons.lang.NullArgumentException;
 import util.Main;
 import util.Tool;
 
@@ -15,13 +16,10 @@ import java.util.*;
  * Created by Administrator on 2015/12/2 0002.
  */
 public class MatchServer extends WebSocketServlet {
-    Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();
     @Override
     protected StreamInbound createWebSocketInbound(String s, HttpServletRequest request) {
-        if(Main.matchServer==null) Main.matchServer=this;
         User u=(User)request.getSession().getAttribute("user");
         int cid=Integer.parseInt(request.getParameter("cid"));
-
         if(u!=null){
             Tool.log(u.getUsername()+"观战连接"+" cid="+request.getParameter("cid"));
             MatchWebSocket aSocket=new MatchWebSocket(u.getUsername(),cid,this);
@@ -40,11 +38,11 @@ public class MatchServer extends WebSocketServlet {
      * @param aSocket socket
      */
     private void put(int cid,MatchWebSocket aSocket){
-        if(!sockets.containsKey(cid)){
-            sockets.put(cid,new HashSet<MatchWebSocket>());
+        if(!Main.sockets.containsKey(cid)){
+            Main.sockets.put(cid,new HashSet<MatchWebSocket>());
         }
         sendLogin(cid,aSocket.username);
-        sockets.get(cid).add(aSocket);
+        Main.sockets.get(cid).add(aSocket);
         //sendOnlineUser(cid,aSocket);
     }
 
@@ -54,11 +52,11 @@ public class MatchServer extends WebSocketServlet {
      * @param mws socket
      */
     protected void close(int cid,MatchWebSocket mws){
-        if(mws.username!=null&&sockets.get(cid)!=null){
-            sockets.get(cid).remove(mws);
+        if(mws.username!=null&&Main.sockets.get(cid)!=null){
+            Main.sockets.get(cid).remove(mws);
             sendLogout(cid,mws.username);
-            if(sockets.get(cid).size()==0){
-                sockets.remove(cid);
+            if(Main.sockets.get(cid).size()==0){
+                Main.sockets.remove(cid);
             }
         }
     }
@@ -68,14 +66,16 @@ public class MatchServer extends WebSocketServlet {
      * @param cid 比赛id
      * @param text 发送文本
      */
-    private void sendMessage(int cid,String text){
-        Tool.log("~发送消息：cid="+cid+"&text="+text);
-        Set<MatchWebSocket> s=sockets.get(cid);
-        Tool.log("hehe:"+cid+" size:"+s.size());
-        for(MatchWebSocket mw:s){
-            Tool.log("hehe:"+mw.username);
-            mw.send(text);
-        }
+    private static void sendMessage(int cid,String text){
+        Tool.debug("~发送消息：cid="+cid+"&text="+text);
+        try{
+            Set<MatchWebSocket> s=Main.sockets.get(cid);
+            Tool.debug("hehe:"+cid+" size:"+s.size());
+            for(MatchWebSocket mw:s){
+                Tool.debug("hehe:"+mw.username);
+                mw.send(text);
+            }
+        }catch(NullPointerException ignored){}
     }
 
     /**
@@ -83,9 +83,9 @@ public class MatchServer extends WebSocketServlet {
      * @param cid 比赛id
      * @return 在线用户列表
      */
-    private Set<String> getOnlineUser(int cid){
+    private static Set<String> getOnlineUser(int cid){
         Set<String> ret=new TreeSet<String>();
-        Set<MatchWebSocket> s=sockets.get(cid);
+        Set<MatchWebSocket> s=Main.sockets.get(cid);
         for(MessageWebSocket mw:s){
             ret.add(mw.username);
         }
@@ -97,7 +97,7 @@ public class MatchServer extends WebSocketServlet {
      * @param cid cid
      * @param mws 用户socket
      */
-    public void sendOnlineUser(int cid,MatchWebSocket mws){
+    public static void sendOnlineUser(int cid,MatchWebSocket mws){
         JSONObject jo=new JSONObject();
         jo.put("type","OnlineUser");
         JSONArray ja=new JSONArray();
@@ -114,7 +114,7 @@ public class MatchServer extends WebSocketServlet {
      * @param cid cid
      * @param mws 用户socket
      */
-    public void sendRegisterUserInfo(int cid,MatchWebSocket mws){
+    public static void sendRegisterUserInfo(int cid,MatchWebSocket mws){
         List<User> list=Main.users.getRegisterUsers(cid);
         JSONObject jo=new JSONObject();
         jo.put("type","RegisterUserInfo");
@@ -160,7 +160,7 @@ public class MatchServer extends WebSocketServlet {
      * @param result 结果 1 ac 2 wa -1 nores
      * @param time 提交时间
      */
-    public void sendStatus(int cid,int rid,int pid,String username,int result,Long time){
+    public static void sendStatus(int cid,int rid,int pid,String username,int result,Long time){
         JSONObject jo=new JSONObject();
         jo.put("type","status");
         jo.put("rid",rid);
@@ -177,7 +177,7 @@ public class MatchServer extends WebSocketServlet {
      * @param user 说话人
      * @param text 内容
      */
-    public void sendChat(int cid,String user,String text){
+    public static void sendChat(int cid,String user,String text){
         JSONObject jo=new JSONObject();
         jo.put("type","chat");
         jo.put("user",user);

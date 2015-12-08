@@ -44,9 +44,9 @@ public class MessageWebSocket extends MessageInbound {
     public void send(String text){
         try {
             getWsOutbound().writeTextMessage(CharBuffer.wrap(text));
-            Tool.log("给"+username+"发送消息【"+text+"】成功");
+            Tool.debug("给"+username+"发送消息【"+text+"】成功");
         } catch (IOException e) {
-            Tool.log("给"+username+"发送消息【"+text+"】失败");
+            Tool.debug("给"+username+"发送消息【"+text+"】失败");
         }
     }
     public void close(){

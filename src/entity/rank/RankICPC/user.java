@@ -31,6 +31,7 @@ public class user implements Comparable<user>{
     }
     public void add(statu s,long time,int p,Contest c){
         int contestpid=c.getcpid(s.getPid());
+        if(contestpid==-1) return ;
         if(submittime.get(contestpid)==-1L){
              if(s.getResult() == Result.AC) {
                  submittime.set(contestpid, time);

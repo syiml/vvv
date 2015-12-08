@@ -20,8 +20,6 @@ public class submit {
     public String pid;
     public String language;
     public String cid;
-    //    public String user;
-    public HttpClient hc = new DefaultHttpClient();
     public void print(HttpResponse r){
         HttpEntity entity = r.getEntity();
         Tool.debug(r.getStatusLine().toString());

@@ -1,6 +1,7 @@
 package util;
 
 import WebSocket.MatchServer;
+import WebSocket.MatchWebSocket;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
 import entity.OJ.BNUOJ.BNUOJ;
@@ -34,6 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2015/5/21.
@@ -59,7 +63,7 @@ public class Main {
     final public static int autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
     public static boolean isDebug=GV.getBoolean("debug");
     public static String version=GV.getString("version");
-    public static MatchServer matchServer=null;
+    public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();
 
 
     static{
@@ -75,7 +79,7 @@ public class Main {
         status.init();
     }
     public static int doSubmit(String user,int pid,int cid,int language,String code,Timestamp submittime){//控制提交跳转到vj还是本地
-        Tool.debug("Main.doSubmit");
+        Tool.log("Main.doSubmit");
         Tool.debug("cid="+cid+" pid="+pid);
         int rid;
         if(cid!=-1){//验证user是否有权限提交
@@ -88,29 +92,35 @@ public class Main {
         Tool.debug("go=" + pid);
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = status.addStatu(s);//插入数据库，并获取rid
-        if(cid!=-1){//提交发送到观战模式
-            matchServer.sendStatus(cid,rid,ppid,user,-1,submittime.getTime());
-        }
+
         if(!problems.isProblemLocal(pid)){//is vj
             SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),language,code,false);
             submitVJ(ss, problems.getOJid(pid));
-            return 0;//success submit to vj
         }else{//is local
             SubmitInfo ss=new SubmitInfo(rid,pid+"",language,code,false);
             m.addSubmit(ss);
-            return 1;//success submit to local
         }
+        if(cid!=-1) {//提交发送到观战模式
+            try{
+                MatchServer.sendStatus(cid, rid, ppid, user, -1, submittime.getTime());
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        if(!problems.isProblemLocal(pid)) {//is vj
+            return 0;//success submit to vj
+        }
+        return 1;//success submit to local
     }
     public static void onSubmitDone(int rid){
-        if(matchServer==null) return;
         statu s=status.getStatu(rid);
         if(s.getCid()!=-1){
             Contest c=Main.contests.getContest(s.getCid());
             int ppid=c.getcpid(s.getPid());
             if(s.getResult()==Result.AC){
-                matchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),1,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
+                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),1,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
             }else{
-                matchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),0,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
+                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),0,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
             }
         }
     }

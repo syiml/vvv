@@ -61,7 +61,7 @@ var rankDynameick=function(){
             }else if(head[i]=="S"){
                 $row.append("<div class='col S'>S</div>");
             }else if(head[i]=="W"){
-                $row.append("<div class='col W'>W</div>");
+                $row.append("<div class='col W'>T</div>");
             }else if(head[i]=="nick"){
                 $row.append("<div class='col nick'>昵称</div>");
             }else if(head[i]=="name"){

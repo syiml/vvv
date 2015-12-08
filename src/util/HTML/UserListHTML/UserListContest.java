@@ -91,8 +91,15 @@ public class UserListContest extends pageBean {
         List<String> aList=list2.get(i);
         if(colname.equals("用户名")){
             User u=Main.users.getUser(aList.get(0));
-            return u.getUsernameHTML();
+            if(u==null){
+                return aList.get(0);
+            }else{
+                return u.getUsernameHTML();
+            }
         }else if(colname.equals("昵称")){
+            if(Main.users.getUser(aList.get(0))==null){
+                return HTML.textb("未注册","red");
+            }
             return aList.get(z+1);
         }else if(colname.equals("Rating")){
             return aList.get(z+2);

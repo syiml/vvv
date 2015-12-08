@@ -26,13 +26,13 @@ public class MatchWebSocket extends MessageWebSocket {
     @Override
     protected void onTextMessage(CharBuffer charBuffer) throws IOException {
         Tool.log(username+":=:"+charBuffer);
-        Main.matchServer.sendChat(cid,username, HTML.HTMLtoString(charBuffer.toString()));
+        MatchServer.sendChat(cid,username, HTML.HTMLtoString(charBuffer.toString()));
     }
 
     @Override
     protected void onOpen(WsOutbound outbound) {
         this.outbound=outbound;
-        Main.matchServer.sendOnlineUser(cid,this);
-        Main.matchServer.sendRegisterUserInfo(cid,this);
+        MatchServer.sendOnlineUser(cid,this);
+        MatchServer.sendRegisterUserInfo(cid,this);
     }
 }

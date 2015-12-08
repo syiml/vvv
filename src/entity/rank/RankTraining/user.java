@@ -25,6 +25,7 @@ public class user implements Comparable<user>{
         }
     }
     public void addres(int pid,Result s,int len){
+        if(pid<0) return;
         if(num.get(pid)<=0) {
             if (s == Result.AC) {
                 num.set(pid, -num.get(pid) + 1);

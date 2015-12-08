@@ -26,6 +26,7 @@ public class user implements Comparable<user>{
         }
     }
     public void addres(int pid,Result s,int len){
+        if(pid<0) return ;
         if(s== Result.AC){
             if(codelen.get(pid)>0){
                 codelen.set(pid,Math.min(codelen.get(pid),len));//取短
