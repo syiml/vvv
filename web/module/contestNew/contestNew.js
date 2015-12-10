@@ -124,11 +124,11 @@ function loadHome(rollback){
         $('#NAV').find('li').removeClass("active");
         $('#homeNAV').addClass("active");
         $main=$main.show().html(HTML.row(HTML.col(10,1,"","<div class='panel-body'></div>"))).find(".panel-body");
-        $main.append("<div class='row'><h4>"+HTML.floatLeft("　比赛时间:　")+HTML.floatLeft(HTML.time(contestInfo.begintime)+" ～ "+HTML.time(contestInfo.endtime))+"</h4></div>");
+        $main.append("<div class='contestHomeText'><h4>"+"比赛时间："+HTML.time(contestInfo.begintime)+" ～ "+HTML.time(contestInfo.endtime)+"</h4></div>");
         //.html("<img src='pic/loading.jpg'>");
         if(contestInfo.now<contestInfo.begintime){//pendding
-            $main.append("<div class='row'><h4>"+HTML.floatLeft("　比赛状态:　")+HTML.floatLeft(HTML.textb("PENDDING","green"))+"</h4></div>");
-            $main.append("<div class='row'><h4>"+HTML.floatLeft("　倒计时:　　")+HTML.floatLeft("<text id='runtime'></text>")+"</h4></div>");
+            $main.append("<div class='contestHomeText'><h4>"+("比赛状态：")+(HTML.textb("PENDDING","green"))+"</h4></div>");
+            $main.append("<div class='contestHomeText'><h4>"+("倒计时：")+("<text id='runtime'></text>")+"</h4></div>");
              runtimett=(contestInfo.begintime-contestInfo.now)/1000;
              runtime_ff=function() {
                 if(runtimett>=0){
@@ -141,12 +141,12 @@ function loadHome(rollback){
              runtime_ff();
              if(!isrun){setInterval("runtime_ff()" , 1000 );isrun=true;}
         }else if(contestInfo.now<contestInfo.endtime){//running
-            $main.append("<div class='row'><h4>"+HTML.floatLeft("　比赛状态:　")+HTML.floatLeft(HTML.textb("RUNNING","red"))+"</h4></div>");
+            $main.append("<div class='contestHomeText'><h4>"+("比赛状态：")+(HTML.textb("RUNNING","red"))+"</h4></div>");
         }else{//end
-            $main.append("<div class='row'><h4>"+HTML.floatLeft("　比赛状态:　")+HTML.floatLeft(HTML.textb("END","black"))+"</h4></div>");
+            $main.append("<div class='contestHomeText'><h4>"+("比赛状态：")+(HTML.textb("END","black"))+"</h4></div>");
         }
         //alert(data.info);
-        if(data.info!=null&&data.info!="") $main.append("<div class='row'><h4>"+HTML.floatLeft("　比赛说明:　")+HTML.floatLeft(data.info)+"</h4></div><div style='height:20px'></div>");
+        if(data.info!=null&&data.info!="") $main.append("<div class='contestHomeText'><h4>"+("比赛说明：")+(data.info)+"</h4></div><div style='height:20px'></div>");
         loadProblemList($main,rollback);
     });
 }

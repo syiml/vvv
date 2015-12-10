@@ -24,3 +24,8 @@
     overflow-y: auto;
     /*white-space: pre;*/
 }
+.contestHomeText{
+    padding-left: 12ex;
+    text-indent:-12ex;
+    line-height: 1.3;
+}
