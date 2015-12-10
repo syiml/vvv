@@ -3,6 +3,14 @@
 <%@ page import="dao.MessageSQL" %>
 <%@ page import="action.ClockIn" %>
 <%@ page import="ClockIn.*" %>
+<script>
+
+  if(location.href.indexOf("acm.fjut.edu.cn/vj")!=-1){
+    location.href=location.href.replace("acm.fjut.edu.cn","210.34.193.66:8080");
+  }else if(location.href.indexOf("acm.fjut.edu.cn")!=-1){
+    location.href=location.href.replace("acm.fjut.edu.cn","210.34.193.66:8080/vj");
+  }
+</script>
 <%@page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <!-- 新 Bootstrap 核心 CSS 文件 -->
 <link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.css">
@@ -33,34 +41,34 @@
 
 <script src="js/HTML.js"></script>
 
-  <div class="row"><div class="col-sm-3 col-sm-offset-9">
+<div class="row"><div class="col-sm-3 col-sm-offset-9">
 
-  </div></div>
+</div></div>
 <div class="panel panel-default" style="margin-top: 30px">
-<ul class="modern-menu theme8" style="width:100%">
-  <%--<ul id="nav" >--%>
-  <%--<%--%>
+  <ul class="modern-menu theme8" style="width:100%">
+    <%--<ul id="nav" >--%>
+    <%--<%--%>
     <%--String q1 = request.getParameter("page");--%>
     <%--if(q1==null) q1="";--%>
-  <%--%>--%>
-  <li><a href="index.jsp"><span>HOME</span></a></li>
-  <li><a href="ProblemSet.jsp"><span>PROBLEM</span></a></li>
-  <li><a href="Status.jsp"><span>STATUS</span></a></li>
-  <li><a href="Contests.jsp"><span>CONTEST</span></a>
-    <ul>
-      <li><a href="Contests.jsp?kind=0"><span>练习</span></a></li>
-      <li><a href="Contests.jsp?kind=1"><span>积分</span></a></li>
-      <li><a href="Contests.jsp?kind=2"><span>趣味</span></a></li>
-      <li><a href="Contests.jsp?kind=3"><span>正式</span></a></li>
-    </ul>
-  </li>
-  <li><a href="User.jsp"><span>RANK</span></a></li>
+    <%--%>--%>
+    <li><a href="index.jsp"><span>HOME</span></a></li>
+    <li><a href="ProblemSet.jsp"><span>PROBLEM</span></a></li>
+    <li><a href="Status.jsp"><span>STATUS</span></a></li>
+    <li><a href="Contests.jsp"><span>CONTEST</span></a>
+      <ul>
+        <li><a href="Contests.jsp?kind=0"><span>练习</span></a></li>
+        <li><a href="Contests.jsp?kind=1"><span>积分</span></a></li>
+        <li><a href="Contests.jsp?kind=2"><span>趣味</span></a></li>
+        <li><a href="Contests.jsp?kind=3"><span>正式</span></a></li>
+      </ul>
+    </li>
+    <li><a href="User.jsp"><span>RANK</span></a></li>
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
     <li><a href="Challenge.jsp"><span>CHALLENGE</span></a></li>
-  <%--<li><a href="ClockIn.jsp"><span <%--%>
-      <%--if(ClockInSQL.mustClockIn()>=0){--%>
-        <%--out.print("style='background:red;color:white'");--%>
-      <%--}--%>
+    <%--<li><a href="ClockIn.jsp"><span <%--%>
+    <%--if(ClockInSQL.mustClockIn()>=0){--%>
+    <%--out.print("style='background:red;color:white'");--%>
+    <%--}--%>
     <%--%>>签到</span></a></li>--%>
     <%
       String ss="";
@@ -80,41 +88,34 @@
       }
       out.print(ss);
     %>
-</ul>
+  </ul>
 </div>
 <script type="text/javascript">
-  //alert(location.href);
-  if(location.href.indexOf("acm.fjut.edu.cn\/vj")!=-1){
-    location.href=location.href.replace("acm.fjut.edu.cn\/vj","210.34.193.66:8080/vj");
-  }
-  if(location.href.indexOf("acm.fjut.edu.cn")!=-1){
-    location.href=location.href.replace("acm.fjut.edu.cn/vj","210.34.193.66:8080/vj");
-  }
-$(".modern-menu").modernMenu();
-var ch={//对应翻译
-  HOME:"主页",
-  PROBLEM:"题目",
-  STATUS:"评测",
-  CONTEST:"比赛",
-  RANK:"排名",
-  DISCUSS:"讨论",
-  CHALLENGE:"挑战模式",
-  Login:"登录",
-  Register:"注册",
-  MESSAGE:"消息",
-  EDIT:"编辑",
-  LOGOUT:"退出"
-};
-$(".mm-over,.mm-hdrop-over").each(function () {
-  var $th=$(this);
-  //alert($th.text());
-  //if(ch[$th.html()]) $th.text(ch[$th.html()]);
-  var ps=$th.html();
-  if(ps.indexOf("class=\"icon-user\"")<0){//排除User显示
-    for(var s in ch){
-      ps=ps.replace(s,ch[s]);
+  $(".modern-menu").modernMenu();
+  var ch={//对应翻译
+    HOME:"主页",
+    PROBLEM:"题目",
+    STATUS:"评测",
+    CONTEST:"比赛",
+    RANK:"排名",
+    DISCUSS:"讨论",
+    CHALLENGE:"挑战模式",
+    Login:"登录",
+    Register:"注册",
+    MESSAGE:"消息",
+    EDIT:"编辑",
+    LOGOUT:"退出"
+  };
+  $(".mm-over,.mm-hdrop-over").each(function () {
+    var $th=$(this);
+    //alert($th.text());
+    //if(ch[$th.html()]) $th.text(ch[$th.html()]);
+    var ps=$th.html();
+    if(ps.indexOf("class=\"icon-user\"")<0){//排除User显示
+      for(var s in ch){
+        ps=ps.replace(s,ch[s]);
+      }
+      $th.html(ps);
     }
-    $th.html(ps);
-  }
-});
+  });
 </script>
