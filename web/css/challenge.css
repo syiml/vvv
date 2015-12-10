@@ -62,3 +62,17 @@
 .paragraph{
     padding-left: 2em;
 }
+.hidden-text{
+    color: #000000;
+    background-color: #000000;
+}
+.hidden-text::selection{
+    color: #000000;
+    /*background-color: #000000;*/
+    text-shadow: 0 1px 3px #ffffff, 1px 0 3px #ffffff, 0 -1px 3px #ffffff, -1px 0 3px #ffffff;
+}
+.hidden-text::-moz-selection {
+    color: #000000;
+    /*background-color: #000000;*/
+    text-shadow: 0 1px 3px #ffffff, 1px 0 3px #ffffff, 0 -1px 3px #ffffff, -1px 0 3px #ffffff;
+}
