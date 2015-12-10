@@ -5,6 +5,9 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+        <!-- 设置常量 上传文件大小最大值，系统默认是2M，此设置为10M（1024*1024*10=10485760） -->
+        <constant name="struts.multipart.maxSize" value="10485760" />
+
         <package name="default" extends="struts-default">
                 <action name="sb" class="action.submit" method="submitProblem">
                         <result name="success1" type="redirect">Status.jsp</result>

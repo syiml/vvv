@@ -86,102 +86,11 @@ public class LD {
 	     * @param args  
 	     */  
 	    public static void main(String[] args)   
-	    {   
-	        LD ld = new LD();   
-	        double num = ld.sim("#include<stdio.h>\n" +
-					"char s[1000010];\n" +
-					"int main()\n" +
-					"{\n" +
-					"  int i,n,k,co,aa,aai,o,j;\n" +
-					"  int a[10];\n" +
-					"  while(scanf(\"%d\",&n)!=EOF)\n" +
-					"  {\n" +
-					"    aa=100010;\n" +
-					"    for(aai=9,i=1;i<=9;i++)\n" +
-					"    {\n" +
-					"      scanf(\"%d\",&a[i]);\n" +
-					"      if(a[i]<=aa)\n" +
-					"      {\n" +
-					"        aa=a[i];\n" +
-					"        aai=i;\n" +
-					"      }\n" +
-					"    }\n" +
-					"    if(n<aa)\n" +
-					"      printf(\"-1\\n\");\n" +
-					"    else{\n" +
-					"    co=n/aa;\n" +
-					"    k=n%aa;\n" +
-					"    j=0;\n" +
-					"    while(k>0||co>0)\n" +
-					"    {\n" +
-					"      if(k>0)\n" +
-					"      {\n" +
-					"        for(i=9;i>aai;i--)\n" +
-					"          if(k+a[aai]>=a[i])\n" +
-					"            break;\n" +
-					"        if(i==aai) k=0;\n" +
-					"        else k=k+aa-a[i];\n" +
-					"        o=i;\n" +
-					"      }\n" +
-					"      else o=aai;\n" +
-					"      s[++j]='0'+o;\n" +
-					"      co--;\n" +
-					"}\n" +
-					"    }\n" +
-					"    s[j]=0;\n" +
-					"    printf(\"%s\\n\",s);\n" +
-					"  }\n" +
-					"  return 0;\n" +
-					"}"
-					,
-					"#include<stdio.h>\n" +
-					"char s[1000010];\n" +
-					"int main()\n" +
-					"{\n" +
-					"  int a[10];\n" +
-					"  int i,n,o,j,k,co,mt,mti;\n" +
-					"  while(scanf(\"%d\",&n)!=EOF)\n" +
-					"  {\n" +
-					"    mt=100010;\n" +
-					"    for(mti=9,i=1;i<=9;i++)\n" +
-					"    {\n" +
-					"      scanf(\"%d\",&a[i]);\n" +
-					"      if(a[i]<=mt)\n" +
-					"      {\n" +
-					"        mt=a[i];\n" +
-					"        mti=i;\n" +
-					"      }\n" +
-					"    }\n" +
-					"    if(n<mt)\n" +
-					"    {\n" +
-					"      printf(\"-1\\n\");\n" +
-					"      continue;\n" +
-					"    }\n" +
-					"    co=n/mt;\n" +
-					"    k=n%mt;\n" +
-					"    j=0;\n" +
-					"    while(k>0||co>0)\n" +
-					"    {\n" +
-					"      if(k>0)\n" +
-					"      {\n" +
-					"        for(i=9;i>mti;i--)\n" +
-					"        {\n" +
-					"          if(k+a[mti]>=a[i])\n" +
-					"            break;\n" +
-					"        }\n" +
-					"        if(i==mti) k=0;\n" +
-					"        else k=k+mt-a[i];\n" +
-					"        o=i;\n" +
-					"      }\n" +
-					"      else o=mti;\n" +
-					"      s[j++]=o+'0';\n" +
-					"      co--;\n" +
-					"    }\n" +
-					"    s[j]=0;\n" +
-					"    printf(\"%s\\n\",s);\n" +
-					"  }\n" +
-					"  return 0;\n" +
-					"}");
-	        System.out.println(num);   
+	    {
+			if(Math.abs(Integer.MIN_VALUE)<0){
+				System.out.println(Math.abs(Integer.MIN_VALUE));
+			}else{
+				System.out.println("B");
+			}
 	    } 
 	}
