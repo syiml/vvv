@@ -153,7 +153,7 @@ var matchICPC=function(cid){
         //如果这个username没出现过，则发送请求，单独获取它的信息
         rankDynameick.log("接收提交：{rid:"+ s.rid+",pid:"+ s.pid+",username:"+ s.username+",result:"+ s.result +"}");
         if(s.pid<0|| s.pid>=pnum) return;
-        if(s.result==-1){
+        if(s.result==-1){//发送聊天窗口显示
             rankDynameick.chat_log("<font color='#5B18C3'><b>"+s.username+"</b>提交了"+ String.fromCharCode(s.pid+65) +"题</font><br>");
         }else if(s.result==1){
             rankDynameick.chat_log("<font color='green'><b>"+s.username+"</b>的"+ String.fromCharCode(s.pid+65) +"题通过了！</font><br>");
@@ -161,10 +161,10 @@ var matchICPC=function(cid){
             rankDynameick.chat_log("<font color='red'><b>"+s.username+"</b>的"+ String.fromCharCode(s.pid+65) +"题未通过</font><br>");
         }
         var i;
-        for(i=0;i<rank.length;i++){
+        for(i=0;i<rank.length;i++){//查找rank内已经存在的user
             if(rank[i].username== s.username) break;
         }
-        if(i>=rank.length){
+        if(i>=rank.length){//没有找到原有user
             rank[i]={rank:i+1,username: s.username,S:0,W:0,score:[]};
             for(var j=0;j<pnum;j++){
                 rank[i].score[j]=[];
