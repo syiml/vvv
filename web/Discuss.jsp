@@ -19,6 +19,10 @@
   String pa=request.getParameter("page");
   if(pa==null||pa.equals("")) pa="0";
 %>
+<!-- 配置文件 -->
+<script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
 <html>
 <head>
   <title>讨论 - T^T Online Judge</title>

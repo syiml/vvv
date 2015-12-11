@@ -1192,7 +1192,8 @@ public class HTML {
         form.addForm(f7);
 
         textarea ta=new textarea("info","比赛信息");
-        ta.setId("info");
+        ta.setId("container");
+        ta.setUEditor(true);
         ta.setName("info");
         ta.setPlaceholder("填入HTML代码，将显示在首页");
         if(c!=null) ta.setValue(c.getInfo());
@@ -1370,6 +1371,8 @@ public class HTML {
                 t.setDisabled();
                 textarea te=new textarea("text","模块说明");
                 te.setPlaceholder("支持HTML代码");
+                te.setId("container");
+                te.setUEditor(true);
                 te.setValue(b.getText());
                 textForm.addForm(t);
                 textForm.addForm(te);

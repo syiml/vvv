@@ -71,11 +71,11 @@ public class DiscussSQL {
         new SQL("INSERT INTO t_discuss values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 ,id
                 , d.getCid()
-                ,d.isadmin()? d.getTitle() :HTML.HTMLtoString(d.getTitle())
+                , d.isadmin()? d.getTitle() :HTML.HTMLtoString(d.getTitle())
                 , d.getPanelclass()
                 , d.getUsername()
                 , d.getTime()
-                ,d.isadmin()? d.getText() :HTML.pre(HTML.HTMLtoString(d.getText()))
+                , d.getText()
                 , d.getPriority() ==-1?id: d.getPriority()
                 , d.isTop()
                 , d.isVisiable()
@@ -143,7 +143,7 @@ public class DiscussSQL {
         Discuss d=getDiscuss(did);
         if(d==null) return "error";
         int newid=getNewReplyId(did);
-        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,0,null)",newid,did,loginuser.getUsername(),Tool.now(),HTML.HTMLtoString(text),!d.isReplyHidden()).update();
+        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,0,null)",newid,did,loginuser.getUsername(),Tool.now(),text,!d.isReplyHidden()).update();
         MessageMain.addMessageDisscussReply(d.getCid(),loginuser.getUsername(),did,HTML.HTMLtoString(text));
         return "success";
     }

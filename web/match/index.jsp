@@ -47,7 +47,7 @@
     <div class="online"></div>
     <div class="chat-body"></div>
     <div class="chat-form">
-        <input type="text" id="chat-text" class="form-control"/>
+        <input type="text" id="chat-text" class="form-control" onkeypress="if(event.keyCode==13) {$('#chat-submit').click();return false;}"/>
         <input type="button" value="发送" class="btn" id="chat-submit"/>
     </div>
 </div>

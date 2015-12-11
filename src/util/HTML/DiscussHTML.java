@@ -257,6 +257,8 @@ public class DiscussHTML {
         form.addForm(t1);
         textarea t2=new textarea("text", "text");
         t2.setValue("");
+        t2.setUEditor(true);
+        t2.setId("replyDiscuss");
         t2.setPlaceholder("输入回复内容... "+(d.isReplyHidden() ?"本帖已经设置为回复仅管理员和自己可见，可放心回复~":""));
         form.addForm(t2);
         form.setCol(0,12);
@@ -264,8 +266,6 @@ public class DiscussHTML {
     }
 
     public static String addDiscussForm(int did,int cid){
-        Discuss d=null;
-        if(did!=-1) d=DiscussSQL.getDiscuss(did);
 
         text f0=new text("id","id");
         f0.setDisabled();
@@ -283,9 +283,10 @@ public class DiscussHTML {
         textarea f11 = new textarea("text","text");
 //        if(d!=null) f11.setValue(HTML.HTMLtoString(d.text));
 //        else
+        f11.setUEditor(true);
+        f11.setId("addDiscuss");
         f11.setValue("");
         f11.setPlaceholder("这里输入正文");
-
         return HTML.row(fcid.toHTML()+f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
     }
 

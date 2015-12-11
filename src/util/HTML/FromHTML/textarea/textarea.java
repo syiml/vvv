@@ -53,6 +53,7 @@ public class textarea extends form {
             s+="<script id=\""+id+"\" name=\""+name+"\" type=\"text/plain\" style=\""+"width:100%;height:500px;"+"\">"+
                     value+
                     "</script>";
+            s+="<script>var ue = UE.getEditor('"+id+"');</script>";
         }else{
             s+="<textarea";
             if(id!=null&&!id.equals("")) s+=" id='" +id+"'";
@@ -74,6 +75,7 @@ public class textarea extends form {
             s+="<script id=\""+id+"\" name=\""+name+"\" type=\"text/plain\" style=\""+"width:100%;height:500px;"+"\">"+
                     value+
                     "</script>";
+            s+="<script>var ue = UE.getEditor('"+id+"');</script>";
         }else {
             s += "<textarea";
             if (id != null && !id.equals("")) s += " id='" + id + "'";

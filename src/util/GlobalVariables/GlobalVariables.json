@@ -8,7 +8,7 @@
   "statuShowNum":"20",
   "contestShowNum":"20",
   "userShowNum":"50",
-  "discussShowNum":"20",
+  "discussShowNum":"10",
   "autoConnectionTimeMinute":"360",
 
   "localJudgeWorkPath":"C:\\T_TOJ\\",

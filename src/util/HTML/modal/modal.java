@@ -12,8 +12,10 @@ public class modal {
     String btncls="default";
     String btnlabel;
     String action="";
+    String formId=null;
     boolean havesubmit=true;
     boolean enctype=false;
+    boolean islage=false;
 //    String btnsize="xs";
     public modal(String id,String title,String body,String btnlabel){
         this.id=id;
@@ -31,13 +33,21 @@ public class modal {
         action=a;
     }
     public void setEnctype(){enctype=true;}
+    public void setLage(){
+        islage=true;
+    }
+    public void setFormId(String id){
+        formId=id;
+    }
     public String toHTML(){
         return "<button type=\"button\" class=\"btn btn-"+btncls+"\" data-toggle=\"modal\" data-target=\"#"+id+"\">\n" +
                 btnlabel +
                 "</button>" +
-                "<div class=\"modal fade\" id=\""+id+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\n" +
-                "<form action='"+action+"' method='post'>"+
-                "  <div class=\"modal-dialog\" role=\"document\">\n" +
+                "<div class=\"modal fade "+(islage?"bs-example-modal-lg":"")+"\" id=\""+id+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\n" +
+                "<form " +
+                (formId==null?"":"id='"+formId+"' ")+
+                "action='"+action+"' method='post'>"+
+                "  <div class=\"modal-dialog "+(islage?"modal-lg":"")+"\" role=\"document\">\n" +
                 "    <div class=\"modal-content\">\n" +
                 "      <div class=\"modal-header\">\n" +
                 "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n" +
@@ -61,7 +71,9 @@ public class modal {
             "</a>" +
             "<div class=\"modal fade\" id=\""+id+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\n" +
             "<div class=\"modal-dialog\" role=\"document\">\n" +
-            "  <form action='"+action+"' method='post' "+(enctype?"enctype=\"multipart/form-data\"":"")+">"+
+            "  <form " +
+            (formId==null?"":"id='"+formId+"' ") +
+            "action='"+action+"' method='post' "+(enctype?"enctype=\"multipart/form-data\"":"")+">"+
             "    <div class=\"modal-content\">\n" +
             "      <div class=\"modal-header\">\n" +
             "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n" +

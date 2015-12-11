@@ -15,6 +15,7 @@ var matchICPC=function(cid){
     var userInfo={};
     var pnum;
     var ws;
+    var width;
     function send(text){
         console.log("Send:"+text);
         ws.send(text);
@@ -119,7 +120,7 @@ var matchICPC=function(cid){
         rank.sort(cmp);
         //显示
         $main= $(".main");
-        var width=rankDynameick.bulidHead(pnum,head);
+        width=rankDynameick.bulidHead(pnum,head);
         for(var i=0;i<rank.length;i++){
             rank[i].rank=i+1;
             rankDynameick.log(rank[i].username+"["+rank[i].S+"]"+"["+rank[i].W+"]");
@@ -151,7 +152,6 @@ var matchICPC=function(cid){
         //有一个新的status状态改变，可能是一个新的提交，或者是提交结果有变化。s:{rid,pid,username,result,time}
         //同步改变rank和网页布局
         //如果这个username没出现过，则发送请求，单独获取它的信息
-        s.time/=1000;
         rankDynameick.log("接收提交：{rid:"+ s.rid+",pid:"+ s.pid+",username:"+ s.username+",result:"+ s.result +"}");
         if(s.pid<0|| s.pid>=pnum) return;
         if(s.result==-1){//发送聊天窗口显示
@@ -170,7 +170,7 @@ var matchICPC=function(cid){
             for(var j=0;j<pnum;j++){
                 rank[i].score[j]=[];
             }
-            rankDynameick.newRow(rank[i]);
+            rankDynameick.newRow(rank[i],head,userInfo,width);
         }
         var j;
         for(j=0;j<rank[i].score[s.pid].length;j++){

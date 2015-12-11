@@ -25,6 +25,10 @@
         Main.saveURL();
     }
 %>
+<!-- 配置文件 -->
+<script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
 <html>
 <head>
     <title>管理 - T^T Online Judge</title>
@@ -43,11 +47,3 @@
 </body>
 </html>
 
-<!-- 配置文件 -->
-<script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
-<!-- 编辑器源码文件 -->
-<script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
-<!-- 实例化编辑器 -->
-<script type="text/javascript">
-    var ue = UE.getEditor('container');
-</script>

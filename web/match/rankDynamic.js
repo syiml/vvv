@@ -94,8 +94,8 @@ var rankDynameick=function(){
         //{rank,username,nick,name,gender,faculty,major,cla,no,S,W,score[[{rid,result,time}],[{rid,result,time}]]}
         rowNum++;
         var $row=$("<div id='row-"+data.rank+"' class='row row-"+data.username+"' style='left:"+offset_x+"px;top:"+(offset_y+(height+padding)*rowNum)+"px'></div>");
-        var user;
-        if(userinfo.hasOwnProperty(data.username))
+        var user=null;
+        if(typeof(userinfo[data.username])=="object")
             user=userinfo[data.username];
         else{
             user=null;
@@ -134,7 +134,6 @@ var rankDynameick=function(){
                 $row.append("<div class='col no'>"+user.no+"</div>");
             }
         }
-
         for(var i=0;i<data.score.length;i++){
             var res=data.score[i];
             //[{rid,result,time}],[{rid,result,time}]

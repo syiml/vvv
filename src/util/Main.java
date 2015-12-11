@@ -102,7 +102,8 @@ public class Main {
         }
         if(cid!=-1) {//提交发送到观战模式
             try{
-                MatchServer.sendStatus(cid, rid, ppid, user, -1, submittime.getTime());
+                Contest c=Main.contests.getContest(s.getCid());
+                MatchServer.sendStatus(cid, rid, ppid, user, -1, (submittime.getTime()-c.getBeginDate().getTime())/1000);
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -118,9 +119,9 @@ public class Main {
             Contest c=Main.contests.getContest(s.getCid());
             int ppid=c.getcpid(s.getPid());
             if(s.getResult()==Result.AC){
-                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),1,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
+                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),1,(s.getSbmitTime().getTime()-c.getBeginDate().getTime())/1000);
             }else{
-                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),0,s.getSbmitTime().getTime()-c.getBeginDate().getTime());
+                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),0,(s.getSbmitTime().getTime()-c.getBeginDate().getTime())/1000);
             }
         }
     }

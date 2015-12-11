@@ -54,7 +54,9 @@ public class DiscussListHTML extends pageBean {
         if(admin) head+=HTML.floatRight(HTML.a("admin.jsp?page=AddDiscuss","New"));
         if(LoginUser!=null){
             modal m=new modal("adddiscuss","发帖", DiscussHTML.addDiscussForm(-1, cid),"发起新讨论");
+            m.setLage();
             m.setAction("adddiscuss2.action");
+            m.setFormId("adddiscussForm");
             m.setBtnCls("link btn-xs");
 //            modal(String id,String title,String body,String btnlabel){
             head+=HTML.floatRight(m.toHTML());
