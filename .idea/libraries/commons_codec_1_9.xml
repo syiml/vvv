@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="commons-codec-1.9">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/include/UEditor/commons-codec-1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/include/UEditor/json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/include/UEditor/ueditor-1.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

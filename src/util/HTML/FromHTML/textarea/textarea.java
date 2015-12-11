@@ -14,6 +14,7 @@ public class textarea extends form {
     private int cols=10;
     private int rows=10;
     private String placeholder;
+    private boolean isUEditor;
 
     public void setName(String name) {
         this.name = name;
@@ -41,17 +42,27 @@ public class textarea extends form {
         this.label=label;
         id="";
         disabled=false;
+        isUEditor=false;
+    }
+    public void setUEditor(Boolean is){
+        isUEditor=is;
     }
     public String toHTML(){
         String s="<div class='form-group'>";
-        s+="<textarea";
-        if(id!=null&&!id.equals("")) s+=" id='" +id+"'";
-        if(placeholder!=null) s+=" placeholder='"+placeholder+"'";
-        s+=" class='form-control'";
-        s+=" cols='"+cols+"'";
-        s+=" rows='"+rows+"'";
-        s+=" name='" +name+"'";
-        s+=">"+value+"</textarea>";
+        if(isUEditor){
+            s+="<script id=\""+id+"\" name=\""+name+"\" type=\"text/plain\" style=\""+"width:100%;height:500px;"+"\">"+
+                    value+
+                    "</script>";
+        }else{
+            s+="<textarea";
+            if(id!=null&&!id.equals("")) s+=" id='" +id+"'";
+            if(placeholder!=null) s+=" placeholder='"+placeholder+"'";
+            s+=" class='form-control'";
+            s+=" cols='"+cols+"'";
+            s+=" rows='"+rows+"'";
+            s+=" name='" +name+"'";
+            s+=">"+value+"</textarea>";
+        }
         s+="</div>";
         return s;
     }
@@ -59,14 +70,20 @@ public class textarea extends form {
         String s="<div class='form-group row'>";
         if(col1!=0&&col1!=12)s+="<label class='col-sm-"+col1+" control-label'>"+label+"</label>";
         s+="<div class='col-sm-"+col2+"'>";
-        s+="<textarea";
-        if(id!=null&&!id.equals("")) s+=" id='" +id+"'";
-        if(placeholder!=null) s+=" placeholder='"+placeholder+"'";
-        s+=" class='form-control'";
-        s+=" cols='"+cols+"'";
-        s+=" rows='"+rows+"'";
-        s+=" name='" +name+"'";
-        s+=">"+value+"</textarea>";
+        if(isUEditor){
+            s+="<script id=\""+id+"\" name=\""+name+"\" type=\"text/plain\" style=\""+"width:100%;height:500px;"+"\">"+
+                    value+
+                    "</script>";
+        }else {
+            s += "<textarea";
+            if (id != null && !id.equals("")) s += " id='" + id + "'";
+            if (placeholder != null) s += " placeholder='" + placeholder + "'";
+            s += " class='form-control'";
+            s += " cols='" + cols + "'";
+            s += " rows='" + rows + "'";
+            s += " name='" + name + "'";
+            s += ">" + value + "</textarea>";
+        }
         s+="</div></div>";
         return s;
     }

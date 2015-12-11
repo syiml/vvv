@@ -29,7 +29,6 @@ public class UserSQL {
     * userper(username,perid)
     * */
     public int register(User u){
-        PreparedStatement p= null;
         SQL sql1=new SQL("select * from users where username=?",u.getUsername());
         try {
             ResultSet s=sql1.query();

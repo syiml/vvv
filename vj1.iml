@@ -78,5 +78,8 @@
     <orderEntry type="library" name="tomcat7-websocket" level="project" />
     <orderEntry type="library" name="annotations-api" level="project" />
     <orderEntry type="library" name="catalina" level="project" />
+    <orderEntry type="library" name="commons-codec-1.9" level="project" />
+    <orderEntry type="library" name="ueditor-1.1.2" level="project" />
+    <orderEntry type="library" name="commons-codec-1.9 (2)" level="project" />
   </component>
 </module>

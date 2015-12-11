@@ -148,8 +148,10 @@ public class DiscussHTML {
         form.addForm(f12);
 
         textarea f11 = new textarea("text","text");
-        if(d!=null) f11.setValue(HTML.HTMLtoString(d.getText()));
+        if(d!=null) f11.setValue(d.getText());
         else f11.setValue("");
+        f11.setUEditor(true);
+        f11.setId("container");
         f11.setPlaceholder("允许输入HTML代码");
         form.addForm(f11);
 

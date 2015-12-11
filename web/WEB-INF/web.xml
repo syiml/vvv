@@ -3,8 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-
-
     <filter>
         <filter-name>WebSocket</filter-name>
         <filter-class>util.ReDispatcherFilter</filter-class>
@@ -20,7 +18,9 @@
 
     <filter>
         <filter-name>struts2</filter-name>
-        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+        <filter-class>
+            util.MyStruts2Filter
+        </filter-class>
     </filter>
     <filter-mapping>
         <filter-name>struts2</filter-name>

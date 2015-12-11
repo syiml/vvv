@@ -128,7 +128,7 @@ function loadHome(rollback){
         //.html("<img src='pic/loading.jpg'>");
         if(contestInfo.now<contestInfo.begintime){//pendding
             $main.append("<div class='contestHomeText'><h4>"+("比赛状态：")+(HTML.textb("PENDDING","green"))+"</h4></div>");
-            $main.append("<div class='contestHomeText'><h4>"+("倒计时：")+("<text id='runtime'></text>")+"</h4></div>");
+            $main.append("<div class='contestHomeText'><h4>"+("倒计时　：")+("<text id='runtime'></text>")+"</h4></div>");
              runtimett=(contestInfo.begintime-contestInfo.now)/1000;
              runtime_ff=function() {
                 if(runtimett>=0){

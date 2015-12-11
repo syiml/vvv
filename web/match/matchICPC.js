@@ -151,6 +151,7 @@ var matchICPC=function(cid){
         //有一个新的status状态改变，可能是一个新的提交，或者是提交结果有变化。s:{rid,pid,username,result,time}
         //同步改变rank和网页布局
         //如果这个username没出现过，则发送请求，单独获取它的信息
+        s.time/=1000;
         rankDynameick.log("接收提交：{rid:"+ s.rid+",pid:"+ s.pid+",username:"+ s.username+",result:"+ s.result +"}");
         if(s.pid<0|| s.pid>=pnum) return;
         if(s.result==-1){//发送聊天窗口显示

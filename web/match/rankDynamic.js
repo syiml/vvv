@@ -173,7 +173,7 @@ var rankDynameick=function(){
     function editSW(username,S,W){
         var $row=$(".row-"+username);
         $row.find(".S").text(S);
-        $row.find(".W").text(parseInt(W/60000));
+        $row.find(".W").text(parseInt(W/60));
     }
     function editCell(username,pid,data){
         //data=[{rid,result,time},{rid,result,time}]
@@ -195,9 +195,9 @@ var rankDynameick=function(){
         var $cell=$row.find(".pro-"+pid);
         if(solvedTime!=-1){
             if(errorTime==0){
-                $cell.addClass("ac").removeClass("wa").removeClass("nores").text(parseInt(solvedTime/60000));
+                $cell.addClass("ac").removeClass("wa").removeClass("nores").text(parseInt(solvedTime/60));
             }else{
-                $cell.addClass("ac").removeClass("wa").removeClass("nores").text(parseInt(solvedTime/60000)+"(-"+errorTime+")");
+                $cell.addClass("ac").removeClass("wa").removeClass("nores").text(parseInt(solvedTime/60)+"(-"+errorTime+")");
             }
         }else if(errorTime+noResultTime>0){
             if(noResultTime>0){
