@@ -104,8 +104,7 @@ public class SQL {
         }
         return ret;
     }
-    public <T> List<T> queryList(){
-        List<T> ret=new ArrayList<T>();
+    public <T> void queryCollection(Collection c){
         try {
             p=conn.prepareStatement(sql);
             int i;
@@ -114,32 +113,22 @@ public class SQL {
             }
             rs=p.executeQuery();
             while(rs.next()){
-                ret.add((T)getObject(1));
+                c.add((T)getObject(1));
             }
         } catch (SQLException e) {
 //            e.printStackTrace();
         } finally {
             close();
         }
+    }
+    public <T> List<T> queryList(){
+        List<T> ret=new ArrayList<T>();
+        queryCollection(ret);
         return ret;
     }
     public <T> Set<T> querySet(){
         Set<T> ret=new TreeSet<T>();
-        try {
-            p=conn.prepareStatement(sql);
-            int i;
-            for(i=0;i<args.length;i++){
-                p.setObject(i+1,args[i]);
-            }
-            rs=p.executeQuery();
-            while(rs.next()){
-                ret.add((T)getObject(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close();
-        }
+        queryCollection(ret);
         return ret;
     }
     public <T> T queryObj(){

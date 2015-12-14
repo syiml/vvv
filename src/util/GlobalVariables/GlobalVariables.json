@@ -12,6 +12,7 @@
   "autoConnectionTimeMinute":"360",
 
   "localJudgeWorkPath":"C:\\T_TOJ\\",
+  "LocalJudgeNumber":2,
   "maxHeadImgSize":524288,
   "maxSampleFileSize":10737418240,
   "debug":false,

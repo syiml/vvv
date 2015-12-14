@@ -120,7 +120,7 @@ public class statusSQL {
         if(!all) return new SQL(sql,cid).queryNum();
         else return new SQL(sql).queryNum();
     }
-    public statu setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
+    public synchronized statu setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
         new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?",statu.resultToInt(res),time,Meory,rid).update();
         Tool.log(rid+"->"+res);
         statu s=getStatu(rid);
@@ -273,14 +273,18 @@ public class statusSQL {
      */
     public List<Integer> getRidsToRejudge(int pid, int fromRid , int status){
         SQL sql;
-        String sqlString="SELECT rid FROM statu WHERE pid=? AND rid>=? ";
+        String sqlString="SELECT id FROM statu WHERE pid=? AND id>=? ";
         if(status==1){
-            sql=new SQL(sqlString+"AND result==1",pid,fromRid);
+            sqlString=sqlString+"AND result==1";
         }else if(status==2){
-            sql=new SQL(sqlString+"AND result!=3",pid,fromRid);
-        }else{
-            sql=new SQL(sqlString,pid,fromRid);
+            sqlString=sqlString+"AND result!=3";
         }
+        sql=new SQL(sqlString,pid,fromRid){
+            @Override
+            protected Object getObject(int i) throws SQLException {
+                return rs.getInt(i);
+            }
+        };
         return sql.queryList();
     }
 }

@@ -237,8 +237,9 @@ public class ProblemSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
-        sql.close();
         return new Pair<Integer, Integer>(0,0);
     }
     public String toHref(int pid,int cid){

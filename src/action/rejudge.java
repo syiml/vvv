@@ -1,6 +1,7 @@
 package action;
 
 import util.Main;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/6/15 0015.
@@ -33,7 +34,8 @@ public class rejudge {
         Main.submitter.reJudge(rid);
         return "success";
     }
-    public String rejudge(){
+    public String batchRejudge(){
+        Tool.log("rejudge:"+pid+" "+rid+" "+status);
         Main.submitter.reJudge(pid,rid,status);
         return "success";
     }

@@ -33,6 +33,10 @@
                         <result name="error">return.jsp</result>
                         <result name="success">return.jsp</result>
                 </action>
+                <action name="batchRejudge" class="action.rejudge" method="batchRejudge">
+                        <result name="error">return.jsp</result>
+                        <result name="success">return.jsp</result>
+                </action>
                 <action name="pvis" class="action.setProblemVisiable" method="setProVis">
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>

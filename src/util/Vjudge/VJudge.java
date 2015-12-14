@@ -17,8 +17,9 @@ public class VJudge {
     BlockingQueue<SubmitInfo> localQueue = new LinkedBlockingQueue<SubmitInfo>();
     public VJudge(){//初始化。从文件读取？？从数据库？？
         //System.out.println("create Main!!!");
-
-        s.add(new SubmitterLocal(0,"","",-1,this));
+        for(int i=0;i<Main.GV.getInt("LocalJudgeNumber");i++){
+            s.add(new SubmitterLocal(0,"","",-1,this));
+        }
 
         String ss[]={"hdu","bnuoj","nbut","pku","hust","cf"};
         for(int j=0;j<ss.length;j++){

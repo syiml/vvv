@@ -1003,7 +1003,7 @@ public class HTML {
             s+=li("新增题目","AddProblem",nowpage);
         if(p.getAddLocalProblem())
             s+=li("本地题目","AddLocalProblem",nowpage);
-        if(p.getResetPassword())
+        if(p.getReJudge())
             s+=li("重判","ReJudge",nowpage);
         if(p.getAddContest())
             s+=li("新增比赛","AddContest",nowpage);
