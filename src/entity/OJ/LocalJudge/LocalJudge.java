@@ -2,7 +2,7 @@ package entity.OJ.LocalJudge;
 
 import util.Pair;
 import util.Tool;
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
 import util.Main;
@@ -62,7 +62,7 @@ public class LocalJudge {
         File file = new File(path);
         deleteFile(file);
     }
-    private static boolean compile(Submitter s,RES res){
+    private static boolean compile(VjSubmitter s, RES res){
         File workPath = new File(outPath + s.getSubmitInfo().rid+"\\");
         String fileName = "Main";
         if(!workPath.mkdirs()) {
@@ -105,7 +105,7 @@ public class LocalJudge {
     public static String fixPath(String var0) {
         return var0.endsWith("\\")?var0:var0 + "\\";
     }
-    private static int run( Submitter s, RES res) throws IOException {
+    private static int run(VjSubmitter s, RES res) throws IOException {
         Process runExe = Runtime.getRuntime().exec(runshell);
         OutputStream runExeOutputStream = runExe.getOutputStream();
         File pathFile = new File(path+"\\"+s.getSubmitInfo().pid+"\\");
@@ -192,7 +192,7 @@ public class LocalJudge {
             }
         }
     }
-    public static RES judge(Submitter s){
+    public static RES judge(VjSubmitter s){
         RES res=new RES();
         if(s.getSubmitInfo().language==2){//JAVA 不支持
             res.setR(Result.ERROR);

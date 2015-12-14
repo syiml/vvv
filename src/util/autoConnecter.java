@@ -11,20 +11,6 @@ public class autoConnecter implements Runnable{
      * 连接数据库
      */
     public void conn(){
-//        do{
-//            try {
-////            Class.forName("com.mysql.jdbc.Driver");
-////            conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/vjudge?useUnicode=true&characterEncoding=utf8","root","");
-//                Main.conn= DriverManager.getConnection(Main.GV.get("sqlconnstring").toString(), Main.GV.get("sqlusername").toString(), Main.GV.get("sqlpassword").toString());
-//                //System.out.println(Main.now()+"连接完成");
-//                Main.log("连接数据库完成");
-//                break;
-//            } catch (SQLException e) {
-//                Main.debug("数据库连接失败,10秒后重试");
-//                //e.printStackTrace();
-//                Main.sleep(10000);
-//            }
-//        }while(true);
         Main.conns.clear();
     }
 

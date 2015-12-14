@@ -1,6 +1,6 @@
 package entity.OJ;
 
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.RES;
 import util.HTML.problemHTML;
 
@@ -11,8 +11,8 @@ public abstract class OTHOJ {
     public abstract String getRid(String user);
     public abstract problemHTML getProblemHTML(String pid);
     public abstract String getTitle(String pid);
-    public abstract String submit(Submitter s);
-    public abstract RES getResult(Submitter s);
+    public abstract String submit(VjSubmitter s);
+    public abstract RES getResult(VjSubmitter s);
     public abstract String getProblemURL(String pid);
     public abstract String getName();
 }

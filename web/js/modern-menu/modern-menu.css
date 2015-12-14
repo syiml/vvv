@@ -35,3 +35,6 @@
 /*.theme8 .mm-googleplus-over { background-image: url(../images/theme8/googleplus-over.png) }*/
 /*.theme8 .mm-linkedin { background-image: url(../images/theme8/linkedin.png) }*/
 /*.theme8 .mm-linkedin-over { background-image: url(../images/theme8/linkedin-over.png) }*/
+.modern-menu li ul{
+    z-index: 1234;
+}

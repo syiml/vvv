@@ -29,7 +29,8 @@ public class DBConnectionPool {
         try {
             return DriverManager.getConnection(Main.GV.get("sqlconnstring").toString(), Main.GV.get("sqlusername").toString(), Main.GV.get("sqlpassword").toString());
         } catch (SQLException e) {
-            Tool.log("=连接失败=");
+            Tool.log("===连接失败，请检查数据库是否已经启动===");
+            e.printStackTrace();
         }
         return null;
     }

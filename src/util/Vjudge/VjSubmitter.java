@@ -4,6 +4,7 @@ import util.Main;
 import entity.OJ.OTHOJ;
 import entity.RES;
 import entity.Result;
+import util.Submitter;
 import util.Tool;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
 /*
 * 提交器
 * */
-public class Submitter implements Runnable{
+public class VjSubmitter implements Runnable{
     SubmitInfo info;//正在处理的info
     int status;//忙碌状态与否
     private String username;
@@ -27,7 +28,7 @@ public class Submitter implements Runnable{
 
     VJudge vj;
 
-    public Submitter(int ojid,String us,String pas,int id,VJudge vj){
+    public VjSubmitter(int ojid, String us, String pas, int id, VJudge vj){
         this.ojid=ojid;
         username=us;
         password=pas;
@@ -69,7 +70,7 @@ public class Submitter implements Runnable{
             //System.out.println(submitterID+":submitter go");
             showstatus="go";
             OTHOJ oj;
-            oj = Main.ojs[ojid];
+            oj = Submitter.ojs[ojid];
             String prid;
             int z=0;
             do{
@@ -124,8 +125,7 @@ public class Submitter implements Runnable{
                     //System.out.println(submitterID+":get res="+r.getR());
                     showstatus="get res="+r.getR();
                 }while(!r.canReturn());
-                Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo());
-                Main.onSubmitDone(info.rid);
+                Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo()));
             }
             this.status=IDLE;
         }catch(NullPointerException e){

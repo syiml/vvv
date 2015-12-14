@@ -2,7 +2,7 @@ package entity.OJ.HUST;
 
 import entity.OJ.OTHOJ;
 import util.Main;
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
 import util.HTML.problemHTML;
@@ -110,7 +110,7 @@ public class HUST extends OTHOJ {
         }
         return "";
     }
-    private void login(MyClient hc,Submitter s){
+    private void login(MyClient hc,VjSubmitter s){
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("user_id",s.getUsername()));
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
@@ -128,7 +128,7 @@ public class HUST extends OTHOJ {
         }
         return "1";
     }
-    public String submit(Submitter s){
+    public String submit(VjSubmitter s){
         MyClient hc=new MyClient();
         login(hc,s);
 
@@ -147,13 +147,13 @@ public class HUST extends OTHOJ {
     private Result getResultMap(String s){
         return ResultMap.get(s);
     }
-    public String getCEInfo(Submitter s){
+    public String getCEInfo(VjSubmitter s){
         MyClient hc=new MyClient();
         login(hc,s);
         Document d = hc.get(url+"/ceinfo.php?sid="+s.getOjsrid());
         return d.select("#errtxt").html();
     }
-    public RES getResult(Submitter s){
+    public RES getResult(VjSubmitter s){
         Element e;
         Document d = null;
         RES r=new RES();

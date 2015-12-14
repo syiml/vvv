@@ -2,7 +2,7 @@ package entity.OJ.HDU;
 
 import entity.OJ.OTHOJ;
 import util.Main;
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
 import util.MyClient;
@@ -139,7 +139,7 @@ public class HDU extends OTHOJ {
         if(s.contains("Special Judge")) p.setSpj(1);
         return p;
     }
-    public String submit(Submitter s){
+    public String submit(VjSubmitter s){
         String ret=Login(s);
         if(ret.equals("error")) return "error";
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -149,7 +149,7 @@ public class HDU extends OTHOJ {
         if(hc.Post(getSubmitURL(), formparams)==0) return "error";
         return "success";
     }
-    public RES getResult(Submitter s) {
+    public RES getResult(VjSubmitter s) {
         Element e;
         Document d = null;
         RES r=new RES();
@@ -172,7 +172,7 @@ public class HDU extends OTHOJ {
         }
         return r;
     }
-    public String Login(Submitter s){
+    public String Login(VjSubmitter s){
         //登录
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
@@ -180,7 +180,7 @@ public class HDU extends OTHOJ {
         if(hc.Post(getLoginURL(), formparams)==0) return "error";
         return "success";
     }
-    public String getCEInfo(Submitter s){
+    public String getCEInfo(VjSubmitter s){
         Element e;
         Document d = null;
         try {

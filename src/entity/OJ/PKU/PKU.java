@@ -2,7 +2,7 @@ package entity.OJ.PKU;
 
 import entity.OJ.OTHOJ;
 import util.Main;
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
 import util.HTML.problemHTML;
@@ -116,7 +116,7 @@ public class PKU extends OTHOJ {
         }
         return "0";
     }
-    public String submit(Submitter s){
+    public String submit(VjSubmitter s){
         MyClient hc=new MyClient();
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("user_id1",s.getUsername()));
@@ -143,12 +143,12 @@ public class PKU extends OTHOJ {
     private Result getResultMap(String s){
         return ResultMap.get(s);
     }
-    public String getCEInfo(Submitter s){
+    public String getCEInfo(VjSubmitter s){
         MyClient hc=new MyClient();
         Document d = hc.get(url+"/showcompileinfo?solution_id="+s.getOjsrid());
         return d.select("pre").html();
     }
-    public RES getResult(Submitter s){
+    public RES getResult(VjSubmitter s){
         Element e;
         Document d = null;
         RES r=new RES();

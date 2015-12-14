@@ -4,6 +4,7 @@ import util.Main;
 import entity.User;
 import entity.Problem;
 import util.HTML.modal.modal;
+import util.Submitter;
 
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class ProblemInfo {
         Problem p= Main.problems.getProblem(pid);
         String from;
         if(p.getType()==1){
-            from=HTML.aNew(Main.ojs[p.getOjid()].getProblemURL(p.getOjspid()), HTML.spannull("badge", "题目将评测在：" + Main.ojs[p.getOjid()].getName() + " " + p.getOjspid()));
+            from=HTML.aNew(Submitter.ojs[p.getOjid()].getProblemURL(p.getOjspid()), HTML.spannull("badge", "题目将评测在：" + Submitter.ojs[p.getOjid()].getName() + " " + p.getOjspid()));
         }else{
             from=HTML.spannull("badge", "题目将评测在：本OJ");
         }

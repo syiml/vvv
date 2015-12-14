@@ -15,6 +15,7 @@ import util.Pair;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import util.Submitter;
 import util.Tool;
 
 import java.util.List;
@@ -108,7 +109,7 @@ public class JSON {
         JSONObject jo=new JSONObject();
         if(ojid==null||ojspid==null) return "";
         try{
-            OTHOJ oj=Main.ojs[Integer.parseInt(ojid)];
+            OTHOJ oj= Submitter.ojs[Integer.parseInt(ojid)];
             jo.put("title",oj.getTitle(ojspid));
             List<Integer> list=Main.problems.getProblemsByOjPid(Integer.parseInt(ojid),ojspid);
             JSONArray ja=new JSONArray();

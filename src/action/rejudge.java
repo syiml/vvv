@@ -11,7 +11,7 @@ public class rejudge {
     public void setRid(String rid){this.rid=rid;}
     public String rej(){
         if(!Main.loginUserPermission().getReJudge()) return "error";
-        Main.rejudge(Integer.parseInt(rid));
+        Main.submitter.reJudge(Integer.parseInt(rid));
         return "success";
     }
 }

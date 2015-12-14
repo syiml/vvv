@@ -51,9 +51,13 @@ public class Main {
     public static statusSQL status = new statusSQL();
     public static ContestSQL contests = new ContestSQL();
     public static UserSQL users = new UserSQL();
-    public static OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF()};
-        //OJ列表。判题OJ顺序不能改变，否则导致已有题目的OJ不正确
-    public static VJudge m=new VJudge();
+
+    //public static OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF()};
+    //OJ列表。判题OJ顺序不能改变，否则导致已有题目的OJ不正确
+    //public static VJudge m=new VJudge();
+
+    public static Submitter submitter=new SubmitterImp();
+
     //常量获取
     final public static int problemShowNum=GV.getInt("problemShowNum");//每页显示的题目数量
     final public static int statuShowNum=GV.getInt("statuShowNum");//statu每页显示数量
@@ -64,7 +68,6 @@ public class Main {
     public static boolean isDebug=GV.getBoolean("debug");
     public static String version=GV.getString("version");
     public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();
-
 
     static{
         try {
@@ -77,58 +80,6 @@ public class Main {
         Thread connection=new Thread(cn);
         connection.start();
         status.init();
-    }
-    public static int doSubmit(String user,int pid,int cid,int language,String code,Timestamp submittime){//控制提交跳转到vj还是本地
-        Tool.log("Main.doSubmit");
-        Tool.debug("cid="+cid+" pid="+pid);
-        int rid;
-        if(cid!=-1){//验证user是否有权限提交
-            if(contests.getContest(cid).getEndTime().before(submittime)){
-                return -1;//超出比赛结束时间
-            }
-        }
-        int ppid=pid;
-        if(cid!=-1) pid=Main.contests.getContest(cid).getGlobalPid(pid);//等于全局题目编号
-        Tool.debug("go=" + pid);
-        statu s=new statu(0,user,pid,cid,language,code,submittime);
-        rid = status.addStatu(s);//插入数据库，并获取rid
-
-        if(!problems.isProblemLocal(pid)){//is vj
-            SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),language,code,false);
-            submitVJ(ss, problems.getOJid(pid));
-        }else{//is local
-            SubmitInfo ss=new SubmitInfo(rid,pid+"",language,code,false);
-            m.addSubmit(ss);
-        }
-        if(cid!=-1) {//提交发送到观战模式
-            try{
-                Contest c=Main.contests.getContest(s.getCid());
-                MatchServer.sendStatus(cid, rid, ppid, user, -1, (submittime.getTime()-c.getBeginDate().getTime())/1000);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-        if(!problems.isProblemLocal(pid)) {//is vj
-            return 0;//success submit to vj
-        }
-        return 1;//success submit to local
-    }
-    public static void onSubmitDone(int rid){
-        statu s=status.getStatu(rid);
-        if(s.getCid()!=-1){
-            Contest c=Main.contests.getContest(s.getCid());
-            int ppid=c.getcpid(s.getPid());
-            if(s.getResult()==Result.AC){
-                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),1,(s.getSbmitTime().getTime()-c.getBeginDate().getTime())/1000);
-            }else{
-                MatchServer.sendStatus(s.getCid(),rid,ppid,s.getUser(),0,(s.getSbmitTime().getTime()-c.getBeginDate().getTime())/1000);
-            }
-        }
-    }
-    public static int submitVJ(SubmitInfo info,int oj){
-        //System.out.println("Main.submitVJ");
-        m.addSubmit(info, oj);
-        return 1;
     }
     public static String addProblem(addproblem1 action){
         Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle(),action.getAuthor());
@@ -159,23 +110,6 @@ public class Main {
         problems.delProblemDis(pid);
         problems.saveProblemHTML(pid,ph);
         return "success";
-    }
-    public static int rejudge(int rid){
-        statu s=status.getStatu(rid);
-        int pid=s.getPid();
-        if(!problems.isProblemLocal(pid)){//is vj
-            status.setStatusResult(rid, Result.PENDING,"-","-",null);
-            SubmitInfo ss=new SubmitInfo(rid,problems.getOjspid(pid),s.getLanguage(),s.getCode(),true);
-            submitVJ(ss, problems.getOJid(pid));
-            Tool.debug("Main.ReJudge Done");
-            return 0;//success submit to vj
-        }else{//is local
-            status.setStatusResult(rid, Result.PENDING,"-","-",null);
-            SubmitInfo ss=new SubmitInfo(rid,pid+"",s.getLanguage(),s.getCode(),true);
-            m.addSubmit(ss);
-            Tool.debug("Main.ReJudge Done");
-            return 1;//success submit to local
-        }
     }
     public static String setProblemVisiable(int pid){
         return problems.setProblemVisiable(pid);

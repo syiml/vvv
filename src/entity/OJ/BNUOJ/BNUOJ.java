@@ -5,8 +5,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import util.Main;
-import util.Tool;
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
 import util.MyClient;
@@ -143,7 +142,7 @@ public class BNUOJ extends OTHOJ {
         p.setMenoryLimit(s.substring(14,s.length()));
         return p;
     }
-    public String submit(Submitter s){
+    public String submit(VjSubmitter s){
         String ret=Login(s);
         if(ret.equals("error")) return "error";
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -155,7 +154,7 @@ public class BNUOJ extends OTHOJ {
         if(hc.Post(getSubmitURL(), formparams)==0) return "error";
         return "success";
     }
-    public RES getResult(Submitter s) {
+    public RES getResult(VjSubmitter s) {
         RES r=new RES();
         JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0="+s.getUsername()).select("body").html());
         JSONArray aadata=jo.getJSONArray("aaData");
@@ -175,7 +174,7 @@ public class BNUOJ extends OTHOJ {
             return r;
         }
     }
-    public String Login(Submitter s){
+    public String Login(VjSubmitter s){
         //登录
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
@@ -184,7 +183,7 @@ public class BNUOJ extends OTHOJ {
         if(hc.Post(getLoginURL(), formparams)==0) return "error";
         return "success";
     }
-    public String getCEInfo(Submitter s){
+    public String getCEInfo(VjSubmitter s){
         try{
             JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/get_ceinfo.php?runid="+s.getOjsrid()).select("body").html());
             return jo.getString("msg");

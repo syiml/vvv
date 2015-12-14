@@ -6,13 +6,12 @@ import dao.ChallengeSQL;
 import entity.Condition;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
+import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
-import util.Main;
 import entity.OJ.OTHOJ;
 import entity.Permission;
 import entity.User;
-import util.Tool;
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
 import entity.rank.RankShortCode.RankShortCode;
 import entity.Contest;
@@ -22,7 +21,6 @@ import util.rating.Computer;
 import entity.RatingCase;
 import dao.ratingSQL;
 import entity.statu;
-import util.FILE;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.FormPart.FormPart;
 import util.HTML.FromHTML.check.check;
@@ -37,7 +35,6 @@ import util.HTML.UserListHTML.UserListContest;
 import util.HTML.UserListHTML.UserListHTML;
 import util.HTML.problemListHTML.problemListFilterHTML.ProblemListFilter;
 import util.HTML.problemListHTML.problemListHTML;
-import util.SQL;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -504,7 +501,7 @@ public class HTML {
             problemHTML ph=Main.problems.getProblemHTML(tpid);
 
             if(ph==null){
-                OTHOJ oj=Main.ojs[p.getOjid()];
+                OTHOJ oj= Submitter.ojs[p.getOjid()];
                 ph=oj.getProblemHTML(p.getOjspid());
                 //System.out.println("save:pid="+tpid);
                 Main.problems.saveProblemHTML(tpid,ph);
@@ -961,6 +958,10 @@ public class HTML {
                 numInt=0;
             }
             textarea f1=new textarea("s","");
+            if(edit.equals("dis")||edit.equals("input")||edit.equals("output")){
+                f1.setUEditor(true);
+                f1.setId("problemDis");
+            }
             f1.setId("s");
             f1.setValue("");
             f1.setPlaceholder("Input HTML code");
@@ -1084,8 +1085,8 @@ public class HTML {
         f.addForm(f1);
 
         select f2=new select("ojid","oj");
-        for(int i=0;i<Main.ojs.length;i++){
-            f2.add(i,Main.ojs[i].getName());
+        for(int i=0;i<Submitter.ojs.length;i++){
+            f2.add(i,Submitter.ojs[i].getName());
         }
         f2.setId("ojid");
         if(p!=null) f2.setValue(p.getOjid()+"");
@@ -1249,7 +1250,7 @@ public class HTML {
         table.setClass("table");
         //submitterID,ojid,status,username,info.rid,info.pid,ojsrid,show
         table.addColname("id","oj","s","username","rid","pid","ojsrid","show");
-        for(Submitter s:Main.m.getSubmitters()){
+        for(VjSubmitter s:Main.submitter.m.getSubmitters()){
             table.addRow(s.row());
         }
         return table.HTML();

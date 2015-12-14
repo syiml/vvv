@@ -52,7 +52,7 @@ public class submit {
             }
             Timestamp submittime=new Timestamp(System.currentTimeMillis());
             String user=u.getUsername();
-            int z=Main.doSubmit(user,Integer.parseInt(pid),Integer.parseInt(cid),Integer.parseInt(language),code,submittime);
+            int z=Main.submitter.doSubmit(user,Integer.parseInt(pid),Integer.parseInt(cid),Integer.parseInt(language),code,submittime);
             //Main.m.submitProblem(s);
             if(z==-1){
                 return "OutOfContest";

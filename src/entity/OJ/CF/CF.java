@@ -3,7 +3,7 @@ package entity.OJ.CF;
 import util.Main;
 import entity.OJ.OTHOJ;
 import util.Tool;
-import util.Vjudge.Submitter;
+import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
 import util.HTML.problemHTML;
@@ -113,7 +113,7 @@ public class CF extends OTHOJ {
         if(z==1) return hc.get(URL + "/enter").select("#enterForm").select("input").get(0).attr("value");
         else return hc.get(URL + "/problemset/submit").select(".submit-form").select("input").get(0).attr("value");
     }
-    private int login(Submitter s,MyClient hc){
+    private int login(VjSubmitter s, MyClient hc){
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("csrf_token",get_csrf_token(hc,1)));
         formparams.add(new BasicNameValuePair("action","enter"));
@@ -132,7 +132,7 @@ public class CF extends OTHOJ {
         return "/*"+ Tool.now()+"*/";
     }
     @Override
-    public String submit(Submitter s) {
+    public String submit(VjSubmitter s) {
         MyClient hc=new MyClient();
         //login
         login(s,hc);
@@ -161,7 +161,7 @@ public class CF extends OTHOJ {
         return Result.ERROR;
     }
     @Override
-    public RES getResult(Submitter s) {
+    public RES getResult(VjSubmitter s) {
         RES res=new RES();
         res.setR(Result.PENDING);
         Document doc;

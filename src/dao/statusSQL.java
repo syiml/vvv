@@ -29,7 +29,7 @@ public class statusSQL {
     private int getNewRid(){
         return new SQL("select MAX(id) from statu").queryNum();
     }
-    public int addStatu(statu s){
+    public synchronized int addStatu(statu s){
         int rid=maxRID+1;
         maxRID++;
         new SQL("insert into statu values(?,?,?,?,?,?,?,?,?,?,?)"
@@ -120,16 +120,17 @@ public class statusSQL {
         if(!all) return new SQL(sql,cid).queryNum();
         else return new SQL(sql).queryNum();
     }
-    public void setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
+    public statu setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
         new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?",statu.resultToInt(res),time,Meory,rid).update();
         Tool.log(rid+"->"+res);
         statu s=getStatu(rid);
-        if(s.getCid()!=-1&&s.getResult()!=Result.JUDGING){
+        if(s.getCid()!=-1&&res!=Result.JUDGING){
             Main.contests.getContest(s.getCid()).getRank().add(s,Main.contests.getContest(s.getCid()));
         }
         if(res==Result.CE){
             addCEInfo(rid, CEinfo);
         }
+        return s;
     }
     private Set<Integer> getProblems(String user,int solved){
         Set<Integer> ret=new TreeSet<Integer>();
