@@ -123,27 +123,6 @@ public class Discuss implements IBeanResultSetCreate<Discuss>{
     public String getTitle(){return title;}
     public int getId(){return id;}
 
-
-    public Discuss(ResultSet rs) throws SQLException {
-        id=rs.getInt("id");
-        cid=rs.getInt("cid");
-        title=rs.getString("title");
-        username=rs.getString("username");
-        time=rs.getTimestamp("time");
-        text=rs.getString("text");
-        priority=rs.getDouble("priority");
-        top=rs.getBoolean("top");
-        shownum=rs.getInt("shownum");
-        visiable=rs.getBoolean("visiable");
-        reply=rs.getBoolean("reply");
-        panelclass=rs.getInt("panelclass");
-        panelnobody=rs.getBoolean("panelnobody");
-        showauthor=rs.getBoolean("showauthor");
-        showtime=rs.getBoolean("showtime");
-        replyHidden=rs.getBoolean("replyhidden");
-        replyNum=rs.getInt("replynum");
-        //System.out.print(rs.getBoolean("panelnobody"));
-    }
     public Discuss(addDiscuss ad){
         id= Integer.parseInt(ad.getId());
         cid=ad.getCid();
