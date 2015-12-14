@@ -23,4 +23,13 @@ public interface Submitter {
     int doSubmit(String user,int pid,int cid,int language,String code,Timestamp submittime);
     void onSubmitDone(statu s);
     int reJudge(int rid);
+
+    /**
+     * 批量重判
+     * @param pid 题目id
+     * @param fromRid 开始rid，限制重判的范围
+     * @param status status==1 表示 只重判ac代码，status==2 表示重判除了CE以外的所有代码，status==3表示全部
+     * @return
+     */
+    int reJudge(int pid,int fromRid,int status);
 }

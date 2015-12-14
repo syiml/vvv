@@ -1003,6 +1003,8 @@ public class HTML {
             s+=li("新增题目","AddProblem",nowpage);
         if(p.getAddLocalProblem())
             s+=li("本地题目","AddLocalProblem",nowpage);
+        if(p.getResetPassword())
+            s+=li("重判","ReJudge",nowpage);
         if(p.getAddContest())
             s+=li("新增比赛","AddContest",nowpage);
         if(p.getAddDiscuss())
@@ -1015,10 +1017,10 @@ public class HTML {
             s+=li("奖励ACB","AwardACBAdmin",nowpage);
         if(p.getChallengeAdmin())
             s+=li("挑战模式","ChallengeAdmin",nowpage);
-        if(p.getPermissionAdmin())
-            s+=li("权限管理","PermissionAdmin",nowpage);
         if(p.getResetPassword())
             s+=li("密码重置","ResetPassword",nowpage);
+        if(p.getPermissionAdmin())
+            s+=li("权限管理","PermissionAdmin",nowpage);
         s+="</ul>";
         return s;
     }
@@ -1026,27 +1028,27 @@ public class HTML {
         if(nowpage==null) nowpage="";
         if(p!=null&&nowpage.equals("AddProblem")){
             if(p.getAddProblem())
-                return panel("AddProblem", adminAddProblemForm());
+                return panel("新增/编辑题目", adminAddProblemForm());
             else return panel("ERROR","NO PERMISSION",null,"danger");
         }
         else if(p!=null&&nowpage.equals("ReJudge")){
             if(p.getAddProblem())
-                return panel("ReJudge", adminReJudgeForm());
+                return panel("重判", adminReJudgeForm());
             else return panel("ERROR","NO PERMISSION",null,"danger");
         }
         else if(p!=null&&nowpage.equals("AddContest")){
             if(p.getAddContest())
-                return panel("AddContest", adminAddContestForm());
+                return panel("新增/编辑比赛", adminAddContestForm());
             else return panel("ERROR","NO PERMISSION",null,"danger");
         }
         else if(p!=null&&nowpage.equals("AddDiscuss")){
             if(p.getAddDiscuss())
-                return panel("AddDiscuss", adminAddDiscuss());
+                return panel("新增/编辑通知", adminAddDiscuss());
             else return panel("ERROR","NO PERMISSION",null,"danger");
         }
         else if(p!=null&&nowpage.equals("AddTag")){
             if(p.getAddTag())
-                return panel("AddTag", adminAddTag());
+                return panel("题目标签管理", adminAddTag());
             else return panel("ERROR","NO PERMISSION",null,"danger");
         }else if(p!=null&&nowpage.equals("SubmitterInfo")){
             return panel("评测机",adminSubmitterInfo());
@@ -1114,12 +1116,27 @@ public class HTML {
         return f.toHTML()+script("js/addProblem.js");
     }
     public static String adminReJudgeForm(){
+//        FormHTML f=new FormHTML();
+//        f.setAction("rejudge.action");
+//        text f1=new text("rid","RunID");
+//        f1.setId("rid");
+//        f.addForm(f1);
+//        f.setCol(2,10);
         FormHTML f=new FormHTML();
-        f.setAction("rejudge.action");
-        text f1=new text("rid","RunID");
+        f.setAction("batchRejudge.action");
+        text f1=new text("rid","最早rid");
+        f1.setPlaceholder("重判将从这个rid开始启动");
         f1.setId("rid");
+        text f2=new text("pid","题目id");
+        f2.setPlaceholder("重判的题目");
+        f2.setId("pid");
+        select s1=new select("status","模式");
+        s1.add(1,"只重判AC代码");
+        s1.add(2,"除了编译错误全部重判");
+        s1.add(3,"全部重判");
         f.addForm(f1);
-        f.setCol(2,10);
+        f.addForm(f2);
+        f.addForm(s1);
         return f.toHTML();
     }
     public static String adminAddContestFromJavaScript(){

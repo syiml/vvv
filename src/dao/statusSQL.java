@@ -263,4 +263,24 @@ public class statusSQL {
         //-1->no submit
         return new SQL("select solved+1 from usersolve_view where username=? AND pid=?",username,pid).queryNum()-1;
     }
+
+    /**
+     * 批量重判
+     * @param pid 题目id
+     * @param fromRid 开始rid，限制重判的范围
+     * @param status status==1 表示 只重判ac代码，status==2 表示重判除了CE以外的所有代码，status==3表示全部
+     * @return
+     */
+    public List<Integer> getRidsToRejudge(int pid, int fromRid , int status){
+        SQL sql;
+        String sqlString="SELECT rid FROM statu WHERE pid=? AND rid>=? ";
+        if(status==1){
+            sql=new SQL(sqlString+"AND result==1",pid,fromRid);
+        }else if(status==2){
+            sql=new SQL(sqlString+"AND result!=3",pid,fromRid);
+        }else{
+            sql=new SQL(sqlString,pid,fromRid);
+        }
+        return sql.queryList();
+    }
 }

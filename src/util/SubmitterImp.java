@@ -7,6 +7,7 @@ import entity.statu;
 import util.Vjudge.SubmitInfo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/12/14 0014.
@@ -81,7 +82,21 @@ public class SubmitterImp implements Submitter{
             return 1;//success submit to local
         }
     }
-
+    /**
+     * 批量重判
+     * @param pid 题目id
+     * @param fromRid 开始rid，限制重判的范围
+     * @param status status==1 表示 只重判ac代码，status==2 表示重判除了CE以外的所有代码，status==3表示全部
+     * @return
+     */
+    @Override
+    public int reJudge(int pid, int fromRid , int status) {
+        List<Integer> rids=Main.status.getRidsToRejudge(pid,fromRid,status);
+        for(Integer rid:rids){
+            reJudge(rid);
+        }
+        return 0;
+    }
     private int submitVJ(SubmitInfo info,int oj){
         //System.out.println("Main.submitVJ");
         m.addSubmit(info, oj);

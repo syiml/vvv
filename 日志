@@ -69,6 +69,8 @@
 
 BUG
     rejudge后rank更新会有问题
+12-14
+    修复可能导致评测机停止运行的bug
 12-11
     2.12
     新增富文本编辑器UEditor，在discuss、discuss回复、比赛说明、题目描述等地方使用
