@@ -268,7 +268,7 @@ public class statusSQL {
      * 批量重判
      * @param pid 题目id
      * @param fromRid 开始rid，限制重判的范围
-     * @param status status==1 表示 只重判ac代码，status==2 表示重判除了CE以外的所有代码，status==3表示全部
+     * @param status status==1 表示 只重判ac代码，status==2 表示重判除了CE以外的所有代码，status==3表示全部，status==4表示重判所有padding和judging
      * @return
      */
     public List<Integer> getRidsToRejudge(int pid, int fromRid , int status){
@@ -278,6 +278,8 @@ public class statusSQL {
             sqlString=sqlString+"AND result==1";
         }else if(status==2){
             sqlString=sqlString+"AND result!=3";
+        }else if(status==4){
+            sqlString=sqlString+"AND (result==0 OR result==12)";
         }
         sql=new SQL(sqlString,pid,fromRid){
             @Override

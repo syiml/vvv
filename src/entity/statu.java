@@ -125,7 +125,7 @@ public class statu {
         return HTML.span("primary","System Error");
     }
     private static Result[] r={
-            Result.PENDING,Result.AC,      Result.WA,
+            Result.PENDING, Result.AC,      Result.WA,
             Result.CE,      Result.RE,      Result.TLE,
             Result.MLE,     Result.OLE,     Result.PE,
             Result.DANGER,  Result.RUNNING, Result.ERROR,
@@ -135,9 +135,6 @@ public class statu {
         return r[i];
     }
     public static int resultToInt(Result rr){
-        for(int i=0;i<r.length;i++){
-            if(r[i]==rr) return i;
-        }
-        return 11;
+        return rr.getValue();
     }
 }

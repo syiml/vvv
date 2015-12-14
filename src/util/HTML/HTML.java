@@ -1134,6 +1134,7 @@ public class HTML {
         s1.add(1,"只重判AC代码");
         s1.add(2,"除了编译错误全部重判");
         s1.add(3,"全部重判");
+        s1.add(4,"重判所有padding和judging");
         f.addForm(f1);
         f.addForm(f2);
         f.addForm(s1);
