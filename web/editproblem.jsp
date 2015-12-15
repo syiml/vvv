@@ -43,11 +43,11 @@
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>
-<script>
-  $s=$('#s');
-  $s.on('keyup', function(){
-    $('#view').html($('#s').val());
-  });
-  $('#view').html($s.val());
-</script>
+<%--<script>--%>
+  <%--$s=$('#s');--%>
+  <%--$s.on('keyup', function(){--%>
+    <%--$('#view').html($('#s').val());--%>
+  <%--});--%>
+  <%--$('#view').html($s.val());--%>
+<%--</script>--%>
 <%}%>

@@ -31,10 +31,10 @@ public class SubmitterLocal extends VjSubmitter {
                 Main.status.setStatusResult(info.rid,Result.JUDGING,"-","-","");
                 this.status=BUSY;
                 go();
-                this.status=IDLE;
             } catch (Exception e){
-                Tool.log("本地评测机错误");
                 e.printStackTrace();
+                Tool.log("本地评测机出错，10秒后重新运行");
+                Tool.sleep(10000);
             } finally {
                 this.status=IDLE;
             }

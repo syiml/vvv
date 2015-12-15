@@ -52,17 +52,20 @@ public class VjSubmitter implements Runnable{
     public String getOjsrid(){return ojsrid;}
 
     public void run(){//开始执行线程
-        try {
-            while(true){
+        while(true){
+            try {
                 //读取队列执行
                 //System.out.println(submitterID+"IDLE");
                 this.info=vj.queue.get(ojid).take();
                 this.status=BUSY;
                 Main.status.setStatusResult(info.rid,Result.JUDGING,"-","-","");
                 go();
+            } catch (Exception e) {
+                this.status=IDLE;
+                e.printStackTrace();
+                Tool.log("评测机出错，10秒后重新运行");
+                Tool.sleep(10000);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
     public void go() {

@@ -972,7 +972,7 @@ public class HTML {
 
             f.setAction("editproblem.action?pid="+pidInt+"&edit="+edit+"&num="+numInt);
             f.setCol(0,12);
-            return f.toHTML()+HTML.panel("预览","<div id='view' style='word-break:break-all'></div>");
+            return f.toHTML()/*+HTML.panel("预览","<div id='view' style='word-break:break-all'></div>")*/;
         }catch(NumberFormatException e){
             return HTML.panel("ERROR","参数错误",null,"danger");
         }
