@@ -16,6 +16,8 @@ var matchICPC=function(cid){
     var pnum;
     var ws;
     var width;
+    var rank_reproduce_er=null;
+    var ii;
     function send(text){
         console.log("Send:"+text);
         ws.send(text);
@@ -24,6 +26,7 @@ var matchICPC=function(cid){
         //刚刚启动时做的初始化工作
         //获取status列表 = {pnum,status:[{rid,pid,username,result,time},...]}
         $.getJSON("StatusJson.action?cid="+cid,function(data){
+            status=data.status;
             pnum=data.pnum;
             for(var i=0;i<data.status.length;i++){
                 putStatusToRank(data.status[i]);
@@ -109,6 +112,26 @@ var matchICPC=function(cid){
         }else{
             return user1.S < user2.S?1:-1;
         }
+    }
+    function rank_reproduce(){
+        if(rank_reproduce_er!=null) clearInterval(rank_reproduce_er);
+        $(".main").html("");
+        width=rankDynameick.bulidHead(pnum,head);
+        rank=[];
+        ii=0;
+        rank_reproduce_er=setInterval("match.rank_reproduce_every()",rankDynameick.dyTime);
+    }
+    function rank_reproduce_every(){
+        if(ii>=status.length){
+            clearInterval(rank_reproduce_er);
+            return ;
+        }
+        while(ii<status.length&&status[ii].result!=1){
+            putStatus(status[ii]);
+            ii++;
+        }
+        putStatus(status[ii]);
+        ii++;
     }
     function rankToHtml(){
         //根据当前的rank产生样式，初始化时使用
@@ -215,7 +238,7 @@ var matchICPC=function(cid){
         head.push("W");
         $main= $(".main").html("");
         rankDynameick.rowNum=0;
-        var width=rankDynameick.bulidHead(pnum,head);
+        width=rankDynameick.bulidHead(pnum,head);
         for(var i=0;i<rank.length;i++){
             rank[i].rank=i+1;
             //rankDynameick.log(rank[i].username+"["+rank[i].S+"]"+"["+rank[i].W+"]");
@@ -225,6 +248,8 @@ var matchICPC=function(cid){
     }
     return {
         send:send,
-        refresh:refresh
+        refresh:refresh,
+        rank_reproduce:rank_reproduce,
+        rank_reproduce_every:rank_reproduce_every
     }
 };

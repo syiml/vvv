@@ -7,6 +7,8 @@ var rankDynameick=function(){
     var padding=2;
     var offset_x=10;
     var offset_y=10;
+    var dyTime=1000;
+    var dyColorTime=1000;
     function init(){
         $('.debug-switch').click(function(){
             if($(this).hasClass("open")){
@@ -48,6 +50,9 @@ var rankDynameick=function(){
         $("#setting-autowidth").click(function(){
             autoWidth();
         });
+        $("#rank-reproduce").click(function(){
+            match.rank_reproduce();
+        })
     }
     init();
     function buildHead(pnum,head){
@@ -160,7 +165,7 @@ var rankDynameick=function(){
                 if(noResultTime>0){
                     $row.append("<div class='col pro nores pro-"+i+"'>"+(-errorTime)+"(+"+noResultTime+")"+"</div>")
                 }else{
-                    $row.append("<div class='col pro wa pro-"+i+"'>"+(-errorTime)+"</div>");
+                    $row.append("<div class='col pro wa-"+(errorTime>6?6:errorTime)+" pro-"+i+"'>"+(-errorTime)+"</div>");
                 }
             }else{
                 $row.append("<div class='col pro pro-"+i+"'></div>");
@@ -192,25 +197,56 @@ var rankDynameick=function(){
             }
         }
         var $cell=$row.find(".pro-"+pid);
+        var pbc=$cell.css("backgroundColor");
         if(solvedTime!=-1){
             if(errorTime==0){
-                $cell.addClass("ac").removeClass("wa").removeClass("nores").text(parseInt(solvedTime/60));
+                $cell.addClass("ac")
+                    .removeClass("wa-1")
+                    .removeClass("wa-2")
+                    .removeClass("wa-3")
+                    .removeClass("wa-4")
+                    .removeClass("wa-5")
+                    .removeClass("wa-6")
+                    .text(parseInt(solvedTime/60));
             }else{
-                $cell.addClass("ac").removeClass("wa").removeClass("nores").text(parseInt(solvedTime/60)+"(-"+errorTime+")");
+                $cell.addClass("ac")
+                    .removeClass("wa-1")
+                    .removeClass("wa-2")
+                    .removeClass("wa-3")
+                    .removeClass("wa-4")
+                    .removeClass("wa-5")
+                    .removeClass("wa-6").removeClass("nores").text(parseInt(solvedTime/60)+"(-"+errorTime+")");
             }
         }else if(errorTime+noResultTime>0){
             if(noResultTime>0){
-                $cell.addClass("nores").removeClass("wa").removeClass("ac").text((-errorTime)+"(+"+noResultTime+")");
+                $cell.addClass("nores")
+                    .removeClass("wa-1")
+                    .removeClass("wa-2")
+                    .removeClass("wa-3")
+                    .removeClass("wa-4")
+                    .removeClass("wa-5")
+                    .removeClass("wa-6")
+                    .removeClass("ac")
+                    .text((-errorTime)+"(+"+noResultTime+")");
             }else{
-                $cell.addClass("wa").removeClass("nores").removeClass("ac").text((-errorTime));
+                $cell.addClass("wa"+"-"+(errorTime>6?6:errorTime)).removeClass("nores")
+                    .removeClass("ac")
+                    .text((-errorTime));
             }
+        }
+        var nbc=$cell.css("backgroundColor");
+        if(nbc!=pbc){
+            $cell.css({backgroundColor:pbc}).animate({backgroundColor:nbc},dyColorTime,function(){
+                $cell.css("backgroundColor",'');
+            });
         }
     }
     function moveRow(i,j){
+        if(i==j) return;
         //i->j i>j
         //alert(i+"->"+j);
         var $div = $("#row-" + i);
-        $div.animate({top:(offset_y+(height+padding)*j)},1000,function(){
+        $div.animate({top:(offset_y+(height+padding)*j)},dyTime,function(){
             $div.css({zIndex:1});
         }).css({zIndex:100});
         for(var k=i-1;k>=j;k--){
@@ -219,7 +255,7 @@ var rankDynameick=function(){
         $div.attr("id","row-"+j).find(".rank").text(j);
     }
     function move(i,j){
-        $("#row-"+i).animate({top:(offset_y+(height+padding)*j)},1000).attr("id","row-"+j).find(".rank").text(j);
+        $("#row-"+i).animate({top:(offset_y+(height+padding)*j)},dyTime).attr("id","row-"+j).find(".rank").text(j);
     }
     function log(s){
         $(".debug .body").append(s+"<br>");
@@ -276,6 +312,7 @@ var rankDynameick=function(){
         addOnline:addOnline,
         delOnline:delOnline,
         chat_log:chat_log,
-        autoWidth:autoWidth
+        autoWidth:autoWidth,
+        dyTime:dyTime
     }
 }();

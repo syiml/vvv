@@ -39,7 +39,8 @@
     <input type="checkbox" id="setting-cla"/> 班级<br>
     <input type="checkbox" id="setting-no"/> 学号<br>
     <input type="button" id="setting-submit" value="确定"/><br>
-    <input type="button" id="setting-autowidth" value="自动调整表格宽度"/>
+    <input type="button" id="setting-autowidth" value="自动调整表格宽度"/><br>
+    <input type="button" id="rank-reproduce" value="排行榜重现"/>
 </div>
 <div class="setting-switch close">Setting</div>
 
@@ -56,6 +57,7 @@
 </body>
 </html>
 <script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/jquery-ui.js"></script>
 <script src="matchICPC.js"></script>
 <script>
     var match;

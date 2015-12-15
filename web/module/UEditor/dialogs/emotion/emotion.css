@@ -1,29 +1,33 @@
 .jd img{
-    background:transparent url(images/jxface2.gif?v=1.1) no-repeat scroll left top;
+    background:transparent url(jxface2.gif?v=1.1) no-repeat scroll left top;
     cursor:pointer;width:35px;height:35px;display:block;
 }
 .pp img{
-    background:transparent url(images/fface.gif?v=1.1) no-repeat scroll left top;
+    background:transparent url(fface.gif?v=1.1) no-repeat scroll left top;
     cursor:pointer;width:25px;height:25px;display:block;
 }
 .ldw img{
-    background:transparent url(images/wface.gif?v=1.1) no-repeat scroll left top;
+    background:transparent url(wface.gif?v=1.1) no-repeat scroll left top;
     cursor:pointer;width:35px;height:35px;display:block;
 }
 .tsj img{
-    background:transparent url(images/tface.gif?v=1.1) no-repeat scroll left top;
+    background:transparent url(tface.gif?v=1.1) no-repeat scroll left top;
     cursor:pointer;width:35px;height:35px;display:block;
 }
 .cat img{
-    background:transparent url(images/cface.gif?v=1.1) no-repeat scroll left top;
+    background:transparent url(cface.gif?v=1.1) no-repeat scroll left top;
     cursor:pointer;width:35px;height:35px;display:block;
 }
 .bb img{
-    background:transparent url(images/bface.gif?v=1.1) no-repeat scroll left top;
+    background:transparent url(bface.gif?v=1.1) no-repeat scroll left top;
     cursor:pointer;width:35px;height:35px;display:block;
 }
 .youa img{
-    background:transparent url(images/yface.gif?v=1.1) no-repeat scroll left top;
+    background:transparent url(yface.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:35px;height:35px;display:block;
+}
+.emoji img{
+    background:transparent url(emoji.gif?v=1.1) no-repeat scroll left top;
     cursor:pointer;width:35px;height:35px;display:block;
 }
 

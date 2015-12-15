@@ -132,18 +132,32 @@
 .row:hover .col{
     background-color: #cacccd;
 }
-.row:hover .col.ac{
+.row .col.ac{
     background-color: #00c500;
 }
-.row:hover .col.fb{
-    background-color: #006c00;
+.row:hover .col.ac{
+    background-color: #00c000;
 }
-.row:hover .col.wa{
-    background-color: #e27a7a;
+.row .col.wa-1{
+    /*background-color: #e27a7a;*/
+    background-color: #ff7777;
 }
-.row:hover .col.nores{
-    background-color: #715dd8;
+.row .col.wa-2{
+    background-color: #ff6666;
 }
+.row .col.wa-3{
+    background-color: #ff5555;
+}
+.row .col.wa-4{
+    background-color: #ff4444;
+}
+.row .col.wa-5{
+    background-color: #ff3333;
+}
+.row .col.wa-6{
+    background-color: #ff2222;
+}
+
 .row.head .col{
     background-color: #b6b3ff;
 }
