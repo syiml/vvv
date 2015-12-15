@@ -1017,6 +1017,8 @@ public class HTML {
             s+=li("奖励ACB","AwardACBAdmin",nowpage);
         if(p.getChallengeAdmin())
             s+=li("挑战模式","ChallengeAdmin",nowpage);
+        if(p.getUserAdmin())
+            s+=li("用户管理","UserAdmin",nowpage);
         if(p.getResetPassword())
             s+=li("密码重置","ResetPassword",nowpage);
         if(p.getPermissionAdmin())
@@ -1062,6 +1064,8 @@ public class HTML {
             return panel("挑战模式管理",adminChallengeAdmin());
         }else if(p!=null&&nowpage.equals("ResetPassword")){
             return panel("密码重置",adminResetPassword());
+        }else if(p!=null&&nowpage.equals("UserAdmin")){
+            return panel("用户管理",adminUser());
         }
         return panel("Index","管理员界面，点击左边链接进行后台管理");
     }
@@ -1454,5 +1458,14 @@ public class HTML {
         f.setSubmitText("确定");
         f.setCol(2, 10);
         return f.toHTML();
+    }
+    public static String adminUser(){
+        String user=Main.getRequest().getParameter("user");
+        if(user==null||user.equals("")){
+
+        }else{
+
+        }
+        return "";
     }
 }

@@ -60,7 +60,7 @@
       qcid = Integer.parseInt(cid);
       int in = Main.contests.getContest(qcid).canin(((User)user).getUsername());
       if (in == 0) {
-        out.print("没有权限");
+        out.print("没有权限，请报名比赛后再进入");
       } else if (in == -1) {//need password
         Object pass=session.getAttribute("contestpass"+cid);
         if(pass!=null && pass.toString().equals(Main.contests.getContest(qcid).getPassword())){//密码正确

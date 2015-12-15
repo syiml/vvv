@@ -155,3 +155,63 @@ table{
 /*.btn-toolbar .btn-group .btn-default:hover{*/
     /*background-color: skyblue;*/
 /*}*/
+.inTeam{
+    display: inline-block;
+    background-image: url("../pic/vip.png?id=201512091813");
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 14px;
+    vertical-align: -2px;
+    margin-left: 3px;
+}
+.inTeam-0{
+    background-position: 0 -175px;
+}
+.inTeam-1{
+    background-position: -25px 0;
+}
+.inTeam-2{
+    background-position: -25px -25px;
+}
+.inTeam-3{
+    background-position: -25px -50px;
+}
+.inTeam-4{
+    background-position: -25px -75px;
+}
+.inTeam-5{
+    background-position: -25px -100px;
+}
+.inTeam-6{
+    background-position: -25px -125px;
+}
+.levTeam{
+    display: inline-block;
+    background-image: url("../pic/vip.png?id=201512091813");
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 14px;
+    vertical-align: -2px;
+    margin-left: 3px;
+}
+.levTeam-0{
+    background-position: 0 -200px;
+}
+.levTeam-1{
+    background-position: -25px -200px;
+}
+.levTeam-2{
+    background-position: 0 -225px;
+}
+.levTeam-3{
+    background-position: -25px -225px;
+}
+.levTeam-4{
+    background-position: 0 -250px;
+}
+.levTeam-5{
+    background-position: -25px -250px;
+}
+.levTeam-6{
+    background-position: 0 -275px;
+}
