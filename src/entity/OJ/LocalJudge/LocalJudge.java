@@ -150,6 +150,9 @@ public class LocalJudge {
                 long TimeUsed = 0L;
                 long MemoryUsed = 0L;
                 try {
+                    if(FileListSize==0){
+                        return -1;//没有文件 输出-1
+                    }
                     for(i = 0; i < FileListSize; ++i) {
                         runExeOutputStream.write(( inFileList.get(i) + "\n").getBytes());
                     Tool.debug(inFileList.get(i));
@@ -157,8 +160,10 @@ public class LocalJudge {
                         runExeOutputStream.write((fixPath(file.getAbsolutePath()) + var20.getName() + "\n").getBytes());
                         runExeOutputStream.write((var20.getAbsolutePath() + "\n").getBytes());
                     }
-                    runExeOutputStream.flush();
                 } catch (IOException ignored) {}
+                finally {
+                    runExeOutputStream.flush();
+                }
                 String isOut = null;
                 BufferedReader is = new BufferedReader(new InputStreamReader(runExe.getInputStream()));
                 BufferedReader es = new BufferedReader(new InputStreamReader(runExe.getErrorStream()));
@@ -186,8 +191,8 @@ public class LocalJudge {
                 res.setTime(TimeUsed+"MS");
                 res.setMemory(MemoryUsed+"KB");
                 return ret;
-            } catch (Exception var35) {
-                var35.printStackTrace(System.err);
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
                 return -1;
             }
         }
