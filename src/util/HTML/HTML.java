@@ -829,7 +829,7 @@ public class HTML {
 
         return f.toHTML();
     }
-    public static String editInfoForm(User user){
+    public static FormHTML editInfoForm(User user){
         FormHTML f=new FormHTML();
         f.setId("edit");
 
@@ -926,7 +926,7 @@ public class HTML {
         f.setCol(2, 10);
         f.setAction("edit.action");
 
-        return f.toHTML();
+        return f;
     }
     public static String loginForm(){
         FormHTML f=new FormHTML();
@@ -1453,19 +1453,56 @@ public class HTML {
         FormHTML f=new FormHTML();
         f.setAction("ResetPassword.action");
         f.setSubmitText("确定");
-        text t1=new text("name","username");
+        text t1=new text("username","username");
         f.addForm(t1);
         f.setSubmitText("确定");
         f.setCol(2, 10);
         return f.toHTML();
     }
     public static String adminUser(){
-        String user=Main.getRequest().getParameter("user");
-        if(user==null||user.equals("")){
+        try{
+            String user=Main.getRequest().getParameter("user");
+            if(user==null||user.equals("")){
+                FormHTML form=new FormHTML();
+                text t=new text("user","用户名");
+                text page=new text("page","page");
+                page.setValue("UserAdmin");
+                page.setDisabled();
+                form.addForm(t,page);
+                form.setAction("admin.jsp");
+                form.setSubmitText("进入管理");
+                form.setMethod("get");
+                return form.toHTML();
+            }else{
+                User u=Main.users.getUser(user);
+                if(u==null){
+                    return "用户不存在";
+                }else{
+                    FormHTML editInfo=editInfoForm(u);
+                    editInfo.setAction("AdminEditUser.action");
 
-        }else{
+                    select inTeamStatus=new select("inTeamStatus","队员状态");
+                    inTeamStatus.add(0,"非队员");
+                    inTeamStatus.add(1,"现役队员");
+                    inTeamStatus.add(2,"退役队员");
+                    inTeamStatus.setValue(u.getInTeamStatus()+"");
 
+                    text inTeamLv=new text("inTeamLv","队员等级");
+                    inTeamLv.setPlaceholder("等级0~6，非队员无效");
+                    inTeamLv.setValue(u.getInTeamLv()+"");
+                    text username=new text("username","username");
+                    username.setValue(user);
+                    username.setDisabled();
+                    editInfo.addForm(inTeamStatus,inTeamLv,username);
+                    editInfo.delForm(2);
+                    editInfo.delForm(1);
+                    editInfo.delForm(0);
+                    return "用户-"+u.getUsernameHTMLNoA()+" 管理"+editInfo.toHTML();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
-        return "";
     }
 }

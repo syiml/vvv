@@ -151,6 +151,9 @@
                 <action name="ResetPassword" class="action.edit" method="resetPassword">
                         <result name="success">return.jsp</result>
                 </action>
+                <action name="AdminEditUser" class="action.edit" method="adminEdit">
+                        <result name="success">return.jsp</result>
+                </action>
                 <action name="StatusJson" class="action.StatusJson" method="getJson"></action>
         </package>
         <package name="challenge" extends="struts-default">

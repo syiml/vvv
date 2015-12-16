@@ -30,7 +30,9 @@ public class UserListHTML extends pageBean {
         list= Main.users.getUsers((page-1) * num, num, search,order,bo);
         pageNum=getPageNum(Main.users.getUsersNum(search),num);
         u=Main.loginUser();
-        addTableHead("rank","username","nick","motto","acnum","acb","rating","ratingnum");
+        addTableHead("rank","username");
+        if(u!=null&&u.getPermission().getUserAdmin()) addTableHead("name");
+        addTableHead("nick","motto","acnum","acb","rating","ratingnum");
         setCl("table table-striped table-hover table-condensed");
     }
     private String search(){
@@ -70,6 +72,7 @@ public class UserListHTML extends pageBean {
     @Override
     public String getColname(String colname){
         if(colname.equals("rank")) return (getHead("rank", "Rank", false));
+        if(colname.equals("name")) return "Name";
         if(colname.equals("username")) return (getHead("username","UserName",false));
         if(colname.equals("nick")) return (getHead("nick","Nick",false));
         if(colname.equals("motto")) return (getHead("motto","Motto",false));
@@ -109,6 +112,9 @@ public class UserListHTML extends pageBean {
                 addClass(i+1,-1,"info");
             }
             return s.getUsernameHTML();
+        }
+        if(colname.equals("name")){
+            return s.getName();
         }
         if(colname.equals("nick")){
             return s.getNick();

@@ -279,28 +279,26 @@ public class UserSQL {
         }
         return "SystemError";
     }
-    public int resetPassword(String username){
-        return new SQL("UPDATE users set password = md5('123456') WHERE username=?",username).update();
-    }
-    public String update(String username, edit e){
-        Tool.log("Edit:"+username);
+    public boolean update(User u){
+        Tool.log("Edit:"+u.getUsername());
         String sql="UPDATE users set ";
-        if(e.getNewpass()!=null&&!e.getNewpass().equals("")) sql+="password = md5('"+e.getNewpass()+"'),";
-        sql+=" nick = '"+HTML.HTMLtoString(e.getNick())+"'";
-        sql+=",name = '"+HTML.HTMLtoString(e.getName())+"'";
-        sql+=",gender = "+e.getGender();
-        sql+=",school = '"+HTML.HTMLtoString(e.getSchool())+"'";
-        sql+=",faculty = '"+HTML.HTMLtoString(e.getFaculty_text())+"'";
-        sql+=",major = '"+HTML.HTMLtoString(e.getMajor_text())+"'";
-        sql+=",cla = '"+HTML.HTMLtoString(e.getCla())+"'";
-        sql+=",no = '"+HTML.HTMLtoString(e.getNo()) +"'";
-        sql+=",phone = '"+ HTML.HTMLtoString(e.getPhone())+"'";
-        sql+=",Email = '"+HTML.HTMLtoString(e.getEmail())+"'";
-        sql+=",motto = '"+HTML.HTMLtoString(e.getMotto())+"'";
+        if(u.getPassword()!=null) sql+="password = md5('"+u.getPassword()+"'),";
+        sql+=" nick = '"+u.getNick()+"'";
+        sql+=",name = '"+u.getName()+"'";
+        sql+=",gender = "+u.getGender();
+        sql+=",school = '"+u.getSchool()+"'";
+        sql+=",faculty = '"+u.getFaculty()+"'";
+        sql+=",major = '"+u.getMajor()+"'";
+        sql+=",cla = '"+u.getCla()+"'";
+        sql+=",no = '"+u.getNo() +"'";
+        sql+=",phone = '"+ u.getPhone()+"'";
+        sql+=",Email = '"+u.getEmail()+"'";
+        sql+=",motto = '"+u.getMotto()+"'";
+        sql+=",inTeamLv = "+u.getInTeamLv();
+        sql+=",inTeamStatus = "+u.getInTeamStatus();
         sql+=" WHERE username=?";
-        new SQL(sql, username).update();
-        Main.getSession().setAttribute("user",Main.users.getUser(username,false));
-        return "success";
+        Tool.log(sql);
+        return (new SQL(sql, u.getUsername()).update()==1);
     }
 
     public boolean haveViewCode(String user,int pid){

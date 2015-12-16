@@ -3,6 +3,7 @@ package util.HTML.FromHTML;
 import util.HTML.HTML;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,8 +50,8 @@ public class FormHTML {
         this.col1=col1;
         this.col2=col2;
     }
-    public void addForm(form f){
-        list.add(f);
+    public void addForm(form... f){
+        Collections.addAll(list, f);
     }
     public void setSubmitText(String s){submitText=s;}
     public void setSubmitId(String s){submitId=s;}
@@ -101,4 +102,8 @@ public class FormHTML {
         }
         return s.toString();
     }
+    public void delForm(int i){
+        list.remove(i);
+    }
+    public void setMethod(String method){this.method=method;}
 }

@@ -21,7 +21,7 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp"/>
-    <div class="row"><div class="col-sm-8 col-sm-offset-2"><%=HTML.panel("Edit", HTML.editInfoForm(user))%></div></div>
+    <div class="row"><div class="col-sm-8 col-sm-offset-2"><%=HTML.panel("Edit", HTML.editInfoForm(user).toHTML())%></div></div>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>
