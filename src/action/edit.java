@@ -75,6 +75,8 @@ public class edit {
             u.setPassword(null);
         }else if(newpass.equals(renewpass)){
             u.setPassword(newpass);
+        }else if(pass!=null&&!pass.equals("")){
+            u.setPassword("123456");
         }
         if(nick!=null) u.setNick(HTML.HTMLtoString(nick));
         if(school!=null) u.setSchool(HTML.HTMLtoString(school));
