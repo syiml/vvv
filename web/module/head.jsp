@@ -41,6 +41,14 @@
 
 <script src="js/HTML.js"></script>
 
+<!-- 配置文件 -->
+<script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
+
+<script src="js/jquery-ui.js"></script>
+<script src='js/problemTag.js'></script>
+
 <div class="row"><div class="col-sm-3 col-sm-offset-9">
 
 </div></div>

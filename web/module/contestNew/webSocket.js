@@ -12,10 +12,16 @@ function send(data)//发送消息
     console.log("Send:"+data);
     ws.send(data);
 }
+function getUrl(cid){
+    if(location.href.indexOf(location.host+"/vj")!=-1){
+        return "ws://" + location.host + "/vj/WebSocket?cid="+cid;
+    }
+    return "ws://" + location.host + "/WebSocket?cid="+cid;
+}
 function startWebSocket(cid)
 {
     contestId=cid;
-    ws = new WebSocket("ws://" + location.host + "/WebSocket?cid="+cid);
+    ws = new WebSocket(getUrl(cid));
     ws.onopen = function(){
         console.log("success open");
     };

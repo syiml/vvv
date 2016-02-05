@@ -158,8 +158,7 @@ public class DiscussHTML {
         form.setCol(2,10);
         return form.toHTML();
     }
-    public String page(int page){
-        int pagenum=(DiscussSQL.getNewReplyId(d.getId())-2)/Main.discussShowNum+1;
+    public String page(int page,int pagenum){
         if(pagenum==1) return "";
         String size="sm";
         String s ="<div class='btn-toolbar' role='toolbar'>";
@@ -171,12 +170,17 @@ public class DiscussHTML {
     public String DiscussReply(int page){
         int num=Main.discussShowNum;
         int did= d.getId();
-        List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num+1, (page + 1) * num );
+        boolean admin=false;
+        if(loginuser!=null){
+            admin=loginuser.getPermission().getAddDiscuss();
+        }
+        List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num, num ,admin);
         String s="";
         for (DiscussReply aList : list) {
             s += EveryDiscussReply(aList);
         }
-        s+=page(page);
+        int pagenum=(DiscussSQL.getDiscussReplayNum(did ,admin)+num-1)/num;
+        s+=page(page,pagenum);
         return s;
     }
     public String Reply(DiscussReply r){
@@ -214,7 +218,7 @@ public class DiscussHTML {
         if(!r.isVisiable()) right="该条已经被隐藏 ";
         if(admin){
             if(!r.isVisiable()) right+=HTML.a("showhide.action?id="+ r.getDid() +"&rid="+ r.getRid(),"<span class='badge'>Show</span>");
-            else right+=HTML.a("showhide.action?id="+ r.getDid() +"&rid="+ r.getRid(),"<span class='badge'>Hide</span>");
+             else right+=HTML.a("showhide.action?id="+ r.getDid() +"&rid="+ r.getRid(),"<span class='badge'>Hide</span>");
         }
         title+=HTML.floatRight(right);
 

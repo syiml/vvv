@@ -207,6 +207,7 @@ var rankDynameick=function(){
                     .removeClass("wa-4")
                     .removeClass("wa-5")
                     .removeClass("wa-6")
+                    .removeClass("nores")
                     .text(parseInt(solvedTime/60));
             }else{
                 $cell.addClass("ac")
@@ -215,7 +216,9 @@ var rankDynameick=function(){
                     .removeClass("wa-3")
                     .removeClass("wa-4")
                     .removeClass("wa-5")
-                    .removeClass("wa-6").removeClass("nores").text(parseInt(solvedTime/60)+"(-"+errorTime+")");
+                    .removeClass("wa-6")
+                    .removeClass("nores")
+                    .text(parseInt(solvedTime/60)+"(-"+errorTime+")");
             }
         }else if(errorTime+noResultTime>0){
             if(noResultTime>0){

@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="vj1:war exploded">
+  <artifact type="war" name="vj1:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/vj1_war_exploded</output-path>
-    <root id="root">
+    <root id="archive" name="vj1_war exploded.war">
       <element id="javaee-facet-resources" facet="vj1/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -12,6 +12,21 @@
           <element id="library" level="project" name="httpclient-4.0" />
           <element id="library" level="project" name="commons-logging-1.1.3" />
           <element id="library" level="project" name="jsoup-1.8.2" />
+          <element id="library" level="project" name="xwork-core-2.3.24.1" />
+          <element id="library" level="project" name="commons-fileupload-1.3.1 (2)" />
+          <element id="library" level="project" name="commons-codec-1.9 (2)" />
+          <element id="library" level="project" name="ueditor-1.1.2" />
+          <element id="library" level="project" name="tomcat7-websocket" />
+          <element id="library" level="project" name="websocket-api" />
+          <element id="library" level="project" name="commons-lang-2.5" />
+          <element id="library" level="project" name="ezmorph-1.0.6" />
+          <element id="library" level="project" name="commons-collections-3.2.1" />
+          <element id="library" level="project" name="org.apache.commons.logging_1.1.1.v201101211721" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/junit-4.7.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-beanutils-1.8.0.jar" />
+          <element id="library" level="project" name="json-lib-2.4-jdk15" />
+          <element id="library" level="project" name="gson-2.3.1-sources (2)" />
+          <element id="library" level="project" name="mysql-connector-java-5.1.35-bin (3)" />
         </element>
       </element>
     </root>

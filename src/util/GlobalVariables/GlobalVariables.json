@@ -2,7 +2,7 @@
   "sqlclass":"com.mysql.jdbc.Driver",
   "sqlconnstring":"jdbc:mysql://localhost:3306/vjudge?useUnicode=true&characterEncoding=utf8",
   "sqlusername":"root",
-  "sqlpassword":"123456",
+  "sqlpassword":"",
 
   "problemShowNum":"100",
   "statuShowNum":"20",
@@ -16,7 +16,7 @@
   "maxHeadImgSize":524288,
   "maxSampleFileSize":10737418240,
   "debug":false,
-  "version":"2.20",
+  "version":"2.21",
 
   "hdu":{
     "URL":"http://acm.hdu.edu.cn",

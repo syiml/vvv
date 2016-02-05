@@ -23,18 +23,23 @@ public class SocketServer extends WebSocketServlet {
 
     @Override
     protected MessageWebSocket createWebSocketInbound(String s, HttpServletRequest request) {
-        User u=Main.loginUser();
-        if(u!=null){
-            Tool.log(u.getUsername()+"连接"+" cid="+request.getParameter("cid"));
-            MessageWebSocket aSocket=new MessageWebSocket(u.getUsername(),Integer.parseInt(request.getParameter("cid")));
-            sockets.add(aSocket);
-            return aSocket;
-        }else{
-            Tool.log("游客连接");
-            MessageWebSocket mw=new MessageWebSocket(null,-1);
-            sockets.add(mw);
-            return mw;
+        try{
+            User u=(User)request.getSession().getAttribute("user");
+            if(u!=null){
+                Tool.log(u.getUsername()+"连接"+" cid="+request.getParameter("cid"));
+                MessageWebSocket aSocket=new MessageWebSocket(u.getUsername(),Integer.parseInt(request.getParameter("cid")));
+                sockets.add(aSocket);
+                return aSocket;
+            }else{
+                Tool.log("游客连接");
+                MessageWebSocket mw=new MessageWebSocket(null,-1);
+                sockets.add(mw);
+                return mw;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        return null;
     }
 
     public static void sendMessage(int cid,String text){

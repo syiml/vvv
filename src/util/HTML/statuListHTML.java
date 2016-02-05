@@ -138,8 +138,14 @@ public class statuListHTML extends pageBean {
             f2.setType(1);
             int size=Main.contests.getContest(cid).getProblemNum();
             f2.add(-1,"All");
-            for(int i=0;i<size;i++){
-                f2.add(i,(char)(i+'A')+"");
+            if(size>26){
+                for(int i=0;i<size;i++){
+                    f2.add(i,(i+1)+"");
+                }
+            }else{
+                for(int i=0;i<size;i++){
+                    f2.add(i,(char)(i+'A')+"");
+                }
             }
             f2.setValue(pid + "");
             f2.setId("pid");
@@ -161,7 +167,7 @@ public class statuListHTML extends pageBean {
         f3.setValue(result+"");
         f.addForm(f3);
         ///////////////////
-        select f4=new select("lang","语音");
+        select f4=new select("lang","语言");
         f4.setType(1);
         f4.add(-1, "All");
         f4.add(0,"G++");

@@ -40,10 +40,17 @@ var matchICPC=function(cid){
                 window.WebSocket=window.MozWebSocket;
             if (!window.WebSocket)
                 alert("你的浏览器不支持动态更新，要使用该功能请使用其他浏览器（比如谷歌浏览器）");
+            function getUrl(cid){
+                if(location.href.indexOf(location.host+"/vj")!=-1){
+                    return "ws://" + location.host + "/vj/MatchWebSocket?cid="+cid;
+                }
+                return "ws://" + location.host + "/MatchWebSocket?cid="+cid;
+            }
             function startWebSocket(cid)
             {
                 contestId=cid;
-                ws = new WebSocket("ws://" + location.host + "/MatchWebSocket?cid="+cid);
+                var url=getUrl(cid);
+                ws = new WebSocket(url);
                 ws.onopen = function(){
                     console.log("success open");
                 };
