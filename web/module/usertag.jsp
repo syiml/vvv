@@ -29,8 +29,7 @@
           size: '90%'
         },
         xAxis: {
-          categories: ['基础', '数据<br>结构', '数学',
-            '几何', '图论','搜索', '动态规划'],
+          categories: ['基础', '数据<br>结构', '数学','几何', '图论','搜索', '动态规划'],
           tickmarkPlacement: 'on',
           lineWidth: 0,
           gridLineColor:'#ddd',
@@ -43,7 +42,6 @@
 
         yAxis: {
           gridLineInterpolation: 'polygon',
-          lineWidth: 0,
           min: 0,
           gridLineColor:'#ddd',
           labels:{
