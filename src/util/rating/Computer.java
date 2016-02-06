@@ -1,5 +1,6 @@
 package util.rating;
 
+import servise.ContestMain;
 import util.Main;
 import entity.User;
 import dao.ratingSQL;
@@ -102,10 +103,10 @@ public class Computer {
             }
             table.addRow(row);
         }
-        return HTML.panelnobody("Forecast Rating"+(Main.contests.getContest(cid).isComputerating()?HTML.a("comprating.action?cid="+cid,"save"):""), table.HTML());
+        return HTML.panelnobody("Forecast Rating"+(ContestMain.getContest(cid).isComputerating()?HTML.a("comprating.action?cid="+cid,"save"):""), table.HTML());
     }
     public void save(){
-        Contest c=Main.contests.getContest(cid);
+        Contest c= ContestMain.getContest(cid);
         for(int i=0;i<rating.size();i++){
             ratingSQL.save(new RatingCase(r.username.get(i),c.getEndTime(),c.getCid(),rating.get(i),ans.get(i),ratingnum.get(i)+1,r.rank.get(i),""));
         }

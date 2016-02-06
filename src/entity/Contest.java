@@ -1,5 +1,6 @@
 package entity;
 
+import servise.ContestMain;
 import util.Main;
 import entity.rank.Rank;
 import entity.rank.RankSQL;
@@ -83,7 +84,7 @@ public class Contest {
         }
     }
     public void reSetUsers(){
-        Main.contests.deleteMapContest(cid);
+        //ContestMain.contests.deleteMapContest(cid);
 //        try {
 //            setUsers(Main.contests.getUser(cid));
 //        } catch (SQLException e) {

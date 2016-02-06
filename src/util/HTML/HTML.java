@@ -6,6 +6,7 @@ import dao.ChallengeSQL;
 import entity.Condition;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
+import servise.ContestMain;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import entity.OJ.OTHOJ;
@@ -448,7 +449,7 @@ public class HTML {
                 "problemtag",canedit);
     }
     private static String problemContest(int pid){
-        return HTML.panel("出处",Main.contests.problemContest(pid),null,"info");
+        return HTML.panel("出处", ContestMain.problemContest(pid),null,"info");
     }
     private static String problemAuthor(String author){
         if(author==null||author.equals("")) return "";
@@ -469,11 +470,11 @@ public class HTML {
 
             int tpid;//获取真实pid
             if(cidInt!=-1){
-                Contest c=Main.contests.getContest(cidInt);
+                Contest c=ContestMain.getContest(cidInt);
                 tpid= c.getGlobalPid(pidInt);
             }
             else tpid=pidInt;
-            if(cidInt!=-1&&!Main.canShowProblem(cidInt)){
+            if(cidInt!=-1&&!ContestMain.canShowProblem(cidInt)){
                 return "error";
             }
 
@@ -521,7 +522,7 @@ public class HTML {
             if(cidInt==-1){//
                 return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(p,pidInt,admin,-1)));
             }else{
-                Contest c=Main.contests.getContest(cidInt);
+                Contest c=ContestMain.getContest(cidInt);
                 if(c.getKind()==0){//练习场
                     return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(p,tpid,admin,cidInt)));
                 }
@@ -555,9 +556,9 @@ public class HTML {
                 return new ProblemInfo(pid,page).HTML();
             }else{
                 if(cid!=-1){
-                    Contest c=Main.contests.getContest(cid);
+                    Contest c=ContestMain.getContest(cid);
                     if(c.getKind()==0&&c.getcpid(pid)!=-1&&c.isBegin()){//练习场 且 比赛内存在该题目 且 比赛开始了
-                        if(Main.canInContest(cid)){//可以进入比赛
+                        if(ContestMain.canInContest(cid)){//可以进入比赛
                             return new ProblemInfo(pid,page).HTML();
                         }
                     }
@@ -713,7 +714,7 @@ public class HTML {
             if(list.size()!=0){
                 return HTML.panelnobody("rating", RatingCaseList(list));
             }else{
-                Computer c=new Computer(Main.contests.getContest(cidInt));
+                Computer c=new Computer(ContestMain.getContest(cidInt));
                 c.comp();
                 return c.HTML();
             }
@@ -730,7 +731,7 @@ public class HTML {
     }
     public static String recentlyContestTable(int num){
         contestListHTML c=new contestListHTML(num,0);
-        c.setList(Main.contests.getRecentlyContests(num+1));
+        c.setList(ContestMain.getRecentlyContests(num+1));
         c.addTableHead("#","名称","开始时间","结束时间","权限","状态","类型");
         return c.tableHTML();
     }
@@ -1155,7 +1156,7 @@ public class HTML {
             cid=-1;
         }
         Contest  c=null;
-        if(cid!=-1) c=Main.contests.getContest(cid);
+        if(cid!=-1) c=ContestMain.getContest(cid);
         FormHTML form=new FormHTML();
         if(c==null) form.setAction("addcontest.action");
         else form.setAction("editcontest.action?cid="+cid);

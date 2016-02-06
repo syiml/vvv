@@ -1,5 +1,6 @@
 package action;
 
+import servise.ContestMain;
 import util.Main;
 
 /**
@@ -18,6 +19,6 @@ public class RegisterContest {
 
     public String regCon(){
         int cidInt=Integer.parseInt(cid);
-        return Main.registerContest(cidInt);
+        return ContestMain.registerContest(cidInt);
     }
 }

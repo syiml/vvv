@@ -1,5 +1,6 @@
 package util.HTML.problemListHTML;
 
+import servise.ContestMain;
 import util.Main;
 import entity.Permission;
 import entity.User;
@@ -70,7 +71,7 @@ public class problemListHTML {
                     row.add(HTML.text("✘","red"));
                 }else row.add("");
             }
-            row.add(Main.contests.getContest(cid).getProblemId(pid));
+            row.add(ContestMain.getContest(cid).getProblemId(pid));
 //            if(list.size()<=26){
 //                row.add((char)(pid+'A')+"");
 //            }else{

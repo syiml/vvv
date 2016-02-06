@@ -4,6 +4,7 @@ import WebSocket.MatchServer;
 import entity.Contest;
 import entity.Result;
 import entity.statu;
+import servise.ContestMain;
 import util.Vjudge.SubmitInfo;
 
 import java.sql.Timestamp;
@@ -19,12 +20,12 @@ public class SubmitterImp implements Submitter{
         Tool.debug("cid="+cid+" pid="+pid);
         int rid;
         if(cid!=-1){//验证user是否有权限提交
-            if(Main.contests.getContest(cid).getEndTime().before(submittime)){
+            if(ContestMain.getContest(cid).getEndTime().before(submittime)){
                 return -1;//超出比赛结束时间
             }
         }
         int ppid=pid;
-        if(cid!=-1) pid=Main.contests.getContest(cid).getGlobalPid(pid);//等于全局题目编号
+        if(cid!=-1) pid=ContestMain.getContest(cid).getGlobalPid(pid);//等于全局题目编号
         Tool.debug("go=" + pid);
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = Main.status.addStatu(s);//插入数据库，并获取rid
@@ -39,7 +40,7 @@ public class SubmitterImp implements Submitter{
 
         if(cid!=-1) {//提交发送到观战模式
             try{
-                Contest c=Main.contests.getContest(s.getCid());
+                Contest c=ContestMain.getContest(s.getCid());
                 MatchServer.sendStatus(cid, rid, ppid, user, -1, (submittime.getTime()-c.getBeginDate().getTime())/1000);
             }catch(Exception e){
                 e.printStackTrace();
@@ -54,7 +55,7 @@ public class SubmitterImp implements Submitter{
     @Override
     public void onSubmitDone(statu s) {
         if(s.getCid()!=-1){
-            Contest c=Main.contests.getContest(s.getCid());
+            Contest c=ContestMain.getContest(s.getCid());
             int ppid=c.getcpid(s.getPid());
             if(s.getResult()== Result.AC){
                 MatchServer.sendStatus(s.getCid(),s.getRid(),ppid,s.getUser(),1,(s.getSbmitTime().getTime()-c.getBeginDate().getTime())/1000);

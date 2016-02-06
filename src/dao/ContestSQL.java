@@ -1,5 +1,6 @@
 package dao;
 
+import servise.ContestMain;
 import util.Main;
 import entity.User;
 import entity.Contest;
@@ -111,7 +112,7 @@ public class ContestSQL {
     }
     public String addUserContest(int cid,String username,int statu){
         new SQL("INSERT INTO contestuser VALUES(?,?,?,?,?)",cid,username,statu,"",Tool.now()).update();
-        Main.contests.getContest(cid).reSetUsers();
+        ContestMain.getContest(cid).reSetUsers();
         return "success";
     }
     public String setUserContest(int cid,String username,int statu,String info){
@@ -119,7 +120,7 @@ public class ContestSQL {
             addUserContest(cid,username,statu);
         }
         if(statu==-2){
-            Main.contests.getContest(cid).reSetUsers();
+            ContestMain.getContest(cid).reSetUsers();
             return delUserContest(cid,username);
         }
         if(statu!=3){
@@ -129,13 +130,13 @@ public class ContestSQL {
             MessageMain.addMessageRegisterContest(username,cid,statu);
             new SQL("UPDATE contestuser set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username).update();
         }
-        Main.contests.getContest(cid).reSetUsers();
+        ContestMain.getContest(cid).reSetUsers();
         return "success";
     }
     public String delUserContest(int cid,String username){
         new SQL("DELETE FROM contestuser  WHERE cid=? AND username=?",cid,username).update();
         PreparedStatement p= null;
-        Main.contests.getContest(cid).reSetUsers();
+        ContestMain.getContest(cid).reSetUsers();
         return "success";
     }
     public Contest getContest(int cid) {

@@ -1,5 +1,6 @@
 package util.HTML;
 
+import servise.ContestMain;
 import util.Main;
 import entity.Permission;
 import entity.User;
@@ -160,17 +161,17 @@ public class contestListHTML extends pageBean{
 
         text ki=new text("kind","kind");
         ki.setValue(kind+"");
-        ki.setDisabled();
+ki.setDisabled();
         f.addForm(ki);
         f.setSubmitText("筛选");
         return f.toHTML();
-    }
+        }
 
-    public String HTML(){
-        if(list==null) list=Main.contests.getContests((page-1)*num,num,status,name,type,kind);
-        pageNum=getPageNum(Main.contests.getContestsNum(status,name,type,kind),num);
+public String HTML(){
+        if(list==null) list= ContestMain.getContests((page-1)*num,num,status,name,type,kind);
+        pageNum=getPageNum(ContestMain.getContestsNum(status,name,type,kind),num);
         addTableHead("#","名称","开始时间","结束时间","权限","状态");
         if(kind==-1) addTableHead("类型");
         return super.HTML();
-    }
-}
+        }
+        }

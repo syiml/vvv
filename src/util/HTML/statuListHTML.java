@@ -1,5 +1,6 @@
 package util.HTML;
 
+import servise.ContestMain;
 import util.Main;
 import entity.User;
 import entity.Result;
@@ -136,7 +137,7 @@ public class statuListHTML extends pageBean {
         }else{
             select f2=new select("pid","pid");
             f2.setType(1);
-            int size=Main.contests.getContest(cid).getProblemNum();
+            int size= ContestMain.getContest(cid).getProblemNum();
             f2.add(-1,"All");
             if(size>26){
                 for(int i=0;i<size;i++){
@@ -223,7 +224,7 @@ public class statuListHTML extends pageBean {
         if(!in){
             return HTML.a("Problem.jsp?pid="+s.getPid(),""+s.getPid());
         }else{
-            String ss=Main.contests.getContest(cid).getProblemId(s.getPid());
+            String ss=ContestMain.getContest(cid).getProblemId(s.getPid());
             return HTML.a("#P"+s.getContestPid(),ss);
         }
     }

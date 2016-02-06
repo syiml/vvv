@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import servise.ContestMain;
 import util.Main;
 import entity.Contest;
 import entity.statu;
@@ -18,7 +19,7 @@ public class ContestCodeCompare {
     List<Integer> status;
     List<ContestCodeCompareRecord> list;
     public ContestCodeCompare(int cid){
-        this.c=Main.contests.getContest(cid);
+        this.c= ContestMain.getContest(cid);
     }
     private void setCompareOne(int rid1,int rid2,statu s1,statu s2,ContestCodeCompareRecord cccr){
         cccr.rid1=rid1;
@@ -32,7 +33,7 @@ public class ContestCodeCompare {
         List<Integer> plist=c.getProblemList();
         list=new ArrayList<ContestCodeCompareRecord>();
         for(int pid:plist){
-            status=Main.contests.getAcRidFromCidPid(c.getCid(),pid);
+            status=ContestMain.getAcRidFromCidPid(c.getCid(),pid);
             ContestCodeCompareRecord cccr=new ContestCodeCompareRecord();
             for(int i=0;i<status.size();i++){
                 statu s1=Main.status.getStatu(status.get(i));
@@ -59,7 +60,7 @@ public class ContestCodeCompare {
         for(int i=0;i<list.size();i++){
             ContestCodeCompareRecord cccr=list.get(i);
             if(cccr.f<minf) break;
-            table.addRow(cccr.rid1+"",cccr.user1,cccr.rid2+"",cccr.user2, Main.contests.getContest(c.getCid()).getProblemId(cccr.pid)+"",
+            table.addRow(cccr.rid1+"",cccr.user1,cccr.rid2+"",cccr.user2, ContestMain.getContest(c.getCid()).getProblemId(cccr.pid)+"",
                     String.format("%.2f",list.get(i).f*100)+"%",
                     HTML.aNew("code2.jsp?rid=" + cccr.rid1 + "&rid2=" + cccr.rid2, "对比"));
         }

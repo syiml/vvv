@@ -1,5 +1,6 @@
 package action;
 
+import servise.ContestMain;
 import util.Main;
 import entity.Permission;
 
@@ -137,7 +138,7 @@ public class addcontest {
 
 
     public String getInfo() {
-        return info;
+        return info==null?"":info;
     }
 
     public String getComputerating() {
@@ -348,18 +349,18 @@ public class addcontest {
 
     public String add(){
         if(!Main.loginUserPermission().getAddContest()) return "error";
-        Main.addContest(this);
+        ContestMain.addContest(this);
         return "success";
     }
     public String edit(){
         if(!Main.loginUserPermission().getAddContest()) return "error";
-        Main.editContest(this);
+        ContestMain.editContest(this);
         return "success";
     }
     public String problemPublic(){
         Permission p=Main.loginUserPermission();
         if(p.getAddContest()&&p.getAddProblem()){
-            Main.contestPorblemPublc(Integer.parseInt(cid));
+            ContestMain.contestPorblemPublc(Integer.parseInt(cid));
         }
         return "error";
     }

@@ -1,5 +1,6 @@
 package dao;
 
+import servise.ContestMain;
 import util.Main;
 import entity.User;
 import entity.Problem;
@@ -249,7 +250,7 @@ public class ProblemSQL {
         return toHTML(pid,-1,Main.problems.getProblem(pid));
     }
     public String toHTML(int pid,int cid){
-        return toHTML(pid,cid,Main.contests.getContest(cid).getProblem(pid));
+        return toHTML(pid,cid, ContestMain.getContest(cid).getProblem(pid));
     }
     private String toHTML(int pid,int cid,Problem p){
         if(cid!=-1){

@@ -77,7 +77,7 @@ public class MessageMain {
         if(cid==-1){
             m.setTitle("你的帖子【"+d.getTitle()+"】有新回复");
         }else{
-            Contest c=Main.contests.getContest(cid);
+            Contest c=ContestMain.getContest(cid);
             m.setTitle("你在比赛【"+c.getName()+"】中的提问【"+d.getTitle()+"】有新回复");
         }
         String url;
@@ -99,7 +99,7 @@ public class MessageMain {
         return MessageSQL.save(m);
     }
     public static int addMessageRatingChange(int cid, String user, int prating, int rating){
-        Contest c=Main.contests.getContest(cid);
+        Contest c=ContestMain.getContest(cid);
         Message m=new Message();
         m.setUser(user);
         m.setStatu(0);
@@ -114,7 +114,7 @@ public class MessageMain {
         return MessageSQL.save(m);
     }
     public static int addMessageRegisterContest(String user,int cid,int statu){
-        Contest c=Main.contests.getContest(cid);
+        Contest c=ContestMain.getContest(cid);
         Message m=new Message();
         m.setUser(user);
         m.setStatu(0);

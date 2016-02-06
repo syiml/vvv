@@ -1,5 +1,6 @@
 package entity;
 
+import servise.ContestMain;
 import util.Main;
 import util.HTML.HTML;
 
@@ -63,7 +64,7 @@ public class statu {
         TimeUsed=time;
         MemoryUsed=Memory;
         if(cid!=-1){
-            Contest c=Main.contests.getContest(cid);
+            Contest c= ContestMain.getContest(cid);
             c.getRank().add(Main.status.getStatu(rid),c);//通知更新排行榜
         }
     }
@@ -98,14 +99,14 @@ public class statu {
         if(cid==-1)
             return Main.problems.getProblem(pid);
         else{
-            return Main.contests.getContest(cid).getProblem(pid);
+            return ContestMain.getContest(cid).getProblem(pid);
         }
     }
     public int getContestPid(){
         if(cid==-1)
             return -1;
         else{
-            return Main.contests.getContest(cid).getcpid(pid);
+            return ContestMain.getContest(cid).getcpid(pid);
         }
     }
     public String resultToHTML(Result s){

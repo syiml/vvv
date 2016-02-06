@@ -1,5 +1,6 @@
 package entity.rank.RankICPC;
 
+import servise.ContestMain;
 import util.Main;
 import entity.User;
 import entity.rank.Rank;
@@ -149,7 +150,7 @@ public class RankICPC extends Rank {
             }
             row.add(HTML.a("#S"+us.username,us.submitnum+""));
             row.add(us.penalty/1000/60+"");
-            int pnum=Main.contests.getContest(cid).getProblemNum();
+            int pnum= ContestMain.getContest(cid).getProblemNum();
             for(int j=0;j<pnum;j++){
                 //s+=us.result(j);
                 row.add(us.result(j));
@@ -215,7 +216,7 @@ public class RankICPC extends Rank {
     }
     public void getfb(){
         fb.clear();
-        int pnum=Main.contests.getContest(cid).getProblemNum();
+        int pnum=ContestMain.getContest(cid).getProblemNum();
         for(int i=0;i<pnum;i++){
             Long mintime=null;
             String user="";
@@ -244,7 +245,7 @@ public class RankICPC extends Rank {
         table.addColname("Nick");
         table.addColname("S");
         table.addColname("T");
-        int pnum=Main.contests.getContest(cid).getProblemNum();
+        int pnum=ContestMain.getContest(cid).getProblemNum();
         for(int j=0;j<pnum;j++){
             if(pnum>26){
                 table.addColname(HTML.a("#P"+j,j+1+""));

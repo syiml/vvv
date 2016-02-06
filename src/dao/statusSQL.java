@@ -1,5 +1,7 @@
 package dao;
 
+import entity.Contest;
+import servise.ContestMain;
 import util.Main;
 import entity.Result;
 import entity.statu;
@@ -72,7 +74,7 @@ public class statusSQL {
         //筛选
         if(pid!=-1){
             if(cid!=-1){
-                sql+=" and pid="+Main.contests.getContest(cid).getGlobalPid(pid);
+                sql+=" and pid="+ ContestMain.getContest(cid).getGlobalPid(pid);
             }else{
                 sql+=" and pid="+pid;
             }
@@ -109,7 +111,7 @@ public class statusSQL {
         //筛选
         if(pid!=-1){
             if(cid!=-1){
-                sql+=" and pid="+Main.contests.getContest(cid).getGlobalPid(pid);
+                sql+=" and pid="+ContestMain.getContest(cid).getGlobalPid(pid);
             }else{
                 sql+=" and pid="+pid;
             }
@@ -125,7 +127,8 @@ public class statusSQL {
         Tool.log(rid+"->"+res);
         statu s=getStatu(rid);
         if(s.getCid()!=-1&&res!=Result.JUDGING){
-            Main.contests.getContest(s.getCid()).getRank().add(s,Main.contests.getContest(s.getCid()));
+            Contest c=ContestMain.getContest(s.getCid());
+            c.getRank().add(s,c);
         }
         if(res==Result.CE){
             addCEInfo(rid, CEinfo);

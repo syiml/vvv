@@ -7,6 +7,7 @@ import entity.Contest;
 import entity.RatingCase;
 import dao.ratingSQL;
 import entity.Message;
+import servise.ContestMain;
 import util.Main;
 import dao.MessageSQL;
 import util.HTML.problemListHTML.problemListFilterHTML.problemListFilterHTML;
@@ -44,7 +45,7 @@ public class JSON {
      * @return {cid,name,begintime,endtime,type,now,admin,rating,info,computerating}
      */
     public static String getContestInfo(int cid){
-        Contest c= Main.contests.getContest(cid);
+        Contest c= ContestMain.getContest(cid);
         JSONObject ret=new JSONObject();
         ret.put("cid",cid);
         ret.put("name",c.getName());
@@ -67,7 +68,7 @@ public class JSON {
      */
     public static String getContestProblemList(int cid){
         User u=Main.loginUser();
-        if(u.getPermission().getAddContest()||Main.contests.getContest(cid).isBegin()){
+        if(u.getPermission().getAddContest()||ContestMain.getContest(cid).isBegin()){
             List<problemView> list=Main.problems.getProblems(cid);
             JSONArray ja=new JSONArray();
             for(problemView pv:list){

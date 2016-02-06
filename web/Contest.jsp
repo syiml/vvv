@@ -4,6 +4,7 @@
 <%@ page import="entity.Permission" %>
 <%@ page import="entity.Contest" %>
 <%@ page import="util.Tool" %>
+<%@ page import="servise.ContestMain" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -58,12 +59,13 @@
       response.sendRedirect("Contest.jsp?cid="+cid);
   }else{
       qcid = Integer.parseInt(cid);
-      int in = Main.contests.getContest(qcid).canin(((User)user).getUsername());
+      Contest contest=ContestMain.getContest(qcid);
+      int in = contest.canin(((User)user).getUsername());
       if (in == 0) {
         out.print("没有权限，请报名比赛后再进入");
       } else if (in == -1) {//need password
         Object pass=session.getAttribute("contestpass"+cid);
-        if(pass!=null && pass.toString().equals(Main.contests.getContest(qcid).getPassword())){//密码正确
+        if (pass!=null && pass.toString().equals(contest.getPassword())){//密码正确
           bo=true;
         }else{
 %>
@@ -107,9 +109,9 @@
       }
     </script>
 
-      <h2 style="text-align:center"><%=Main.contests.getContest(qcid).getName()%></h2>
+      <h2 style="text-align:center"><%=ContestMain.getContest(qcid).getName()%></h2>
         <%//进度条
-            Contest c = Main.contests.getContest(qcid);
+            Contest c = ContestMain.getContest(qcid);
             long time= Tool.now().getTime()-c.getBeginDate().getTime();
             long alltime=c.getEndTime().getTime() - c.getBeginDate().getTime();
             if(time>=0&&time<=alltime){

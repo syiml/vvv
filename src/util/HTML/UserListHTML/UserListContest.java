@@ -1,5 +1,6 @@
 package util.HTML.UserListHTML;
 
+import servise.ContestMain;
 import util.Main;
 import entity.User;
 import dao.UserSQL;
@@ -29,7 +30,7 @@ public class UserListContest extends pageBean {
     int RegisterUserNum;
     public UserListContest(int cid,int NowPage){
         u=Main.loginUser();
-        c=Main.contests.getContest(cid);
+        c= ContestMain.getContest(cid);
         admin=Main.loginUserPermission().getContestRegisterAdmin();
         this.NowPage=NowPage;
         if(c.getKind()==3){
@@ -41,7 +42,7 @@ public class UserListContest extends pageBean {
             super.addTableHead("admin");
         }
         int num=Main.userShowNum;
-        c=Main.contests.getContest(cid);
+        c=ContestMain.getContest(cid);
         list2=Main.users.getUsers(cid, (NowPage-1) * num, num, "", c.getKind() == 3);
         RegisterUserNum=UserSQL.getUsersNum(c.getCid(),"");
         PageNum=getPageNum(RegisterUserNum,Main.userShowNum);
@@ -178,7 +179,7 @@ public class UserListContest extends pageBean {
         String ss="";
         if(c.getType()==3||c.getType()==4){
             if(u!=null){
-                RegisterUser z=Main.contests.getRegisterStatu(u.getUsername(),c.getCid());
+                RegisterUser z=ContestMain.getRegisterStatu(u.getUsername(),c.getCid());
                 if(z==null){
                     if(c.getRegisterendtime().before(Tool.now())){
                         ss+="报名已经结束";

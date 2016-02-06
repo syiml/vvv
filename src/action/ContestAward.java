@@ -1,5 +1,6 @@
 package action;
 
+import servise.ContestMain;
 import util.Main;
 import entity.Contest;
 import util.Tool;
@@ -38,7 +39,7 @@ public class ContestAward {
     public String award(){
         Tool.debug("award: cid="+cid);
         Tool.debug("award: size="+rank.size());
-        Contest c= Main.contests.getContest(cid);
+        Contest c= ContestMain.getContest(cid);
         _rank r=c.getRank().get_rank();
         for(int i=0;i<r.size();i++){
             int j;

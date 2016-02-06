@@ -1,5 +1,6 @@
 package action;
 
+import servise.ContestMain;
 import util.Main;
 import util.Tool;
 import util.rating.Computer;
@@ -21,8 +22,8 @@ public class comp_rating {
         int cidInt;
         try{
             cidInt=Integer.parseInt(cid);
-            Computer c=new Computer(Main.contests.getContest(cidInt));
-            if(Main.contests.getContest(cidInt).getEndTime().after(Tool.now())) return "error";//比赛没结束不能计算rating
+            Computer c=new Computer(ContestMain.getContest(cidInt));
+            if(ContestMain.getContest(cidInt).getEndTime().after(Tool.now())) return "error";//比赛没结束不能计算rating
             c.comp();
             c.save();
             return "success";

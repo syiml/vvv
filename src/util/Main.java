@@ -49,7 +49,6 @@ public class Main {
     public static DBConnectionPool conns = new DBConnectionPool();
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
-    public static ContestSQL contests = new ContestSQL();
     public static UserSQL users = new UserSQL();
 
     //public static OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF()};
@@ -114,45 +113,7 @@ public class Main {
     public static String setProblemVisiable(int pid){
         return problems.setProblemVisiable(pid);
     }
-    public static String addContest(addcontest a){
-        int cid=Main.contests.getNewId();
-        if(contests.addContest(cid,a).equals("error")) return "error";
-        if(RankSQL.addRank(cid,a).equals("error")) return "error";
-        return "success";
-    }
-    public static String editContest(addcontest a){
-        int cid=Integer.parseInt(a.cid);
-        contests.deleteMapContest(Integer.parseInt(a.cid));
-        if(contests.editContest(cid,a).equals("error")) return "error";
-        if(RankSQL.editRank(cid,a).equals("error")) return "error";
-        return "success";
-    }
-    public static String registerContest(int cid){
-        User u=(User)getSession().getAttribute("user");
-        if(u==null) return "login";
-        int statu=0;
-        Contest c=contests.getContest(cid);
-        if(c.getRegisterendtime().before(Tool.now())||c.getRegisterstarttime().after(Tool.now())){
-            return "error";
-        }
-        if(c.getType()==3){
-            statu=1;
-        }
-        if(c.getType()==4){
-            statu=0;
-        }
-        if(c.getKind()==3&&!u.canRegisterOfficalContest()){
-            return "info";
-        }
-        return contests.addUserContest(cid, u.getUsername(), statu);
-    }
-    public static String contestPorblemPublc(int cid){
-        Contest c=Main.contests.getContest(cid);
-        for(int i:c.getProblemList()){
-            Main.problems.setProblemVisiable(i,1);
-        }
-        return "success";
-    }
+
     public static Permission getPermission(String user){
         return users.getPermission(user);
     }
@@ -208,28 +169,8 @@ public class Main {
     public static User loginUser(){
         return (User)getSession().getAttribute("user");
     }
-    public static boolean canInContest(int cid){
-        Contest c=Main.contests.getContest(cid);
-        //User u=(User)getSession().getAttribute("user");
-        User u=loginUser();
-        if(loginUserPermission().getAddContest()) return true;
-        if(u==null) return false;
-        int z=c.canin(u.getUsername());
-        if(z==1) return true;
-        if(z==-1){//need password
-            Object pass=getSession().getAttribute("contestpass"+cid);
-            if(pass!=null && pass.toString().equals(Main.contests.getContest(cid).getPassword())) {//密码正确
-                return true;
-            }
-        }
-        return false;
-    }
-    public static boolean canShowProblem(int cid){
-        if(!canInContest(cid)) return false;
-        if(loginUserPermission().getShowHideProblem()) return true;
-        Contest c=Main.contests.getContest(cid);
-        return c.isBegin();
-    }
+
+
     public static boolean canViewCode(statu s,String user) {
         return user != null && (user.equals(s.getUser()) || Main.users.haveViewCode(user, s.getPid()) || getPermission(user).getViewCode());
     }

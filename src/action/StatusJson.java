@@ -6,6 +6,7 @@ import entity.Result;
 import entity.statu;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import servise.ContestMain;
 import util.Main;
 import util.SQL;
 
@@ -19,7 +20,7 @@ public class StatusJson extends BaseAction{
     int cid;
     public String getJson(){
         //{pnum,status:[{rid,pid,username,result,time},...]}
-        Contest c= Main.contests.getContest(cid);
+        Contest c= ContestMain.getContest(cid);
         JSONObject data=new JSONObject();
         data.put("pnum",c.getProblemNum());
         JSONArray status=new JSONArray();

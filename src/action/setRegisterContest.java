@@ -1,5 +1,6 @@
 package action;
 
+import servise.ContestMain;
 import util.Main;
 
 /**
@@ -38,7 +39,7 @@ public class setRegisterContest {
 
     public String set(){
         if(Main.loginUserPermission().getContestRegisterAdmin()){
-            return Main.contests.setUserContest(Integer.parseInt(cid),username,Integer.parseInt(statu),info);
+            return ContestMain.setUserContest(Integer.parseInt(cid),username,Integer.parseInt(statu),info);
         }
         return "success";
     }
