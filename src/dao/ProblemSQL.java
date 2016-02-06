@@ -39,7 +39,7 @@ public class ProblemSQL {
         }
         pSQL.put(pid, p);
     }
-    public void Remove(int pid){//从缓存里面清除
+    public void remove(int pid){//从缓存里面清除
         pSQL.remove(pid);
     }
     public Problem getProblem(int pid){
@@ -84,6 +84,7 @@ public class ProblemSQL {
     }
     public void editProblem(int pid,Problem pro){
         new SQL("UPDATE problem SET title=?,ojid=?,ojspid=?,author=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pid).update();
+        remove(pid);
     }
     public int addProblem(int pid,Problem pro){
         int newpid;
@@ -98,7 +99,6 @@ public class ProblemSQL {
         Insert(pid,pro);//插入缓存 和 数据库
         return newpid;
     }
-    public void delProblem(int pid){pSQL.remove(pid);}
     public String setProblemVisiable(int pid){
         if(pid!=-1){
             new SQL("update problem set visiable=1-visiable where pid=?",pid).update();
@@ -106,10 +106,10 @@ public class ProblemSQL {
         }else return "error";
     }
     public boolean setProblemVisiable(int pid,int z){
-        delProblem(pid);
         SQL sql=new SQL("update problem set visiable=? where pid=?",z,pid);
         boolean ret=(sql.update()==1);
         sql.close();
+        remove(pid);
         return ret;
     }
     public List<Integer> getProblemsByOjPid(int oj,String ojspid){

@@ -63,6 +63,7 @@ public class VjSubmitter implements Runnable{
                 this.status=BUSY;
                 Main.status.setStatusResult(info.rid,Result.JUDGING,"-","-","");
                 go();
+                ojsrid="->"+ojsrid;
             } catch (Exception e) {
                 this.status=IDLE;
                 e.printStackTrace();
@@ -131,7 +132,7 @@ public class VjSubmitter implements Runnable{
                     Tool.sleep(1000);
                     r=oj.getResult(this);
                     //System.out.println(submitterID+":get res="+r.getR());
-                    setShowstatus("评测结果="+nrid);
+                    setShowstatus("评测结果="+r.getR());
                 }while(!r.canReturn());
                 Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo()));
             }
