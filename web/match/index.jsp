@@ -18,7 +18,7 @@
 <%
     Main.saveURL();
     if(Main.loginUser()==null) response.sendRedirect("../Login.jsp");
-    Contest c= Main.contests.getContest(Integer.parseInt(request.getParameter("cid")));
+    Contest c= Main.getContest(Integer.parseInt(request.getParameter("cid")));
 %>
 <html>
 <head>
