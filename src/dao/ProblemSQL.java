@@ -61,7 +61,6 @@ public class ProblemSQL {
         }
     }
     public List<problemView> getProblems(int pid1,int pid2,boolean showhide){
-        List<problemView> ret=new ArrayList<problemView>();
         String sql="select pid,title,visiable,acusernum,submitnum from v_problem where pid>=? and pid<=?";
         if(!showhide){
             sql+=" and visiable=1";

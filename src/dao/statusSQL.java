@@ -130,7 +130,7 @@ public class statusSQL {
             Contest c=ContestMain.getContest(s.getCid());
             c.getRank().add(s,c);
         }
-        if(res==Result.CE){
+        if(res==Result.CE||res==Result.ERROR){
             addCEInfo(rid, CEinfo);
         }
         return s;

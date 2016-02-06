@@ -84,7 +84,7 @@ public class VjSubmitter implements Runnable{
                 z++;
                 if(z>=10){
                     //System.out.println(submitterID+":getPrid Error");
-                    Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
+                    Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:获取原rid失败。可能是连接不上原oj导致的错误");
                     this.status=IDLE;
                     setShowstatus("获取原rid出错");
                     return;
@@ -102,7 +102,7 @@ public class VjSubmitter implements Runnable{
                     num++;
                     if (num >= 10) {
                         //System.out.println(submitterID+":doSubmit out time");
-                        Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
+                        Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:提交失败。可能是连接不上原oj导致的错误");
                         this.status=IDLE;
                         setShowstatus("第"+num+"次的提交出错，评测出错");
                         return;
@@ -124,7 +124,7 @@ public class VjSubmitter implements Runnable{
                 k--;
             }while(num==10&&k!=0);
             if(k==0){
-                Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
+                Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:提交失败。可能是连接不上原oj导致的错误");
                 setShowstatus("提交失败");
             }else{
                 ojsrid = nrid;

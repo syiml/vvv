@@ -18,9 +18,7 @@ public class ratingSQL {
     public static void save(RatingCase r){
         new SQL("INSERT INTO t_rating VALUES(?,?,?,?,?,?,?) ", r.getUsername(),r.getTime(), r.getCid(), r.getPrating(), r.getRating(), r.getRatingnum(), r.getRank()).update();
         new SQL("UPDATE users set ratingnum=ratingnum+1,rating=? WHERE username=?", r.getRating(), r.getUsername()).update();
-        int prating=Main.users.getUser(r.getUsername()).getShowRating();
-        int newrating=Main.users.getUser(r.getUsername()).getShowRating();
-        MessageMain.addMessageRatingChange(r.getCid(), r.getUsername(),prating,newrating);
+        MessageMain.addMessageRatingChange(r.getCid(), r.getUsername(),r.getPrating(), r.getRating());
         Tool.log(r.getUsername() + ":" + r.getRating());
     }
     public static List<RatingCase> getRating(int cid){

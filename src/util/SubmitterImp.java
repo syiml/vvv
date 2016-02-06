@@ -73,13 +73,11 @@ public class SubmitterImp implements Submitter{
             Main.status.setStatusResult(rid, Result.PENDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,Main.problems.getOjspid(pid),s.getLanguage(),s.getCode(),true);
             submitVJ(ss, Main.problems.getOJid(pid));
-            Tool.debug("Main.ReJudge Done");
             return 0;//success submit to vj
         }else{//is local
             Main.status.setStatusResult(rid, Result.PENDING,"-","-",null);
             SubmitInfo ss=new SubmitInfo(rid,pid+"",s.getLanguage(),s.getCode(),true);
             m.addSubmit(ss);
-            Tool.debug("Main.ReJudge Done");
             return 1;//success submit to local
         }
     }
