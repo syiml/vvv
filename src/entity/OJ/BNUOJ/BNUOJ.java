@@ -72,10 +72,14 @@ public class BNUOJ extends OTHOJ {
     }
 
     public String getRid(String user){
-        JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0="+user).select("body").html());
+        Document d=new MyClient().get(URL + "/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0=" + user);
+        if(d==null){
+            return "error";
+        }
+        JSONObject jo=JSONObject.fromObject(d.select("body").html());
         JSONArray aadata=jo.getJSONArray("aaData");
         if(aadata.size()==0){
-            return "0";
+            return "new";
         }else{
             return aadata.getJSONArray(0).getString(1);
         }

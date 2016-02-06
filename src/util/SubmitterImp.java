@@ -16,7 +16,7 @@ import java.util.List;
 public class SubmitterImp implements Submitter{
 
     @Override
-    public int doSubmit(String user, int pid, int cid, int language, String code, Timestamp submittime) {Tool.log("Main.doSubmit");
+    public int doSubmit(String user, int pid, int cid, int language, String code, Timestamp submittime) {
         Tool.debug("cid="+cid+" pid="+pid);
         int rid;
         if(cid!=-1){//验证user是否有权限提交

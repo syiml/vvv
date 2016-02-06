@@ -31,7 +31,7 @@ public class CF extends OTHOJ {
         try {
             doc = Jsoup.connect(URL+"/submissions/"+user).get();
         } catch (IOException e) {
-            return "new";
+            return "error";
         }
         Element e=doc.select(".status-frame-datatable tr").get(1);
         if(e.select(".view-source").size()==0){

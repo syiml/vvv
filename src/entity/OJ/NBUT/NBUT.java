@@ -53,9 +53,7 @@ public class NBUT extends OTHOJ {
             e = d.select("#prob-list-wrapper tbody tr").first();
             if(e==null) return "new";
             return e.select("td:nth-child(1)").first().text();
-        } catch (IOException e1) {
-            System.out.print("connect timed out");
-        }
+        } catch (Exception ignored) {}
         return "error";
     }
     public String getProblemURL(String pid){

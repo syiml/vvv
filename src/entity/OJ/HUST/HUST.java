@@ -53,9 +53,7 @@ public class HUST extends OTHOJ {
             d = Jsoup.connect(url + "/status.php?user_id=" + user).get();
             try{e = d.select("#result-tab tbody tr").get(0);}catch(IndexOutOfBoundsException ee){return "new";}
             return e.select("td:nth-child(1)").first().text();
-        } catch (IOException e1) {
-            System.out.print("connect timed out");
-        }
+        } catch (Exception ignored) {}
         return "error";
     }
     public String getProblemURL(String pid){

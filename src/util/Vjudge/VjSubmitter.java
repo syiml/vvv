@@ -50,6 +50,9 @@ public class VjSubmitter implements Runnable{
         return password;
     }
     public String getOjsrid(){return ojsrid;}
+    public void setShowstatus(String status){
+        this.showstatus=status;
+    }
 
     public void run(){//开始执行线程
         while(true){
@@ -63,7 +66,7 @@ public class VjSubmitter implements Runnable{
             } catch (Exception e) {
                 this.status=IDLE;
                 e.printStackTrace();
-                Tool.log("评测机出错，10秒后重新运行");
+                setShowstatus("出错，10秒后重新运行");
                 Tool.sleep(10000);
             }
         }
@@ -71,7 +74,7 @@ public class VjSubmitter implements Runnable{
     public void go() {
         try{
             //System.out.println(submitterID+":submitter go");
-            showstatus="go";
+            setShowstatus("开始执行，正在第1次获取原rid");
             OTHOJ oj;
             oj = Submitter.ojs[ojid];
             String prid;
@@ -80,16 +83,16 @@ public class VjSubmitter implements Runnable{
                 z++;
                 if(z>=10){
                     //System.out.println(submitterID+":getPrid Error");
-                    showstatus="get prid error";
                     Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
                     this.status=IDLE;
+                    setShowstatus("获取原rid出错");
                     return;
                 }
                 prid = oj.getRid(username);//获得原来的rid
-                Tool.debug(submitterID+":prid="+prid);
-                showstatus="get"+z+" prid="+prid;
+                setShowstatus("第"+z+"次获取的原rid="+prid);
             }while(prid.equals("error"));
-            String nrid ;
+            setShowstatus("第"+z+"次获取的原rid="+prid+",开始提交");
+            String nrid;
             RES r ;
             int num = 0;
             int k=2;
@@ -98,21 +101,22 @@ public class VjSubmitter implements Runnable{
                     num++;
                     if (num >= 10) {
                         //System.out.println(submitterID+":doSubmit out time");
-                        showstatus="doSubmit error";
                         Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
                         this.status=IDLE;
+                        setShowstatus("第"+num+"次的提交出错，评测出错");
                         return;
+                    }else{
+                        setShowstatus("第"+num+"次的提交出错，开始重试");
                     }
                     Tool.sleep(1000);
-                    //System.out.println(submitterID+":doSubmit error");
-                    showstatus="doSubmit"+num;
                 }
+                setShowstatus("提交结束，开始获取评测结果");
                 num = 0;
                 do {
                     Tool.sleep(1000);
                     nrid = oj.getRid(username);
                     //System.out.println(submitterID+":get rid "+num+"=" + nrid);
-                    showstatus="get rid"+num+"="+nrid;
+                    setShowstatus("第"+num+"次获取rid="+nrid);
                     num++;
                     if (num == 10) break;//提交失败重新提交
                 } while (nrid.equals(prid));
@@ -120,18 +124,20 @@ public class VjSubmitter implements Runnable{
             }while(num==10&&k!=0);
             if(k==0){
                 Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
+                setShowstatus("提交失败");
             }else{
                 ojsrid = nrid;
                 do{
                     Tool.sleep(1000);
                     r=oj.getResult(this);
                     //System.out.println(submitterID+":get res="+r.getR());
-                    showstatus="get res="+r.getR();
+                    setShowstatus("评测结果="+nrid);
                 }while(!r.canReturn());
                 Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo()));
             }
             this.status=IDLE;
-        }catch(NullPointerException e){
+        }catch(Exception e){
+            setShowstatus("未知错误");
             e.printStackTrace();
             Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
             this.status=IDLE;

@@ -84,17 +84,11 @@ public class HDU extends OTHOJ {
     }
 
     public String getRid(String user){
-        Element e=null;
-        Document d = null;
-        RES r=new RES();
         try {
-            d = Jsoup.connect(getStatusURL(user)).get();
-            e = d.select(statuSelect).first();
+            Document d = Jsoup.connect(getStatusURL(user)).get();
+            Element e = d.select(statuSelect).first();
             return (e.select("td:nth-child(1)").first().text());
-        } catch (IOException e1) {
-            System.out.print("connect timed out");
-            //e1.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         return "error";
     }
     public String getTitle(String pid){

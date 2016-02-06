@@ -55,9 +55,7 @@ public class PKU extends OTHOJ {
             d = Jsoup.connect(url + "/status?user_id=" + user).get();
             try{e = d.select(".a tr").get(1);}catch(IndexOutOfBoundsException ee){return "new";}
             return e.select("td:nth-child(1)").first().text();
-        } catch (IOException e1) {
-            System.out.print("connect timed out");
-        }
+        } catch (IOException ignored) {}
         return "error";
     }
     public String getProblemURL(String pid){
