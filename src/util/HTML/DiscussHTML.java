@@ -174,12 +174,12 @@ public class DiscussHTML {
         if(loginuser!=null){
             admin=loginuser.getPermission().getAddDiscuss();
         }
-        List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num, num ,admin);
+        List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num, num ,admin,loginuser);
         String s="";
         for (DiscussReply aList : list) {
             s += EveryDiscussReply(aList);
         }
-        int pagenum=(DiscussSQL.getDiscussReplayNum(did ,admin)+num-1)/num;
+        int pagenum=(DiscussSQL.getDiscussReplayNum(did ,admin,loginuser)+num-1)/num;
         s+=page(page,pagenum);
         return s;
     }
@@ -203,7 +203,6 @@ public class DiscussHTML {
             admin=loginuser.getPermission().getAddDiscuss();
         }
         User u=Main.users.getUser(r.getUsername());
-        //if(!r.visiable&&(loginuser==null||(loginuser!=null&&(!loginuser.getUsername().equals(u.getUsername())||!admin)))){
         if(!r.isVisiable()){
             if(loginuser==null) return "";
             else if(!loginuser.getUsername().equals(u.getUsername())){

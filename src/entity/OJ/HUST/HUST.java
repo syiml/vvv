@@ -68,7 +68,7 @@ public class HUST extends OTHOJ {
             Elements es=d.select("img");
             for(Element ee:es){
                 String link=ee.attr("src");
-                ee.attr("src",d+"/"+link);
+                ee.attr("src",url+"/"+link);
             }
             String title=d.select("#main h2").first().text();
             ph.setTitle(title);

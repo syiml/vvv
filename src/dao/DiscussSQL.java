@@ -127,13 +127,33 @@ public class DiscussSQL {
                 , d.getId()).update();
     }
     ////////////////discuss replay///////////////////
-    public static List<DiscussReply> getDiscussReplay(int did, int from, int num,boolean admin){
-        return new SQL("SELECT * FROM t_discussreply WHERE did=? "+(admin?"":"AND visiable=1")+" LIMIT ?,?",did,from,num)
-                .queryBeanList(DiscussReply.class);
+    public static List<DiscussReply> getDiscussReplay(int did, int from, int num,boolean admin,User loginuser){
+        if(admin){
+            return new SQL("SELECT * FROM t_discussreply WHERE did=? LIMIT ?,?",did,from,num)
+                    .queryBeanList(DiscussReply.class);
+        }else{
+            if(loginuser==null){
+                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND visiable=1 LIMIT ?,?",did,from,num)
+                        .queryBeanList(DiscussReply.class);
+            }else{
+                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND (visiable=1 OR (visiable=0 AND username=?)) LIMIT ?,?",did,loginuser.getUsername(),from,num)
+                        .queryBeanList(DiscussReply.class);
+            }
+        }
     }
-    public static int getDiscussReplayNum(int did,boolean admin){
-        return new SQL("SELECT count(*) FROM t_discussreply WHERE did=? "+(admin?"":"AND visiable=1"),did)
-                .queryNum();
+    public static int getDiscussReplayNum(int did,boolean admin,User loginuser){
+        if(admin){
+            return new SQL("SELECT COUNT(*) FROM t_discussreply WHERE did=?",did)
+                    .queryNum();
+        }else{
+            if(loginuser==null){
+                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND visiable=1",did)
+                        .queryNum();
+            }else{
+                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND (visiable=1 OR (visiable=0 AND username=?))",did,loginuser.getUsername())
+                        .queryNum();
+            }
+        }
     }
     public static DiscussReply getDiscussReply(int did,int rid){
         return new SQL("SELECT * FROM t_discussreply WHERE did=? AND rid=?",did,rid)

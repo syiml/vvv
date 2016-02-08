@@ -1,6 +1,7 @@
 <%@ page import="util.Main" %>
 <%@ page import="entity.Contest" %>
-<%@ page import="util.Tool" %><%--
+<%@ page import="servise.ContestMain" %>
+<%--
     观战模式：
         动态刷新排行榜
         自定义排行榜显示列
@@ -18,7 +19,7 @@
 <%
     Main.saveURL();
     if(Main.loginUser()==null) response.sendRedirect("../Login.jsp");
-    Contest c= Main.getContest(Integer.parseInt(request.getParameter("cid")));
+    Contest c= ContestMain.getContest(Integer.parseInt(request.getParameter("cid")));
 %>
 <html>
 <head>
