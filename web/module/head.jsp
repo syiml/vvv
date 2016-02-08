@@ -12,41 +12,25 @@
   }
 </script>
 <%@page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<!-- 新 Bootstrap 核心 CSS 文件 -->
 <link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.css">
-<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<!--<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>-->
-<%--<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>--%>
-<script src="js/jquery-1.11.1.js"></script>
-
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="js/dateFormat.js"></script>
-<script type="text/javascript">
-  //$.metadata.setType("attr", "validate");
-</script>
-
 <link href="js/bootstrap-datepicker-master/datepicker.css" rel="stylesheet">
-<script src="js/bootstrap-datepicker-master/bootstrap-datepicker.js"></script>
-
-<%--<link href="js/modern-menu/preview.css" rel="stylesheet">--%>
 <link href="js/modern-menu/modern-menu.css" rel="stylesheet">
-<script src="js/modern-menu/jquery.transit.min.js"></script>
-<script src="js/modern-menu/jquery.modern-menu.min.js"></script>
-
 <link rel="stylesheet" href="js/front-awesome/font-awesome.min.css">
 <link rel="stylesheet" href="css/main.css">
 <link href="css/loaders.css" rel="stylesheet">
 
+<script src="js/jquery-1.11.1.js"></script>
+<script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datepicker-master/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/dateFormat.js"></script>
+<script src="js/modern-menu/jquery.transit.min.js"></script>
+<script src="js/modern-menu/jquery.modern-menu.min.js"></script>
 <script src="js/HTML.js"></script>
 
-<!-- 配置文件 -->
 <script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
-<!-- 编辑器源码文件 -->
 <script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
 
-<script src="js/jquery-ui.js"></script>
 <script src='js/problemTag.js'></script>
 
 <div class="row"><div class="col-sm-3 col-sm-offset-9">

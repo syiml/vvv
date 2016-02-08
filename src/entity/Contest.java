@@ -1,5 +1,6 @@
 package entity;
 
+import action.RegisterContest;
 import servise.ContestMain;
 import util.Main;
 import entity.rank.Rank;
@@ -18,6 +19,12 @@ import java.util.List;
  * Created by Administrator on 2015/5/22.
  */
 public class Contest {
+    public static int TYPE_PUBLIC=0;
+    public static int TYPE_PASSWORD=1;
+    public static int TYPE_PRIVATE=2;
+    public static int TYPE_REGISTER=3;
+    public static int TYPE_REGISTER2=4;
+
     private int cid;
     private String name;
     private Timestamp begintime;
@@ -84,12 +91,7 @@ public class Contest {
         }
     }
     public void reSetUsers(){
-        //ContestMain.contests.deleteMapContest(cid);
-//        try {
-//            setUsers(Main.contests.getUser(cid));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        ContestMain.deleteMapContest(cid);
     }
     public Contest(ResultSet re){
         //用ResultSet创建临时Contest变量
@@ -238,13 +240,19 @@ public class Contest {
         }
     }
     public int canin(String user){//判断用户是否有权限进入比赛
-        if(type==0) return 1;//public 可以进入
-        if(type==1) return -1;//password 需要密码
-        if(type==2||type==3||type==4){//需要注册
+        if(type==Contest.TYPE_PUBLIC) return 1;//public 可以进入
+        if(type==Contest.TYPE_PASSWORD) return -1;//password 需要密码
+        if(type==Contest.TYPE_PRIVATE||type==Contest.TYPE_REGISTER||type==Contest.TYPE_REGISTER2){//需要注册
             for (RegisterUser u : users) {
                 if (u.getUsername().equals(user)) {
                     int statu = u.getStatu();
-                    if (statu == 1 || statu == 2) {//是AC或者星号状态，可以进入
+                    if (statu == RegisterUser.STATUS_APPENDED || statu == RegisterUser.STATUS_UNOFFICIAL) {//是已经签到或者星号状态，可以进入
+                        return 1;
+                    }
+                    if (statu == RegisterUser.STATUS_ACCEPTED){
+                        if(isBegin()&&!isEnd()){//是第一次进入，改成已经签到
+                            ContestMain.setUserContest(cid,u.getUsername(),RegisterUser.STATUS_APPENDED,"");
+                        }
                         return 1;
                     }
                 }

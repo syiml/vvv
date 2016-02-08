@@ -73,15 +73,15 @@ public class UserListContest extends pageBean {
     }
 
     private String adminButtons(String username,String info){
-        //pd、ac、no、*、del
         int cid=c.getCid();
         String s="";
         s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=0","等待")+" ";
-        s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=1","通过")+" ";
+        s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=4","通过")+" ";
         s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=-1","拒绝")+" ";
         s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=2","非正式")+" ";
         //String id,String title,String body,String btnlabel
         s+=HTML.a("javascript:retry('"+username+"','"+info+"','"+cid+"')","需修改")+" ";
+        s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=1","已签到")+" ";
         s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=-2","删除");
         return s;
     }
@@ -162,9 +162,10 @@ public class UserListContest extends pageBean {
             select s1=new select("statu","状态");
             //0pending 1accepted -1no  2*
             s1.add(0,"等待");
-            s1.add(1,"通过");
+            s1.add(4,"通过");
             s1.add(-1,"拒绝");
             s1.add(2,"非正式");
+            s1.add(1,"已签到");
             s1.setValue("0");
             s1.setId("statu");
             s1.setType(1);

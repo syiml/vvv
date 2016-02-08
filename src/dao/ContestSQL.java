@@ -1,5 +1,6 @@
 package dao;
 
+import action.RegisterContest;
 import servise.ContestMain;
 import util.Main;
 import entity.User;
@@ -119,16 +120,16 @@ public class ContestSQL {
         if(getRegisterStatu(username,cid)==null){
             addUserContest(cid,username,statu);
         }
-        if(statu==-2){
+        if(statu==-2){//-2 -> 删除
             ContestMain.getContest(cid).reSetUsers();
             return delUserContest(cid,username);
         }
         if(statu!=3){
-            MessageMain.addMessageRegisterContest(username,cid,statu);
             new SQL("UPDATE contestuser set statu=? WHERE cid=? AND username=?",statu,cid,username).update();
-        }else{
-            MessageMain.addMessageRegisterContest(username,cid,statu);
+            MessageMain.addMessageRegisterContest(username, cid, statu);
+        }else{//3 -> 需修改
             new SQL("UPDATE contestuser set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username).update();
+            MessageMain.addMessageRegisterContest(username, cid, statu);
         }
         ContestMain.getContest(cid).reSetUsers();
         return "success";

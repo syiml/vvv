@@ -34,23 +34,23 @@ public class ContestMain {
     }
 
     public static String registerContest(int cid) {
-        User u = (User) Main.getSession().getAttribute("user");
+        User u = Main.loginUser();
         if (u == null) return "login";
-        int statu = 0;
+        int status = 0;
         Contest c = contests.getContest(cid);
         if (c.getRegisterendtime().before(Tool.now()) || c.getRegisterstarttime().after(Tool.now())) {
             return "error";
         }
-        if (c.getType() == 3) {
-            statu = 1;
+        if (c.getType() == Contest.TYPE_REGISTER) {
+            status = RegisterUser.STATUS_ACCEPTED;
         }
-        if (c.getType() == 4) {
-            statu = 0;
+        if (c.getType() == Contest.TYPE_REGISTER2) {
+            status = RegisterUser.STATUS_PADDING;
         }
         if (c.getKind() == 3 && !u.canRegisterOfficalContest()) {
             return "info";
         }
-        return contests.addUserContest(cid, u.getUsername(), statu);
+        return contests.addUserContest(cid, u.getUsername(), status);
     }
 
     public static String contestPorblemPublc(int cid) {
@@ -83,6 +83,9 @@ public class ContestMain {
         if (Main.loginUserPermission().getShowHideProblem()) return true;
         Contest c = contests.getContest(cid);
         return c.isBegin();
+    }
+    public static void deleteMapContest(int cid){
+        contests.deleteMapContest(cid);
     }
 
     public static Contest getContest(int cid) {

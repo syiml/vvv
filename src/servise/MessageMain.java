@@ -118,8 +118,8 @@ public class MessageMain {
         Message m=new Message();
         m.setUser(user);
         m.setStatu(0);
-        m.setTitle("你注册的比赛【" + c.getName() + "】已经审核完成了");
-        m.setText("你注册的比赛【" + c.getName() + "】已经审核完成了：</br>审核结果：" + RegisterUser.statuToHTML(statu) + "<br>" + HTML.a("User.jsp?cid=" + cid, "点击查看"));
+        m.setTitle("你注册的比赛【" + c.getName() + "】的状态有变化");
+        m.setText("你注册的比赛【" + c.getName() + "】的状态有变化：</br>变化为：" + RegisterUser.statuToHTML(statu) + "<br>" + HTML.a("User.jsp?cid=" + cid, "点击查看"));
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }
