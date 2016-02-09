@@ -45,7 +45,7 @@ public class Contest {
     private boolean computerating;
     private int kind;//练习、积分、趣味、正式
 //    public ContestCodeCompare comparer=null;//代码重复率计算器
-    private int group;//分类  //专题、积分、趣味、正式
+    private int group;//分类  //专题、积分、趣味、正式  -1隐藏
                              //练习:里面可以编辑题目标签
 
 

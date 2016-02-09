@@ -116,6 +116,8 @@ public class contestListHTML extends pageBean{
                 return HTML.textb("趣味","");
             }else if(k==3){
                 return HTML.textb("正式","orange");
+            }else if(k==4){
+                return HTML.textb("隐藏","gray");
             }
         }
         return "=ERROR=";
@@ -167,11 +169,11 @@ ki.setDisabled();
         return f.toHTML();
         }
 
-public String HTML(){
+    public String HTML(){
         if(list==null) list= ContestMain.getContests((page-1)*num,num,status,name,type,kind);
         pageNum=getPageNum(ContestMain.getContestsNum(status,name,type,kind),num);
         addTableHead("#","名称","开始时间","结束时间","权限","状态");
         if(kind==-1) addTableHead("类型");
         return super.HTML();
-        }
-        }
+    }
+}

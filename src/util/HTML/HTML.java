@@ -1192,6 +1192,7 @@ public class HTML {
         f44.add(1,"积分");
         f44.add(2,"趣味");
         f44.add(3,"正式");
+        f44.add(4,"隐藏");
         f44.setId("kind");
         if(c!=null) f44.setValue(c.getKind()+"");
         else f44.setValue("0");

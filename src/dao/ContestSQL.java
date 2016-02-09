@@ -198,6 +198,10 @@ public class ContestSQL {
         }
         if(kind!=-1){
             sql+=" and kind="+kind;
+        }else{
+            if(!Main.loginUserPermission().getAddContest()){
+                sql+=" and kind!=4";//4->隐藏
+            }
         }
         sql+=" order by endTime<now(),begintime desc";
         sql+=" limit ?,?";
