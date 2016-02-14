@@ -103,7 +103,7 @@ public class Permission{
         if(awardACB) s+=(HTML.span("success","奖惩ACB"))+" ";
         if(resetPassword) s+=(HTML.span("success","密码重置"))+" ";
         if(contestRegisterAdmin) s+=(HTML.span("success","审核比赛报名"))+" ";
-        if(challengeAdmin) s+=(HTML.span("success","挑战模式管理"));
+        if(challengeAdmin) s+=(HTML.span("success","挑战模式管理"))+" ";
         if(userAdmin) s+=(HTML.span("success","用户管理"));
         return s;
     }

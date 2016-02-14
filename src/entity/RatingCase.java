@@ -101,4 +101,10 @@ public class RatingCase implements IBeanResultSetCreate{
         this.text = text;
     }
 
+    public int getTrueRating(){
+        return User.getShowRating(ratingnum,rating);
+    }
+    public int getTruePRating(){
+        return User.getShowRating(ratingnum-1,prating);
+    }
 }

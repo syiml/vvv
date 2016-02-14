@@ -1,6 +1,7 @@
 package util.rating;
 
 import servise.ContestMain;
+import servise.MessageMain;
 import util.Main;
 import entity.User;
 import dao.ratingSQL;
@@ -8,6 +9,7 @@ import entity.Contest;
 import entity.RatingCase;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
+import util.Tool;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -108,7 +110,10 @@ public class Computer {
     public void save(){
         Contest c= ContestMain.getContest(cid);
         for(int i=0;i<rating.size();i++){
-            ratingSQL.save(new RatingCase(r.username.get(i),c.getEndTime(),c.getCid(),rating.get(i),ans.get(i),ratingnum.get(i)+1,r.rank.get(i),""));
+            RatingCase ratingCase=new RatingCase(r.username.get(i),c.getEndTime(),c.getCid(),rating.get(i),ans.get(i),ratingnum.get(i)+1,r.rank.get(i),"");
+            ratingSQL.save(ratingCase);
+            MessageMain.addMessageRatingChange(ratingCase.getCid(), ratingCase.getUsername(), ratingCase.getTruePRating(), ratingCase.getTrueRating());
+            Tool.log(ratingCase.getUsername() + ":" + ratingCase.getRating());
         }
     }
 }
