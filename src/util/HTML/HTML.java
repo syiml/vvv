@@ -1,27 +1,20 @@
 package util.HTML;
 
-import entity.Block;
+import entity.*;
 import servise.ChallengeMain;
 import dao.ChallengeSQL;
-import entity.Condition;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
 import servise.ContestMain;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import entity.OJ.OTHOJ;
-import entity.Permission;
-import entity.User;
 import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
 import entity.rank.RankShortCode.RankShortCode;
-import entity.Contest;
 import entity.rank.RankTraining.RankTraining;
-import entity.Problem;
 import util.rating.Computer;
-import entity.RatingCase;
 import dao.ratingSQL;
-import entity.statu;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.FormPart.FormPart;
 import util.HTML.FromHTML.check.check;
@@ -1024,6 +1017,8 @@ public class HTML {
             s+=li("密码重置","ResetPassword",nowpage);
         if(p.getPermissionAdmin())
             s+=li("权限管理","PermissionAdmin",nowpage);
+        if(p.getViewLog())
+            s+=li("查看Log","ViewLog",nowpage);
         s+="</ul>";
         return s;
     }
@@ -1067,6 +1062,8 @@ public class HTML {
             return panel("密码重置",adminResetPassword());
         }else if(p!=null&&nowpage.equals("UserAdmin")){
             return panel("用户管理",adminUser());
+        }else if(p!=null&&nowpage.equals("ViewLog")){
+            return viewLog();
         }
         return panel("Index","管理员界面，点击左边链接进行后台管理");
     }
@@ -1505,6 +1502,30 @@ public class HTML {
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+    public static String viewLog(){
+        int id=-1;
+        try{
+            id=Integer.parseInt(Main.getRequest().getParameter("id"));
+        }catch(NumberFormatException ignored){}
+        if(id==-1){
+            int page=1;
+            try{
+                page=Integer.parseInt(Main.getRequest().getParameter("page"));
+            }catch(NumberFormatException ignored){}
+            return new LogHTML(20,page).HTML();
+        }else{
+            try{
+                Log log=Main.logs.getLog(id);
+                String text="time: "+log.getTime()+"\n";
+                text+="user: "+log.getSessionUser()+"\n";
+                text+="===============\n";
+                text+=log.getText();
+                return panel("Log id="+id,HTML.pre(text));
+            }catch (NullPointerException e){
+                return panel("参数错误","参数错误",null,"danger");
+            }
         }
     }
 }

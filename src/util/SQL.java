@@ -32,7 +32,7 @@ public class SQL {
             }
             return rs=p.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Tool.log(e);
         }
         return null;
     }
@@ -47,7 +47,7 @@ public class SQL {
             p.setObject(i+2,num);
             return p.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Tool.log(e);
         }
         return null;
     }
@@ -77,7 +77,7 @@ public class SQL {
                 ret.put((K)key,(V)value);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Tool.log(e);
         } finally {
             close();
         }
@@ -98,7 +98,7 @@ public class SQL {
                 ret.add(new Pair<K, V>((K)key,(V)value));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Tool.log(e);
         } finally {
             close();
         }
@@ -116,7 +116,7 @@ public class SQL {
                 c.add((T)getObject(1));
             }
         } catch (SQLException e) {
-//            e.printStackTrace();
+            Tool.log(e);
         } finally {
             close();
         }
@@ -138,8 +138,7 @@ public class SQL {
                 return (T)rs.getObject(1);
             }else return null;
         } catch (SQLException e) {
-            Tool.debug("queryNumError");
-//            e.printStackTrace();
+            Tool.log(e);
         } finally {
             close();
         }
@@ -157,8 +156,7 @@ public class SQL {
                 return rs.getInt(1);
             }else return 0;
         } catch (SQLException e) {
-//            Main.debug("queryNumError");
-//            e.printStackTrace();
+            Tool.log(e);
         } finally {
             close();
         }
@@ -171,7 +169,7 @@ public class SQL {
                 return rs.getString(1);
             }else return "";
         } catch (SQLException e) {
-            e.printStackTrace();
+            Tool.log(e);
         } finally {
             close();
         }
@@ -186,14 +184,9 @@ public class SQL {
                 ret=cls.newInstance();
                 ret.init(rs);
             }
-        } catch (SQLException e) {
-//            Main.debug("queryNumError");
-//            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } finally {
+        } catch (Exception e) {
+            Tool.log(e);
+        }  finally {
             close();
         }
         return ret;
@@ -207,12 +200,8 @@ public class SQL {
                 aBean.init(rs);
                 list.add(aBean);
             }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Tool.log(e);
         }finally {
             close();
         }
@@ -228,7 +217,7 @@ public class SQL {
             }
             return p.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Tool.log(e);
             return -1;
         } finally {
             close();
@@ -244,12 +233,14 @@ public class SQL {
         try {
             if(rs!=null)rs.close();
         } catch (SQLException ignored) {
+            Tool.log(ignored);
         }
     }
     private void pClose(){
         try {
             if(p!=null) p.close();
         } catch (SQLException ignored) {
+            Tool.log(ignored);
         }
     }
 }

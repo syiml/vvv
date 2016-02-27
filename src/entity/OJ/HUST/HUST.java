@@ -2,6 +2,7 @@ package entity.OJ.HUST;
 
 import entity.OJ.OTHOJ;
 import util.Main;
+import util.Tool;
 import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
@@ -53,7 +54,9 @@ public class HUST extends OTHOJ {
             d = Jsoup.connect(url + "/status.php?user_id=" + user).get();
             try{e = d.select("#result-tab tbody tr").get(0);}catch(IndexOutOfBoundsException ee){return "new";}
             return e.select("td:nth-child(1)").first().text();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            Tool.log(ignored);
+        }
         return "error";
     }
     public String getProblemURL(String pid){
@@ -106,7 +109,7 @@ public class HUST extends OTHOJ {
             System.out.print("connect timed out");
             //e1.printStackTrace();
         }
-        return "";
+        return GET_TITLE_ERROR;
     }
     private void login(MyClient hc,VjSubmitter s){
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -158,7 +161,7 @@ public class HUST extends OTHOJ {
         try {
             d = Jsoup.connect(url + "/status.php?user_id=" + s.getUsername()).get();
         } catch (IOException e1) {
-            e1.printStackTrace();
+            Tool.log(e1);
             r.setR(Result.PENDING);
             return r;
         }

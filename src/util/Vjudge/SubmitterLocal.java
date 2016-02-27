@@ -32,7 +32,7 @@ public class SubmitterLocal extends VjSubmitter {
                 this.status=BUSY;
                 go();
             } catch (Exception e){
-                e.printStackTrace();
+                Tool.log(e);
                 Tool.log("本地评测机出错，10秒后重新运行");
                 Tool.sleep(10000);
             } finally {

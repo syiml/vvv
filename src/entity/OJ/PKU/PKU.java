@@ -2,6 +2,7 @@ package entity.OJ.PKU;
 
 import entity.OJ.OTHOJ;
 import util.Main;
+import util.Tool;
 import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
@@ -55,7 +56,9 @@ public class PKU extends OTHOJ {
             d = Jsoup.connect(url + "/status?user_id=" + user).get();
             try{e = d.select(".a tr").get(1);}catch(IndexOutOfBoundsException ee){return "new";}
             return e.select("td:nth-child(1)").first().text();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+            Tool.log(ignored);
+        }
         return "error";
     }
     public String getProblemURL(String pid){
@@ -102,7 +105,7 @@ public class PKU extends OTHOJ {
             System.out.print("connect timed out");
             //e1.printStackTrace();
         }
-        return "";
+        return GET_TITLE_ERROR;
     }
     private String getLanguage(int l){
         if(l==0){

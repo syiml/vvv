@@ -17,7 +17,6 @@ public class SubmitterImp implements Submitter{
 
     @Override
     public int doSubmit(String user, int pid, int cid, int language, String code, Timestamp submittime) {
-        Tool.debug("cid="+cid+" pid="+pid);
         int rid;
         if(cid!=-1){//验证user是否有权限提交
             if(ContestMain.getContest(cid).getEndTime().before(submittime)){
@@ -26,7 +25,6 @@ public class SubmitterImp implements Submitter{
         }
         int ppid=pid;
         if(cid!=-1) pid=ContestMain.getContest(cid).getGlobalPid(pid);//等于全局题目编号
-        Tool.debug("go=" + pid);
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = Main.status.addStatu(s);//插入数据库，并获取rid
 
@@ -43,7 +41,7 @@ public class SubmitterImp implements Submitter{
                 Contest c=ContestMain.getContest(s.getCid());
                 MatchServer.sendStatus(cid, rid, ppid, user, -1, (submittime.getTime()-c.getBeginDate().getTime())/1000);
             }catch(Exception e){
-                e.printStackTrace();
+                Tool.log(e);
             }
         }
         if(!Main.problems.isProblemLocal(pid)) {//is vj

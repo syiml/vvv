@@ -2,6 +2,7 @@ package entity.OJ.HDU;
 
 import entity.OJ.OTHOJ;
 import util.Main;
+import util.Tool;
 import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
@@ -88,7 +89,9 @@ public class HDU extends OTHOJ {
             Document d = Jsoup.connect(getStatusURL(user)).get();
             Element e = d.select(statuSelect).first();
             return (e.select("td:nth-child(1)").first().text());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            Tool.log(ignored);
+        }
         return "error";
     }
     public String getTitle(String pid){
@@ -97,7 +100,8 @@ public class HDU extends OTHOJ {
             doc = Jsoup.connect(getProblemURL(pid)).get();
             return doc.select(TitleSelect).get(0).text();
         } catch (IOException e) {
-            return "";
+            Tool.log(e);
+            return GET_TITLE_ERROR;
         }
     }
     public problemHTML getProblemHTML(String pid){
@@ -106,6 +110,7 @@ public class HDU extends OTHOJ {
         try {
             doc = Jsoup.connect(getProblemURL(pid)).get();
         } catch (IOException e) {
+            Tool.log(e);
             return null;
         }
         Elements es=doc.select("img");

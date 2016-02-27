@@ -66,7 +66,7 @@ public class VjSubmitter implements Runnable{
                 ojsrid="->"+ojsrid;
             } catch (Exception e) {
                 this.status=IDLE;
-                e.printStackTrace();
+                Tool.log(e);
                 setShowstatus("出错，10秒后重新运行");
                 Tool.sleep(10000);
             }
@@ -139,7 +139,7 @@ public class VjSubmitter implements Runnable{
             this.status=IDLE;
         }catch(Exception e){
             setShowstatus("未知错误");
-            e.printStackTrace();
+            Tool.log(e);
             Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "");
             this.status=IDLE;
         }

@@ -90,7 +90,7 @@ public class BNUOJ extends OTHOJ {
             doc = Jsoup.connect(getProblemURL(pid)).get();
             return doc.select(TitleSelect).get(0).text();
         } catch (IOException e) {
-            return "";
+            return GET_TITLE_ERROR;
         }
     }
     public problemHTML getProblemHTML(String pid){

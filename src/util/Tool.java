@@ -1,5 +1,9 @@
 package util;
 
+import entity.Log;
+import entity.User;
+
+import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +31,21 @@ public class Tool {
 
     public static void log(String s){
         System.out.println(now()+"-> "+s);
+    }
+
+    public static void log(Exception e){
+        ByteArrayOutputStream buf = new java.io.ByteArrayOutputStream();
+        e.printStackTrace(new java.io.PrintWriter(buf, true));
+        String  expMessage = buf.toString();
+        try {
+            buf.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        User loginUser=Main.loginUser();
+        Log log=new Log(now(),expMessage,loginUser==null?null:loginUser.getUsername());
+        Main.logs.save(log);
     }
     public static void debug(String s){
         if(Main.isDebug){

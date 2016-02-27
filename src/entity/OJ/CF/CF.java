@@ -31,11 +31,12 @@ public class CF extends OTHOJ {
         try {
             doc = Jsoup.connect(URL+"/submissions/"+user).get();
         } catch (IOException e) {
+            Tool.log(e);
             return "error";
         }
         Element e=doc.select(".status-frame-datatable tr").get(1);
         if(e.select(".view-source").size()==0){
-            return "new";
+            return "error";
         }
         return e.select(".view-source").get(0).text();
     }
@@ -95,7 +96,7 @@ public class CF extends OTHOJ {
         try {
             doc = Jsoup.connect(getProblemURL(pid)).get();
         } catch (IOException e) {
-            return "ERROR";
+            return GET_TITLE_ERROR;
         }
         return doc.select(".problem-statement").select(".title").get(0).text().substring(3);
     }

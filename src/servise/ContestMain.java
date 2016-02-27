@@ -54,10 +54,7 @@ public class ContestMain {
     }
 
     public static String contestPorblemPublc(int cid) {
-        Contest c = contests.getContest(cid);
-        for (int i : c.getProblemList()) {
-            Main.problems.setProblemVisiable(i, 1);
-        }
+        Main.problems.setContestProblemVisiable(cid,1);
         return "success";
     }
 

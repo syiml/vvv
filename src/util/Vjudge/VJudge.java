@@ -2,6 +2,7 @@ package util.Vjudge;
 
 import util.Main;
 import net.sf.json.JSONArray;
+import util.Tool;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
@@ -40,7 +41,7 @@ public class VJudge {
             queue.get(oj).put(info);
             //System.out.println("Vjudge.addSubmit Done");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Tool.log(e);
         }
         return 1;
     }
@@ -48,7 +49,7 @@ public class VJudge {
         try {
             localQueue.put(info);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Tool.log(e);
         }
         return 1;
     }

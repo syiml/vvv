@@ -111,6 +111,10 @@ public class ProblemSQL {
         remove(pid);
         return ret;
     }
+    public void setContestProblemVisiable(int cid,int z){
+        new SQL("update problem set visiable=? where pid in (select tpid from contestproblems where cid=?)",z,cid).update();
+        pSQL.clear();
+    }
     public List<Integer> getProblemsByOjPid(int oj,String ojspid){
         SQL sql=new SQL("SELECT pid FROM problem WHERE ojid=? AND ojspid=?",oj,ojspid){
             @Override

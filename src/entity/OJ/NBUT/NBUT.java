@@ -2,6 +2,7 @@ package entity.OJ.NBUT;
 
 import entity.OJ.OTHOJ;
 import util.Main;
+import util.Tool;
 import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
@@ -99,8 +100,9 @@ public class NBUT extends OTHOJ {
         } catch (IOException e1) {
             System.out.print("connect timed out");
             //e1.printStackTrace();
+            Tool.log(e1);
         }
-        return "";
+        return GET_TITLE_ERROR;
     }
     private String getOJVERIFY(){
         Element e=null;

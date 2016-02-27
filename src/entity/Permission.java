@@ -1,6 +1,7 @@
 package entity;
 
 import util.HTML.HTML;
+import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +32,8 @@ public class Permission{
     boolean resetPassword=false;
 
     boolean userAdmin=false;//用户管理，可以查看修改用户详细信息，认证正式队员
+
+    boolean viewLog=false;
     /**
      * 根据数据库结果集产生
      * @param rs 数据库结果集，userPer表的单个User记录
@@ -57,10 +60,11 @@ public class Permission{
                     case 13:challengeAdmin=true;break;
                     case 14:resetPassword=true;break;
                     case 15:userAdmin=true;break;
+                    case 16:viewLog=true;break;
                 }
             }
         } catch (SQLException e) {
-            //e.printStackTrace();
+            Tool.log(e);
         }
     }
     public Permission(){
@@ -83,6 +87,7 @@ public class Permission{
     public boolean getChallengeAdmin(){return challengeAdmin;}
     public boolean getResetPassword(){return resetPassword;}
     public boolean getUserAdmin(){return userAdmin;}
+    public boolean getViewLog(){return viewLog;}
     /**
      * 产生显示在个人页面的权限列表
      * @return 权限列表HTML代码
@@ -104,7 +109,8 @@ public class Permission{
         if(resetPassword) s+=(HTML.span("success","密码重置"))+" ";
         if(contestRegisterAdmin) s+=(HTML.span("success","审核比赛报名"))+" ";
         if(challengeAdmin) s+=(HTML.span("success","挑战模式管理"))+" ";
-        if(userAdmin) s+=(HTML.span("success","用户管理"));
+        if(userAdmin) s+=(HTML.span("success","用户管理"))+" ";
+        if(viewLog) s+=(HTML.span("success","Log查看"))+" ";
         return s;
     }
 }

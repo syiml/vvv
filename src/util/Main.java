@@ -2,6 +2,7 @@ package util;
 
 import WebSocket.MatchServer;
 import WebSocket.MatchWebSocket;
+import dao.*;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
 import entity.OJ.BNUOJ.BNUOJ;
@@ -11,11 +12,7 @@ import entity.OJ.HUST.HUST;
 import entity.OJ.NBUT.NBUT;
 import entity.OJ.OTHOJ;
 import entity.OJ.PKU.PKU;
-import dao.ContestSQL;
-import dao.ProblemSQL;
-import dao.UserSQL;
 import entity.Result;
-import dao.statusSQL;
 import entity.Permission;
 import entity.User;
 import util.Vjudge.SubmitInfo;
@@ -50,6 +47,7 @@ public class Main {
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
     public static UserSQL users = new UserSQL();
+    public static LogDao logs = new LogDao();
 
     //public static OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF()};
     //OJ列表。判题OJ顺序不能改变，否则导致已有题目的OJ不正确

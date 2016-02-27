@@ -12,6 +12,7 @@ public abstract class pageBean {
     TableHTML table = new TableHTML();
     List<String> Colname = new ArrayList<String>();
 
+    protected String ERROR_CELL_TEXT="=ERROR=";
     public abstract String getTitle();
     public abstract int getPageSize();//当前页大小
     public abstract int getPageNum();//总页数
