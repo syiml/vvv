@@ -241,18 +241,7 @@ public class UserSQL {
         return 0;
     }
     public static int getUsersNum(int cid,int st){
-        SQL sql=new SQL("select count(*) from contestuser where cid=? and statu=?",cid,st);
-        ResultSet rs=sql.query();
-        try {
-            if(rs.next()){
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return 0;
+        return new SQL("select count(*) from contestuser where cid=? and statu=?",cid,st).queryNum();
     }
 
     public String login(String user,String pass){

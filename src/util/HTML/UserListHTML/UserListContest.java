@@ -185,7 +185,7 @@ public class UserListContest extends pageBean {
                     if(c.getRegisterendtime().before(Tool.now())){
                         ss+="报名已经结束";
                     }else if(c.getRegisterstarttime().after(Tool.now())) {
-                        ss+="报名还没开始";
+                        ss+="报名还未开始";
                     }else{
                         ss+= HTML.a("registercontest.action?cid=" + c.getCid(), "立即报名");
                     }
@@ -208,7 +208,7 @@ public class UserListContest extends pageBean {
                     " ～ "+c.getRegisterendtime().toString().substring(0,16);
         }
         String count="总报名人数："+RegisterUserNum+"】【"+
-                "审核通过人数："+ UserSQL.getUsersNum(c.getCid(), 1);
+                "审核通过人数："+ (UserSQL.getUsersNum(c.getCid(), RegisterUser.STATUS_ACCEPTED)+UserSQL.getUsersNum(c.getCid(), RegisterUser.STATUS_APPENDED));
         return HTML.div("panel-body","style='padding:5px'",HTML.floatLeft("【"+ss+"】【"+count+"】【"+r+"】"))+
                HTML.div("panel-body","style='padding:5px'",HTML.floatLeft(page())+HTML.floatRight(rightForm()));
     }

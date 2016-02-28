@@ -95,21 +95,7 @@ public class ContestSQL {
     }
     public RegisterUser getRegisterStatu(String username, int cid){
         //null 未注册
-        PreparedStatement p= null;
-        SQL sql=new SQL("SELECT * FROM contestuser WHERE username=? AND cid=?",username,cid);
-        try {
-            ResultSet rs= sql.query();
-            if(rs.next()){
-                return new RegisterUser(rs);
-            }else{
-                return null;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }finally {
-            sql.close();
-        }
+        return new SQL("SELECT * FROM contestuser WHERE username=? AND cid=?",username,cid).setLog(false).queryBean(RegisterUser.class);
     }
     public String addUserContest(int cid,String username,int statu){
         new SQL("INSERT INTO contestuser VALUES(?,?,?,?,?)",cid,username,statu,"",Tool.now()).update();

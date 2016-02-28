@@ -10,7 +10,8 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/6/5.
  */
-public class RegisterUser {
+public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
+    //注册状态 0:等待 1:已参加 -1:拒绝  2:* 3:需修改  4:通过
     public static int STATUS_FAILD=-1;
     public static int STATUS_PADDING=0;
     public static int STATUS_APPENDED=1;
@@ -34,6 +35,7 @@ public class RegisterUser {
     private String info;
     private Timestamp time;
 
+    public RegisterUser(){}
     public RegisterUser(ResultSet r) throws SQLException {
         //username,statu,info
         username=r.getString("username");
@@ -51,5 +53,14 @@ public class RegisterUser {
             case 4: return HTML.textb("通过","green");
         }
         return HTML.textb("ERROR","orange");
+    }
+
+    @Override
+    public RegisterUser init(ResultSet rs) throws SQLException {
+        username=rs.getString("username");
+        statu=rs.getInt("statu");
+        info=rs.getString("info");
+        time=rs.getTimestamp("time");
+        return this;
     }
 }

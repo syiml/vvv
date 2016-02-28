@@ -18,12 +18,16 @@ public class SQL {
     PreparedStatement p=null;
     Connection conn;
     protected ResultSet rs=null;
+    boolean log=true;
     public SQL(String sql, Object... args){
         this.sql=sql;
         this.args=args;
         conn= Main.conns.getConn();
     }
-
+    public SQL setLog(boolean log){
+        this.log=log;
+        return this;
+    }
     public ResultSet query(){
         try {
             p = conn.prepareStatement(sql);
@@ -32,7 +36,7 @@ public class SQL {
             }
             return rs=p.executeQuery();
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         }
         return null;
     }
@@ -47,7 +51,7 @@ public class SQL {
             p.setObject(i+2,num);
             return p.executeQuery();
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         }
         return null;
     }
@@ -77,7 +81,7 @@ public class SQL {
                 ret.put((K)key,(V)value);
             }
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         } finally {
             close();
         }
@@ -98,7 +102,7 @@ public class SQL {
                 ret.add(new Pair<K, V>((K)key,(V)value));
             }
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         } finally {
             close();
         }
@@ -116,7 +120,7 @@ public class SQL {
                 c.add((T)getObject(1));
             }
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         } finally {
             close();
         }
@@ -138,7 +142,7 @@ public class SQL {
                 return (T)rs.getObject(1);
             }else return null;
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         } finally {
             close();
         }
@@ -156,7 +160,7 @@ public class SQL {
                 return rs.getInt(1);
             }else return 0;
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         } finally {
             close();
         }
@@ -169,7 +173,7 @@ public class SQL {
                 return rs.getString(1);
             }else return "";
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         } finally {
             close();
         }
@@ -185,7 +189,7 @@ public class SQL {
                 ret.init(rs);
             }
         } catch (Exception e) {
-            Tool.log(e);
+            if(log) Tool.log(e);
         }  finally {
             close();
         }
@@ -201,7 +205,7 @@ public class SQL {
                 list.add(aBean);
             }
         } catch (Exception e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
         }finally {
             close();
         }
@@ -217,7 +221,7 @@ public class SQL {
             }
             return p.executeUpdate();
         } catch (SQLException e) {
-            Tool.log(e);
+            if(log)Tool.log(e);
             return -1;
         } finally {
             close();
@@ -233,14 +237,14 @@ public class SQL {
         try {
             if(rs!=null)rs.close();
         } catch (SQLException ignored) {
-            Tool.log(ignored);
+            if(log)Tool.log(ignored);
         }
     }
     private void pClose(){
         try {
             if(p!=null) p.close();
         } catch (SQLException ignored) {
-            Tool.log(ignored);
+            if(log)Tool.log(ignored);
         }
     }
 }
