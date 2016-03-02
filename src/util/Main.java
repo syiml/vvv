@@ -165,7 +165,11 @@ public class Main {
         else return getPermission(u.getUsername());
     }
     public static User loginUser(){
-        return (User)getSession().getAttribute("user");
+        try{
+            return (User)getSession().getAttribute("user");
+        }catch (Exception e){
+            return null;
+        }
     }
 
 

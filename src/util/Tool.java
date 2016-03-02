@@ -34,18 +34,16 @@ public class Tool {
     }
 
     public static void log(Exception e){
-        ByteArrayOutputStream buf = new java.io.ByteArrayOutputStream();
-        e.printStackTrace(new java.io.PrintWriter(buf, true));
-        String  expMessage = buf.toString();
-        try {
-            buf.close();
-        } catch (IOException e1) {
+        try{
+            ByteArrayOutputStream buf = new java.io.ByteArrayOutputStream();
+            e.printStackTrace(new java.io.PrintWriter(buf, true));
+            String expMessage = buf.toString();
+            User loginUser=Main.loginUser();
+            Log log=new Log(now(),expMessage,loginUser==null?null:loginUser.getUsername());
+            Main.logs.save(log);
+        }catch (Exception e1){
             e1.printStackTrace();
         }
-
-        User loginUser=Main.loginUser();
-        Log log=new Log(now(),expMessage,loginUser==null?null:loginUser.getUsername());
-        Main.logs.save(log);
     }
     public static void debug(String s){
         if(Main.isDebug){
