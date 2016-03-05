@@ -132,6 +132,7 @@ public class Discuss implements IBeanResultSetCreate<Discuss>{
         else  username=u.getUsername();
         time=new Timestamp(System.currentTimeMillis());
         text=ad.getText();
+        if(text == null) text = "";
         try {
             priority = Double.parseDouble(ad.getPriority());
         }catch(NumberFormatException e){
