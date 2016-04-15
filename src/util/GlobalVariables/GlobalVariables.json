@@ -16,7 +16,7 @@
   "maxHeadImgSize":524288,
   "maxSampleFileSize":10737418240,
   "debug":false,
-  "version":"2.25",
+  "version":"2.26",
 
   "hdu":{
     "URL":"http://acm.hdu.edu.cn",
@@ -25,7 +25,7 @@
     ]
   },
   "bnuoj":{
-    "URL":"http://www.bnuoj.com",
+    "URL":"https://www.bnuoj.com",
     "Submitter":[
       ["spsmoj","spsmoj10086"],
       ["spsmoo","spsmoo10086"],

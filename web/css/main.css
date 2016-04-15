@@ -89,7 +89,7 @@ body{
     background-color: #fcf8e3;
 }
 .discussleft{
-    float:left;
+    /*float:left;*/
     vertical-align: top;
     padding:10px;
     height: 100%;

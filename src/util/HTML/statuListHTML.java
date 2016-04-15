@@ -88,7 +88,15 @@ public class statuListHTML extends pageBean {
                 }else{
                     return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("warning", "Compilation Error"));
                 }
-            }else  return ""+s.resultToHTML(s.getResult());
+            }else if(s.getResult() == Result.ERROR) {
+                if(incontest){
+                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", HTML.span("info","Submit Error"));
+                }else{
+                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("info","Submit Error"));
+                }
+            }else{
+                return ""+s.resultToHTML(s.getResult());
+            }
         }else if(colname.equals("语言")){
             return LanguageToHtml(s);
         }else if(colname.equals("耗时")){

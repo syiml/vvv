@@ -2,6 +2,7 @@ package util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -10,14 +11,30 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.security.cert.CertificateException;
+import javax.security.cert.X509Certificate;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.KeyStore;
 import java.util.List;
 
 /**
@@ -31,16 +48,21 @@ public class MyClient extends DefaultHttpClient{
         super();
         HttpClientParams.setCookiePolicy(getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
     }
+
+    public MyClient(ClientConnectionManager ccm, HttpParams params) {
+        super(ccm,params);
+    }
+
     /**
      * 对url提交一个post请求
      * @param URL 提交地址
-     * @param from 表单的key value
+     * @param form 表单的key value
      * @return 1成功 0失败
      */
-    public synchronized int Post(String URL,List<NameValuePair> from){
+    public synchronized int Post(String URL,List<NameValuePair> form){
         HttpEntity entity;
         try {
-            entity = new UrlEncodedFormEntity(from, "UTF-8");
+            entity = new UrlEncodedFormEntity(form, "UTF-8");
             HttpPost httppost = new HttpPost(URL);
             httppost.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
             httppost.setEntity(entity);
@@ -48,24 +70,24 @@ public class MyClient extends DefaultHttpClient{
             hr = execute(httppost);
             entity = hr.getEntity();
             if (entity != null) {
-                //System.out.println("Response content lenght:"  + entity.getContentLength());
+                System.out.println("Response content lenght:"  + entity.getContentLength());
                 String content;
                 try {
                     content = EntityUtils.toString(entity);
-                    Tool.debug("Response content:" + content);
+                    Tool.log("Response content:" + content);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return 0;
                 }
             }
         } catch (UnsupportedEncodingException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return 0;
         } catch (ClientProtocolException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return 0;
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return 0;
         }
         return 1;
@@ -82,17 +104,50 @@ public class MyClient extends DefaultHttpClient{
         try {
             HttpGet httpget = new HttpGet(URL);
             httpget.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-            HttpResponse hr=execute(httpget);
+            HttpResponse hr = execute(httpget);
             entity = hr.getEntity();
             return Jsoup.parse(entity.getContent(), "utf-8", "");
         } catch (UnsupportedEncodingException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         } catch (ClientProtocolException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static MyClient getMyClient() {
+        HttpClient base = new DefaultHttpClient() ;
+        try {
+            SSLContext ctx = SSLContext.getInstance("TLS");
+            X509TrustManager tm = new X509TrustManager(){
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] x509Certificates, String s) throws java.security.cert.CertificateException {
+
+                }
+
+                @Override
+                public void checkServerTrusted(java.security.cert.X509Certificate[] x509Certificates, String s) throws java.security.cert.CertificateException {
+
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[0];
+                }
+            };
+            ctx.init(null, new TrustManager[] { tm }, null);
+            SSLSocketFactory ssf = new SSLSocketFactory(ctx);
+            ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            ClientConnectionManager ccm = base.getConnectionManager();
+            SchemeRegistry sr = ccm.getSchemeRegistry();
+            sr.register(new Scheme("https", ssf, 443));
+            return new MyClient(ccm, base.getParams());
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+            Tool.log(ex);
             return null;
         }
     }

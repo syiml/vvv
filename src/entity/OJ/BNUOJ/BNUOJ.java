@@ -5,6 +5,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import util.Main;
+import util.Tool;
 import util.Vjudge.VjSubmitter;
 import entity.RES;
 import entity.Result;
@@ -33,7 +34,7 @@ public class BNUOJ extends OTHOJ {
     private static String TitleSelect="h2";
     private static String DesSelect=".content-wrapper";
     private static String loginURL="/v3/ajax/login.php";
-    private static MyClient hc = new MyClient();
+    private static MyClient hc = MyClient.getMyClient();
 
     private static Map<String,Result> resultMap;
     private static Map<String,String>  languageMap;
@@ -72,7 +73,7 @@ public class BNUOJ extends OTHOJ {
     }
 
     public String getRid(String user){
-        Document d=new MyClient().get(URL + "/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0=" + user);
+        Document d = MyClient.getMyClient().get(URL + "/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0=" + user);
         if(d==null){
             return "error";
         }
@@ -86,21 +87,15 @@ public class BNUOJ extends OTHOJ {
     }
     public String getTitle(String pid){
         Document doc;
-        try {
-            doc = Jsoup.connect(getProblemURL(pid)).get();
-            return doc.select(TitleSelect).get(0).text();
-        } catch (IOException e) {
-            return GET_TITLE_ERROR;
-        }
+        //doc = Jsoup.connect(getProblemURL(pid)).get();
+        doc = MyClient.getMyClient().get(getProblemURL(pid));
+        return doc.select(TitleSelect).get(0).text();
     }
     public problemHTML getProblemHTML(String pid){
         Document doc;
         problemHTML p=new problemHTML();
-        try {
-            doc = Jsoup.connect(getProblemURL(pid)).get();
-        } catch (IOException e) {
-            return null;
-        }
+        doc = MyClient.getMyClient().get(getProblemURL(pid));
+        if(doc == null) return null;
         Elements es=doc.select("img");
         for(Element e:es){
             String link=e.attr("src");
@@ -155,12 +150,13 @@ public class BNUOJ extends OTHOJ {
         formparams.add(new BasicNameValuePair("source",s.getSubmitInfo().code));
         formparams.add(new BasicNameValuePair("isshare","0"));//share code
         formparams.add(new BasicNameValuePair("user_id",s.getUsername()));
+        formparams.add(new BasicNameValuePair("login","Submit"));
         if(hc.Post(getSubmitURL(), formparams)==0) return "error";
         return "success";
     }
     public RES getResult(VjSubmitter s) {
         RES r=new RES();
-        JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0="+s.getUsername()).select("body").html());
+        JSONObject jo=JSONObject.fromObject(MyClient.getMyClient().get(URL + "/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0=" + s.getUsername()).select("body").html());
         JSONArray aadata=jo.getJSONArray("aaData");
         if(aadata.size()==0){
             r.setR(Result.PENDING);
@@ -184,12 +180,13 @@ public class BNUOJ extends OTHOJ {
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
         formparams.add(new BasicNameValuePair("cksave","365"));//cookie save
+        formparams.add(new BasicNameValuePair("login","Login"));
         if(hc.Post(getLoginURL(), formparams)==0) return "error";
         return "success";
     }
     public String getCEInfo(VjSubmitter s){
         try{
-            JSONObject jo=JSONObject.fromObject(new MyClient().get(URL+"/v3/ajax/get_ceinfo.php?runid="+s.getOjsrid()).select("body").html());
+            JSONObject jo=JSONObject.fromObject(MyClient.getMyClient().get(URL + "/v3/ajax/get_ceinfo.php?runid=" + s.getOjsrid()).select("body").html());
             return jo.getString("msg");
         }catch (JSONException e){
             return "未获取到";

@@ -26,6 +26,7 @@ import java.util.Map;
  */
 public class NBUT extends OTHOJ {
     String url= Main.GV.getJSONObject("nbut").getString("URL");
+    MyClient hc = MyClient.getMyClient();
     public NBUT(){
         ResultMap=new HashMap<String, Result>();
         ResultMap.put("ACCEPTED",Result.AC);
@@ -50,7 +51,7 @@ public class NBUT extends OTHOJ {
         Element e;
         Document d;
         try {
-            d = Jsoup.connect(url+"/Problem/status.xhtml?username="+user).get();
+            d = MyClient.getMyClient().get(url+"/Problem/status.xhtml?username="+user);
             e = d.select("#prob-list-wrapper tbody tr").first();
             if(e==null) return "new";
             return e.select("td:nth-child(1)").first().text();
@@ -64,60 +65,40 @@ public class NBUT extends OTHOJ {
         problemHTML ph=new problemHTML();
         Element e=null;
         Document d = null;
-        try {
-            d = Jsoup.connect(url+"/Problem/view.xhtml?id="+pid).get();
-
-            Elements es=d.select("img");
-            for(Element ee:es){
-                String link=ee.attr("src");
-                ee.attr("src",url+"/"+link);
-            }
-
-            ph.setTitle(d.select("#title").first().text());
-            ph.setDis(d.select("#description").first().text());
-            ph.setInput(d.select("#input").first().text());
-            ph.setOutput(d.select("#output").first().text());
-            ph.addSample("<pre style='padding:0px;border-style:none;background-color:transparent'>"
-                    +d.select("#sampleinput").first().text()+"</pre>",
-                    "<pre style='padding:0px;border-style:none;background-color:transparent'>"
-                    +d.select("#sampleoutput").first().text()+"</pre>" );
-            ph.setInt64("%I64d");
-            String limit=d.select("#limit").text();
-            ph.setTimeLimit(limit.substring(limit.indexOf("时间限制: ")+5,limit.indexOf("内存限制:")-1));
-            ph.setMenoryLimit(limit.substring(limit.indexOf("内存限制: ")+5));
-        } catch (IOException e1) {
-            System.out.print("connect timed out");
-            //e1.printStackTrace();
+        d = MyClient.getMyClient().get(url + "/Problem/view.xhtml?id=" + pid);
+        if(d == null) return ph;
+        Elements es=d.select("img");
+        for(Element ee:es){
+            String link=ee.attr("src");
+            ee.attr("src",url+"/"+link);
         }
+
+        ph.setTitle(d.select("#title").first().text());
+        ph.setDis(d.select("#description").first().text());
+        ph.setInput(d.select("#input").first().text());
+        ph.setOutput(d.select("#output").first().text());
+        ph.addSample("<pre style='padding:0px;border-style:none;background-color:transparent'>"
+                +d.select("#sampleinput").first().text()+"</pre>",
+                "<pre style='padding:0px;border-style:none;background-color:transparent'>"
+                +d.select("#sampleoutput").first().text()+"</pre>" );
+        ph.setInt64("%I64d");
+        String limit=d.select("#limit").text();
+        ph.setTimeLimit(limit.substring(limit.indexOf("时间限制: ")+5,limit.indexOf("内存限制:")-1));
+        ph.setMenoryLimit(limit.substring(limit.indexOf("内存限制: ")+5));
         return ph;
     }
     public String getTitle(String pid){
-        Element e=null;
-        Document d = null;
-        try {
-            d = Jsoup.connect(url+"/Problem/view.xhtml?id="+pid).get();
-            return d.select("#title").first().text();
-        } catch (IOException e1) {
-            System.out.print("connect timed out");
-            //e1.printStackTrace();
-            Tool.log(e1);
-        }
-        return GET_TITLE_ERROR;
+        Document d = MyClient.getMyClient().get(url + "/Problem/view.xhtml?id=" + pid);
+        if(d==null) return GET_TITLE_ERROR;
+        return d.select("#title").first().text();
     }
     private String getOJVERIFY(){
-        Element e=null;
-        Document d = null;
-        try {
-            d = Jsoup.connect(url+"/User/login.xhtml?url=%2F").get();
-            String s=d.select("#login-left-form").first().html();
-            int z=s.indexOf("__OJVERIFY__");
-            System.out.println(s.substring(z+21,z+21+32));
-            return s.substring(z+21,z+21+32);
-        } catch (IOException e1) {
-            System.out.print("connect timed out");
-            //e1.printStackTrace();
-        }
-        return "";
+        Document d = MyClient.getMyClient().get(url + "/User/login.xhtml?url=%2F");
+        if(d==null) return "";
+        String s=d.select("#login-left-form").first().html();
+        int z=s.indexOf("__OJVERIFY__");
+        System.out.println(s.substring(z+21,z+21+32));
+        return s.substring(z+21,z+21+32);
     }
     private String getLanguage(int l){
         if(l==0){
@@ -130,7 +111,6 @@ public class NBUT extends OTHOJ {
         return "0";
     }
     public String submit(VjSubmitter s){
-        MyClient hc=new MyClient();
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
@@ -150,7 +130,6 @@ public class NBUT extends OTHOJ {
         return ResultMap.get(s);
     }
     public String getCEInfo(VjSubmitter s){
-        MyClient hc=new MyClient();
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
@@ -167,14 +146,8 @@ public class NBUT extends OTHOJ {
         Element e;
         Document d = null;
         RES r=new RES();
-        try {
-            d = Jsoup.connect(url+"/Problem/status.xhtml?username="+s.getUsername()).get();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            r.setR(Result.PENDING);
-            return r;
-        }
-        e =  d.select("#prob-list-wrapper tbody tr").first();
+        d = MyClient.getMyClient().get(url + "/Problem/status.xhtml?username=" + s.getUsername());
+        e = d.select("#prob-list-wrapper tbody tr").first();
 //        System.out.println("get:" + e.select("td:nth-child(4)").first().text());
         Result re=getResultMap(e.select("td:nth-child(4)").first().text());
         if(re!=null){
