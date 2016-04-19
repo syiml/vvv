@@ -229,10 +229,9 @@ public class ContestSQL {
     }
     public List<Contest> getRecentlyContests(int num){
         List<Contest> list=new ArrayList<Contest>();
-        PreparedStatement p1=null;
         String sql="";
         sql+="select *";
-        sql+=" from contest where endTime>=now()";
+        sql+=" from contest where endTime>=now() and kind!=4";
         sql+=" order by beginTime desc";
         sql+=" limit 0,?";
         SQL sql1=new SQL(sql,num);

@@ -69,6 +69,13 @@
 BUG
     rejudge后rank更新会有问题
 
+4-19
+    2.27
+    修复首页的最近比赛会显示隐藏比赛的bug
+4-15
+    2.26
+    修复由于nbut和bnuoj变成https导致不能提交的问题
+    现在出现SubmitError的时候可以点击查看详细信息
 3-5
     修复discuss的内容为空导致新建和修改失败的bug
     2.25
