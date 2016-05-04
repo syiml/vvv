@@ -47,9 +47,11 @@ public class ProblemTagSQL {
         int rating= Main.users.getUser(username).getShowRating();
         if(rating==-100000) rating=700;
         new SQL("INSERT INTO t_problem_tag_record VALUES(?,?,?,?)",pid,username,tagid,rating).update();
-        if(Main.users.addViewCode(username,pid)==1){
-            Main.users.addACB(username,20);
-        }
+        try{
+            if(Main.users.addViewCode(username,pid)==1) {
+                Main.users.addACB(username, 20);
+            }
+        }catch (Exception ignored) {}
     }
     public static void delTag(int pid,String username,int tagid){
         new SQL("DELETE FROM t_problem_tag_record WHERE pid=? AND username=? AND tagid=?"

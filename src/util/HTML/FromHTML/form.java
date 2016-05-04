@@ -6,6 +6,6 @@ package util.HTML.FromHTML;
 public abstract class form {
     public abstract String toHTML();
     public abstract String toHTML(int col1,int col2);
-    public abstract void setValue(String s);
+    public abstract form setValue(String s);
     public abstract void setDisabled();
 }

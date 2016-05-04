@@ -56,7 +56,7 @@ public class LogHTML extends pageBean {
 
     @Override
     public String getLinkByPage(int page) {
-        return "admin.jsp?page=ViewLog&page="+page;
+        return "admin.jsp?page=ViewLog&pa="+page;
     }
 
     @Override

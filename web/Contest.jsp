@@ -35,6 +35,7 @@
   Object user=session.getAttribute("user");
   String cid=request.getParameter("cid");
   String password=request.getParameter("password");
+  String username=request.getParameter("username");
   int qcid=0;
 
   String pa=request.getParameter("page");
@@ -50,30 +51,37 @@
   String main=request.getParameter("main");
     if(main==null) main="";
   boolean bo=false;
-  if(user==null){//未登录跳转
+  Contest contest = null;
+  /*if(user==null){//未登录跳转
     response.sendRedirect("Login.jsp");
-  }else if(cid==null){//参数错误
+  }else*/
+  if(cid==null){//参数错误
     out.print("Wrong Parameter");
   }else if(password!=null){//提交密码到session
       session.setAttribute("contestpass"+cid,password);
+      session.setAttribute("contestusername"+cid,username);
       response.sendRedirect("Contest.jsp?cid="+cid);
   }else{
       qcid = Integer.parseInt(cid);
-      Contest contest=ContestMain.getContest(qcid);
-      int in = contest.canin(((User)user).getUsername());
+      contest = ContestMain.getContest(qcid);
+      int in = contest.canin(((User)user));
       if (in == 0) {
-        out.print("没有权限，请报名比赛后再进入");
-      } else if (in == -1) {//need password
-        Object pass=session.getAttribute("contestpass"+cid);
-        if (pass!=null && pass.toString().equals(contest.getPassword())){//密码正确
-          bo=true;
-        }else{
+        out.print("没有权限，请"+HTML.a("Login.jsp","登录")+"或报名比赛后再进入");
+      } else if (in == -1 || in == -2) {//need password
 %>
     <%-- 密码模块 --%>
     <div class="col-sm-6 col-sm-offset-3"><div class="panel panel-default">
         <div class="panel-heading">Input Password</div>
         <div class="panel-body">
             <form class="form-horizontal" action="Contest.jsp" method="get">
+                <%if(in==-2){%>
+                <div class="form-group">
+                    <label for="Username" class="col-sm-2 control-label">username</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Username" placeholder="Username" name="username">
+                    </div>
+                </div>
+                <%}%>
                 <div class="form-group">
                     <label for="Password" class="col-sm-2 control-label">Password</label>
                     <div class="col-sm-10">
@@ -93,10 +101,8 @@
                 </div>
             </form>
         </div>
-    </div>
-    </div>
+    </div></div>
 <%
-        }
       } else if(in == 1){
         bo=true;
       }
@@ -111,16 +117,20 @@
 
       <h2 style="text-align:center"><%=ContestMain.getContest(qcid).getName()%></h2>
         <%//进度条
-            Contest c = ContestMain.getContest(qcid);
-            long time= Tool.now().getTime()-c.getBeginDate().getTime();
-            long alltime=c.getEndTime().getTime() - c.getBeginDate().getTime();
+            long time= Tool.now().getTime()-contest.getBeginDate().getTime();
+            long alltime=contest.getEndTime().getTime() - contest.getBeginDate().getTime();
             if(time>=0&&time<=alltime){
                 out.print(HTML.progress(time, alltime, "contest_pro",""));
                 out.print(HTML.center(HTML.time_djs((alltime-time)/1000,"contest_djs")));
             }
         %>
         <div style="float:right"><%
-            Permission p=Main.getPermission(((User)user).getUsername());
+            Permission p;
+            if(user == null)
+                p = new Permission();
+            else {
+                p = Main.getPermission(((User) user).getUsername());
+            }
             if(p.getAddContest()){
                 out.print(HTML.a("admin.jsp?page=AddContest&cid="+cid,"Edit")+" ");
                 if(p.getAddContest()&&p.getAddProblem())

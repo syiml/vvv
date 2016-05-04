@@ -48,6 +48,7 @@ public class RankICPC extends Rank {
     List<user> list;
     List<String> fb;
     int cid;
+    Contest contest = null;
     int type_1,type_2,type_3;//0数量、1比率（百分比）（百分比按有提交的user数量计算？）
     int m1=1,m2=2,m3=3;
     private static String css="<style>" +
@@ -61,6 +62,7 @@ public class RankICPC extends Rank {
     public RankICPC(){}
     public RankICPC(Contest c){
         cid=c.getCid();
+        contest = c;
         list=new ArrayList<user>();
         fb=new ArrayList<String>();
         for(int i=0;i<c.getUserNum();i++){
@@ -110,7 +112,21 @@ public class RankICPC extends Rank {
                 if(us.username.equals(u)) break;
             }
         }
-        if(i==size)  list.add(new user(u, true,c.getProblemNum()));
+        if(i==size){
+            user _user = new user(u, true,c.getProblemNum());
+            User user = Main.users.getUser(_user.username);
+            if(user!=null){
+                _user.showUsername = (user.getUsernameHTML());
+            }else{
+                _user.showUsername = (_user.username);
+            }
+            if(user!=null) {
+                _user.showNick =(user.getNick());
+            }else{
+                _user.showNick =(HTML.textb("未注册","red"));
+            }
+            list.add(_user);
+        }
         us=list.get(i);
         us.add(s,time,penalty,c);
     }
@@ -122,7 +138,18 @@ public class RankICPC extends Rank {
         TableHTML table=new TableHTML();
         table.setClass("table table-bordered table-hover table-condensed");
         tableHeadHTML(table);
-        User loginUser=((User)Main.getSession().getAttribute("user"));
+        String loginUserName = null;
+        if(contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            Object trueLoginUser = Main.getSession().getAttribute(Contest.TRUE_USERNAME+cid);
+            if(trueLoginUser!=null){
+                loginUserName = (String)trueLoginUser;
+            }
+        }else {
+            User loginUser = Main.loginUser();
+            if(loginUser != null){
+                loginUserName = loginUser.getUsername();
+            }
+        }
         for(int i=0;i<size;i++){
             List<String> row=new ArrayList<String>();
             user us=list.get(i);
@@ -134,20 +161,11 @@ public class RankICPC extends Rank {
             }else{
                 row.add("*");
             }
-            if(loginUser!=null&&us.username.equals(loginUser.getUsername())){
+            if(loginUserName!=null&&us.username.equals(loginUserName)){
                 table.addCl(i+1,1,"info");
             }
-            User u=Main.users.getUser(us.username);
-            if(u!=null){
-                row.add(u.getUsernameHTML());
-            }else{
-                row.add(us.username);
-            }
-            if(u!=null) {
-                row.add(u.getNick());
-            }else{
-                row.add(HTML.textb("未注册","red"));
-            }
+            row.add(us.showUsername);
+            row.add(us.showNick);
             row.add(HTML.a("#S"+us.username,us.submitnum+""));
             row.add(us.penalty/1000/60+"");
             int pnum= ContestMain.getContest(cid).getProblemNum();
@@ -233,10 +251,16 @@ public class RankICPC extends Rank {
     }
     public void add(RegisterUser u,Contest c){
         //System.out.println("in->"+u.getUsername());
+        user _user = null;
         if(u.getStatu()==1){//1是正式，2是星号
-            list.add(new user(u.getUsername(),true,c.getProblemNum()));
+            _user = new user(u.getUsername(),true,c.getProblemNum());
         }else if(u.getStatu()==2){
-            list.add(new user(u.getUsername(),false,c.getProblemNum()));
+            _user = new user(u.getUsername(),false,c.getProblemNum());
+        }
+        if(_user != null) {
+            _user.showUsername = u.getShowUserName();
+            _user.showNick = u.getShowNick();
+            list.add(_user);
         }
     }
     private void tableHeadHTML(TableHTML table){

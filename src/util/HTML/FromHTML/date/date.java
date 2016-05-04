@@ -76,8 +76,9 @@ public class date extends form {
                 "</script>";
         return HTML.div("form-inline form-group","id="+id,s);
     }
-    public void setValue(String s){
+    public date setValue(String s){
         t.setValue(s);
+        return this;
     }
     public void setValue(Timestamp t){
         String s=t.toString();

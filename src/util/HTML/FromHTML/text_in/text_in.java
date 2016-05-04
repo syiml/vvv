@@ -16,8 +16,9 @@ public class text_in extends form {
     public String toHTML(int col1,int col2){
         return s;
     }
-    public void setValue(String s){
+    public text_in setValue(String s){
         this.s=s;
+        return this;
     }
     public void setDisabled(){
 

@@ -6,6 +6,7 @@ import util.Main;
 import entity.rank.Rank;
 import entity.rank.RankSQL;
 import util.HTML.HTML;
+import util.SQL;
 import util.Tool;
 
 import java.sql.ResultSet;
@@ -18,12 +19,14 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/5/22.
  */
-public class Contest {
+public class Contest implements IBeanResultSetCreate<Contest> {
     public static int TYPE_PUBLIC=0;
     public static int TYPE_PASSWORD=1;
     public static int TYPE_PRIVATE=2;
     public static int TYPE_REGISTER=3;
     public static int TYPE_REGISTER2=4;
+    public static int TYPE_TEAM_OFFICIAL = 5;//组队正式赛
+    public static String TRUE_USERNAME = "trueusername";
 
     private int cid;
     private String name;
@@ -34,7 +37,7 @@ public class Contest {
     //private statusSQL status;
     //private List<Integer> status;
     private int type;// 0public 1password 2private 3register 4register2(要审核)//修改时要改addcontest
-    public static int typenum=5;
+    public static int typenum=6;
     private String password;//if type is 1
     private List<RegisterUser> users;//if type is 2
     private Timestamp registerstarttime;//if type is 3 or 4
@@ -50,7 +53,35 @@ public class Contest {
 
 
     private String createuser;//创建人。创建人和超级管理员可以修改其配置
-    public Contest(ResultSet re,ResultSet ps,ResultSet rs,ResultSet us){
+    public Contest(ResultSet re){
+        //用ResultSet创建临时Contest变量
+        //id,name,beignTime,endTime,rankType,ctype
+        int rankType;
+        try {
+            cid=re.getInt(1);
+            name=re.getString(2);
+            begintime=re.getTimestamp(3);
+            endtime=re.getTimestamp(4);
+            rankType=re.getInt(5);
+            type=re.getInt(6);
+            kind=re.getInt("kind");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Contest init(ResultSet rs) throws SQLException {
+        cid=rs.getInt(1);
+        name=rs.getString(2);
+        begintime=rs.getTimestamp(3);
+        endtime=rs.getTimestamp(4);
+        rankType=rs.getInt(5);
+        type=rs.getInt(6);
+        kind=rs.getInt("kind");
+        return this;
+    }
+    public Contest(ResultSet re,ResultSet ps,ResultSet rs){
         //re:   id,name,beginTime,endTime,rankType,ctype,password,registerstarttime,registerendtime
         //ps:   pid,tpid
         //rs:   id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,code,codelen
@@ -76,7 +107,16 @@ public class Contest {
                 problems.add(ps.getInt(2));
             }
             //读取user列表
-            setUsers(us);
+            ResultSet ru;
+            SQL sql4;
+            if(getType() == Contest.TYPE_TEAM_OFFICIAL) {
+                sql4 = new SQL("select * from t_register_team where cid = ?",cid);
+                ru = sql4.query();
+            }else{
+                sql4 = new SQL("select * from contestuser where cid=?",cid);
+                ru=sql4.query();
+            }
+            setUsers(ru);
             //创建Rank
             rank=RankSQL.getRank(this,rs);
         } catch (SQLException e) {
@@ -86,28 +126,18 @@ public class Contest {
     }
     public void setUsers(ResultSet us) throws SQLException {
         users = new ArrayList<RegisterUser>();
-        while(us.next()){
-            users.add(new RegisterUser(us));
+        if(this.getType() == TYPE_TEAM_OFFICIAL){
+            while (us.next()) {
+                users.add(new RegisterTeam(us));
+            }
+        }else {
+            while (us.next()) {
+                users.add(new RegisterUser(us));
+            }
         }
     }
     public void reSetUsers(){
         ContestMain.deleteMapContest(cid);
-    }
-    public Contest(ResultSet re){
-        //用ResultSet创建临时Contest变量
-        //id,name,beignTime,endTime,rankType,ctype
-        int rankType;
-        try {
-            cid=re.getInt(1);
-            name=re.getString(2);
-            begintime=re.getTimestamp(3);
-            endtime=re.getTimestamp(4);
-            rankType=re.getInt(5);
-            type=re.getInt(6);
-            kind=re.getInt("kind");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
     public int getCid(){return cid;}
     public int getRankType(){return rankType;}
@@ -176,18 +206,20 @@ public class Contest {
         return rank.toHTML();
     }
     public String getTypeHTML(int type){
-        if(type==0){
+        if(type==Contest.TYPE_PUBLIC){
             return "<b style='color:green'>公开</b>";
-        }else if(type==1){
+        }else if(type==Contest.TYPE_PASSWORD){
             return "<b style='color:red'>密码</b>";
-        }else if(type==2){
+        }else if(type==Contest.TYPE_PRIVATE){
             return HTML.a("User.jsp?cid="+cid,"<b style='color:#AE57A4'>私有</b>");
-        }else if(type==3){
+        }else if(type==Contest.TYPE_REGISTER){
             return HTML.a("User.jsp?cid="+cid,"<b style='color:blue'>注册</b>");
-        }else if(type==4){
+        }else if(type==Contest.TYPE_REGISTER2){
             return HTML.a("User.jsp?cid="+cid,"<b style='color:orange'>正式</b>");
+        }else if(type==Contest.TYPE_TEAM_OFFICIAL){
+            return HTML.a("User.jsp?cid="+cid,HTML.textb("组队","#FF00FF"));
         }else{
-            return "";
+            return HTML.textb("错误","red");
         }
     }
     public static String getTypeText(int type){
@@ -201,6 +233,8 @@ public class Contest {
             return "register";
         }else if(type==4){
             return "official";
+        }else if(type==5){
+            return "team";
         }else{
             return "";
         }
@@ -216,7 +250,9 @@ public class Contest {
             return "style='color:blue'";
         }else if(type==4){
             return "style='color:orange'";
-        }else{
+        }else if(type==5) {
+            return "style='color:#FF00FF'";
+        }else {
             return "";
         }
     }
@@ -239,12 +275,30 @@ public class Contest {
             return HTML.a("match/?cid="+cid,"<b style='color:red'>可观战</b>");//RUNNING
         }
     }
-    public int canin(String user){//判断用户是否有权限进入比赛
+    public int canin(User user){//判断用户是否有权限进入比赛
+        if(type==Contest.TYPE_TEAM_OFFICIAL){
+            String username = (String)Main.getSession().getAttribute("contestusername"+cid);
+            String pass = (String)Main.getSession().getAttribute("contestpass"+cid);
+            Tool.log(username+" "+pass);
+            if (username!=null && pass!=null && team_canin(username,pass)){
+                return 1;
+            }else {
+                return -2;//password 需要密码
+            }
+        }
+        if(user == null) return 0;
         if(type==Contest.TYPE_PUBLIC) return 1;//public 可以进入
-        if(type==Contest.TYPE_PASSWORD) return -1;//password 需要密码
+        if(type==Contest.TYPE_PASSWORD){
+            String pass = (String)Main.getSession().getAttribute("contestpass"+cid);
+            if (pass!=null && pass.equals(getPassword())){
+                return 1;
+            }else {
+                return -1;//password 需要密码
+            }
+        }
         if(type==Contest.TYPE_PRIVATE||type==Contest.TYPE_REGISTER||type==Contest.TYPE_REGISTER2){//需要注册
             for (RegisterUser u : users) {
-                if (u.getUsername().equals(user)) {
+                if (u.getUsername().equals(user.getUsername())) {
                     int statu = u.getStatu();
                     if (statu == RegisterUser.STATUS_APPENDED || statu == RegisterUser.STATUS_UNOFFICIAL) {//是已经签到或者星号状态，可以进入
                         return 1;
@@ -280,5 +334,18 @@ public class Contest {
                     HTML.col(6,"<h3><div id='countdowner'>"+HTML.time_djs(time/1000,"djs")+"</div></h3>"));
         }
         return s;
+    }
+    public boolean team_canin(String username,String password){
+        if(getType()!=TYPE_TEAM_OFFICIAL) return false;
+        for(RegisterUser ru: users){
+            RegisterTeam rt = (RegisterTeam)ru;
+            if(rt.teamUserName==null) continue;
+            if(rt.teamUserName.equals(username) && rt.teamPassword.equals(password)){
+                Tool.log(rt.teamUserName + "," + rt.teamPassword);
+                Main.getSession().setAttribute(TRUE_USERNAME + getCid(), rt.getUsername());
+                return true;
+            }
+        }
+        return false;
     }
 }

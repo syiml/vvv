@@ -53,8 +53,8 @@ public class file extends form {
         s+= HTML.col(col2, ss);
         return s;
     }
-    public void setValue(String s){
-
+    public file setValue(String s){
+        return this;
     }
     public void setDisabled(){
         disabled=true;

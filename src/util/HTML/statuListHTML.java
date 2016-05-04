@@ -1,5 +1,6 @@
 package util.HTML;
 
+import entity.Contest;
 import servise.ContestMain;
 import util.Main;
 import entity.User;
@@ -30,6 +31,7 @@ public class statuListHTML extends pageBean {
     boolean all;
     List<statu> status;
     int PageNum;
+    Contest contest = null;
     public statuListHTML(String user,int cid,int num,int page,
                          int pid,int result,int Language,String ssuser,boolean all){
         this.user=user;
@@ -47,6 +49,12 @@ public class statuListHTML extends pageBean {
         this.PageNum=getPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all),num);
         setCl("table table-striped table-hover table-condensed");
         addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
+        if(cid>0){
+            contest = ContestMain.getContest(cid);
+            if(contest!=null&&contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+                this.user = (String)Main.getSession().getAttribute("trueusername"+cid);
+            }
+        }
     }
 
     @Override
@@ -75,8 +83,8 @@ public class statuListHTML extends pageBean {
         if(colname.equals("#")){
             return s.getRid()+"";
         }else if(colname.equals("用户")){
-            if(s.getUser().equals(user)){
-                addClass(i+1,-1,"info");
+            if (s.getUser().equals(user)) {
+                addClass(i + 1, -1, "info");
             }
             return userToHtml(s);
         }else if(colname.equals("题目")){

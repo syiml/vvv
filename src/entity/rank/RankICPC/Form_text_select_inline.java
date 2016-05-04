@@ -50,9 +50,10 @@ public class Form_text_select_inline extends form {
                 "$('#"+id+" .form-control').css('border-radius','4px');" +
                 "</script>";
     }
-    public void setValue(String s){
+    public Form_text_select_inline setValue(String s){
         t.setValue(s);
         this.s.setValue("0");
+        return  this;
     }
     public void setDisabled(){
         t.setDisabled();

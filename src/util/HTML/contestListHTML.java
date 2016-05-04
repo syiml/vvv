@@ -96,7 +96,11 @@ public class contestListHTML extends pageBean{
             return c.getCid()+"";
         }else if(colname.equals("名称")){
             String name=HTML.a("Contest.jsp?cid=" + c.getCid(), c.getName());
-            if(c.getType()==3||c.getType()==4) name+=HTML.floatRight("["+HTML.a("User.jsp?cid="+c.getCid(),"报名")+"]");
+            if(c.getType()==Contest.TYPE_REGISTER
+                    ||c.getType()==Contest.TYPE_REGISTER2
+                    ||c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+                name+=HTML.floatRight("["+HTML.a("User.jsp?cid="+c.getCid(),"报名")+"]");
+            }
             return name;
         }else if(colname.equals("开始时间")){
             return c.getBeginTimeString();
@@ -163,14 +167,15 @@ public class contestListHTML extends pageBean{
 
         text ki=new text("kind","kind");
         ki.setValue(kind+"");
-ki.setDisabled();
+        ki.setDisabled();
         f.addForm(ki);
         f.setSubmitText("筛选");
         return f.toHTML();
-        }
+    }
 
     public String HTML(){
-        if(list==null) list= ContestMain.getContests((page-1)*num,num,status,name,type,kind);
+        if(page<=0) page=1;
+        if(list==null) list = ContestMain.getContests((page-1)*num,num,status,name,type,kind);
         pageNum=getPageNum(ContestMain.getContestsNum(status,name,type,kind),num);
         addTableHead("#","名称","开始时间","结束时间","权限","状态");
         if(kind==-1) addTableHead("类型");

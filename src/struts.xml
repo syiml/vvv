@@ -155,6 +155,10 @@
                         <result name="success">return.jsp</result>
                 </action>
                 <action name="StatusJson" class="action.StatusJson" method="getJson"></action>
+                <action name="RegisterTeam" class="action.Action_RegisterTeam" method="RegisterTeam">
+                        <result name="error">RegisterTeam.jsp</result>
+                        <result name="success" type="redirect">User.jsp?cid=${cid}</result>
+                </action>
         </package>
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>

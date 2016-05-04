@@ -30,8 +30,8 @@ public class FormPart extends form {
         f.setCol(col1,col2);
         return toHTML();
     }
-    public void setValue(String s){
-
+    public FormPart setValue(String s){
+        return this;
     }
     public void setDisabled(){
         disabled=true;

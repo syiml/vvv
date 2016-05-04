@@ -1,11 +1,9 @@
 package dao;
 
 import action.RegisterContest;
+import entity.*;
 import servise.ContestMain;
 import util.Main;
-import entity.User;
-import entity.Contest;
-import entity.RegisterUser;
 import servise.MessageMain;
 import util.HTML.HTML;
 import util.SQL;
@@ -95,7 +93,14 @@ public class ContestSQL {
     }
     public RegisterUser getRegisterStatu(String username, int cid){
         //null 未注册
-        return new SQL("SELECT * FROM contestuser WHERE username=? AND cid=?",username,cid).setLog(false).queryBean(RegisterUser.class);
+        Contest c = ContestMain.getContest(cid);
+        if(c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+            return new SQL("SELECT * FROM t_register_team WHERE username=? AND cid=?",
+                    username,cid).setLog(false)
+                    .queryBean(RegisterTeam.class);
+        }else {
+            return new SQL("SELECT * FROM contestuser WHERE username=? AND cid=?", username, cid).setLog(false).queryBean(RegisterUser.class);
+        }
     }
     public String addUserContest(int cid,String username,int statu){
         new SQL("INSERT INTO contestuser VALUES(?,?,?,?,?)",cid,username,statu,"",Tool.now()).update();
@@ -103,18 +108,37 @@ public class ContestSQL {
         return "success";
     }
     public String setUserContest(int cid,String username,int statu,String info){
+        Contest c = ContestMain.getContest(cid);
         if(getRegisterStatu(username,cid)==null){
-            addUserContest(cid,username,statu);
+            if(c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+                RegisterTeam rt = new RegisterTeam();
+                rt.setUsername(username);
+                rt.teamName = username;
+                rt.setStatu(statu);
+                rt.setInfo(info==null?"":info);
+                rt.setTime(Tool.now());
+                addRegisterTeam(cid,rt);
+            }else {
+                addUserContest(cid, username, statu);
+            }
         }
         if(statu==-2){//-2 -> 删除
             ContestMain.getContest(cid).reSetUsers();
-            return delUserContest(cid,username);
+            if(c.getType() == Contest.TYPE_TEAM_OFFICIAL) {
+                return delTeamContest(cid,username);
+            }else {
+                return delUserContest(cid, username);
+            }
+        }
+        String table = "contestuser";
+        if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            table = "t_register_team";
         }
         if(statu!=3){
-            new SQL("UPDATE contestuser set statu=? WHERE cid=? AND username=?",statu,cid,username).update();
+            new SQL("UPDATE "+table+" set statu=? WHERE cid=? AND username=?",statu,cid,username).update();
             MessageMain.addMessageRegisterContest(username, cid, statu);
         }else{//3 -> 需修改
-            new SQL("UPDATE contestuser set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username).update();
+            new SQL("UPDATE "+table+" set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username).update();
             MessageMain.addMessageRegisterContest(username, cid, statu);
         }
         ContestMain.getContest(cid).reSetUsers();
@@ -122,7 +146,12 @@ public class ContestSQL {
     }
     public String delUserContest(int cid,String username){
         new SQL("DELETE FROM contestuser  WHERE cid=? AND username=?",cid,username).update();
-        PreparedStatement p= null;
+        ContestMain.getContest(cid).reSetUsers();
+        return "success";
+    }
+    public String delTeamContest(int cid,String username){
+        new SQL("DELETE FROM t_register_team  WHERE cid=? AND username=?",cid,username).update();
+        new SQL("DELETE FROM t_userinfo WHERE cid=? AND username=?",cid,username).update();
         ContestMain.getContest(cid).reSetUsers();
         return "success";
     }
@@ -140,17 +169,14 @@ public class ContestSQL {
         pros=sql2.query();
         SQL sql3=new SQL("select id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,codelen from statu where cid=?",cid);
         rs=sql3.query();
-        SQL sql4=new SQL("select * from contestuser where cid=?",cid);
-        ru=sql4.query();
         try {
-            Contest con = new Contest(c,pros,rs,ru);
+            Contest con = new Contest(c,pros,rs);
             cSQL.put(cid,con);
             return con;
         }finally {
             sql1.close();
             sql2.close();
             sql3.close();
-            sql4.close();
         }
     }
     public void deleteMapContest(int cid){
@@ -228,13 +254,13 @@ public class ContestSQL {
         return new SQL(sql).queryNum();
     }
     public List<Contest> getRecentlyContests(int num){
-        List<Contest> list=new ArrayList<Contest>();
-        String sql="";
-        sql+="select *";
-        sql+=" from contest where endTime>=now() and kind!=4";
-        sql+=" order by beginTime desc";
-        sql+=" limit 0,?";
-        SQL sql1=new SQL(sql,num);
+        //List<Contest> list=new ArrayList<Contest>();
+        String sql="SELECT *";
+        sql+=" FROM contest WHERE endTime>=NOW() and kind!=4";
+        sql+=" ORDER BY beginTime DESC";
+        sql+=" LIMIT 0,?";
+        return new SQL(sql,num).queryBeanList(Contest.class);
+        /*SQL sql1=new SQL(sql,num);
         ResultSet c=sql1.query();
         try {
             while(c.next()){
@@ -245,7 +271,7 @@ public class ContestSQL {
         }finally {
             sql1.close();
         }
-        return list;
+        return list;*/
     }
     public List<Integer> getAcRidFromCidPid(int cid,int pid){
         return new SQL("SELECT id FROM statu WHERE cid=? AND pid=? AND result=1", cid,pid).queryList();
@@ -288,5 +314,66 @@ public class ContestSQL {
             sql.close();
         }
         return "无";
+    }
+
+    public List<RegisterTeam> getRegisterTeamByCid(int cid){
+        List<RegisterTeam> list = new SQL("SELECT * FROM t_register_team WHERE cid = ? " +
+                "ORDER BY username",cid).queryBeanList(RegisterTeam.class);
+        List<TeamMember> list_member = new SQL("SELECT * FROM t_userinfo WHERE cid = ? " +
+                "ORDER BY username",cid).queryBeanList(TeamMember.class);
+        int i = 0;
+        for(TeamMember tm : list_member){
+            while(i<list.size() && !tm.username.equals(list.get(i).getUsername())){
+                i++;
+            }
+            if(i<list_member.size()) {
+                list.get(i).addMember(tm);
+            }
+        }
+        return list;
+    }
+    public RegisterTeam getRegisterTeam(int cid,String username){
+        RegisterTeam rt = new SQL("SELECT * FROM t_register_team WHERE cid = ? AND username = ?",
+                cid,username).queryBean(RegisterTeam.class);
+        if(rt==null) return null;
+        List<TeamMember> list_member = new SQL("SELECT * FROM t_userinfo WHERE cid = ? AND username = ? ORDER BY id"
+                ,cid,username).queryBeanList(TeamMember.class);
+        for(TeamMember tm:list_member){
+            rt.addMember(tm);
+        }
+        for(int i=0;i<3;i++){
+            if(rt.getMember(i)==null){
+                rt.addMember(new TeamMember());
+            }
+        }
+        return rt;
+    }
+    public void addRegisterTeam(int cid,RegisterTeam rt){
+        new SQL("INSERT INTO t_register_team VALUES(?,?,?,?,?,?,?,?)",
+                rt.getUsername(),
+                cid,
+                rt.teamUserName,
+                rt.teamPassword,
+                rt.teamName,
+                rt.getStatu(),
+                rt.getInfo(),
+                rt.getTime()).update();
+
+        for(int i=0;i<3;i++){
+            TeamMember tm = rt.getMember(i);
+            if(tm==null) continue;
+            new SQL("INSERT INTO t_userinfo VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                    rt.getUsername(),
+                    cid,
+                    i,
+                    tm.getName(),
+                    tm.getGender(),
+                    tm.getSchool(),
+                    tm.getFaculty(),
+                    tm.getMajor(),
+                    tm.getCla(),
+                    tm.getNo(),
+                    tm.getPhone()).update();
+        }
     }
 }

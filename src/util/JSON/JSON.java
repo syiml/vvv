@@ -68,11 +68,17 @@ public class JSON {
      */
     public static String getContestProblemList(int cid){
         User u=Main.loginUser();
-        if(u.getPermission().getAddContest()||ContestMain.getContest(cid).isBegin()){
+        if((u!=null&&u.getPermission().getAddContest())||ContestMain.getContest(cid).isBegin()){
             List<problemView> list=Main.problems.getProblems(cid);
             JSONArray ja=new JSONArray();
             for(problemView pv:list){
-                int result=Main.status.sbumitResult(cid,pv.getPid(),u.getUsername());
+                int result;
+                if(ContestMain.getContest(cid).getType() == Contest.TYPE_TEAM_OFFICIAL) {
+                    result = Main.status.sbumitResult(cid, pv.getPid(), (String)Main.getSession().getAttribute("trueusername"+cid));
+                }else{
+                    assert u != null;
+                    result = Main.status.sbumitResult(cid, pv.getPid(), u.getUsername());
+                }
                 JSONObject jo=new JSONObject();
                 jo.put("result",result);
                 jo.put("pid",pv.getPid());

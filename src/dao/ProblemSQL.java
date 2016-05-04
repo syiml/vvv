@@ -30,7 +30,7 @@ public class ProblemSQL {
     private Map<Integer, Problem> pSQL;//缓存problem
     private final int MAXSIZE=10;
     public ProblemSQL(){
-        pSQL=new HashMap<Integer, Problem>();
+        pSQL=new HashMap<>();
     }
     private void Insert(int pid,Problem p){
         if(pSQL.size()>=MAXSIZE){
@@ -101,6 +101,7 @@ public class ProblemSQL {
     public String setProblemVisiable(int pid){
         if(pid!=-1){
             new SQL("update problem set visiable=1-visiable where pid=?",pid).update();
+            remove(pid);
             return "success";
         }else return "error";
     }

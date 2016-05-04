@@ -2,6 +2,7 @@ package entity;
 
 
 import util.HTML.HTML;
+import util.Main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,12 +20,17 @@ public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
     public static int STATUS_MUST_EDIT=3;
     public static int STATUS_ACCEPTED=4;
 
-    public String getInof() {
+    public String getInfo() {
         return info;
     }
     public String getUsername() {
         return username;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public int getStatu() {
         return statu;
     }
@@ -32,7 +38,7 @@ public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
 
     private String username;
     private int statu;//注册状态 0:等待 1:已参加 -1:拒绝  2:* 3:需修改  4:通过
-    private String info;
+    private String info = "";
     private Timestamp time;
 
     public RegisterUser(){}
@@ -62,5 +68,33 @@ public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
         info=rs.getString("info");
         time=rs.getTimestamp("time");
         return this;
+    }
+    public String getShowUserName(){
+        User user = Main.users.getUser(username);
+        if(user!=null){
+           return (user.getUsernameHTML());
+        }else{
+           return (username);
+        }
+    }
+    public String getShowNick(){
+        User user = Main.users.getUser(username);
+        if(user!=null) {
+            return (user.getNick());
+        }else{
+           return (HTML.textb("未注册","red"));
+        }
+    }
+
+    public void setStatu(int statu) {
+        this.statu = statu;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 }

@@ -74,7 +74,7 @@ public class DBConnectionPool {
         while((ret=conns.poll())!=null){
             try {
                 ret.close();
-            } catch (SQLException ignored) {}
+            } catch (Exception ignored) { }
         }
         num=0;
     }

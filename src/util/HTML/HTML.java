@@ -1174,7 +1174,7 @@ public class HTML {
         form.addForm(f3);
 
         select f4=new select("type","类型");
-        //0public 1password 2private 3register 4register2
+        //0public 1password 2private 3register 4register2 5team
         for(int i=0;i<Contest.typenum;i++){
             f4.add(i, Contest.getTypeText(i),Contest.getTypeStyle(i));
         }
@@ -1512,7 +1512,7 @@ public class HTML {
         if(id==-1){
             int page=1;
             try{
-                page=Integer.parseInt(Main.getRequest().getParameter("page"));
+                page=Integer.parseInt(Main.getRequest().getParameter("pa"));
             }catch(NumberFormatException ignored){}
             return new LogHTML(20,page).HTML();
         }else{

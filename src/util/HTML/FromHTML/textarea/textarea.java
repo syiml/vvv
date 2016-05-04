@@ -89,8 +89,9 @@ public class textarea extends form {
         s+="</div></div>";
         return s;
     }
-    public void setValue(String s){
+    public textarea setValue(String s){
         value=s;
+        return this;
     }
     public void setDisabled(){
 

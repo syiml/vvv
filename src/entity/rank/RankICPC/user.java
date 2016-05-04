@@ -1,6 +1,7 @@
 package entity.rank.RankICPC;
 
 import entity.Contest;
+import entity.RegisterUser;
 import entity.Result;
 import entity.statu;
 
@@ -17,6 +18,9 @@ public class user implements Comparable<user>{
     Long penalty;//罚时 单位毫秒
     List<Long> submittime;//解出第i题的时间  单位毫秒
     List<Integer> errortime;//第i题错误的次数
+
+    public String showUsername;
+    public String showNick;
     public user(String user,boolean va,int pnum){
         valid=va;
         username=user;
@@ -29,6 +33,7 @@ public class user implements Comparable<user>{
             errortime.add(0);
         }
     }
+
     public void add(statu s,long time,int p,Contest c){
         int contestpid=c.getcpid(s.getPid());
         if(contestpid==-1) return ;

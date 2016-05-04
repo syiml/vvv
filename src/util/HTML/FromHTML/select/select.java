@@ -35,10 +35,11 @@ public class select extends form {
     public void setType(int p){
         type=p;
     }
-    public void add(int a,String b){
+    public select add(int a,String b){
         ops1.add(a);
         ops2.add(b);
         style.add("");
+        return this;
     }
     public void add(int a,String b,String style){
         ops1.add(a);
@@ -86,7 +87,7 @@ public class select extends form {
     public String toHTML(int col1,int col2){
         if(type==1) return toHTML();
         String s="";
-        s+="<div class='form-group'";
+        s+="<div class='form-group row'";
         if(disabled){
             s+=" style='display:none'";
         }
@@ -117,8 +118,9 @@ public class select extends form {
         s+=HTML.col(col2,ss);
         return s;
     }
-    public void setValue(String value){
+    public select setValue(String value){
         this.value=value;
+        return this;
     }
     public void setDisabled(){
         disabled=true;

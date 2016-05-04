@@ -3,6 +3,7 @@ package servise;
 import action.addcontest;
 import dao.ContestSQL;
 import entity.Contest;
+import entity.RegisterTeam;
 import entity.RegisterUser;
 import entity.User;
 import entity.rank.RankSQL;
@@ -63,8 +64,8 @@ public class ContestMain {
         //User u=(User)getSession().getAttribute("user");
         User u = Main.loginUser();
         if (Main.loginUserPermission().getAddContest()) return true;
-        if (u == null) return false;
-        int z = c.canin(u.getUsername());
+        //if (u == null) return false;
+        int z = c.canin(u);
         if (z == 1) return true;
         if (z == -1) {//need password
             Object pass = Main.getSession().getAttribute("contestpass" + cid);
@@ -109,8 +110,23 @@ public class ContestMain {
     public static List<Integer> getAcRidFromCidPid(int cid,int pid){
         return contests.getAcRidFromCidPid(cid, pid);
     }
+    public static List<RegisterTeam> getRegisterTeamByCid(int cid){
+        return contests.getRegisterTeamByCid(cid);
+    }
     public static RegisterUser getRegisterStatu(String username, int cid){
         return contests.getRegisterStatu(username, cid);
-
+    }
+    public static void addRegisterTeam(int cid,RegisterTeam rt){
+        User user = Main.loginUser();
+        if(!rt.getUsername().equals(user.getUsername())){
+            if(!user.getPermission().getContestRegisterAdmin()){
+                rt.setUsername(user.getUsername());
+            }
+        }
+        contests.delTeamContest(cid,rt.getUsername());
+        contests.addRegisterTeam(cid,rt);
+    }
+    public static RegisterTeam getRegisterTeam(int cid,String username){
+        return contests.getRegisterTeam(cid,username);
     }
 }

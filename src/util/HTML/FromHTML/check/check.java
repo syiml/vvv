@@ -25,8 +25,9 @@ public class check extends form {
     public String toHTML(int col1,int col2){
         return HTML.div("form-group row",HTML.col(col2,col1,toHTML()));
     }
-    public void setValue(String s){
+    public check setValue(String s){
         checked = s.equals("true");
+        return this;
     }
     public void setDisabled(){
 

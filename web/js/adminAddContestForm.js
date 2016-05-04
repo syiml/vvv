@@ -6,7 +6,7 @@ $("#registerstarttime").hide();
 $("#password").hide();
 $('#type').bind('change',function(){
     var select = $(this).children('option:selected').val();
-    if(select == "3"||select == "4"){
+    if(select == "3"||select == "4"||select == "5"){
         $("#registerendtime").show();
         $("#registerstarttime").show();
     }else{

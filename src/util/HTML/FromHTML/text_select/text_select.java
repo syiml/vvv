@@ -101,16 +101,17 @@ public class text_select extends form {
         s+= HTML.col(col2, ss)+toHTML2(col1,col2)+script();
         return s;
     }
-    public void setValue(String s){
+    public text_select setValue(String s){
         for(String ss:sel){
             if(ss.equals(s)){
                 value1=s;
                 value2=s;
-                return;
+                return this;
             }
         }
         value1="手动输入";
         value2=s;
+        return this;
     }
     public void setDisabled(){
         disabled=true;

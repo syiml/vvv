@@ -26,11 +26,13 @@ public class text extends form {
         value=null;
         validate=null;
     }
-    public void setPlaceholder(String p){
+    public text setPlaceholder(String p){
         placeholder=p;
+        return this;
     }
-    public void setId(String p){
+    public text setId(String p){
         id=p;
+        return this;
     }
     public void setAllid(String p){allid=p;}
     public void setType(int p){
@@ -108,8 +110,9 @@ public class text extends form {
         s+=HTML.col(col2,ss);
         return s;
     }
-    public void setValue(String value){
+    public text setValue(String value){
         this.value=value;
+        return this;
     }
     public void setDisabled(){
         disabled=true;

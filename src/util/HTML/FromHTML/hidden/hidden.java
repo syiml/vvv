@@ -18,8 +18,9 @@ public class hidden extends form {
     public String toHTML(int col1,int col2){
         return toHTML();
     }
-    public void setValue(String s){
+    public hidden setValue(String s){
         value=s;
+        return this;
     }
     public void setDisabled(){
 
