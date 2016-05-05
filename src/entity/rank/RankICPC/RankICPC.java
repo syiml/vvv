@@ -73,25 +73,12 @@ public class RankICPC extends Rank {
 //        }
         //System.out.println("ICPC rank create done");
     }
-    private String color(int r){
-        int size=list.size();
+    private String color(int r,int number1,int number2,int number3){
         if(list.get(r).submitnum==0) return "";
         r++;
-        if(type_1==0){
-            if(r<=m1) return "rank_1";
-        }else{
-            if(1.0*r/list.size()<=1.0*m1/100) return "rank_1";
-        }
-        if(type_2==0){
-            if(r<=m2) return "rank_2";
-        }else{
-            if(1.0*r/list.size()<=1.0*m2/100) return "rank_2";
-        }
-        if(type_3==0){
-            if(r<=m3) return "rank_3";
-        }else{
-            if(1.0*r/list.size()<=1.0*m3/100) return "rank_3";
-        }
+        if(r<=number1) return "rank_1";
+        if(r<=number2) return "rank_2";
+        if(r<=number3) return "rank_3";
         return "";
     }
     public void add(statu s,Contest c){
@@ -150,12 +137,35 @@ public class RankICPC extends Rank {
                 loginUserName = loginUser.getUsername();
             }
         }
+        int trueSize = 0;
+        for (user aList : list) {
+            if (aList.valid) {
+                trueSize++;
+            }
+        }
+        int number1=0,number2=0,number3=0;
+        if(type_1 == 0){
+            number1 = m1;
+        }else{
+            number1 = (int)(trueSize*1.0*m1/100);
+        }
+        if(type_2 == 0){
+            number2 = m1;
+        }else{
+            number2 = (int)(trueSize*1.0*m1/100);
+        }
+        if(type_3 == 0){
+            number3 = m1;
+        }else{
+            number3 = (int)(trueSize*1.0*m1/100);
+        }
+
         for(int i=0;i<size;i++){
             List<String> row=new ArrayList<String>();
             user us=list.get(i);
             if(us.valid){
                 row.add(Rank+"");
-                String cl=color(i);
+                String cl=color(i,number1,number2,number3);
                 if(!cl.equals(""))table.addCl(i+1,0,cl);
                 Rank++;
             }else{

@@ -35,7 +35,7 @@
       <div class="row">
         <div class="col-xs-4">
           <!-- 基础信息——队名 -->
-          <%=new text("teamName","队名*:").setId("teamName").setValue(rt.teamName).toHTML(2,10)%>
+          <%=new text("teamName","队名").setId("teamName").setValue(rt.teamName).toHTML(2,10)%>
           <%=new hidden("cid",cid+"").toHTML()%>
           <%=new hidden("username",username).toHTML()%>
         </div>
