@@ -74,8 +74,6 @@ public class RankICPC extends Rank {
         //System.out.println("ICPC rank create done");
     }
     private String color(int r,int number1,int number2,int number3){
-        if(list.get(r).submitnum==0) return "";
-        r++;
         if(r<=number1) return "rank_1";
         if(r<=number2) return "rank_2";
         if(r<=number3) return "rank_3";
@@ -150,14 +148,14 @@ public class RankICPC extends Rank {
             number1 = (int)(trueSize*1.0*m1/100);
         }
         if(type_2 == 0){
-            number2 = m1;
+            number2 = m2;
         }else{
-            number2 = (int)(trueSize*1.0*m1/100);
+            number2 = (int)(trueSize*1.0*m2/100);
         }
         if(type_3 == 0){
-            number3 = m1;
+            number3 = m3;
         }else{
-            number3 = (int)(trueSize*1.0*m1/100);
+            number3 = (int)(trueSize*1.0*m3/100);
         }
 
         for(int i=0;i<size;i++){
@@ -165,7 +163,8 @@ public class RankICPC extends Rank {
             user us=list.get(i);
             if(us.valid){
                 row.add(Rank+"");
-                String cl=color(i,number1,number2,number3);
+                String cl=color(Rank,number1,number2,number3);
+                if(us.submitnum==0) cl = "";
                 if(!cl.equals(""))table.addCl(i+1,0,cl);
                 Rank++;
             }else{
