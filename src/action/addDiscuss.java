@@ -2,6 +2,7 @@ package action;
 
 import entity.Discuss;
 import dao.DiscussSQL;
+import util.HTML.HTML;
 import util.Main;
 import util.Tool;
 
@@ -126,6 +127,7 @@ public class addDiscuss {
         showauthor="";
         showtime="";
         shownum="-1";
+        text = HTML.HTMLtoString(text);
         Discuss d=new Discuss(this);
         return d.goAddOrEdit();
     }
@@ -139,6 +141,7 @@ public class addDiscuss {
         showauthor="";
         showtime="";
         shownum="-1";
+        text = HTML.HTMLtoString(text);
         Discuss d=new Discuss(this);
         Tool.log(Main.loginUser().getUsername()+"追加了帖子【"+d.getTitle()+"】");
         DiscussSQL.append(d);

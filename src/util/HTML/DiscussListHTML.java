@@ -59,7 +59,9 @@ public class DiscussListHTML extends pageBean {
             m.setFormId("adddiscussForm");
             m.setBtnCls("link btn-xs");
 //            modal(String id,String title,String body,String btnlabel){
-            head+=HTML.floatRight(m.toHTML());
+
+            String script = "<script type=\"text/javascript\">$(\"#adddiscussForm\").validate({onfocusout: false,rules: {title:{required: true}}});</script>";
+            head+=HTML.floatRight(m.toHTML())+script;
         }
         return head;
     }

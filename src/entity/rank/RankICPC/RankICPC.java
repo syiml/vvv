@@ -1,14 +1,11 @@
 package entity.rank.RankICPC;
 
+import entity.*;
 import servise.ContestMain;
 import util.Main;
-import entity.User;
 import entity.rank.Rank;
-import entity.Contest;
-import entity.RegisterUser;
+import util.Tool;
 import util.rating._rank;
-import entity.Result;
-import entity.statu;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.text.text;
 import util.HTML.HTML;
@@ -267,8 +264,14 @@ public class RankICPC extends Rank {
             _user = new user(u.getUsername(),false,c.getProblemNum());
         }
         if(_user != null) {
-            _user.showUsername = u.getShowUserName();
-            _user.showNick = u.getShowNick();
+            if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+                //Tool.log("123321");
+                _user.showUsername = u.getShowUserName();
+                _user.showNick = u.getShowNick();
+            }else{
+                _user.showUsername = u.getShowUserName();
+                _user.showNick = u.getShowNick();
+            }
             list.add(_user);
         }
     }

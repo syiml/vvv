@@ -173,8 +173,8 @@ public class Main {
     }
 
 
-    public static boolean canViewCode(statu s,String user) {
-        return user != null && (user.equals(s.getUser()) || Main.users.haveViewCode(user, s.getPid()) || getPermission(user).getViewCode());
+    public static boolean canViewCode(statu s,User user) {
+        return user != null && (user.getUsername().equals(s.getUser()) || Main.users.haveViewCode(user.getUsername(), s.getPid()) || user.getPermission().getViewCode());
     }
     public static String getIP(){
         return getRequest().getRemoteAddr();

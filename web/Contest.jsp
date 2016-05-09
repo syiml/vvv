@@ -71,21 +71,21 @@
 %>
     <%-- 密码模块 --%>
     <div class="col-sm-6 col-sm-offset-3"><div class="panel panel-default">
-        <div class="panel-heading">Input Password</div>
+        <div class="panel-heading">输入密码</div>
         <div class="panel-body">
             <form class="form-horizontal" action="Contest.jsp" method="get">
                 <%if(in==-2){%>
                 <div class="form-group">
-                    <label for="Username" class="col-sm-2 control-label">username</label>
+                    <label for="Username" class="col-sm-2 control-label">用户名</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="Username" placeholder="Username" name="username">
+                        <input type="text" class="form-control" id="Username" placeholder="请使用主办方提供的账号密码登录" name="username">
                     </div>
                 </div>
                 <%}%>
                 <div class="form-group">
-                    <label for="Password" class="col-sm-2 control-label">Password</label>
+                    <label for="Password" class="col-sm-2 control-label">密码</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="Password" placeholder="Password" name="password">
+                        <input type="text" class="form-control" id="Password" placeholder="" name="password">
                     </div>
                 </div>
                 <div class="form-group hidden">
@@ -96,7 +96,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Login</button>
+                        <button type="submit" class="btn btn-default">进入比赛</button>
                     </div>
                 </div>
             </form>

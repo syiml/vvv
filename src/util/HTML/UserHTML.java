@@ -17,6 +17,7 @@ import java.util.Set;
 public class UserHTML {
     User showuser;//要显示的user信息
     User user;//正在查看该信息的user
+    Set<Integer> l1;
     public UserHTML(User showuser,User user){
         this.showuser=showuser;
         this.user=user;
@@ -56,7 +57,8 @@ public class UserHTML {
             }
         }
         r+="在所有人中排名第" + HTML.text(showuser.getRank()+"",8) + "。<br>";
-        int acnum=Main.status.getAcNum(showuser.getUsername());
+        //int acnum = Main.status.getAcNum(showuser.getUsername());
+        int acnum = showuser.getAcnum();
         if(acnum!=0){
             r+="已经在OJ上AC过"+HTML.text(acnum+"",8)+"道题目，";
             if(acnum<10) r+="";
@@ -117,7 +119,7 @@ public class UserHTML {
     }
     public String SolvedProblems(){
         String s="";
-        Set<Integer> l1= Main.status.getAcProblems(showuser.getUsername());
+        l1= Main.status.getAcProblems(showuser.getUsername());
         for(Integer i:l1){
             s+=HTML.a("Status.jsp?all=1&user="+showuser.getUsername()+"&pid="+i+"&result=1",i+"")+" ";
         }
@@ -133,7 +135,7 @@ public class UserHTML {
     }
     public String AcNotTag(){//AC了但是没有获得看代码权限的题目
         String s="";
-        Set<Integer> l1=Main.status.getAcProblems(showuser.getUsername());
+        //l1=Main.status.getAcProblems(showuser.getUsername());
         Set<Integer> l2=Main.users.canViewCode(showuser.getUsername());
         int k=0;
         for(Integer pid:l1){

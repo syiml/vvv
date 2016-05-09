@@ -20,7 +20,6 @@ public class RegisterTeam  extends  RegisterUser{
         super(rs);
         teamUserName = rs.getString("teamusername");
         teamPassword = rs.getString("teampassword");
-        Tool.log(teamUserName+"+"+teamPassword);
         teamName = rs.getString("teamname");
     }
 

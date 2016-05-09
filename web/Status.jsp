@@ -30,11 +30,6 @@
 //        return;
 //    }
   String pa=request.getParameter("page");
-  Object u=session.getAttribute("user");
-  String user=null;
-  if(u!=null){
-    user=((User)u).getUsername();
-  }
   int paInt=1;
   if(pa!=null) paInt=Integer.parseInt(pa);
 
@@ -55,7 +50,7 @@
 <body>
 <div class="container-fluid">
   <jsp:include page="module/head.jsp?page=status"/>
-  <%=HTML.StatusHTML(user,-1,paInt,pidInt,resultInt,langInt,ssuser,all!=null)%>
+  <%=HTML.StatusHTML(-1,paInt,pidInt,resultInt,langInt,ssuser,all!=null)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

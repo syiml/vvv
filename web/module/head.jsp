@@ -20,6 +20,7 @@
 <link href="css/loaders.css" rel="stylesheet">
 
 <script src="js/jquery-1.11.1.js"></script>
+<script src="js/jquery-ui.js"></script>
 <script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker-master/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>

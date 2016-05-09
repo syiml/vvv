@@ -23,7 +23,7 @@ public class User implements IBeanResultSetCreate{
     int submissions;
     String mark;
     int acnum;
-    Permission permission;
+    Permission permission = null;
     int rating;//if rating == -100000    is null
     int ratingnum=0;
     int rank;//rating 的rank
@@ -85,17 +85,13 @@ public class User implements IBeanResultSetCreate{
         this.inTeamLv=rs.getInt("inTeamLv");
         this.inTeamStatus=rs.getInt("inTeamStatus");
 
-        try{
-            this.acnum=rs.getInt("acnum");
-        }catch(SQLException e){
-            this.acnum=-1;
-        }
+        this.acnum=rs.getInt("acnum");
         try{
             this.rank=rs.getInt("rank");
         }catch(SQLException e){
             this.rank=-1;
         }
-        permission=Main.getPermission(username);
+        //permission=Main.getPermission(username);
         return this;
     }
     public int getShowRating(){
@@ -155,6 +151,9 @@ public class User implements IBeanResultSetCreate{
         return registertime;
     }
     public Permission getPermission(){
+        if(permission == null){
+            permission = Main.getPermission(getUsername());
+        }
         return permission;
     }
     public int getType() {

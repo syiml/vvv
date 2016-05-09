@@ -124,9 +124,19 @@ public class ContestMain {
             }
         }
         contests.delTeamContest(cid,rt.getUsername());
+        rt.setTime(Tool.now());
         contests.addRegisterTeam(cid,rt);
     }
     public static RegisterTeam getRegisterTeam(int cid,String username){
         return contests.getRegisterTeam(cid,username);
+    }
+    public static void updateRegisterTeamPassword(int cid,RegisterTeam rt){
+        contests.updatePassword(cid,rt.getUsername(),rt.teamUserName,rt.teamPassword);
+    }
+    public static void updateRegisterTeamPassword(int cid,String username,String teamUsername,String pass){
+        contests.updatePassword(cid,username,teamUsername,pass);
+    }
+    public static String getMaxTeamUsername(int cid){
+        return contests.getMaxTeamUsername(cid);
     }
 }

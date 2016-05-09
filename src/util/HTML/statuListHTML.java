@@ -17,10 +17,11 @@ import java.util.List;
  * Created by Administrator on 2015/6/8.
  */
 public class statuListHTML extends pageBean {
-    String user;
+    User user;
     int cid;
     int num;
     int page;
+    String teamUser;
 
     //筛选信息
     int pid;
@@ -32,9 +33,8 @@ public class statuListHTML extends pageBean {
     List<statu> status;
     int PageNum;
     Contest contest = null;
-    public statuListHTML(String user,int cid,int num,int page,
+    public statuListHTML(int cid,int num,int page,
                          int pid,int result,int Language,String ssuser,boolean all){
-        this.user=user;
         this.cid=cid;
         this.num=num;
         this.page=page;
@@ -45,16 +45,28 @@ public class statuListHTML extends pageBean {
         this.incontest=(cid>0);
         this.all=all;
         if(this.ssuser==null) this.ssuser="";
-        status= Main.status.getStatus(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser, all);
-        this.PageNum=getPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all),num);
-        setCl("table table-striped table-hover table-condensed");
-        addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
         if(cid>0){
             contest = ContestMain.getContest(cid);
             if(contest!=null&&contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
-                this.user = (String)Main.getSession().getAttribute("trueusername"+cid);
+                this.user = Main.users.getUser((String)Main.getSession().getAttribute("trueusername"+cid));
+                this.teamUser = (String)Main.getSession().getAttribute("contestusername"+cid);
+            }else{
+                this.user=Main.loginUser();
             }
+        }else {
+            this.user = Main.loginUser();
         }
+        if(contest!=null&&contest.getType()==Contest.TYPE_TEAM_OFFICIAL) {
+            status = Main.status.getTeamStatus(cid,this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
+            this.PageNum=getPageNum(Main.status.getTeamStatusNum(cid, this.pid, this.result, this.Language, this.ssuser),num);
+        }else{
+            status = Main.status.getStatus(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser, all);
+            this.PageNum=getPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all), num);
+        }
+
+        setCl("table table-striped table-hover table-condensed");
+        addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
+
     }
 
     @Override
@@ -83,8 +95,14 @@ public class statuListHTML extends pageBean {
         if(colname.equals("#")){
             return s.getRid()+"";
         }else if(colname.equals("用户")){
-            if (s.getUser().equals(user)) {
-                addClass(i + 1, -1, "info");
+            if(contest!=null && contest.getType()==Contest.TYPE_TEAM_OFFICIAL){
+                if(s.getUser().equals(teamUser)){
+                    addClass(i + 1, -1, "info");
+                }
+            }else {
+                if (user!=null && s.getUser().equals(user.getUsername())) {
+                    addClass(i + 1, -1, "info");
+                }
             }
             return userToHtml(s);
         }else if(colname.equals("题目")){
@@ -108,10 +126,28 @@ public class statuListHTML extends pageBean {
         }else if(colname.equals("语言")){
             return LanguageToHtml(s);
         }else if(colname.equals("耗时")){
+            if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+                if(s.getUser().equals(teamUser) || (user!=null&&user.getPermission().getViewCode())){
+                    return s.getTimeUsed()+"";
+                }
+                return "-";
+            }
             return s.getTimeUsed();
         }else if(colname.equals("使用内存")){
+            if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+                if(s.getUser().equals(teamUser) ||  (user!=null&&user.getPermission().getViewCode())){
+                    return s.getMemoryUsed()+"";
+                }
+                return "-";
+            }
             return s.getMemoryUsed();
         }else if(colname.equals("代码长")){
+            if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+                if(s.getUser().equals(teamUser) ||  (user!=null&&user.getPermission().getViewCode())){
+                    return s.getCodelen()+"";
+                }
+                return "-";
+            }
             return s.getCodelen()+"";
         }else if(colname.equals("提交时间")){
             return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(s.getSbmitTime());
@@ -217,24 +253,34 @@ public class statuListHTML extends pageBean {
     private String LanguageToHtml(statu s){
         int l=s.getLanguage();
         int rid=s.getRid();
-        if(Main.canViewCode(s,user)){
-            if(!incontest){
-                if(l==0)return HTML.a("ViewCode.jsp?rid="+rid,"C++");
-                if(l==1)return HTML.a("ViewCode.jsp?rid="+rid,"C");
-                if(l==2)return HTML.a("ViewCode.jsp?rid="+rid,"JAVA");
-                return HTML.a("ViewCode.jsp?rid="+rid,"UNKNOW");
-            }else{
+        if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            if(s.getUser().equals(teamUser)|| (user!=null&&user.getPermission().getViewCode())){
                 if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
                 if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
                 if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
                 return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
+            }else{
+                return "-";
             }
-        }else{
-            if(l==0)return "C++";
-            if(l==1)return "C";
-            if(l==2)return "JAVA";
-            return "UNKNOW";
+        }else {
+            if(Main.canViewCode(s, user)){
+                if(!incontest){
+                    if(l==0)return HTML.a("ViewCode.jsp?rid="+rid,"C++");
+                    if(l==1)return HTML.a("ViewCode.jsp?rid="+rid,"C");
+                    if(l==2)return HTML.a("ViewCode.jsp?rid="+rid,"JAVA");
+                    return HTML.a("ViewCode.jsp?rid="+rid,"UNKNOW");
+                }else{
+                    if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
+                    if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
+                    if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
+                    return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
+                }
+            }
         }
+        if(l==0)return "C++";
+        if(l==1)return "C";
+        if(l==2)return "JAVA";
+        return "UNKNOW";
     }
     private String pidToHtml(statu s,boolean in){
         if(!in){
@@ -245,8 +291,12 @@ public class statuListHTML extends pageBean {
         }
     }
     private String userToHtml(statu s){
-        User u=Main.users.getUser(s.getUser());
-        if(!incontest) return u.getUsernameHTML()+"("+u.getNick()+")";
-        else return HTML.a("#R"+s.getUser(),u.getUsernameHTMLNoA())+"("+u.getNick()+")";
+        if(contest==null||contest.getType()!=Contest.TYPE_TEAM_OFFICIAL){
+            User u=Main.users.getUser(s.getUser());
+            if(!incontest) return u.getUsernameHTML()+"("+u.getNick()+")";
+            else return HTML.a("#R"+s.getUser(),u.getUsernameHTMLNoA())+"("+u.getNick()+")";
+        }else{
+            return HTML.a("#R"+s.getUser(),s.getUser());
+        }
     }
 }

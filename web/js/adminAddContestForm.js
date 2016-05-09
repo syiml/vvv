@@ -21,7 +21,7 @@ $('#type').bind('change',function(){
 });
 var c=function(){
     var select = $('#type').children('option:selected').val();
-    if(select == "3"||select == "4"){
+    if(select == "3"||select == "4"||select == "5"){
         $("#registerendtime").show();
         $("#registerstarttime").show();
     }else{

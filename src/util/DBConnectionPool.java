@@ -24,7 +24,7 @@ public class DBConnectionPool {
      * @return 连接
      */
     private Connection getNew(){
-        Tool.debug(conns.size()+" 新建连接");
+        //Tool.debug(conns.size()+" 新建连接");
         num++;
         try {
             return DriverManager.getConnection(Main.GV.get("sqlconnstring").toString(), Main.GV.get("sqlusername").toString(), Main.GV.get("sqlpassword").toString());
@@ -44,7 +44,7 @@ public class DBConnectionPool {
         if(ret==null){
             ret=getNew();//队列为空则直接新建一个连接
         }else{
-            Tool.debug("取出连接 "+conns.size());
+            //Tool.debug("取出连接 "+conns.size());
         }
         return ret;
     }
@@ -57,11 +57,11 @@ public class DBConnectionPool {
         if(!conns.offer(c)){
             try {
                 c.close();
-                Tool.debug(conns.size()+"删除连接");
+                //Tool.debug(conns.size()+"删除连接");
                 num--;
             } catch (SQLException ignored) {}
         }else{
-            Tool.debug("存入连接"+conns.size()+"/"+num);
+            //Tool.debug("存入连接"+conns.size()+"/"+num);
         }
     }
 

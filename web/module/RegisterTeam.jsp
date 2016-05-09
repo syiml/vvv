@@ -293,8 +293,8 @@
       messages: {
         teamName: {
           required: "队名不能为空",
-          minlength: "队名长度为2~15个字符",
-          maxlength: "队名长度为2~15个字符",
+          minlength: "队名长度为2~20个字符",
+          maxlength: "队名长度为2~20个字符",
           remote:"用户名已经存在"
         },
         name1:{

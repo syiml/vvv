@@ -109,9 +109,11 @@ public class UserSQL {
     }
     private User getUser(String username,boolean rank){
         SQL sql;
-        if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus from v_user where username=? ",username);
-        else sql=new SQL("SELECT username,nick,gender,school,Email,motto,registertime,type,Mark,rating,-1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus from users where username=?",username);
-        return sql.queryBean(User.class);
+        if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from v_user where username=? ",username);
+        else sql=new SQL("SELECT username,nick,gender,school,Email,motto,registertime,type,Mark,rating,-1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from users where username=?",username);
+        User ret = sql.queryBean(User.class);
+        if(ret!=null)ret.setPermission(Main.getPermission(username));
+        return ret;
     }
     public List<User> getUsers(int from,int num,String serach,String order,boolean desc){
         if(order==null||order.equals("")){
@@ -134,7 +136,7 @@ public class UserSQL {
         return new SQL("select count(*) from users where (username like ? or nick like ?)","%"+search+"%","%"+search+"%").queryNum();
     }
     public List<User> getRichTop10(){
-        return new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus from v_user order by acb desc,rating desc " +
+        return new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from v_user order by acb desc,rating desc " +
                 "LIMIT 0,10").queryBeanList(User.class);
     }
     public List<List<String>> getUsers(int cid,int from,int num,String serach,boolean is3){

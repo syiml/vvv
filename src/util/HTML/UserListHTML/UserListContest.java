@@ -2,6 +2,7 @@ package util.HTML.UserListHTML;
 
 import entity.*;
 import servise.ContestMain;
+import util.HTML.modal.modal;
 import util.Main;
 import dao.UserSQL;
 import util.HTML.FromHTML.FormHTML;
@@ -146,7 +147,7 @@ public class UserListContest extends pageBean {
             }else if(colname.equals("时间")){
                 return rt.getTime().toString().substring(0, 19);
             }else if(colname.equals("账号")){
-                return rt.teamUserName==null?"":rt.teamUserName;
+                return rt.teamUserName==null?HTML.a("computeOneUseranemPassword.action?cid="+c.getCid()+"&username="+rt.getUsername(),"单独生成"):rt.teamUserName;
             }else if(colname.equals("密码")){
                 return rt.teamPassword==null?"":rt.teamPassword;
             }else if(colname.equals("admin")) {
@@ -234,6 +235,7 @@ public class UserListContest extends pageBean {
             s1.add(-1,"拒绝");
             s1.add(2,"非正式");
             s1.add(1,"已签到");
+            s1.add(5,"管理员");
             s1.setValue("0");
             s1.setId("statu");
             s1.setType(1);
@@ -285,7 +287,17 @@ public class UserListContest extends pageBean {
         }
         String count="总报名人数："+RegisterUserNum+"】【"+
                 "审核通过人数："+ (UserSQL.getUsersNum(c.getCid(), RegisterUser.STATUS_ACCEPTED)+UserSQL.getUsersNum(c.getCid(), RegisterUser.STATUS_APPENDED));
-        return HTML.div("panel-body","style='padding:5px'",HTML.floatLeft("【"+ss+"】【"+count+"】【"+r+"】"))+
+        String randomPass ="";
+        if(c.getType()==Contest.TYPE_TEAM_OFFICIAL&&admin){
+            modal mo=new modal("randomPass","随机生成账号密码",
+                    new hidden("cid",c.getCid()+"").toHTML()+
+                    new text("prefix","前缀").setValue("team").toHTML(2,10),"随机生成密码");
+            mo.setFormId("randomPassForm");
+            mo.setAction("computeUsernamePassword.action");
+            randomPass+="【"+mo.toHTMLA()+"】";
+            //randomPass+="【"+HTML.a("computeUsernamePassword.action?cid="+c.getCid()+"&prefix=team","随机生成密码")+"】";
+        }
+        return HTML.div("panel-body","style='padding:5px'",HTML.floatLeft("【"+ss+"】【"+count+"】【"+r+"】"+randomPass))+
                HTML.div("panel-body","style='padding:5px'",HTML.floatLeft(page())+HTML.floatRight(rightForm()));
     }
 }

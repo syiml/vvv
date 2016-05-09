@@ -79,9 +79,9 @@ public class ContestSQL {
                 , Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
                 ,Integer.parseInt(a.getRank())
                 ,type
-                ,type==1?a.getPass():""
-                ,type==3||type==4? Tool.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()):Tool.now()
-                ,type==3||type==4? Tool.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m()): Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
+                ,a.getPass()
+                ,Tool.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m())
+                ,Tool.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m())
                 ,a.getInfo()
                 ,a.getComputerating()!=null
                 ,Integer.parseInt(a.getKind())
@@ -150,6 +150,7 @@ public class ContestSQL {
         return "success";
     }
     public String delTeamContest(int cid,String username){
+        Tool.log("delTeamContest");
         new SQL("DELETE FROM t_register_team  WHERE cid=? AND username=?",cid,username).update();
         new SQL("DELETE FROM t_userinfo WHERE cid=? AND username=?",cid,username).update();
         ContestMain.getContest(cid).reSetUsers();
@@ -318,16 +319,14 @@ public class ContestSQL {
 
     public List<RegisterTeam> getRegisterTeamByCid(int cid){
         List<RegisterTeam> list = new SQL("SELECT * FROM t_register_team WHERE cid = ? " +
-                "ORDER BY username",cid).queryBeanList(RegisterTeam.class);
-        List<TeamMember> list_member = new SQL("SELECT * FROM t_userinfo WHERE cid = ? " +
-                "ORDER BY username",cid).queryBeanList(TeamMember.class);
+                "ORDER BY time DESC",cid).queryBeanList(RegisterTeam.class);
+        List<TeamMember> list_member = new SQL("SELECT * FROM t_userinfo WHERE cid = ? ",cid).queryBeanList(TeamMember.class);
         int i = 0;
         for(TeamMember tm : list_member){
-            while(i<list.size() && !tm.username.equals(list.get(i).getUsername())){
-                i++;
-            }
-            if(i<list_member.size()) {
-                list.get(i).addMember(tm);
+            for(RegisterTeam rt:list){
+                if(tm.username.equals(rt.getUsername())){
+                    rt.addMember(tm);
+                }
             }
         }
         return list;
@@ -375,5 +374,12 @@ public class ContestSQL {
                     tm.getNo(),
                     tm.getPhone()).update();
         }
+    }
+    public void updatePassword(int cid,String username,String teamusername,String pass){
+        new SQL("UPDATE t_register_team SET teamusername=?,teampassword=? WHERE cid=? AND username=?",
+                teamusername,pass,cid,username).update();
+    }
+    public String getMaxTeamUsername(int cid){
+        return new SQL("SELECT MAX(teamusername) FROM t_register_team WHERE cid=?",cid).queryString();
     }
 }

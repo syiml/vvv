@@ -350,7 +350,7 @@ public class HTML {
         //s+="["+HTML.a("javascript:copycode()","复制")+"]";
         return "";
     }
-    public static String viewCode(String rid,Object user,boolean havepanel){
+    public static String viewCode(String rid,boolean havepanel){
         statu s;
         int ridInt;
         try{
@@ -360,9 +360,10 @@ public class HTML {
         }
         s=Main.status.getStatu(ridInt);
         User u=Main.users.getUser(s.getUser());
+        User user = Main.loginUser();
         if(user==null) return havepanel?panel("Error","请先登录",null,"danger"):"请先登录";
-        Permission p=((User)user).getPermission();
-        if(Main.canViewCode(s, ((User) user).getUsername())){
+        Permission p=user.getPermission();
+        if(Main.canViewCode(s, user)){
             String code=Main.getCode(ridInt);
             if(p.getReJudge()){
                 return havepanel?
@@ -563,12 +564,12 @@ public class HTML {
         }
         //return ProblemTagHTML.problemTag(pid,page);
     }
-    public static String StatusHTML(String user,int cid,int page,
+    public static String StatusHTML(int cid,int page,
                             int pid,int Language,int result,String ssuser,boolean all){
 //        if(Main.loginUser()==null){
 //            return "会话超时，请重新登录";
 //        }
-        statuListHTML s=new statuListHTML(user,cid,Main.statuShowNum,page,
+        statuListHTML s=new statuListHTML(cid,Main.statuShowNum,page,
                                             pid,Language,result,ssuser,all);
         return s.HTML();
     }

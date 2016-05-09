@@ -16,7 +16,6 @@
 //    return;
 //  }
   String rid = request.getParameter("rid");
-  Object user=session.getAttribute("user");
 %>
 <link href="js/prism/css.css" rel="stylesheet" />
 <script src="js/prism/js.js"></script>
@@ -27,7 +26,7 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp"/>
-      <%=HTML.viewCode(rid,user,true)%>
+      <%=HTML.viewCode(rid,true)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

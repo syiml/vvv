@@ -22,6 +22,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
     protected HttpSession session;
     protected PrintWriter out;
 
+    public String prompt;
 
     @Override
     public void setServletRequest(HttpServletRequest httpServletRequest) {
@@ -45,5 +46,13 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 
     public boolean isPost() {
         return "POST".equals(this.request.getMethod());
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
     }
 }

@@ -159,6 +159,12 @@
                         <result name="error">RegisterTeam.jsp</result>
                         <result name="success" type="redirect">User.jsp?cid=${cid}</result>
                 </action>
+                <action name="computeUsernamePassword" class="action.RegisterContest" method="computeUsernamePassword">
+                        <result name="success" type="redirect">User.jsp?cid=${cid}</result>
+                </action>
+                <action name="computeOneUseranemPassword" class="action.RegisterContest" method="computeOneUseranemPassword">
+                        <result name="success" type="redirect">User.jsp?cid=${cid}</result>
+                </action>
         </package>
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>

@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class statu {
+public class statu implements IBeanResultSetCreate<statu>{
     public int getPid() { return pid; }
     public int getRid() { return rid; }
     public int getLanguage() { return language; }
@@ -57,6 +57,21 @@ public class statu {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public statu(){}
+    @Override
+    public statu init(ResultSet rs) throws SQLException {
+        rid = rs.getInt("id");
+        user = rs.getString("ruser");
+        pid = rs.getInt("pid");
+        cid = rs.getInt("cid");
+        language = rs.getInt("lang");
+        SubmitTime = rs.getTimestamp("submittime");
+        result = intToResult(rs.getInt("result"));
+        TimeUsed = rs.getString("timeused");
+        MemoryUsed = rs.getString("memoryUsed");
+        codelen = rs.getInt("codelen");
+        return this;
     }
     public int getCodelen(){return codelen;}
     public void setStatusResult(Result res,String time,String Memory){
@@ -138,4 +153,5 @@ public class statu {
     public static int resultToInt(Result rr){
         return rr.getValue();
     }
+
 }

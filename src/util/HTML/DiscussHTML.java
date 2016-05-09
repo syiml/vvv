@@ -286,7 +286,8 @@ public class DiscussHTML {
         textarea f11 = new textarea("text","text");
 //        if(d!=null) f11.setValue(HTML.HTMLtoString(d.text));
 //        else
-        f11.setUEditor(true);
+        if(cid==-1) f11.setUEditor(true);
+        else f11.setUEditor(false);
         f11.setId("addDiscuss");
         f11.setValue("");
         f11.setPlaceholder("这里输入正文");
@@ -314,7 +315,9 @@ public class DiscussHTML {
             m.setAction("discussappend.action");
             m.setBtnCls("link btn-xs");
 //            modal(String id,String title,String body,String btnlabel){
-            s+=m.toHTML();
+
+            String script = "<script type=\"text/javascript\">$(\"#adddiscussForm\").validate({onfocusout: false,rules: {title:{required: true}}});</script>";
+            s+=m.toHTML() + script;
         }
         if(p.getAddDiscuss()) s+=HTML.a("admin.jsp?page=AddDiscuss&id="+ d.getId()," <span class='badge'>Edit</span>");
 

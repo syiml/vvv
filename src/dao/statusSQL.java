@@ -122,6 +122,53 @@ public class statusSQL {
         if(!all) return new SQL(sql,cid).queryNum();
         else return new SQL(sql).queryNum();
     }
+    public List<statu> getTeamStatus(int cid,int from,int num,
+                                     int pid,int result,int Language,String ssuser){
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT id,")
+                .append("teamusername as ruser,")
+                .append("pid,statu.cid as cid,lang,submitTime,result,timeUsed,memoryUsed,codelen")
+                .append(" FROM statu RIGHT JOIN t_register_team")
+                .append(" ON statu.cid=t_register_team.cid AND ruser=username")
+                .append(" WHERE statu.cid=?");
+        if(pid!=-1){
+            sql.append(" AND pid=").append(pid);
+        }
+        if(result!=-1){
+            sql.append(" AND result=").append(result);
+        }
+        if(Language!=-1){
+            sql.append(" AND language=").append(Language);
+        }
+        if(ssuser!=null&&!ssuser.equals("")){
+            sql.append(" AND ruser='").append(ssuser).append("'");
+        }
+        sql.append(" ORDER BY id DESC")
+                .append(" LIMIT ?,?");
+        return new SQL(sql.toString(),cid,from,num).queryBeanList(statu.class);
+    }
+    public int getTeamStatusNum(int cid,int pid,int result,int Language,String ssuser){
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT COUNT(*)")
+                .append(" FROM statu RIGHT JOIN t_register_team")
+                .append(" ON statu.cid=t_register_team.cid AND ruser=username")
+                .append(" WHERE statu.cid=?");
+        if(pid!=-1){
+            sql.append(" AND pid=").append(pid);
+        }
+        if(result!=-1){
+            sql.append(" AND result=").append(result);
+        }
+        if(Language!=-1){
+            sql.append(" AND language=").append(Language);
+        }
+        if(ssuser!=null&&!ssuser.equals("")){
+            sql.append(" AND ruser='").append(ssuser).append("'");
+        }
+        sql.append(" ORDER BY id DESC");
+        return new SQL(sql.toString(),cid).queryNum();
+    }
+
     public synchronized statu setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
         new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?",statu.resultToInt(res),time,Meory,rid).update();
         Tool.log(rid+"->"+res);
@@ -157,10 +204,6 @@ public class statusSQL {
     }
     public Set<Integer> getNotAcProblems(String user){//获取user提交过但没有AC的题目列表（不包括contest内的）
         return getProblems(user,0);
-    }
-    public int getAcNum(String user){
-        if(user==null) return 0;
-        return new SQL("SELECT Count(pid) FROM usersolve_view WHERE solved=1 AND username=?",user).queryNum();
     }
     public int getSubmitTime(String username){//获取user的提交次数
         return new SQL("SELECT COUNT(id) FROM statu WHERE ruser=?",username).queryNum();

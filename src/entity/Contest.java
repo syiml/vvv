@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,6 +71,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
         }
     }
 
+    public Contest(){}
     @Override
     public Contest init(ResultSet rs) throws SQLException {
         cid=rs.getInt(1);
@@ -279,10 +281,21 @@ public class Contest implements IBeanResultSetCreate<Contest> {
         if(type==Contest.TYPE_TEAM_OFFICIAL){
             String username = (String)Main.getSession().getAttribute("contestusername"+cid);
             String pass = (String)Main.getSession().getAttribute("contestpass"+cid);
-            Tool.log(username+" "+pass);
+            //Tool.log(username+" "+pass);
             if (username!=null && pass!=null && team_canin(username,pass)){
                 return 1;
             }else {
+                //判断管理员
+                User loginUser = Main.loginUser();
+                if(loginUser!=null){
+                    for(RegisterUser u:users){
+                        if(u.getStatu() == RegisterUser.STATUS_ADMIN
+                                && u.getUsername().equals(loginUser.getUsername())){
+                            Main.getSession().setAttribute(TRUE_USERNAME + getCid(), loginUser.getUsername());
+                            return 1;
+                        }
+                    }
+                }
                 return -2;//password 需要密码
             }
         }
@@ -307,6 +320,9 @@ public class Contest implements IBeanResultSetCreate<Contest> {
                         if(isBegin()&&!isEnd()){//是第一次进入，改成已经签到
                             ContestMain.setUserContest(cid,u.getUsername(),RegisterUser.STATUS_APPENDED,"");
                         }
+                        return 1;
+                    }
+                    if(statu == RegisterUser.STATUS_ADMIN){
                         return 1;
                     }
                 }
@@ -340,12 +356,76 @@ public class Contest implements IBeanResultSetCreate<Contest> {
         for(RegisterUser ru: users){
             RegisterTeam rt = (RegisterTeam)ru;
             if(rt.teamUserName==null) continue;
-            if(rt.teamUserName.equals(username) && rt.teamPassword.equals(password)){
-                Tool.log(rt.teamUserName + "," + rt.teamPassword);
-                Main.getSession().setAttribute(TRUE_USERNAME + getCid(), rt.getUsername());
-                return true;
+            if(rt.teamUserName.equals(username)){
+                if(rt.teamPassword.equals(password)){
+                    Main.getSession().setAttribute(TRUE_USERNAME + getCid(), rt.getUsername());
+                    int statu = ru.getStatu();
+                    if (statu == RegisterUser.STATUS_APPENDED || statu == RegisterUser.STATUS_UNOFFICIAL) {//是已经签到或者星号状态，可以进入
+                        return true;
+                    }
+                    if (statu == RegisterUser.STATUS_ACCEPTED){
+                        if(isBegin()&&!isEnd()){//是第一次进入，改成已经签到
+                            ContestMain.setUserContest(cid,ru.getUsername(),RegisterUser.STATUS_APPENDED,"");
+                        }
+                        return true;
+                    }
+                    return false;
+                }else{
+                    return false;
+                }
             }
         }
         return false;
+    }
+    public static String randomPassword(int len){
+        String rad = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        String ret="";
+        for(int i=0;i<len;i++){
+            ret+=rad.charAt((int)(Math.random()*rad.length()));
+        }
+        return ret;
+    }
+    public void computeUsernamePassword(String prefix){
+        List<RegisterTeam> list = new ArrayList<>();
+        for(RegisterUser ru:users){
+            /*if(ru.getStatu() == RegisterUser.STATUS_ACCEPTED
+                    ||ru.getStatu() == RegisterUser.STATUS_UNOFFICIAL){
+            }*/
+            list.add((RegisterTeam)ru);
+        }
+        Collections.shuffle(list);
+        int number=1;
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).getStatu() == RegisterUser.STATUS_ACCEPTED
+                    ||list.get(i).getStatu() == RegisterUser.STATUS_UNOFFICIAL
+                    ||list.get(i).getStatu() == RegisterUser.STATUS_APPENDED) {
+                list.get(i).teamUserName = String.format("%s%03d", prefix, number);
+                list.get(i).teamPassword = randomPassword(6);
+                number++;
+            }else{
+                list.get(i).teamUserName = null;
+                list.get(i).teamPassword = null;
+            }
+            ContestMain.updateRegisterTeamPassword(cid, list.get(i));
+        }
+    }
+    public void computeOneUsernamePassword(String username){
+        String prefix = null;
+        for(RegisterUser ru:users){
+            RegisterTeam rt=((RegisterTeam)ru);
+            if(rt.teamUserName!=null&&!rt.teamUserName.equals("")){
+                prefix =  rt.teamUserName.substring(0,rt.teamUserName.length()-3);
+                break;
+            }
+        }
+        int number;
+        if(prefix==null){
+            number = 1;
+            prefix = "team";
+        }else {
+            String maxusername = ContestMain.getMaxTeamUsername(cid);
+            number = Integer.parseInt(maxusername.substring(maxusername.length()-3))+1;
+        }
+        ContestMain.updateRegisterTeamPassword(cid,username,String.format("%s%03d", prefix, number),randomPassword(6));
     }
 }

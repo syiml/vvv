@@ -19,6 +19,7 @@ public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
     public static int STATUS_UNOFFICIAL=2;
     public static int STATUS_MUST_EDIT=3;
     public static int STATUS_ACCEPTED=4;
+    public static int STATUS_ADMIN = 5; //管理员
 
     public String getInfo() {
         return info;
@@ -57,6 +58,7 @@ public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
             case 2: return HTML.textb("＊","blue");
             case 3: return HTML.textb("需修改","#ff00ff");
             case 4: return HTML.textb("通过","green");
+            case 5: return HTML.textb("管理员","#00aaaa");
         }
         return HTML.textb("ERROR","orange");
     }

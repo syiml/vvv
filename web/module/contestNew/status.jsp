@@ -13,11 +13,7 @@
 <%
   String cid=request.getParameter("cid");
   String pa=request.getParameter("page");
-  Object u=session.getAttribute("user");
-  String user=null;
-  if(u!=null){
-    user=((User)u).getUsername();
-  }
+
   int paInt=1,cidInt=-1;
   if(pa!=null) paInt=Integer.parseInt(pa);
   if(cid!=null) cidInt=Integer.parseInt(cid);
@@ -33,6 +29,6 @@
   if(cid!=null)
   {
     long t= Tool.now().getTime();
-    out.println(HTML.StatusHTML(user, cidInt, paInt, pidInt, resultInt, langInt, ssuser,false));
+    out.println(HTML.StatusHTML(cidInt, paInt, pidInt, resultInt, langInt, ssuser,false));
   }
 %>

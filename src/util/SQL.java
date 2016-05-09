@@ -2,10 +2,7 @@ package util;
 
 import entity.IBeanResultSetCreate;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -28,13 +25,20 @@ public class SQL {
         this.log=log;
         return this;
     }
+    private ResultSet doQuery() throws SQLException {
+        Timestamp t = Tool.now();
+        ResultSet rs = p.executeQuery();
+        String sql =p.toString();
+        Tool.debug((Tool.now().getTime() - t.getTime()) +" "+ sql.substring(sql.indexOf(':')+1));
+        return rs;
+    }
     public ResultSet query(){
         try {
             p = conn.prepareStatement(sql);
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
-            return rs=p.executeQuery();
+            return rs=doQuery();
         } catch (SQLException e) {
             if(log)Tool.log(e);
         }
@@ -49,7 +53,7 @@ public class SQL {
             }
             p.setObject(i+1,from);
             p.setObject(i+2,num);
-            return p.executeQuery();
+            return doQuery();
         } catch (SQLException e) {
             if(log)Tool.log(e);
         }
@@ -74,7 +78,7 @@ public class SQL {
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
-            rs=p.executeQuery();
+            rs=doQuery();
             while(rs.next()){
                 Object key=getObject(1);
                 Object value=getObject(2);
@@ -95,7 +99,7 @@ public class SQL {
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
-            rs=p.executeQuery();
+            rs=doQuery();
             while(rs.next()){
                 Object key=getObject(1);
                 Object value=getObject(2);
@@ -115,7 +119,7 @@ public class SQL {
             for(i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
-            rs=p.executeQuery();
+            rs=doQuery();
             while(rs.next()){
                 c.add((T)getObject(1));
             }
@@ -219,6 +223,7 @@ public class SQL {
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
+            Tool.debug(p.toString());
             return p.executeUpdate();
         } catch (SQLException e) {
             if(log)Tool.log(e);
