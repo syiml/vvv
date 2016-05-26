@@ -93,4 +93,18 @@ public class ChallengeJSON {
         ret.put("problemList",ChallengeSQL.getProblems(user,id));
         return ret.toString();
     }
+
+    public static String getBlockCondition(int id){
+        Block block= ChallengeMain.blocks.get(id);
+        JSONArray conditions=new JSONArray();
+        for(Condition c:block.conditions){
+            JSONObject aCondition=new JSONObject();
+            aCondition.put("type", c.getType());
+            aCondition.put("par", c.getPar());
+            aCondition.put("blockName", ChallengeMain.blocks.get(c.getPar()).getName());
+            aCondition.put("num", c.getNum());
+            conditions.add(aCondition);
+        }
+        return conditions.toString();
+    }
 }

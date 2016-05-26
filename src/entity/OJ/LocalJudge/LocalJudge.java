@@ -79,10 +79,9 @@ public class LocalJudge {
                 proOutStr.flush();
                 BufferedReader br = new BufferedReader(new InputStreamReader(pro.getErrorStream()));
                 String errorInfo = "";
-                String var15;
                 long time = System.currentTimeMillis();
-                while (time + 10000L > System.currentTimeMillis() && (var15 = br.readLine()) != null) {
-                    errorInfo += var15 + "\n";
+                while (time + 10000L > System.currentTimeMillis() && (errorInfo = br.readLine()) != null) {
+                    errorInfo = errorInfo + "\n";
                 }
                 br.close();
                 try {
@@ -95,15 +94,15 @@ public class LocalJudge {
                     res.setCEInfo(errorInfo);
                     return false;
                 }
-            }catch (Exception var29) {
-                var29.printStackTrace(System.err);
+            }catch (Exception e) {
+                e.printStackTrace(System.err);
                 return false;
             }
         }
         return true;
     }
-    public static String fixPath(String var0) {
-        return var0.endsWith("\\")?var0:var0 + "\\";
+    public static String fixPath(String path) {
+        return path.endsWith("\\")?path:path + "\\";
     }
     private static int run(VjSubmitter s, RES res) throws IOException {
         Process runExe = Runtime.getRuntime().exec(runshell);
@@ -201,6 +200,7 @@ public class LocalJudge {
         RES res=new RES();
         if(s.getSubmitInfo().language==2){//JAVA 不支持
             res.setR(Result.ERROR);
+            res.setCEInfo("本oj暂不支持JAVA");
             return res;
         }
         int ret=-1;
@@ -227,7 +227,7 @@ public class LocalJudge {
                 case 7: res.setR(Result.CE); break;
                 default: res.setR(Result.ERROR);break;
             }
-            delFile(outPath + s.getSubmitInfo().rid+"\\");
+            if(Main.GV.getBoolean("delRun")) delFile(outPath + s.getSubmitInfo().rid+"\\");
         }
         s.showstatus="res="+res.getR();
         return res;

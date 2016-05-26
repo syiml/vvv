@@ -21,12 +21,6 @@ import java.util.List;
  * Created by Administrator on 2015/5/22.
  */
 public class Contest implements IBeanResultSetCreate<Contest> {
-    public static int TYPE_PUBLIC=0;
-    public static int TYPE_PASSWORD=1;
-    public static int TYPE_PRIVATE=2;
-    public static int TYPE_REGISTER=3;
-    public static int TYPE_REGISTER2=4;
-    public static int TYPE_TEAM_OFFICIAL = 5;//组队正式赛
     public static String TRUE_USERNAME = "trueusername";
 
     private int cid;
@@ -37,7 +31,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
     private List<Integer> problems;
     //private statusSQL status;
     //private List<Integer> status;
-    private int type;// 0public 1password 2private 3register 4register2(要审核)//修改时要改addcontest
+    private Contest_Type type;// 0public 1password 2private 3register 4register2(要审核)//修改时要改addcontest
     public static int typenum=6;
     private String password;//if type is 1
     private List<RegisterUser> users;//if type is 2
@@ -64,7 +58,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
             begintime=re.getTimestamp(3);
             endtime=re.getTimestamp(4);
             rankType=re.getInt(5);
-            type=re.getInt(6);
+            type=Contest_Type.getByCode(re.getInt(6));
             kind=re.getInt("kind");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,11 +73,11 @@ public class Contest implements IBeanResultSetCreate<Contest> {
         begintime=rs.getTimestamp(3);
         endtime=rs.getTimestamp(4);
         rankType=rs.getInt(5);
-        type=rs.getInt(6);
+        type=Contest_Type.getByCode(rs.getInt(6));
         kind=rs.getInt("kind");
         return this;
     }
-    public Contest(ResultSet re,ResultSet ps,ResultSet rs){
+    public Contest(ResultSet re,ResultSet ps){
         //re:   id,name,beginTime,endTime,rankType,ctype,password,registerstarttime,registerendtime
         //ps:   pid,tpid
         //rs:   id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,code,codelen
@@ -96,7 +90,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
             begintime=re.getTimestamp("beginTime");
             endtime=re.getTimestamp("endTime");
             rankType=re.getInt("rankType");
-            type=re.getInt("ctype");
+            type=Contest_Type.getByCode(re.getInt("ctype"));
             password=re.getString("password");
             registerstarttime=re.getTimestamp("registerstarttime");
             registerendtime=re.getTimestamp("registerendtime");
@@ -111,7 +105,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
             //读取user列表
             ResultSet ru;
             SQL sql4;
-            if(getType() == Contest.TYPE_TEAM_OFFICIAL) {
+            if(getType() == Contest_Type.TEAM_OFFICIAL) {
                 sql4 = new SQL("select * from t_register_team where cid = ?",cid);
                 ru = sql4.query();
             }else{
@@ -119,6 +113,16 @@ public class Contest implements IBeanResultSetCreate<Contest> {
                 ru=sql4.query();
             }
             setUsers(ru);
+
+            ResultSet rs;
+            if(getKind() != 0) {
+                rs=new SQL("select id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,codelen from statu where cid=?",cid).query();
+            }else{
+                rs=new SQL("SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,timeused,memoryUsed,codelen" +
+                        " FROM statu LEFT JOIN contestproblems" +
+                        " ON contestproblems.cid=? AND tpid=statu.pid" +
+                        " WHERE contestproblems.cid=? ",cid,cid).query();
+            }
             //创建Rank
             rank=RankSQL.getRank(this,rs);
         } catch (SQLException e) {
@@ -128,7 +132,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
     }
     public void setUsers(ResultSet us) throws SQLException {
         users = new ArrayList<RegisterUser>();
-        if(this.getType() == TYPE_TEAM_OFFICIAL){
+        if(this.getType() == Contest_Type.TEAM_OFFICIAL){
             while (us.next()) {
                 users.add(new RegisterTeam(us));
             }
@@ -207,23 +211,6 @@ public class Contest implements IBeanResultSetCreate<Contest> {
     public String getRankHTML(){
         return rank.toHTML();
     }
-    public String getTypeHTML(int type){
-        if(type==Contest.TYPE_PUBLIC){
-            return "<b style='color:green'>公开</b>";
-        }else if(type==Contest.TYPE_PASSWORD){
-            return "<b style='color:red'>密码</b>";
-        }else if(type==Contest.TYPE_PRIVATE){
-            return HTML.a("User.jsp?cid="+cid,"<b style='color:#AE57A4'>私有</b>");
-        }else if(type==Contest.TYPE_REGISTER){
-            return HTML.a("User.jsp?cid="+cid,"<b style='color:blue'>注册</b>");
-        }else if(type==Contest.TYPE_REGISTER2){
-            return HTML.a("User.jsp?cid="+cid,"<b style='color:orange'>正式</b>");
-        }else if(type==Contest.TYPE_TEAM_OFFICIAL){
-            return HTML.a("User.jsp?cid="+cid,HTML.textb("组队","#FF00FF"));
-        }else{
-            return HTML.textb("错误","red");
-        }
-    }
     public static String getTypeText(int type){
         if(type==0){
             return "public";
@@ -258,14 +245,14 @@ public class Contest implements IBeanResultSetCreate<Contest> {
             return "";
         }
     }
-    public String getTypeHTML(){
-        return getTypeHTML(type);
-    }
-    public int getType(){
+    public Contest_Type getType(){
         return type;
     }
     public int getKind(){
         return kind;
+    }
+    public String getTypeHTML(){
+        return type.getHTML(cid);
     }
     public String getStatuHTML(){
         Timestamp now=new Timestamp(System.currentTimeMillis());
@@ -278,7 +265,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
         }
     }
     public int canin(User user){//判断用户是否有权限进入比赛
-        if(type==Contest.TYPE_TEAM_OFFICIAL){
+        if(type==Contest_Type.TEAM_OFFICIAL){
             String username = (String)Main.getSession().getAttribute("contestusername"+cid);
             String pass = (String)Main.getSession().getAttribute("contestpass"+cid);
             //Tool.log(username+" "+pass);
@@ -300,8 +287,8 @@ public class Contest implements IBeanResultSetCreate<Contest> {
             }
         }
         if(user == null) return 0;
-        if(type==Contest.TYPE_PUBLIC) return 1;//public 可以进入
-        if(type==Contest.TYPE_PASSWORD){
+        if(type==Contest_Type.PUBLIC) return 1;//public 可以进入
+        if(type==Contest_Type.PASSWORD){
             String pass = (String)Main.getSession().getAttribute("contestpass"+cid);
             if (pass!=null && pass.equals(getPassword())){
                 return 1;
@@ -309,7 +296,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
                 return -1;//password 需要密码
             }
         }
-        if(type==Contest.TYPE_PRIVATE||type==Contest.TYPE_REGISTER||type==Contest.TYPE_REGISTER2){//需要注册
+        if(type==Contest_Type.PRIVATE||type==Contest_Type.REGISTER||type==Contest_Type.REGISTER2){//需要注册
             for (RegisterUser u : users) {
                 if (u.getUsername().equals(user.getUsername())) {
                     int statu = u.getStatu();
@@ -352,7 +339,7 @@ public class Contest implements IBeanResultSetCreate<Contest> {
         return s;
     }
     public boolean team_canin(String username,String password){
-        if(getType()!=TYPE_TEAM_OFFICIAL) return false;
+        if(getType()!=Contest_Type.TEAM_OFFICIAL) return false;
         for(RegisterUser ru: users){
             RegisterTeam rt = (RegisterTeam)ru;
             if(rt.teamUserName==null) continue;

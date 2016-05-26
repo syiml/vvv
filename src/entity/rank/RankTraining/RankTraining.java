@@ -139,7 +139,7 @@ public class RankTraining extends Rank {
                 s.getResult()==Result.PENDING ||
                 s.getResult()==Result.JUDGING||
                 s.getResult()==Result.ERROR)return ;
-        if(s.getCid()!=c.getCid()) return;
+        //if(s.getCid()!=c.getCid()) return;
         int j;
         for(j=0;j<this.list.size();j++){
             if(this.list.get(j).username.equals(s.getUser())){

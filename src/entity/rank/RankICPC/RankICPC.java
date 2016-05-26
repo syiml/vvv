@@ -121,7 +121,7 @@ public class RankICPC extends Rank {
         table.setClass("table table-bordered table-hover table-condensed");
         tableHeadHTML(table);
         String loginUserName = null;
-        if(contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(contest.getType() == Contest_Type.TEAM_OFFICIAL){
             Object trueLoginUser = Main.getSession().getAttribute(Contest.TRUE_USERNAME+cid);
             if(trueLoginUser!=null){
                 loginUserName = (String)trueLoginUser;
@@ -264,7 +264,7 @@ public class RankICPC extends Rank {
             _user = new user(u.getUsername(),false,c.getProblemNum());
         }
         if(_user != null) {
-            if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            if(c.getType() == Contest_Type.TEAM_OFFICIAL){
                 //Tool.log("123321");
                 _user.showUsername = u.getShowUserName();
                 _user.showNick = u.getShowNick();

@@ -9,3 +9,4 @@ import java.sql.SQLException;
 public interface IBeanResultSetCreate<T> {
     T init(ResultSet rs) throws SQLException;
 }
+ 

@@ -3,6 +3,7 @@ package entity;
 import util.Main;
 import util.HTML.HTML;
 import action.register;
+import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +12,7 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class User implements IBeanResultSetCreate{
+public class User implements IBeanResultSetCreate,IBeanCanCach{
     String username;
     String password;
     String nick;
@@ -40,6 +41,8 @@ public class User implements IBeanResultSetCreate{
     String cla;//班级
     String no;//学号
     String phone;//联系方式
+
+    private Timestamp catch_time;
 
     public User(){}
     public User(register r){
@@ -302,5 +305,24 @@ public class User implements IBeanResultSetCreate{
 
     public int getInTeamStatus() {
         return inTeamStatus;
+    }
+
+    public void setCatch_time(Timestamp catch_time) {
+        this.catch_time = catch_time;
+    }
+
+    public Timestamp getCatch_time() {
+
+        return catch_time;
+    }
+
+    @Override
+    public boolean isExpired() {
+        return catch_time.before(Tool.now());
+    }
+
+    @Override
+    public void setExpired(Timestamp t) {
+        setCatch_time(t);
     }
 }

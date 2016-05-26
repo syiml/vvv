@@ -24,7 +24,7 @@ public class DiscussSQL {
                 .queryBean(Discuss.class);
     }
     public static List<Discuss> getDiscussTOP(boolean all){
-        String sql="SELECT *,(select count(*) from t_discussreply where did=t_discuss.id )as replynum FROM t_discuss WHERE top=1"+
+        String sql="SELECT *,0 as replynum FROM t_discuss WHERE top=1"+
                 (all?"":" AND visiable=1")+
                 " ORDER BY priority DESC";
         return new SQL(sql).queryBeanList(Discuss.class);

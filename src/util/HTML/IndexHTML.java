@@ -51,7 +51,7 @@ public class IndexHTML {
         return HTML.panelnobody("ACB富豪榜 Top10"+HTML.floatRight(HTML.a("User.jsp?search=&order=acb&desc=1", "All")), table.HTML());
     }
     public static String rank3(){
-        List<User> list= Main.users.getUsers(0,10,"","acnum",true);
+        List<User> list= Main.users.getAcnumTop10();
         TableHTML table= new TableHTML();
         table.setClass("table table-condensed table-hover");
         table.addColname("#");

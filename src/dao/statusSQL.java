@@ -63,6 +63,37 @@ public class statusSQL {
         }
         return s;
     }
+    public List<statu> getStatusKind0(int cid,int from,int num,
+                                      int pid,int result,int Language,String ssuser){
+        String sql="SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,timeused,memoryUsed,codelen" +
+                " FROM statu LEFT JOIN contestproblems" +
+                " ON contestproblems.cid=? AND tpid=statu.pid" +
+                " WHERE contestproblems.cid=? ";
+        if(pid!=-1){
+            sql+=" AND pid="+ ContestMain.getContest(cid).getGlobalPid(pid);
+        }
+        if(result!=-1) sql+=" AND result="+result;
+        if(Language!=-1) sql+=" AND lang="+Language;
+        if(ssuser!=null&&!ssuser.equals("")) sql+=" AND ruser='"+ssuser+"'";
+        sql+=" ORDER BY id DESC";
+        sql+=" LIMIT ?,?";
+        return new SQL(sql,cid,cid,from,num).queryBeanList(statu.class);
+    }
+    public int getStatusKind0Num(int cid,
+                                       int pid,int result,int Language,String ssuser){
+        String sql="SELECT COUNT(*)" +
+                " FROM statu LEFT JOIN contestproblems" +
+                " ON contestproblems.cid=? AND tpid=statu.pid" +
+                " WHERE contestproblems.cid=? ";
+        if(pid!=-1){
+            sql+=" AND pid="+ ContestMain.getContest(cid).getGlobalPid(pid);
+        }
+        if(result!=-1) sql+=" AND result="+result;
+        if(Language!=-1) sql+=" AND lang="+Language;
+        if(ssuser!=null&&!ssuser.equals("")) sql+=" AND ruser='"+ssuser+"'";
+        sql+=" ORDER BY id DESC";
+        return new SQL(sql,cid,cid).queryNum();
+    }
     public List<statu> getStatus(int cid,int from,int num,
                      /*筛选信息：*/int pid,int result,int Language,String ssuser,boolean all){
         List<statu> l=new ArrayList<statu>();
@@ -297,17 +328,17 @@ public class statusSQL {
             }
         }.queryMap();
     }
-    public int sbumitResult(int cid,int pid,String username){
+    public int submitResult(int cid, int pid, String username){
         //1->AC
         //0->submit but no AC
         //-1->no submit
         return new SQL("select MAX(result=1)+1 from statu where ruser=? AND cid=? AND pid=?",username,cid,pid).queryNum()-1;
     }
-    public int sbumitResult(int pid,String username){
+    public int submitResult(int pid, String username){
         //1->AC
         //0->submit but no AC
         //-1->no submit
-        return new SQL("select solved+1 from usersolve_view where username=? AND pid=?",username,pid).queryNum()-1;
+        return new SQL("select MAX(result=1)+1 from statu where ruser=? AND pid=?",username,pid).queryNum()-1;
     }
 
     /**

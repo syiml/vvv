@@ -63,7 +63,7 @@ public class problemListHTML {
             int pid=list.get(i).pid;
             List<String> row=new ArrayList<String>();
             if(user!=null){
-                int result=Main.status.sbumitResult(cid,pid,user.getUsername());
+                int result=Main.status.submitResult(cid, pid, user.getUsername());
                 Tool.log(cid+"-"+pid+"-"+user.getUsername()+"-"+result);
                 if(result==1){
                     row.add(HTML.text("✔","green"));
@@ -115,7 +115,7 @@ public class problemListHTML {
             int pid=list.get(i).pid;
             List<String> row=new ArrayList<String>();
             if(user!=null){
-//                Integer result=Main.status.sbumitResult(pid,user.getUsername());
+//                Integer result=Main.status.submitResult(pid,user.getUsername());
                 if(!submitResult.containsKey(pid)){
                     row.add("");
                 }else if(submitResult.get(pid)==1){
@@ -191,7 +191,7 @@ public class problemListHTML {
         }
         s.setType(1);
         s.setValue("-1");
-
+        form.setSubmitText("筛选");
         form.addForm(s);
         return form.toHTML();
     }

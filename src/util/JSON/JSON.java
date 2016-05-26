@@ -1,12 +1,8 @@
 package util.JSON;
 
+import entity.*;
 import entity.OJ.OTHOJ;
-import entity.Permission;
-import entity.User;
-import entity.Contest;
-import entity.RatingCase;
 import dao.ratingSQL;
-import entity.Message;
 import servise.ContestMain;
 import util.Main;
 import dao.MessageSQL;
@@ -73,11 +69,15 @@ public class JSON {
             JSONArray ja=new JSONArray();
             for(problemView pv:list){
                 int result;
-                if(ContestMain.getContest(cid).getType() == Contest.TYPE_TEAM_OFFICIAL) {
-                    result = Main.status.sbumitResult(cid, pv.getPid(), (String)Main.getSession().getAttribute("trueusername"+cid));
+                if(ContestMain.getContest(cid).getType() == Contest_Type.TEAM_OFFICIAL) {
+                    result = Main.status.submitResult(cid, pv.getPid(), (String) Main.getSession().getAttribute("trueusername" + cid));
                 }else{
                     assert u != null;
-                    result = Main.status.sbumitResult(cid, pv.getPid(), u.getUsername());
+                    if(ContestMain.getContest(cid).getKind() == 0){
+                        result = Main.status.submitResult(pv.getPid(),u.getUsername());
+                    }else {
+                        result = Main.status.submitResult(cid, pv.getPid(), u.getUsername());
+                    }
                 }
                 JSONObject jo=new JSONObject();
                 jo.put("result",result);

@@ -1,5 +1,6 @@
 package util.HTML;
 
+import entity.Contest_Type;
 import servise.ContestMain;
 import util.Main;
 import entity.Permission;
@@ -96,9 +97,9 @@ public class contestListHTML extends pageBean{
             return c.getCid()+"";
         }else if(colname.equals("名称")){
             String name=HTML.a("Contest.jsp?cid=" + c.getCid(), c.getName());
-            if(c.getType()==Contest.TYPE_REGISTER
-                    ||c.getType()==Contest.TYPE_REGISTER2
-                    ||c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+            if(c.getType()==Contest_Type.REGISTER
+                    ||c.getType()==Contest_Type.REGISTER2
+                    ||c.getType()== Contest_Type.TEAM_OFFICIAL){
                 name+=HTML.floatRight("["+HTML.a("User.jsp?cid="+c.getCid(),"报名")+"]");
             }
             return name;

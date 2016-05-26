@@ -169,6 +169,7 @@
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>
                 <action name="block" class="action.ChallengeAction" method="block"> </action>
+                <action name="blockCondition" class="action.ChallengeAction" method="blockCondition"> </action>
                 <action name="editBlockText" class="action.ChallengeAction" method="editBlockText">
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>

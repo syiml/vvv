@@ -208,8 +208,8 @@ var challenge=function(){
             '</div>'+
             '</div>'
         ).find('.modal-body');
-        $.getJSON("block.action?id="+id,function(data){
-            $modalbody.html(condition(data.conditions));
+        $.getJSON("blockCondition.action?id="+id,function(data){
+            $modalbody.html(condition(data));
         });
         $('#showblockclose').modal();
     };

@@ -1,6 +1,7 @@
 package action;
 
 import entity.Contest;
+import entity.Contest_Type;
 import servise.ContestMain;
 import util.Main;
 
@@ -41,7 +42,7 @@ public class RegisterContest {
     public String computeUsernamePassword(){
         int cidInt=Integer.parseInt(cid);
         Contest contest = ContestMain.getContest(cidInt);
-        if(contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(contest.getType() == Contest_Type.TEAM_OFFICIAL){
             contest.computeUsernamePassword(prefix);
             return "success";
         }
@@ -50,7 +51,7 @@ public class RegisterContest {
     public String computeOneUseranemPassword(){
         int cidInt = Integer.parseInt(cid);
         Contest contest = ContestMain.getContest(cidInt);
-        if(contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(contest.getType() == Contest_Type.TEAM_OFFICIAL){
             contest.computeOneUsernamePassword(username);
         }
         return "success";

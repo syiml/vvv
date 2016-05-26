@@ -10,12 +10,13 @@
   "userShowNum":"50",
   "discussShowNum":"10",
   "autoConnectionTimeMinute":"360",
+  "delRun":false,
 
   "localJudgeWorkPath":"C:\\T_TOJ\\",
   "LocalJudgeNumber":2,
   "maxHeadImgSize":524288,
   "maxSampleFileSize":10737418240,
-  "debug":false,
+  "debug":true,
   "version":"2.33",
 
   "hdu":{

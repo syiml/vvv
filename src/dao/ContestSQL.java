@@ -94,7 +94,7 @@ public class ContestSQL {
     public RegisterUser getRegisterStatu(String username, int cid){
         //null 未注册
         Contest c = ContestMain.getContest(cid);
-        if(c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType()==Contest_Type.TEAM_OFFICIAL){
             return new SQL("SELECT * FROM t_register_team WHERE username=? AND cid=?",
                     username,cid).setLog(false)
                     .queryBean(RegisterTeam.class);
@@ -110,7 +110,7 @@ public class ContestSQL {
     public String setUserContest(int cid,String username,int statu,String info){
         Contest c = ContestMain.getContest(cid);
         if(getRegisterStatu(username,cid)==null){
-            if(c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+            if(c.getType()==Contest_Type.TEAM_OFFICIAL){
                 RegisterTeam rt = new RegisterTeam();
                 rt.setUsername(username);
                 rt.teamName = username;
@@ -124,14 +124,14 @@ public class ContestSQL {
         }
         if(statu==-2){//-2 -> 删除
             ContestMain.getContest(cid).reSetUsers();
-            if(c.getType() == Contest.TYPE_TEAM_OFFICIAL) {
+            if(c.getType() == Contest_Type.TEAM_OFFICIAL) {
                 return delTeamContest(cid,username);
             }else {
                 return delUserContest(cid, username);
             }
         }
         String table = "contestuser";
-        if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             table = "t_register_team";
         }
         if(statu!=3){
@@ -163,21 +163,18 @@ public class ContestSQL {
             //System.out.println("get("+cid+") in cSQL");
             return cSQL.get(cid);
         }
-        ResultSet c,pros,rs,ru;
+        ResultSet c,pros;
         SQL sql1=new SQL("select * from contest where id=?",cid);
         c=sql1.query();
         SQL sql2=new SQL("select pid,tpid from contestproblems where cid=? order by pid",cid);
         pros=sql2.query();
-        SQL sql3=new SQL("select id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,codelen from statu where cid=?",cid);
-        rs=sql3.query();
         try {
-            Contest con = new Contest(c,pros,rs);
+            Contest con = new Contest(c,pros);
             cSQL.put(cid,con);
             return con;
         }finally {
             sql1.close();
             sql2.close();
-            sql3.close();
         }
     }
     public void deleteMapContest(int cid){

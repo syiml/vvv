@@ -34,7 +34,7 @@ public class UserListContest extends pageBean {
         admin=Main.loginUserPermission().getContestRegisterAdmin();
         this.NowPage=NowPage;
         int num=Main.userShowNum;
-        if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             super.addTableHead("用户名","队名","队员1","队员2","队员3","状态","时间");
             if(admin){
                 super.addTableHead("账号","密码");
@@ -68,7 +68,7 @@ public class UserListContest extends pageBean {
 
     @Override
     public int getPageSize() {
-        if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             return list_register_team.size();
         }
         return list2.size();
@@ -87,7 +87,7 @@ public class UserListContest extends pageBean {
     private String adminButtons(String username,String info){
         int cid=c.getCid();
         String s="";
-        if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             s+=HTML.a("RegisterTeam.jsp?cid="+cid+"&username="+username,"详细信息")+" ";
         }
         s+=HTML.a("setregistercontest.action?cid="+cid+"&username="+username+"&statu=0","等待")+" ";
@@ -102,7 +102,7 @@ public class UserListContest extends pageBean {
     }
     @Override
     public String getCellByHead(int i, String colname) {
-        if(c.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             RegisterTeam rt = list_register_team.get(i);
             //"用户名","队名","队员1","队员2","队员3","状态","时间"
             if(colname.equals("用户名")){
@@ -248,7 +248,7 @@ public class UserListContest extends pageBean {
     }
     public String head(){
         String ss="";
-        if(c.getType()==3||c.getType()==4||c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType()==Contest_Type.REGISTER||c.getType()==Contest_Type.REGISTER2||c.getType()==Contest_Type.TEAM_OFFICIAL){
             if(u!=null){
                 RegisterUser z=ContestMain.getRegisterStatu(u.getUsername(),c.getCid());
                 if(z==null){
@@ -257,7 +257,7 @@ public class UserListContest extends pageBean {
                     }else if(c.getRegisterstarttime().after(Tool.now())) {
                         ss+="报名还未开始";
                     }else{
-                        if(c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+                        if(c.getType()==Contest_Type.TEAM_OFFICIAL){
                             ss += HTML.a("RegisterTeam.jsp?cid=" + c.getCid(), "立即报名");
                         }else {
                             ss += HTML.a("registercontest.action?cid=" + c.getCid(), "立即报名");
@@ -281,14 +281,14 @@ public class UserListContest extends pageBean {
             }
         }
         String r="";
-        if(c.getType()==3||c.getType()==4||c.getType()==Contest.TYPE_TEAM_OFFICIAL){
+        if(c.getType()==Contest_Type.REGISTER||c.getType()==Contest_Type.REGISTER2||c.getType()==Contest_Type.TEAM_OFFICIAL){
             r+="报名时间："+c.getRegisterstarttime().toString().substring(0,16)+
                     " ～ "+c.getRegisterendtime().toString().substring(0,16);
         }
         String count="总报名人数："+RegisterUserNum+"】【"+
                 "审核通过人数："+ (UserSQL.getUsersNum(c.getCid(), RegisterUser.STATUS_ACCEPTED)+UserSQL.getUsersNum(c.getCid(), RegisterUser.STATUS_APPENDED));
         String randomPass ="";
-        if(c.getType()==Contest.TYPE_TEAM_OFFICIAL&&admin){
+        if(c.getType()==Contest_Type.TEAM_OFFICIAL&&admin){
             modal mo=new modal("randomPass","随机生成账号密码",
                     new hidden("cid",c.getCid()+"").toHTML()+
                     new text("prefix","前缀").setValue("team").toHTML(2,10),"随机生成密码");

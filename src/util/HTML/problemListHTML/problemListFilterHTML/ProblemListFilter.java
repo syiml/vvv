@@ -42,7 +42,7 @@ public class ProblemListFilter extends ResultSetPageHtml {
         if(tag==-1){
             sql+="SELECT v_problem.pid, ptype, title, ojid, ojspid, visiable, acusernum, submitnum, solved+1 as solved " +
                     "FROM v_problem LEFT JOIN usersolve_view ON username=? AND usersolve_view.pid=v_problem.pid WHERE 1=1 ";
-            if(!name.equals("")) sql+="AND title like ? ";
+            if(!name.equals("")) sql+="AND (title like ? OR v_problem.pid=?)";
             if(!vis ) sql+=" AND visiable=1 ";
             sql+="ORDER BY v_problem.pid ";
         }else{
@@ -54,7 +54,7 @@ public class ProblemListFilter extends ResultSetPageHtml {
                     "WHERE 1 " +
                     "AND tagid = ? " +
                     (vis ? "" : " AND visiable=1 ") +
-                    (!name.equals("")?"AND title like ? ":"")+
+                    (!name.equals("")?"AND (title like ? OR v_problem.pid=?) ":"")+
                     "ORDER BY rating DESC ";
         }
         String username;
@@ -63,9 +63,9 @@ public class ProblemListFilter extends ResultSetPageHtml {
         SQL sq;
         if(!name.equals("")){
             if(tag==-1){
-                sq=new SQL(sql,username,"%"+name+"%");
+                sq=new SQL(sql,username,"%"+name+"%",name);
             }else{
-                sq=new SQL(sql, username, tag,"%"+name+"%");
+                sq=new SQL(sql, username, tag,"%"+name+"%",name);
             }
         }else{
             if(tag==-1){
@@ -145,7 +145,7 @@ public class ProblemListFilter extends ResultSetPageHtml {
         }
         s.setType(1);
         s.setValue(tag+"");
-
+        form.setSubmitText("筛选");
         form.addForm(s);
         return form.toHTML();
     }

@@ -94,6 +94,12 @@ public class ChallengeAction {
         Main.getOut().println(ChallengeJSON.getBlock(Integer.parseInt(id), user));
         return "none";
     }
+    public String blockCondition(){
+        if(user==null||user.equals("")) user=Main.loginUser().getUsername();
+        ServletActionContext.getResponse().setContentType("text/html;charset=utf-8");
+        Main.getOut().println(ChallengeJSON.getBlockCondition(Integer.parseInt(id)));
+        return "none";
+    }
     public String editBlockText(){
         if(Main.loginUserPermission().getChallengeAdmin()){
             return ChallengeSQL.editBlockText(Integer.parseInt(id), text);

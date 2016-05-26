@@ -14,15 +14,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class UserSQL {
+public class UserSQL extends BaseCach<User>{
     /*
     * users(username,password,nick,gender,Email,motto,registertime,type,solved,submissions,Mark)
     * permission(id,name)
@@ -96,13 +93,24 @@ public class UserSQL {
     }
     public void addPer(String user,int per){
         new SQL("INSERT INTO userper values(?,?)",user,per).update();
+        removeCatch(user);
     }
     public void delPer(String user,int per){
         new SQL("delete from userper where username=? and perid=?",user,per).update();
+        removeCatch(user);
     }
 
     public User getUser(String username){
-        return getUser(username,false);
+        User user = getBeanFromCatch(username);
+        if(user == null){
+            user = getUser(username,false);
+            if(user==null) return null;
+            set_catch(username, user);
+            return user;
+        }else{
+            //Tool.debug("getUserFromCatch("+username+")");
+            return user;
+        }
     }
     public User getUserHaveRank(String username){
         return getUser(username,true);
@@ -136,8 +144,11 @@ public class UserSQL {
         return new SQL("select count(*) from users where (username like ? or nick like ?)","%"+search+"%","%"+search+"%").queryNum();
     }
     public List<User> getRichTop10(){
-        return new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from v_user order by acb desc,rating desc " +
+        return new SQL("select * from users order by acb desc,rating desc " +
                 "LIMIT 0,10").queryBeanList(User.class);
+    }
+    public List<User> getAcnumTop10(){
+        return new SQL("select * from users order by acnum desc,rating desc LIMIT 0,10").queryBeanList(User.class);
     }
     public List<List<String>> getUsers(int cid,int from,int num,String serach,boolean is3){
         List<List<String>> list=new ArrayList<List<String>>();
@@ -288,7 +299,8 @@ public class UserSQL {
         sql+=",inTeamLv = "+u.getInTeamLv();
         sql+=",inTeamStatus = "+u.getInTeamStatus();
         sql+=" WHERE username=?";
-        Tool.log(sql);
+        //Tool.log(sql);
+        removeCatch(u.getUsername());
         return (new SQL(sql, u.getUsername()).update()==1);
     }
 

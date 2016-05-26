@@ -421,7 +421,7 @@ public class HTML {
     private static String problemTag(int pid,boolean admin){
         User u=Main.loginUser();
         boolean canedit=false;
-        if(u!=null&&Main.status.sbumitResult(pid,u.getUsername())==1){
+        if(u!=null&&Main.status.submitResult(pid, u.getUsername())==1){
             canedit=true;
         }
         String tagslist= ProblemTagHTML.ProblemTag(pid);

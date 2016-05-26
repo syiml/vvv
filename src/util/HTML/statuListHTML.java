@@ -1,11 +1,8 @@
 package util.HTML;
 
-import entity.Contest;
+import entity.*;
 import servise.ContestMain;
 import util.Main;
-import entity.User;
-import entity.Result;
-import entity.statu;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.select.select;
 import util.HTML.FromHTML.text.text;
@@ -47,7 +44,7 @@ public class statuListHTML extends pageBean {
         if(this.ssuser==null) this.ssuser="";
         if(cid>0){
             contest = ContestMain.getContest(cid);
-            if(contest!=null&&contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            if(contest!=null&&contest.getType() == Contest_Type.TEAM_OFFICIAL){
                 this.user = Main.users.getUser((String)Main.getSession().getAttribute("trueusername"+cid));
                 this.teamUser = (String)Main.getSession().getAttribute("contestusername"+cid);
             }else{
@@ -56,9 +53,12 @@ public class statuListHTML extends pageBean {
         }else {
             this.user = Main.loginUser();
         }
-        if(contest!=null&&contest.getType()==Contest.TYPE_TEAM_OFFICIAL) {
+        if(contest!=null&&contest.getType()==Contest_Type.TEAM_OFFICIAL) {
             status = Main.status.getTeamStatus(cid,this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
             this.PageNum=getPageNum(Main.status.getTeamStatusNum(cid, this.pid, this.result, this.Language, this.ssuser),num);
+        }else if(contest!=null && contest.getKind()==0){//练习场
+            status = Main.status.getStatusKind0(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
+            this.PageNum = getPageNum(Main.status.getStatusKind0Num(this.cid, this.pid, this.result, this.Language, this.ssuser),num);
         }else{
             status = Main.status.getStatus(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser, all);
             this.PageNum=getPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all), num);
@@ -95,7 +95,7 @@ public class statuListHTML extends pageBean {
         if(colname.equals("#")){
             return s.getRid()+"";
         }else if(colname.equals("用户")){
-            if(contest!=null && contest.getType()==Contest.TYPE_TEAM_OFFICIAL){
+            if(contest!=null && contest.getType()==Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser)){
                     addClass(i + 1, -1, "info");
                 }
@@ -126,7 +126,7 @@ public class statuListHTML extends pageBean {
         }else if(colname.equals("语言")){
             return LanguageToHtml(s);
         }else if(colname.equals("耗时")){
-            if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser) || (user!=null&&user.getPermission().getViewCode())){
                     return s.getTimeUsed()+"";
                 }
@@ -134,7 +134,7 @@ public class statuListHTML extends pageBean {
             }
             return s.getTimeUsed();
         }else if(colname.equals("使用内存")){
-            if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser) ||  (user!=null&&user.getPermission().getViewCode())){
                     return s.getMemoryUsed()+"";
                 }
@@ -142,7 +142,7 @@ public class statuListHTML extends pageBean {
             }
             return s.getMemoryUsed();
         }else if(colname.equals("代码长")){
-            if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+            if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser) ||  (user!=null&&user.getPermission().getViewCode())){
                     return s.getCodelen()+"";
                 }
@@ -253,7 +253,7 @@ public class statuListHTML extends pageBean {
     private String LanguageToHtml(statu s){
         int l=s.getLanguage();
         int rid=s.getRid();
-        if(contest!=null && contest.getType() == Contest.TYPE_TEAM_OFFICIAL){
+        if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
             if(s.getUser().equals(teamUser)|| (user!=null&&user.getPermission().getViewCode())){
                 if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
                 if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
@@ -291,7 +291,7 @@ public class statuListHTML extends pageBean {
         }
     }
     private String userToHtml(statu s){
-        if(contest==null||contest.getType()!=Contest.TYPE_TEAM_OFFICIAL){
+        if(contest==null||contest.getType()!=Contest_Type.TEAM_OFFICIAL){
             User u=Main.users.getUser(s.getUser());
             if(!incontest) return u.getUsernameHTML()+"("+u.getNick()+")";
             else return HTML.a("#R"+s.getUser(),u.getUsernameHTMLNoA())+"("+u.getNick()+")";

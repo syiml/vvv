@@ -2,10 +2,7 @@ package servise;
 
 import action.addcontest;
 import dao.ContestSQL;
-import entity.Contest;
-import entity.RegisterTeam;
-import entity.RegisterUser;
-import entity.User;
+import entity.*;
 import entity.rank.RankSQL;
 import util.Main;
 import util.Tool;
@@ -42,10 +39,10 @@ public class ContestMain {
         if (c.getRegisterendtime().before(Tool.now()) || c.getRegisterstarttime().after(Tool.now())) {
             return "error";
         }
-        if (c.getType() == Contest.TYPE_REGISTER) {
+        if (c.getType() == Contest_Type.REGISTER) {
             status = RegisterUser.STATUS_ACCEPTED;
         }
-        if (c.getType() == Contest.TYPE_REGISTER2) {
+        if (c.getType() == Contest_Type.REGISTER2) {
             status = RegisterUser.STATUS_PADDING;
         }
         if (c.getKind() == 3 && !u.canRegisterOfficalContest()) {
