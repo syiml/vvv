@@ -28,7 +28,7 @@ public class ChallengeSQL {
      */
     public static Map<Integer, Block> init(){
         Map<Integer,Block> ret=new TreeMap<Integer, Block>();
-        SQL sql1=new SQL("SELECT id,name,gro FROM t_challenge_block order by id");
+        SQL sql1=new SQL("SELECT * FROM t_challenge_block order by id");
         SQL sql2=new SQL("SELECT * FROM t_challenge_condition");
         SQL sql3=new SQL("SELECT id,sum(score) as score FROM t_challenge_problem GROUP BY id");
         ResultSet rsBlock = sql1.query();
@@ -36,7 +36,7 @@ public class ChallengeSQL {
         ResultSet rsScore = sql3.query();
         try {
             while(rsBlock.next()){
-                ret.put(rsBlock.getInt("id"),new Block(rsBlock.getInt("id"),rsBlock.getString("name"),rsBlock.getInt("gro")));
+                ret.put(rsBlock.getInt("id"),new Block(rsBlock.getInt("id"),rsBlock.getString("name"),rsBlock.getInt("gro"),rsBlock.getInt("isEditing")));
             }
             while(rsCondition.next()){
                 int belongBlockId= rsCondition.getInt("belongBlockId");
@@ -175,5 +175,17 @@ public class ChallengeSQL {
         new SQL("update t_challenge_problem set pid=pid-1 where pid>? and id=?",pos,bid).update();
         ChallengeMain.init();
         return "success";
+    }
+    public static String setEditing(int id,int isEditing){
+        if(new SQL("UPDATE t_challenge_block SET isEditing=? WHERE id=?",isEditing,id).update()!=0){
+            ChallengeMain.blocks.get(id).setIsEditing(isEditing);
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+    public static void addBlock(int id,String name){
+        new SQL("INSERT INTO t_challenge_block VALUES(?,?,?,?,?)",id,name,0,"",1).update();
+        ChallengeMain.blocks= ChallengeSQL.init();
     }
 }

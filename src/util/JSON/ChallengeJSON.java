@@ -43,7 +43,7 @@ public class ChallengeJSON {
                 int z=0;//0、关闭  1、先决已经开启 2、可开启 3、已开启
                 if(openBlocks.contains(blockId)) z=3;//本模块已经开启
                 else if(block.pBlockOpen(openBlocks)){//先决已经开启
-                    if(block.isTrue(userScore)){//模块的先决已经开启，且满足条件，可开启
+                    if(block.isTrue(userScore)){//模块的先决已经开启，且满足条件，可开启 且不在编辑
                         ChallengeSQL.addOpenBlock(user,blockId);
                         Main.users.addACB(user, 30);
                         MessageMain.addMessageBlockOpen(user,block.getName(),30);

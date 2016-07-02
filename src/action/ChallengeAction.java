@@ -1,9 +1,11 @@
 package action;
 
+import servise.GvMain;
 import util.JSON.ChallengeJSON;
 import dao.ChallengeSQL;
 import util.Main;
 import org.apache.struts2.ServletActionContext;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/10/10 0010.
@@ -129,5 +131,24 @@ public class ChallengeAction {
             return ChallengeSQL.delProblem(Integer.parseInt(pos), Integer.parseInt(block));
         }
         return "error";
+    }
+    public String editChallenge(){
+        if(Main.loginUserPermission().getChallengeAdmin()) {
+            GvMain.setChallengeJson(text);
+            return "success";
+        }
+        return "error";
+    }
+    public String setEditing(){
+        if(Main.loginUserPermission().getChallengeAdmin()){
+            return ChallengeSQL.setEditing(Integer.parseInt(id),Integer.parseInt(text));
+        }
+        return "error";
+    }
+    public String addBlock(){
+        if(Main.loginUserPermission().getChallengeAdmin()){
+            ChallengeSQL.addBlock(Integer.parseInt(id),text);
+        }
+        return "success";
     }
 }

@@ -286,7 +286,8 @@ public class statuListHTML extends pageBean {
         if(!in){
             return HTML.a("Problem.jsp?pid="+s.getPid(),""+s.getPid());
         }else{
-            String ss=ContestMain.getContest(cid).getProblemId(s.getPid());
+            String ss=contest.getProblemId(s.getPid());
+            s.setCid(cid);
             return HTML.a("#P"+s.getContestPid(),ss);
         }
     }

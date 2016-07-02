@@ -141,6 +141,7 @@ public class JSON {
         if(num>1000) num=1000;
         List<Pair<Integer,Integer>> rsSubmit=Main.status.getSubmitCount(user, num, sec);
         List<Pair<Integer,Integer>> rsAc=Main.status.getAcCount(user, num, sec);
+        Tool.debug(rsSubmit.size()+" "+rsAc.size());
         JSONObject jo=new JSONObject();
         if(user!=null)jo.put("user",user);
         jo.put("num",num);

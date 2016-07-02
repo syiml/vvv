@@ -58,7 +58,7 @@
 </body>
 </html>
 <script src="../js/jquery-1.11.1.js"></script>
-<script src="../js/jquery-ui.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
 <script src="matchICPC.js"></script>
 <script>
     var match;

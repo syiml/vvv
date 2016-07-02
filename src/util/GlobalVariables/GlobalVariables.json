@@ -13,11 +13,11 @@
   "delRun":false,
 
   "localJudgeWorkPath":"C:\\T_TOJ\\",
-  "LocalJudgeNumber":2,
+  "LocalJudgeNumber":1,
   "maxHeadImgSize":524288,
   "maxSampleFileSize":10737418240,
   "debug":true,
-  "version":"2.33",
+  "version":"2.40",
 
   "hdu":{
     "URL":"http://acm.hdu.edu.cn",

@@ -20,7 +20,7 @@
 <link href="css/loaders.css" rel="stylesheet">
 
 <script src="js/jquery-1.11.1.js"></script>
-<script src="js/jquery-ui.js"></script>
+<script src="js/jquery-ui.min.js"></script>
 <script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker-master/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
@@ -53,6 +53,7 @@
         <li><a href="Contests.jsp?kind=1"><span>积分</span></a></li>
         <li><a href="Contests.jsp?kind=2"><span>趣味</span></a></li>
         <li><a href="Contests.jsp?kind=3"><span>正式</span></a></li>
+        <%--<li><a href="ExamList.jsp"><span>考试</span></a></li>--%>
       </ul>
     </li>
     <li><a href="User.jsp"><span>RANK</span></a></li>

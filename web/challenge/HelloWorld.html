@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Cocos2d-JS</title>
+    <script type="text/javascript" src="cocos2d-js-v3.11.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="GV.js" charset="UTF-8"></script>
+</head>
+<body>   
+    <canvas id="gameCanvas" width="800" height="450"></canvas>
+    <script type="text/javascript">
+          window.onload = function(){
+              cc.game.onStart = function(){
+
+                  cc.view.setDesignResolutionSize(800, 400, cc.ResolutionPolicy.SHOW_ALL); //设置画面尺寸和适配规则
+                  //cc.view.resizeWithBrowserSize(true); //设置是否跟随浏览器窗口变化
+
+
+                  //load resources
+                  cc.LoaderScene.preload(["HelloWorld.png"], function () {
+                      var MyScene = cc.Scene.extend({
+                          onEnter:function () {
+                              this._super();
+                              var size = cc.director.getWinSize();
+
+//                              var drawNode = new cc.DrawNode();
+//                              drawNode.drawCircle(cc.p(400, 200), 100, cc.degreesToRadians(0), 6, false, 2, cc.color(0, 255, 255, 255));
+//                              this.addChild(drawNode,0);
+
+                              for(var key in gv.position){
+                                  var value=gv.position[key];
+                                  var drawNode = new cc.DrawNode();
+                                  var r = 15;
+                                  if(value[2]=="middle") r=20;
+                                  if(value[2]=="large") r=25;
+                                  var point=cc.p(value[1]/2 + r, 400-value[0]/2-30 -r);
+                                  drawNode.drawCircle(point, r, cc.degreesToRadians(0), 30, false, 2, cc.color(100, 100, 100, 255));
+
+
+                                  var label = cc.LabelTTF.create(value[3], "微软雅黑", 1);
+                                  label.fillStyle = cc.color(100,100,100);
+
+                                  drawNode.addChild(label);
+                                  label.setPosition(point);
+
+                                  this.addChild(drawNode,0);
+                              }
+
+                              var sprite = cc.Sprite.create("HelloWorld.png");
+                              sprite.setPosition(size.width / 2, size.height / 2);
+                              sprite.setScale(0.8);
+                              //this.addChild(sprite, 0);
+
+
+                              var label = cc.LabelTTF.create("Hello World", "Arial", 40);
+                              label.setPosition(size.width / 2, size.height / 2);
+                              label.fillStyle = cc.color(100,100,100);
+                              //this.addChild(label, 0);
+                          }
+                      });
+                      cc.director.runScene(new MyScene());
+                  }, this);
+              };
+              cc.game.run("gameCanvas");
+          };
+    </script>
+</body>
+</html>

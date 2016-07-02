@@ -1,5 +1,7 @@
 package util.HTML;
 
+import entity.TeamMemberAwardInfo;
+import entity.TeamMemberAwardInfo_ContestLevel;
 import util.Main;
 import entity.Permission;
 import entity.User;
@@ -9,6 +11,7 @@ import util.HTML.FromHTML.select.select;
 import util.HTML.FromHTML.text.text;
 import util.HTML.modal.modal;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -77,6 +80,10 @@ public class UserHTML {
             r+="一共给"+ HTML.text(tagnum+"",5)+"道题目贴过标签，";
         else r+="还没有给题目贴过标签，";
         r+="当前有"+HTML.text(showuser.getACB()+"",5)+"ACB。<br>";
+
+        if(showuser.getInTeamLv()>0){
+            r+=TeamMemberInfo();
+        }
 //                 r+= HTML.text("Rank　", 4, "gray") + HTML.text(showuser.getRank() + "", 10) + "<br>" +
 //                        HTML.text("Rating", 4, "gray") + HTML.text(User.ratingToHTML(showuser.getShowRating()), 10);
 //        String rr=HTML.text("AC　　",4,"gray")+HTML.text(Main.status.getAcNum(showuser.getUsername())+"",10)+"<br>"+
@@ -84,6 +91,22 @@ public class UserHTML {
         //if(showuser.getMotto().length()!=0) r+="他要说的一句话是："+HTML.text("“"+showuser.getMotto()+"”",6);
         String in=HTML.floatRight( Tag())+r+Permissions();
         return HTML.div("userindex",HTML.center(left)+in);
+    }
+    public String TeamMemberInfo(){
+        List<TeamMemberAwardInfo> infoList = Main.users.getTeamMemberAwardInfoList(showuser.getUsername());
+        if(infoList.size()==0) return "";
+        StringBuilder sb = new StringBuilder(HTML.textb("正式队员经历：<br>",4,""));
+        for(TeamMemberAwardInfo info : infoList){
+            sb.append("　　").append(info.getTime()).append(": ");
+            if(info.getContestLevel() == TeamMemberAwardInfo_ContestLevel.NONE){
+                sb.append(info.getText());
+            }else {
+                sb.append("参加").append(info.getContestLevel()).append("获得").append(info.getAwardLevel());
+                if (info.getText().length() > 0) sb.append("(").append(info.getText()).append(")");
+            }
+            sb.append("<br>");
+        }
+        return sb.toString();
     }
     public String Mark(){
         return "";

@@ -190,6 +190,21 @@
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>
                 </action>
+                <action name="editChallenge" class="action.ChallengeAction" method="editChallenge">
+                        <result name="success" type="redirect">Challenge.jsp</result>
+                </action>
+                <action name="setEditing" class="action.ChallengeAction" method="setEditing">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="addBlock" class="action.ChallengeAction" method="addBlock">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="TeamAward" class="action.TeamAward" method="addOrEdit">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="delTeamAward" class="action.TeamAward" method="del">
+                        <result name="success">return.jsp</result>
+                </action>
         </package>
         <package name="websocket" extends="struts-default">
                 <action name="sendToContest" class="action.WebSocket" method="sendToContest">

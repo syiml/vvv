@@ -14,7 +14,11 @@ public abstract class pageBean {
 
     protected String ERROR_CELL_TEXT="=ERROR=";
     public abstract String getTitle();
-    public abstract int getPageSize();//当前页大小
+
+    /**
+     * @return 当前页大小
+     */
+    public abstract int getPageSize();
     public abstract int getPageNum();//总页数
     public abstract int getNowPage();//当前页
     public abstract String getCellByHead(int i,String colname);//第i行的每列的内容

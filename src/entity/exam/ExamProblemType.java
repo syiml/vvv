@@ -6,8 +6,8 @@ package entity.exam;
 public enum ExamProblemType {
     ERROR(-1),
     CHOICE(0),
-    FILL_BLANK(1),
-    CODE_FILL(2),
+    CODE_FILL(1),
+    FILL_BLANK(2),
     PROGRAM(3);
 
     ExamProblemType(int code){
@@ -25,5 +25,14 @@ public enum ExamProblemType {
             }
         }
         return ExamProblemType.ERROR;
+    }
+    public String toString(){
+        switch (this){
+            case CHOICE:return "选择题";
+            case CODE_FILL:return "代码填空题";
+            case FILL_BLANK:return "结果填空题";
+            case PROGRAM:return "编程题";
+        }
+        return "错误";
     }
 }

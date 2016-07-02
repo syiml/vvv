@@ -43,10 +43,10 @@
     <%=HTML.codeSimple(rid,rid2)%>
     <div class="row">
         <div class="col-sm-6">
-          <%=HTML.viewCode(rid,user,true)%>
+          <%=HTML.viewCode(rid,true)%>
         </div>
         <div class="col-sm-6">
-          <%=HTML.viewCode(rid2,user,true)%>
+          <%=HTML.viewCode(rid2,true)%>
         </div>
     </div>
 </div><jsp:include page="module/foot.jsp"/>

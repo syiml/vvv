@@ -54,7 +54,7 @@
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>
-<script src="js/jquery-ui.js"></script>
+<script src="js/jquery-ui.min.js"></script>
 <script src="js/autoRefreshTable.js"></script>
 <script>
 var auto=null;

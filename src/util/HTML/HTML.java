@@ -9,6 +9,8 @@ import servise.ContestMain;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import entity.OJ.OTHOJ;
+import util.HTML.FromHTML.form;
+import util.HTML.FromHTML.hidden.hidden;
 import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
 import entity.rank.RankShortCode.RankShortCode;
@@ -1020,6 +1022,8 @@ public class HTML {
             s+=li("权限管理","PermissionAdmin",nowpage);
         if(p.getViewLog())
             s+=li("查看Log","ViewLog",nowpage);
+        if(p.getTeamMemberAdmin())
+            s+=li("获奖管理","TeamAward",nowpage);
         s+="</ul>";
         return s;
     }
@@ -1065,6 +1069,8 @@ public class HTML {
             return panel("用户管理",adminUser());
         }else if(p!=null&&nowpage.equals("ViewLog")){
             return viewLog();
+        }else if(p!=null&&nowpage.equals("TeamAward")){
+            return panel("集训队获奖管理", TeamAwardAdmin());
         }
         return panel("Index","管理员界面，点击左边链接进行后台管理");
     }
@@ -1180,7 +1186,7 @@ public class HTML {
             f4.add(i, Contest.getTypeText(i),Contest.getTypeStyle(i));
         }
         f4.setId("type");
-        if(c!=null) f4.setValue(c.getType()+"");
+        if(c!=null) f4.setValue(c.getType().getCode()+"");
         else f4.setValue("0");
         form.addForm(f4);
 
@@ -1376,16 +1382,28 @@ public class HTML {
             id=Integer.parseInt(Main.getRequest().getParameter("id"));
         }catch(NumberFormatException ignored){}
         if(id==-1){//模块列表
+            //添加模块
+            FormHTML f=new FormHTML();
+            text t1=new text("id","id");
+            f.addForm(t1);
+            text t=new text("text","模块名称");
+            f.addForm(t);
+            f.setAction("addBlock.action");
+            f.setType(1);
+
+            //模块列表
             TableHTML table=new TableHTML();
             table.setClass("table");
             table.addColname("#","模块名","总积分","管理");
             for(Integer bid: ChallengeMain.blocks.keySet()){
                 Block b=ChallengeMain.blocks.get(bid);
-                table.addRow(bid+"",b.getName(),b.getScore()+"",HTML.a("admin.jsp?page=ChallengeAdmin&id="+bid,"admin"));
+                table.addRow(bid+"",b.getIsEditing()==0?b.getName():HTML.text(b.getName(),"red"),b.getScore()+"",HTML.a("admin.jsp?page=ChallengeAdmin&id="+bid,"admin"));
             }
-            return table.HTML();
+            return f.toHTML()+table.HTML();
         }else{//模块管理
             Block b=ChallengeMain.blocks.get(id);
+            //setEditing
+                String setEditing="编辑状态："+HTML.a("setEditing.action?id="+id+"&text="+(1-b.getIsEditing()),b.getIsEditing()==0?"不在编辑":HTML.textb("正在编辑","red"))+"(正在编辑的模块不会自动被开启)";
             //text
                 FormHTML textForm=new FormHTML();
                 textForm.setAction("editBlockText.action");
@@ -1446,7 +1464,7 @@ public class HTML {
                 addProblemForm.addForm(pid);
                 addProblemForm.addForm(score);
                 addProblemForm.setSubmitText("添加题目");
-            return HTML.text("模块【"+b.getName() + "】<br>", 11)+textForm.toHTML()+addCondition.toHTML()+conditionTable.HTML()+addProblemForm.toHTML()+problemList.HTML();
+            return HTML.text("模块【"+b.getName() + "】<br>", 11)+setEditing+textForm.toHTML()+addCondition.toHTML()+conditionTable.HTML()+addProblemForm.toHTML()+problemList.HTML();
         }
     }
     public static String adminResetPassword(){
@@ -1528,5 +1546,51 @@ public class HTML {
                 return panel("参数错误","参数错误",null,"danger");
             }
         }
+    }
+    public static String TeamAwardAdmin(){
+        int id;
+        try{
+            id=Integer.parseInt(Main.getRequest().getParameter("id"));
+        }catch(NumberFormatException e){
+            id=-1;
+        }
+        TeamMemberAwardInfo info = Main.users.getTeamMemberAwardInfo(id);
+
+        FormHTML form = new FormHTML();
+        form.setAction("TeamAward.action");
+
+        form.addForm(new hidden("id",id+""));
+        text t1 = new text("username1","用户名1");
+        if(info!=null) t1.setValue(info.getUsername1());
+        text t2 = new text("username2","用户名2");
+        if(info!=null) t2.setValue(info.getUsername2());
+        text t3 = new text("username3","用户名3");
+        if(info!=null) t3.setValue(info.getUsername3());
+        text n1 = new text("name1","姓名1");
+        if(info!=null) n1.setValue(info.getName1());
+        text n2 = new text("name2","姓名2");
+        if(info!=null) n2.setValue(info.getName2());
+        text n3 = new text("name3","姓名3");
+        if(info!=null) n3.setValue(info.getName3());
+        date time = new date("awardTime","日期");
+        if(info!=null) time.setValue(info.getTime()+"");
+
+        select s1 = new select("contestLevel","比赛级别");
+        for(TeamMemberAwardInfo_ContestLevel it : TeamMemberAwardInfo_ContestLevel.values()){
+            s1.add(it.getCode(),it.toString());
+        }
+        if(info!=null) s1.setValue(info.getContestLevel().getCode()+"");
+
+        select s2 = new select("awardLevel","获得奖项");
+        for(TeamMemberAwardInfo_AwardLevel it : TeamMemberAwardInfo_AwardLevel.values()){
+            s2.add(it.getCode(),it.toString());
+        }
+        if(info!=null) s2.setValue(info.getAwardLevel().getCode()+"");
+        text des = new text("text","备注");
+        if(info!=null) des.setValue(info.getText()+"");
+
+        form.addForm(time,t1,n1,t2,n2,t3,n3,s1,s2,des);
+
+        return form.toHTML();
     }
 }

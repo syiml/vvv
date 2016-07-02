@@ -121,10 +121,9 @@ var HTML={
             "</div>"
     },
     HTMLtoString:function(s){
-        s=s.replaceAll("&","&amp;");
-        s=s.replaceAll("<","&lt;");
-        s=s.replaceAll(">","&gt;");
-        //s=s.replaceAll(" ","&nbsp;");
+        s=s.replace(new RegExp(/(&)/g),'&amp;');
+        s=s.replace(new RegExp(/(<)/g),'&lt;');
+        s=s.replace(new RegExp(/(>)/g),'&gt;');
         return s;
     },
     modal:function(s){

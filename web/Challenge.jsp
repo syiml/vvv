@@ -1,5 +1,6 @@
 <%@ page import="util.JSON.ChallengeJSON" %>
 <%@ page import="util.Main" %>
+<%@ page import="servise.GvMain" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -18,6 +19,8 @@
 <link rel="stylesheet" href="css/challenge.css">
 <script>
   var blockList=<%=ChallengeJSON.getBlockList(request.getParameter("user"))%>;
+  var admin=<%=Main.loginUserPermission().getChallengeAdmin()%>;
+  var position=<%=GvMain.getChallengeJson()%>;
   //{blockList:[{id,name,group,score,isOpen,userScore},...],isSelf}
 </script>
 <html>
@@ -34,6 +37,6 @@
 <jsp:include page="module/foot.jsp"/>
 </body>
 </html>
-<%--<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>--%>
+<script src="js/jquery-ui.min.js"></script>
 <script src="js/challenge.js"></script>
 <script src="js/status.js"></script>

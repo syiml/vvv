@@ -223,7 +223,8 @@ public class SQL {
             for(int i=0;i<args.length;i++){
                 p.setObject(i+1,args[i]);
             }
-            Tool.debug(p.toString());
+            String sql =p.toString();
+            Tool.debug(sql.substring(sql.indexOf(':')+1));
             return p.executeUpdate();
         } catch (SQLException e) {
             if(log)Tool.log(e);

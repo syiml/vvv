@@ -1,5 +1,7 @@
 package dao;
 
+import action.TeamAward;
+import entity.TeamMemberAwardInfo;
 import util.Main;
 import entity.Permission;
 import entity.RegisterUser;
@@ -10,21 +12,24 @@ import util.SQL;
 import action.edit;
 import util.Tool;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class UserSQL extends BaseCach<User>{
+public class UserSQL extends BaseCach<String,User>{
     /*
     * users(username,password,nick,gender,Email,motto,registertime,type,solved,submissions,Mark)
     * permission(id,name)
     * userper(username,perid)
     * */
+    public UserSQL(){
+        maxSize = 11;
+        cachTime = 20*60*1000;
+    }
+
     public int register(User u){
         SQL sql1=new SQL("select * from users where username=?",u.getUsername());
         try {
@@ -100,21 +105,10 @@ public class UserSQL extends BaseCach<User>{
         removeCatch(user);
     }
 
-    public User getUser(String username){
-        User user = getBeanFromCatch(username);
-        if(user == null){
-            user = getUser(username,false);
-            if(user==null) return null;
-            set_catch(username, user);
-            return user;
-        }else{
-            //Tool.debug("getUserFromCatch("+username+")");
-            return user;
-        }
-    }
     public User getUserHaveRank(String username){
         return getUser(username,true);
     }
+    public User getUser(String username){return getBeanByKey(username);}
     private User getUser(String username,boolean rank){
         SQL sql;
         if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from v_user where username=? ",username);
@@ -303,7 +297,53 @@ public class UserSQL extends BaseCach<User>{
         removeCatch(u.getUsername());
         return (new SQL(sql, u.getUsername()).update()==1);
     }
-
+    public TeamMemberAwardInfo getTeamMemberAwardInfo(int id){
+        return new SQL("SELECT * FROM t_team_member_info WHERE id = ?",id).queryBean(TeamMemberAwardInfo.class);
+    }
+    public List<TeamMemberAwardInfo> getTeamMemberAwardInfoList(String username) {
+        return new SQL("SELECT * FROM t_team_member_info WHERE username1 = ? OR username2 = ? OR username3 = ? ORDER BY time",username,username,username).queryBeanList(TeamMemberAwardInfo.class);
+    }
+    public List<TeamMemberAwardInfo> getTeamMemberAwardInfoList(int from,int num,boolean admin){
+        if(admin)
+            return new SQL("SELECT * FROM t_team_member_info ORDER BY time DESC LIMIT ?,?",from,num).queryBeanList(TeamMemberAwardInfo.class);
+        else
+            return new SQL("SELECT * FROM t_team_member_info WHERE contest_level!=-1 ORDER BY time DESC LIMIT ?,?",from,num).queryBeanList(TeamMemberAwardInfo.class);
+    }
+    public int updateTeamMemberAwardInfo(TeamAward info){
+        return new SQL("REPLACE t_team_member_info values(?,?,?,?,?,?,?,?,?,?,?)",
+                info.getId(),
+                Date.valueOf(info.getAwardTime_d()),
+                info.getUsername1(),
+                info.getUsername2(),
+                info.getUsername3(),
+                info.getName1(),
+                info.getName2(),
+                info.getName3(),
+                info.getContestLevel(),
+                info.getAwardLevel(),
+                info.getText()
+        ).update();
+    }
+    public int addTeamMemberAwardInfo(TeamAward info){
+        return new SQL("INSERT INTO t_team_member_info(time,username1,username2,username3,name1,name2,name3,contest_level,awards_level,text) values(?,?,?,?,?,?,?,?,?,?)",
+                Date.valueOf(info.getAwardTime_d()),
+                info.getUsername1(),
+                info.getUsername2(),
+                info.getUsername3(),
+                info.getName1(),
+                info.getName2(),
+                info.getName3(),
+                info.getContestLevel(),
+                info.getAwardLevel(),
+                info.getText()
+                ).update();
+    }
+    public int delTeamMemberAwardInfo(int id){
+        return new SQL("DELETE FROM t_team_member_info WHERE id=?",id).update();
+    }
+    public int getTeamMemberAwardInfoListNum(){
+        return new SQL("SELECT COUNT(*) FROM t_team_member_info").queryNum();
+    }
     public boolean haveViewCode(String user,int pid){
         SQL sql=new SQL("SELECT * FROM t_viewcode WHERE username=? AND pid=?", user, pid);
         ResultSet rs=sql.query();
@@ -352,8 +392,12 @@ public class UserSQL extends BaseCach<User>{
     public int addACB(String user,int num){
         return new SQL("UPDATE users SET acb=acb+? WHERE username=?",num,user).update();
     }
-    public int subACB(String user,int num){
-        return new SQL("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?",num,user,num).update();
+    public int subACB(String user,int num) {
+        return new SQL("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?", num, user, num).update();
     }
 
+    @Override
+    protected User getByKeyFromSQL(String username) {
+        return getUser(username,false);
+    }
 }

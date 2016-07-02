@@ -118,11 +118,7 @@ public class statu implements IBeanResultSetCreate<statu>{
         }
     }
     public int getContestPid(){
-        if(cid==-1)
-            return -1;
-        else{
-            return ContestMain.getContest(cid).getcpid(pid);
-        }
+        return ContestMain.getContest(cid).getcpid(pid);
     }
     public String resultToHTML(Result s){
         if(s==Result.AC) return HTML.span("success", "Accepted");
@@ -153,5 +149,7 @@ public class statu implements IBeanResultSetCreate<statu>{
     public static int resultToInt(Result rr){
         return rr.getValue();
     }
-
+    public void setCid(int cid){
+        this.cid=cid;
+    }
 }

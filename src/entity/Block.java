@@ -16,12 +16,14 @@ public class Block {
     String name;
     int group;//所属专题：如 基础、数据结构、数论
     int score;//题目的总积分
+    int isEditing;//正在编辑
     public List<Condition> conditions;
-    public Block(int id,String name,int group){
+    public Block(int id,String name,int group,int isEditing){
         this.id=id;
         this.name=name;
         this.group=group;
         this.score=0;
+        this.isEditing=isEditing;
         conditions=new ArrayList<Condition>();
     }
     public String getName(){
@@ -43,6 +45,7 @@ public class Block {
      * @return 条件列表conditions全部满足则返回true
      */
     public boolean isTrue(Map<Integer,Integer> userScore){
+        if(isEditing!=0) return false;//正在编辑的模块不能开启
         for(Condition c:conditions){
             if(!c.isTrue1(userScore))return false;
         }
@@ -66,5 +69,13 @@ public class Block {
 
     public List<Condition> getConditions() {
         return conditions;
+    }
+
+    public int getIsEditing() {
+        return isEditing;
+    }
+
+    public void setIsEditing(int isEditing) {
+        this.isEditing = isEditing;
     }
 }

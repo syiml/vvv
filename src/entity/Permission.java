@@ -34,6 +34,9 @@ public class Permission{
     boolean userAdmin=false;//用户管理，可以查看修改用户详细信息，认证正式队员
 
     boolean viewLog=false;
+
+    boolean examAdmin=false;
+    boolean teamMemberAdmin=false;
     /**
      * 根据数据库结果集产生
      * @param rs 数据库结果集，userPer表的单个User记录
@@ -61,14 +64,15 @@ public class Permission{
                     case 14:resetPassword=true;break;
                     case 15:userAdmin=true;break;
                     case 16:viewLog=true;break;
+                    case 17:examAdmin=true;break;
+                    case 18:teamMemberAdmin=true;break;
                 }
             }
         } catch (SQLException e) {
             Tool.log(e);
         }
     }
-    public Permission(){
-    }
+    public Permission(){}
     public boolean getAddProblem(){return addProblem;}
     public boolean getAddLocalProblem(){return addLocalProblem;}
     public boolean getViewCode(){return viewCode;}
@@ -80,14 +84,15 @@ public class Permission{
     public boolean getAddTag(){return addTag;}
     public boolean getClockIn(){return clockin;}
     public boolean getPermissionAdmin(){return PermissionAdmin;}
-    public boolean getAwardACB(){
-        return awardACB;
-    }
+    public boolean getAwardACB(){return awardACB;}
     public boolean getContestRegisterAdmin(){return contestRegisterAdmin;}
     public boolean getChallengeAdmin(){return challengeAdmin;}
     public boolean getResetPassword(){return resetPassword;}
     public boolean getUserAdmin(){return userAdmin;}
     public boolean getViewLog(){return viewLog;}
+    public boolean getExamAdmin(){return examAdmin;}
+    public boolean getTeamMemberAdmin() {return teamMemberAdmin;}
+
     /**
      * 产生显示在个人页面的权限列表
      * @return 权限列表HTML代码
@@ -111,6 +116,8 @@ public class Permission{
         if(challengeAdmin) s+=(HTML.span("success","挑战模式管理"))+" ";
         if(userAdmin) s+=(HTML.span("success","用户管理"))+" ";
         if(viewLog) s+=(HTML.span("success","Log查看"))+" ";
+        if(examAdmin) s+=(HTML.span("success","考试管理"))+" ";
+        if(teamMemberAdmin) s+=(HTML.span("success","集训队员管理"))+" ";
         return s;
     }
 }
