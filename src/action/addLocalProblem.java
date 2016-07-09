@@ -40,10 +40,19 @@ public class addLocalProblem {
         this.pid = pid;
     }
 
+    public void setIsSpj(String isSpj) {
+        this.isSpj = isSpj!=null;
+    }
+
+    public String getIsSpj() {
+        return isSpj?"true":null;
+    }
+
     public String title;
     public String time;
     public String memory;
     public String pid;
+    public boolean isSpj;
     String author;
 
 

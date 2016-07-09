@@ -44,6 +44,17 @@ public class addproblem1 {
     String ojspid;
     String title;
     String author;
+    String isSpj;
+
+    public void setIsSpj(String isSpj) {
+        this.isSpj = isSpj;
+    }
+
+    public String getIsSpj() {
+
+        return isSpj;
+    }
+
 
     public String addproblem1(){
         if(!Main.loginUserPermission().getAddProblem()) return "error";

@@ -79,13 +79,14 @@ public class Main {
         status.init();
     }
     public static String addProblem(addproblem1 action){
-        Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle(),action.getAuthor());
+        Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle(),action.getAuthor(),action.getIsSpj()!=null);
         problems.addProblem(action.getPid(), p);
         return "success";
     }
     public static String addLocalProblem(addLocalProblem action){
         Problem p=new Problem(action.title);
         p.Author=action.getAuthor();
+        p.spj = action.isSpj;
         int newpid=problems.addProblem(-1,p);
         problemHTML ph=new problemHTML();
         ph.setInt64("%I64d");
@@ -100,6 +101,7 @@ public class Main {
         Problem p=Main.problems.getProblem(pid);
         p.Title=action.getTitle();
         p.Author=action.getAuthor();
+        p.spj = action.isSpj;
         Main.problems.editProblem(pid,p);
         problemHTML ph=Main.problems.getProblemHTML(pid);
         ph.setTimeLimit(action.getTime()+"MS");

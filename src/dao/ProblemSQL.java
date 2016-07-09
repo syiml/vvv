@@ -82,7 +82,7 @@ public class ProblemSQL {
         return (maxpid-1000)/num+1;//没有任何题目默认有一页为空
     }
     public void editProblem(int pid,Problem pro){
-        new SQL("UPDATE problem SET title=?,ojid=?,ojspid=?,author=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pid).update();
+        new SQL("UPDATE problem SET title=?,ojid=?,ojspid=?,author=?,spj=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pro.isSpj(),pid).update();
         remove(pid);
     }
     public int addProblem(int pid,Problem pro){
@@ -94,7 +94,7 @@ public class ProblemSQL {
             editProblem(pid,pro);
             return pid;
         }
-        new SQL("Insert into problem values(?,?,?,?,?,?,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0,pro.getAuthor()).update();
+        new SQL("Insert into problem values(?,?,?,?,?,?,?,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0,pro.getAuthor(),pro.isSpj()).update();
         Insert(pid,pro);//插入缓存 和 数据库
         return newpid;
     }
@@ -200,6 +200,7 @@ public class ProblemSQL {
         return ret;
     }
     public problemHTML getProblemHTML(int pid){
+        Problem p = Main.problems.getProblem(pid);
         problemHTML ph=new problemHTML(pid);
         SQL sql=new SQL("SELECT pid,timelimit,MenoryLimit,Int64,spj,Dis,Input,Output FROM t_problemview WHERE pid= ?",pid);
         try {
@@ -209,7 +210,11 @@ public class ProblemSQL {
                 ph.setTimeLimit(s.getString(2));
                 ph.setMenoryLimit(s.getString(3));
                 ph.setInt64(s.getString(4));
-                ph.setSpj(s.getInt(5));
+                if(p.isLocal()){
+                    ph.setSpj(p.isSpj()?1:0);
+                }else{
+                    ph.setSpj(s.getInt(5));
+                }
                 ph.setDis(s.getString(6));
                 ph.setInput(s.getString(7));
                 ph.setOutput(s.getString(8));

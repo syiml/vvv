@@ -773,17 +773,21 @@ public class HTML {
 
         FormHTML uploadForm=new FormHTML();
         uploadForm.setAction("uploadFile");
-        uploadForm.setCol(2,10);
+        uploadForm.setCol(2, 10);
         file inf=new file("samplein","输入");
         inf.setAccept(".in");
         uploadForm.addForm(inf);
         file outf=new file("sampleout", "输出");
         outf.setAccept(".out");
         uploadForm.addForm(outf);
-        text t=new text("pid","pid");
-        t.setValue(pid+"");
-        t.setDisabled();
-        uploadForm.addForm(t);
+
+        if(p.isSpj()){
+            file spj=new file("spj","特判程序");
+            inf.setAccept("spj.cpp");
+            uploadForm.addForm(spj);
+        }
+
+        uploadForm.addForm(new hidden("pid",pid+""));
         uploadForm.setEnctype();
         return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML())+panel("上传",uploadForm.toHTML());
     }
@@ -1369,10 +1373,10 @@ public class HTML {
         f5.setPlaceholder("可以为空");
         if(p!=null) f5.setValue(p.getAuthor());
 
-        f.addForm(t1);
-        f.addForm(t2);
-        f.addForm(t3);
-        f.addForm(f5);
+        check isSpj = new check("isSpj","特判 (特判必须在上传数据时上传spj.cpp文件)");
+        if(p!=null)isSpj.setValue(p.isSpj()?"true":"false");
+
+        f.addForm(t1,t2,t3,f5,isSpj);
         f.setCol(2,10);
         return f.toHTML();
     }

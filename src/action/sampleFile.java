@@ -2,6 +2,7 @@ package action;
 
 import util.Main;
 import util.FILE;
+import util.Tool;
 
 import java.io.File;
 import java.io.InputStream;
@@ -53,12 +54,29 @@ public class sampleFile {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+    public void setSpj(File spj) {
+        this.spj = spj;
+    }
+    public void setSpjFileName(String spjFileName) {
+        this.spjFileName = spjFileName;
+    }
+    public File getSpj() {
+
+        return spj;
+    }
+    public String getSpjFileName() {
+        return spjFileName;
+    }
+
     String pid;
     String filename;
     File samplein;
     String sampleinFileName;
     File sampleout;
     String sampleoutFileName;
+    File spj;
+    String spjFileName;
+
     private String fileName;
 
     public String del(){
@@ -74,6 +92,7 @@ public class sampleFile {
         if(Main.loginUserPermission().getAddLocalProblem()){
             FILE.uploadFile(Integer.parseInt(pid),sampleinFileName,samplein);
             FILE.uploadFile(Integer.parseInt(pid),sampleoutFileName,sampleout);
+            FILE.uploadFile(Integer.parseInt(pid),"spj.cpp",spj);
             return "success";
         }else{
             return "error";
@@ -82,7 +101,8 @@ public class sampleFile {
     public InputStream getDownloadFile(){
         //解解乱码
         //filename = new String(filename.getBytes("GBK"),"ISO-8859-1");
-        fileName=filename;
+        //fileName=filename;
+        //Tool.debug("DownLoad "+pid+","+filename);
         return FILE.download(Integer.parseInt(pid),filename);
     }
     public String download() throws Exception {

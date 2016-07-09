@@ -101,8 +101,181 @@ public class LocalJudge {
         }
         return true;
     }
+    public static boolean existFile(File[] files,String filename){
+        for (File file : files) {
+            if (file.getName().equals(filename)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean compileSpjCPP(String pid,RES res){
+        File workPath = new File(path+"\\"+pid+"\\");
+        String fileName = "spj";
+        try {
+            String cmd = gccPath+"g++.exe -fno-asm -s -w -O1 -DONLINE_JUDGE -o "+path+pid+"\\spj "+path+pid+"\\spj.cpp";
+            Runtime rt = Runtime.getRuntime();
+            Process pro = rt.exec(shell);
+            OutputStream proOutStr = pro.getOutputStream();
+            proOutStr.write((cmd + "\n").getBytes());
+            Tool.debug(cmd);
+            proOutStr.flush();
+            BufferedReader br = new BufferedReader(new InputStreamReader(pro.getErrorStream()));
+            String errorInfo = "";
+            long time = System.currentTimeMillis();
+            while (time + 10000L > System.currentTimeMillis() && (errorInfo = br.readLine()) != null) {
+                errorInfo = errorInfo + "\n";
+            }
+            br.close();
+            try {
+                pro.waitFor();
+            } catch (InterruptedException ignored){}
+            File exe = new File(workPath.getAbsolutePath() +"\\spj.exe");
+            //ServerConfig.debug(Tool.fixPath(workPath.getAbsolutePath()) + fileName + ".exe");
+            if (!exe.isFile()) {
+                res.setR(Result.ERROR);
+                res.setCEInfo("spj.cpp 编译错误\n"+errorInfo);
+                return false;
+            }
+        }catch (Exception e) {
+            e.printStackTrace(System.err);
+            return false;
+        }
+        return true;
+    }
     public static String fixPath(String path) {
         return path.endsWith("\\")?path:path + "\\";
+    }
+    private static int spjRun(String shell,String f_in,String f_out,String f_user) throws IOException {
+        Process runExe = Runtime.getRuntime().exec(shell + " " + f_in + " " + f_out + " " + f_user);
+        Tool.debug("spj执行:"+shell + " " + f_in + " " + f_out + " " + f_user);
+        try {
+            runExe.waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return runExe.exitValue();
+    }
+    private static int spjRun(String file1,String file2,VjSubmitter s,RES res) throws IOException {
+        //返回0表示AC
+        //返回1表示WA
+        Tool.debug("spj:"+file1+","+file2);
+        Process runExe = Runtime.getRuntime().exec(runshell);
+        OutputStream runExeOutputStream = runExe.getOutputStream();
+
+        int FileListSize = 1;
+        Pair<Integer,Integer> limit=Main.problems.getProblemLimit(Integer.parseInt(s.getSubmitInfo().pid));
+        runExeOutputStream.write((limit.getKey()+"\n").getBytes());//时限(MS)
+        runExeOutputStream.write(("30000\n").getBytes());//单点时限
+        File file = new File(fixPath(outPath) + s.getSubmitInfo().getRid());
+        try {
+            String filename = "Main";
+            long exMemory = 0L;
+            runExeOutputStream.write(((limit.getValue() * 1024L + exMemory) * 1024L + "\n").getBytes());//内存限制MB
+            String mainExe = filename+".exe";
+            runExeOutputStream.write((file.getAbsolutePath() + "\\" + mainExe + "\n").getBytes());
+            runExeOutputStream.write((file.getAbsolutePath() + "\\\n").getBytes());
+            runExeOutputStream.write((FileListSize + "\n").getBytes());
+            long TimeUsed = 0L;
+            long MemoryUsed = 0L;
+            File var20 = new File(file2);
+            try {
+                runExeOutputStream.write((file1 + "\n").getBytes());
+                runExeOutputStream.write((fixPath(file.getAbsolutePath()) + var20.getName() + "\n").getBytes());
+                runExeOutputStream.write((var20.getAbsolutePath() + "\n").getBytes());
+            } catch (IOException ignored) {}
+            finally {
+                runExeOutputStream.flush();
+            }
+            String isOut = null;
+            BufferedReader is = new BufferedReader(new InputStreamReader(runExe.getInputStream()));
+            BufferedReader es = new BufferedReader(new InputStreamReader(runExe.getErrorStream()));
+            String esOut = "";
+            try {
+                isOut = is.readLine();
+                TimeUsed = Long.parseLong(isOut);
+                isOut = is.readLine();
+                MemoryUsed = Long.parseLong(isOut);
+                while((isOut = es.readLine())!= null){
+                    esOut = esOut + isOut;
+                }
+            } catch (Exception ignored) {}
+            MemoryUsed -=  exMemory;
+            runExe.waitFor();
+            try {
+                es.close();
+                is.close();
+            } catch (IOException ignored) {}
+
+            int ret = runExe.exitValue();
+            if(ret != 0 && esOut.contains("Exception")) {
+                ret = 5;
+            }
+            //res.setTime(TimeUsed+"MS");
+            //res.setMemory(MemoryUsed+"KB");
+            Tool.debug("judge return:"+ret +" esOut:"+esOut);
+            if(ret == 0 || ret == 1 || ret == 4){
+                //SPJ
+                ret = spjRun(path+s.getSubmitInfo().pid+"\\spj.exe",file1,file2,fixPath(file.getAbsolutePath()) + var20.getName());
+                Tool.debug("spj return:"+ret);
+            }
+            return ret;
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return -1;
+        }
+    }
+    private static int spjRun(VjSubmitter s,RES res) throws IOException{
+        //spj 程序
+        File pathFile = new File(path+"\\"+s.getSubmitInfo().pid+"\\");
+        if(!pathFile.isDirectory()) {
+            System.err.println(path + "not exists");
+            return -1;
+        } else {
+            File[] pathFiles = pathFile.listFiles();
+            File file;
+            int i;
+            //先检查是否存在spj.exe文件
+            if(!existFile(pathFiles,"spj.exe")){
+                if(existFile(pathFiles,"spj.cpp")){
+                    if(!compileSpjCPP(s.getSubmitInfo().pid,res)){
+                        return -1;
+                    }
+                }else{
+                    res.setR(Result.ERROR);
+                    res.setCEInfo("spj程序不存在 请上传spj.cpp文件到数据目录下");
+                    return -1;
+                }
+            }
+            int ret = -1;
+            for(i = 0; i < pathFiles.length; ++i) {
+                file = pathFiles[i];
+                if(file.getName().endsWith(".in")) {
+                    File var11 = new File(fixPath(pathFile.getAbsolutePath()) + file.getName().substring(0, file.getName().length() - ".in".length()) + ".out");
+                    if(var11.isFile()) {
+                        if(spjRun(file.getAbsolutePath(),var11.getAbsolutePath(),s,res)!=0){
+                            ret = 4;
+                            break;
+                        }else{
+                            if(ret==-1) ret=0;
+                        }
+                    }else{
+                        res.setR(Result.ERROR);
+                        res.setCEInfo("数据文件不匹配。"+file.getName()+"没有对应的.out文件");
+                        return -1;
+                    }
+                }
+                if(file.getName().endsWith(".out")) {
+                    File var11 = new File(fixPath(pathFile.getAbsolutePath()) + file.getName().substring(0, file.getName().length() - ".out".length()) + ".in");
+                    if(!var11.isFile()) {
+                        res.setR(Result.ERROR);
+                        res.setCEInfo("数据文件不匹配。"+file.getName()+"没有对应的.in文件");
+                        return -1;
+                    }
+                }
+            }
+            return ret;
+        }
     }
     private static int run(VjSubmitter s, RES res) throws IOException {
         Process runExe = Runtime.getRuntime().exec(runshell);
@@ -187,6 +360,7 @@ public class LocalJudge {
                 if(ret != 0 && esOut.contains("Exception")) {
                     ret = 5;
                 }
+                Tool.debug("judge return:"+ret +" esOut:"+esOut);
                 res.setTime(TimeUsed+"MS");
                 res.setMemory(MemoryUsed+"KB");
                 return ret;
@@ -210,7 +384,15 @@ public class LocalJudge {
             s.showstatus="CompileSuccess";
             try {
                 s.showstatus="Running";
-                ret=run(s,res);
+                if(Main.problems.getProblem(Integer.parseInt(s.getSubmitInfo().pid)).isSpj()){
+
+                    Tool.debug("LocalJudge SPJ");
+                    ret=spjRun(s, res);
+                }else{
+                    Tool.debug("LocalJudge");
+                    ret=run(s,res);
+                }
+
                 s.showstatus="runDone";
             } catch (IOException e) {
                 e.printStackTrace();

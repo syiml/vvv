@@ -14,12 +14,14 @@ public class Problem {
     //otheroj
     int ojid;
     String ojspid;
-    public Problem(int ojid,String ojspid,String title,String author){
+    public boolean spj;
+    public Problem(int ojid,String ojspid,String title,String author,boolean spj){
         this.ojid=ojid;
         this.ojspid=ojspid;
         this.Title=title;
         this.type=1;
         this.Author=author;
+        this.spj=spj;
     }
     public Problem(String title){
         this.ojid=0;
@@ -29,13 +31,14 @@ public class Problem {
         this.Author="";
     }
     public Problem(ResultSet r) throws SQLException {
-        //pid,type,title,ojid,ojspid,visiable,author
-            type=r.getInt(2);
-            Title=r.getString(3);
-            ojid=r.getInt(4);
-            ojspid=r.getString(5);
-            visiable=r.getInt(6);
-            Author=r.getString(7);
+        //pid,type,title,ojid,ojspid,visiable,author,spj
+        type=r.getInt(2);
+        Title=r.getString(3);
+        ojid=r.getInt(4);
+        ojspid=r.getString(5);
+        visiable=r.getInt(6);
+        Author=r.getString(7);
+        spj = r.getBoolean("spj");
     }
     public Problem(ResultSet r,int prid){
         // id,Title
@@ -55,7 +58,7 @@ public class Problem {
     public int getType(){
         return type;
     }
-
+    public boolean isSpj(){return spj;}
     static public int LOCAL=0;
     static public int OTHEROJ=1;
     static public int ONLYDES=2;
