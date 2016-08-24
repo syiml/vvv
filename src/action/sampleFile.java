@@ -90,9 +90,9 @@ public class sampleFile {
     }
     public String upload(){
         if(Main.loginUserPermission().getAddLocalProblem()){
-            FILE.uploadFile(Integer.parseInt(pid),sampleinFileName,samplein);
-            FILE.uploadFile(Integer.parseInt(pid),sampleoutFileName,sampleout);
-            FILE.uploadFile(Integer.parseInt(pid),"spj.cpp",spj);
+            if(samplein!=null)FILE.uploadFile(Integer.parseInt(pid),sampleinFileName,samplein);
+            if(sampleout!=null)FILE.uploadFile(Integer.parseInt(pid),sampleoutFileName,sampleout);
+            if(spj!=null)FILE.uploadFile(Integer.parseInt(pid),"spj.cpp",spj);
             return "success";
         }else{
             return "error";

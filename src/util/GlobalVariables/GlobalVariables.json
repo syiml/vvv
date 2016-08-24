@@ -17,7 +17,7 @@
   "maxHeadImgSize":524288,
   "maxSampleFileSize":10737418240,
   "debug":true,
-  "version":"2.40",
+  "version":"2.42",
 
   "hdu":{
     "URL":"http://acm.hdu.edu.cn",

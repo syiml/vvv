@@ -171,7 +171,11 @@ public class ClockInHTML {
             row.add(cir.time.toString().substring(0, 19));
             row.add(cir.ip);
             if(!cir.sign.substring(0,2).equals("请假")){
-                row.add((cir.todytimes==0?"上午":cir.todytimes==1?"下午":"晚上") + "第"+rank+"名签到，状态：" + cir.sign.substring(0,2));
+                if(user == null){
+                    row.add((cir.todytimes==0?"上午":cir.todytimes==1?"下午":"晚上") + "第"+rank+"名签到，状态：" + cir.sign.substring(0,2));
+                }else{
+                    row.add((cir.todytimes==0?"上午":cir.todytimes==1?"下午":"晚上") + "签到，状态：" + cir.sign.substring(0,2));
+                }
                 rank++;
             }else{
                 row.add((cir.todytimes==0?"上午":cir.todytimes==1?"下午":"晚上") + cir.sign.substring(0,2));
@@ -186,34 +190,20 @@ public class ClockInHTML {
     static List<String> showusers;
     static{//要统计的用户列表，可以存起来
         showusers=new ArrayList<String>();
-//        showusers.add("admin");
-        showusers.add("huzhenbo");
-        showusers.add("hzz1346");
-        showusers.add("723264836");
-        showusers.add("3131906112");
-        showusers.add("3131903219");
-        showusers.add("luoling");
-        showusers.add("qpyghb");
-        showusers.add("WRQ520");
-        showusers.add("boylh");
-        showusers.add("shanks");
-        //showusers.add("3141905203");
-        showusers.add("sunset_sparkle");
-        showusers.add("3141906223");
-        //showusers.add("3141911104");
         showusers.add("FJUTACM1408");
-        showusers.add("3141911209");
-        showusers.add("377834606");
-        showusers.add("FJUTACM1414");
+        showusers.add("3141906223");
         showusers.add("FJUTACM1415");
-        showusers.add("FJUT1416");
-        showusers.add("FJUTACM1417");
-        showusers.add("3141906113");
-        //showusers.add("3141906110");
         showusers.add("3141906116");
-        showusers.add("lxr12345");
-        showusers.add("3141911211");
-        showusers.add("gagaga");
+        showusers.add("3151906216");
+        showusers.add("cjt152");
+        showusers.add("3151301111");
+        showusers.add("Moon450362681");
+        showusers.add("cmjkcm");
+        showusers.add("chenshuiji");
+        showusers.add("al1457");
+        showusers.add("zzy1997");
+        showusers.add("shixiaodong");
+        showusers.add("3151906215");
     }
     public static String HTMLtable(){
         TableHTML table=new TableHTML();
@@ -231,7 +221,7 @@ public class ClockInHTML {
 //        List<Integer> l4=new ArrayList<Integer>();//旷课
         List<Integer> l5=new ArrayList<Integer>();//积分
         List<List<String>> tablerows=new ArrayList<List<String>>();
-        Long beginday=16644L;
+        Long beginday=16824L;
         Long day=(Tool.now().getTime()+(1000*60*60*8))/(1000*60*60*24);
         for(int i=0;i<showusers.size();i++){
             l1.add(0);

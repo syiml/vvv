@@ -211,8 +211,10 @@ public class LocalJudge {
             if(ret != 0 && esOut.contains("Exception")) {
                 ret = 5;
             }
-            //res.setTime(TimeUsed+"MS");
-            //res.setMemory(MemoryUsed+"KB");
+            Long TimeUsed_pre = Long.parseLong(res.getTime());
+            Long MemoryUsed_pre = Long.parseLong(res.getTime());
+            res.setTime(Math.max(TimeUsed_pre,TimeUsed)+"");
+            res.setMemory(Math.max(MemoryUsed_pre, MemoryUsed) + "");
             Tool.debug("judge return:"+ret +" esOut:"+esOut);
             if(ret == 0 || ret == 1 || ret == 4){
                 //SPJ
@@ -248,16 +250,16 @@ public class LocalJudge {
                 }
             }
             int ret = -1;
+            res.setTime("0");
+            res.setMemory("0");
             for(i = 0; i < pathFiles.length; ++i) {
                 file = pathFiles[i];
                 if(file.getName().endsWith(".in")) {
                     File var11 = new File(fixPath(pathFile.getAbsolutePath()) + file.getName().substring(0, file.getName().length() - ".in".length()) + ".out");
                     if(var11.isFile()) {
-                        if(spjRun(file.getAbsolutePath(),var11.getAbsolutePath(),s,res)!=0){
-                            ret = 4;
+                        ret = spjRun(file.getAbsolutePath(),var11.getAbsolutePath(),s,res);
+                        if(ret!=0){
                             break;
-                        }else{
-                            if(ret==-1) ret=0;
                         }
                     }else{
                         res.setR(Result.ERROR);
@@ -274,6 +276,8 @@ public class LocalJudge {
                     }
                 }
             }
+            res.setTime(res.getTime()+"MS");
+            res.setMemory(res.getMemory()+"KB");
             return ret;
         }
     }

@@ -25,6 +25,10 @@
 <html>
 <head>
     <title>题目 - T^T Online Judge</title>
+    <%--<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>--%>
+    <script type="text/javascript" src="http://acm.hdu.edu.cn/js/MathJax/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <%--<script type="text/javascript" src="js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>--%>
+    <%--<script type="text/javascript" src="js/MathJax/MathJax.js?config=MMLorHTML"></script>--%>
 </head>
 <body><div class="container-fluid">
   <jsp:include page="module/head.jsp"/>
