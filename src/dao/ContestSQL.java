@@ -255,7 +255,7 @@ public class ContestSQL extends BaseCach<Integer,Contest>{
      * @return 返回题目连接和名称的超链接
      */
     public String problemContest(int pid){
-        SQL sql=new SQL("SELECT * FROM `contestproblems` left join contest on cid=id WHERE tpid=? order by begintime limit 0,1",pid);
+        SQL sql=new SQL("SELECT * FROM `contestproblems` left join contest on cid=id WHERE tpid=? and kind!=4 order by begintime limit 0,1",pid);
         ResultSet rs=sql.query();
         try {
             if(rs.next()){
