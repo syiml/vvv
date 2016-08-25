@@ -26,7 +26,7 @@ public class UserSQL extends BaseCach<String,User>{
     * userper(username,perid)
     * */
     public UserSQL(){
-        maxSize = 11;
+        maxSize = 100;
         cachTime = 20*60*1000;
     }
 

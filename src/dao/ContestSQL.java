@@ -19,23 +19,21 @@ import java.util.Map;
 /**
  * Created by Administrator on 2015/5/24.
  */
-public class ContestSQL {
+public class ContestSQL extends BaseCach<Integer,Contest>{
     /*
     * contest(id,name,beginTime,endTime,rankType,ctype,password,registerendtime)
     * contestproblems(cid,pid,tpid)
     * contestuser(cid,username,statu,info)
     * */
-    private static int maxmapnum=5;
-    private Map<Integer,Contest> cSQL;
     public ContestSQL(){
-        cSQL=new HashMap<Integer, Contest>();
-        //cSQL.put(0, new Contest());
+        this.maxSize = 10;
+        this.cachTime = 60*60*1000;
     }
-    public String deleteproblems(int cid){
+    private String deleteproblems(int cid){
         new SQL("delete from contestproblems where cid=?",cid).update();
         return "success";
     }
-    public String addProblems(int cid,String s){
+    private String addProblems(int cid,String s){
         if(s.equals("")) return "success";
         //参数：s：以半角逗号分隔开的pid列表
         String[] pids=s.split(",");
@@ -104,7 +102,7 @@ public class ContestSQL {
     }
     public String addUserContest(int cid,String username,int statu){
         new SQL("INSERT INTO contestuser VALUES(?,?,?,?,?)",cid,username,statu,"",Tool.now()).update();
-        ContestMain.getContest(cid).reSetUsers();
+        removeCatch(cid);
         return "success";
     }
     public String setUserContest(int cid,String username,int statu,String info){
@@ -123,7 +121,7 @@ public class ContestSQL {
             }
         }
         if(statu==-2){//-2 -> 删除
-            ContestMain.getContest(cid).reSetUsers();
+            removeCatch(cid);
             if(c.getType() == Contest_Type.TEAM_OFFICIAL) {
                 return delTeamContest(cid,username);
             }else {
@@ -141,50 +139,26 @@ public class ContestSQL {
             new SQL("UPDATE "+table+" set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username).update();
             MessageMain.addMessageRegisterContest(username, cid, statu);
         }
-        ContestMain.getContest(cid).reSetUsers();
+        removeCatch(cid);
         return "success";
     }
     public String delUserContest(int cid,String username){
         new SQL("DELETE FROM contestuser  WHERE cid=? AND username=?",cid,username).update();
-        ContestMain.getContest(cid).reSetUsers();
+        removeCatch(cid);
         return "success";
     }
     public String delTeamContest(int cid,String username){
         Tool.log("delTeamContest");
         new SQL("DELETE FROM t_register_team  WHERE cid=? AND username=?",cid,username).update();
         new SQL("DELETE FROM t_userinfo WHERE cid=? AND username=?",cid,username).update();
-        ContestMain.getContest(cid).reSetUsers();
+        removeCatch(cid);
         return "success";
     }
     public Contest getContest(int cid) {
-        //cSQL作为缓存，如果里面有这个contest的话就直接获取，否则从数据库获取
-        if(cSQL.size()>=maxmapnum) cSQL.clear();
-        if(cSQL.containsKey(cid)){
-            //System.out.println("get("+cid+") in cSQL");
-            return cSQL.get(cid);
-        }
-        ResultSet c,pros;
-        SQL sql1=new SQL("select * from contest where id=?",cid);
-        c=sql1.query();
-        SQL sql2=new SQL("select pid,tpid from contestproblems where cid=? order by pid",cid);
-        pros=sql2.query();
-        try {
-            Contest con = new Contest(c,pros);
-            cSQL.put(cid,con);
-            return con;
-        }finally {
-            sql1.close();
-            sql2.close();
-        }
-    }
-    public void deleteMapContest(int cid){
-        cSQL.remove(cid);
+        return getBeanByKey(cid);
     }
     public int getNewId(){
         return new SQL("select MAX(id)+1 from contest").queryNum();
-    }
-    public int size(){
-        return cSQL.size();
     }
     public List<Contest> getContests(int from,int num,int statu,String name,int type,int kind){
         //statu: pending/running/end   0/1/2
@@ -273,18 +247,6 @@ public class ContestSQL {
     }
     public List<Integer> getAcRidFromCidPid(int cid,int pid){
         return new SQL("SELECT id FROM statu WHERE cid=? AND pid=? AND result=1", cid,pid).queryList();
-    }
-    public String toHTML(int cid,Contest c){
-        return   "<tr><td>"+cid+ "</td>"
-                +"<td>"+HTML.a("Contest.jsp?cid="+cid,c.getName())+"</td>"
-                +"<td>"+c.getBeginTimeString()+"</td>"
-                +"<td>"+c.getEndTimeString()+"</td>"
-                +"<td>"+c.getTypeHTML()+"</td>"
-                +"<td>"+c.getStatuHTML()+"</td>"
-                +"</tr>";
-    }
-    public String toHTML(int cid){
-        return toHTML(cid,cSQL.get(cid));
     }
 
     /**
@@ -378,5 +340,21 @@ public class ContestSQL {
     }
     public String getMaxTeamUsername(int cid){
         return new SQL("SELECT MAX(teamusername) FROM t_register_team WHERE cid=?",cid).queryString();
+    }
+
+    @Override
+    protected Contest getByKeyFromSQL(Integer cid) {
+        //cSQL作为缓存，如果里面有这个contest的话就直接获取，否则从数据库获取
+        ResultSet c,pros;
+        SQL sql1=new SQL("select * from contest where id=?",cid);
+        c=sql1.query();
+        SQL sql2=new SQL("select pid,tpid from contestproblems where cid=? order by pid",cid);
+        pros=sql2.query();
+        try {
+            return new Contest(c,pros);
+        }finally {
+            sql1.close();
+            sql2.close();
+        }
     }
 }

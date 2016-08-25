@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/5/22.
  */
-public class Contest implements IBeanResultSetCreate<Contest> {
+public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
     public static String TRUE_USERNAME = "trueusername";
 
     private int cid;
@@ -141,9 +141,6 @@ public class Contest implements IBeanResultSetCreate<Contest> {
                 users.add(new RegisterUser(us));
             }
         }
-    }
-    public void reSetUsers(){
-        ContestMain.deleteMapContest(cid);
     }
     public int getCid(){return cid;}
     public int getRankType(){return rankType;}
@@ -414,5 +411,16 @@ public class Contest implements IBeanResultSetCreate<Contest> {
             number = Integer.parseInt(maxusername.substring(maxusername.length()-3))+1;
         }
         ContestMain.updateRegisterTeamPassword(cid,username,String.format("%s%03d", prefix, number),randomPassword(6));
+    }
+
+    private Timestamp t;
+    @Override
+    public boolean isExpired() {
+        return t.before(Tool.now());
+    }
+
+    @Override
+    public void setExpired(Timestamp t) {
+        this.t = t;
     }
 }

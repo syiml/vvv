@@ -25,7 +25,6 @@ public class ContestMain {
 
     public static String editContest(addcontest a) {
         int cid = Integer.parseInt(a.cid);
-        contests.deleteMapContest(Integer.parseInt(a.cid));
         if (contests.editContest(cid, a).equals("error")) return "error";
         if (RankSQL.editRank(cid, a).equals("error")) return "error";
         return "success";
@@ -78,9 +77,6 @@ public class ContestMain {
         if (Main.loginUserPermission().getShowHideProblem()) return true;
         Contest c = contests.getContest(cid);
         return c.isBegin();
-    }
-    public static void deleteMapContest(int cid){
-        contests.deleteMapContest(cid);
     }
 
     public static Contest getContest(int cid) {
