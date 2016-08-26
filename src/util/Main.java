@@ -1,29 +1,15 @@
 package util;
 
-import WebSocket.MatchServer;
 import WebSocket.MatchWebSocket;
 import dao.*;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
-import entity.OJ.BNUOJ.BNUOJ;
-import entity.OJ.CF.CF;
-import entity.OJ.HDU.HDU;
-import entity.OJ.HUST.HUST;
-import entity.OJ.NBUT.NBUT;
-import entity.OJ.OTHOJ;
-import entity.OJ.PKU.PKU;
-import entity.Result;
 import entity.Permission;
 import entity.User;
-import util.Vjudge.SubmitInfo;
-import util.Vjudge.VJudge;
-import entity.rank.RankSQL;
-import entity.Contest;
 import entity.Problem;
 import entity.statu;
 import util.HTML.problemHTML;
 import action.addLocalProblem;
-import action.addcontest;
 import action.addproblem1;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
@@ -31,7 +17,6 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -42,16 +27,11 @@ import java.util.Set;
  */
 public class Main {
     public static final JSONObject GV=GlobalVariables.read();
-//    public static Connection conn = null;
-    public static DBConnectionPool conns = new DBConnectionPool();
+    public static DBConnectionPool conns;
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
     public static UserSQL users = new UserSQL();
     public static LogDao logs = new LogDao();
-
-    //public static OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF()};
-    //OJ列表。判题OJ顺序不能改变，否则导致已有题目的OJ不正确
-    //public static VJudge m=new VJudge();
 
     public static Submitter submitter=new SubmitterImp();
 
@@ -66,16 +46,13 @@ public class Main {
     public static String version=GV.getString("version");
     public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();
 
-    static{
+    public static void Init(){
         try {
             Class.forName(Main.GV.get("sqlclass").toString());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        autoConnecter cn=new autoConnecter();
-        cn.conn();
-        Thread connection=new Thread(cn);
-        connection.start();
+        conns = new DBConnectionPool();
         status.init();
     }
     public static String addProblem(addproblem1 action){
