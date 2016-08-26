@@ -1,6 +1,5 @@
 package dao;
 
-import action.RegisterContest;
 import entity.*;
 import servise.ContestMain;
 import util.Main;
@@ -12,14 +11,12 @@ import util.Tool;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2015/5/24.
  */
-public class ContestSQL extends BaseCach<Integer,Contest>{
+public class ContestSQL extends BaseCache<Integer,Contest> {
     /*
     * contest(id,name,beginTime,endTime,rankType,ctype,password,registerendtime)
     * contestproblems(cid,pid,tpid)

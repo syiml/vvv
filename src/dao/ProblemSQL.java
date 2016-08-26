@@ -11,18 +11,14 @@ import util.Pair;
 import util.SQL;
 import action.editproblem;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2015/5/23.
  */
-public class ProblemSQL extends BaseCach<Integer,Problem>{
+public class ProblemSQL extends BaseCache<Integer,Problem> {
     /*
     * problem(pid,ptype,title,ojid,ojspid)
     * */

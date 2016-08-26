@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by QAQ on 2016/5/27 0027.
  */
-public class ExamProblemSQL extends BaseCach<Integer,Base_Exam_problem> {
+public class ExamProblemSQL extends BaseCache<Integer,Base_Exam_problem> {
 
     @Override
     protected Base_Exam_problem getByKeyFromSQL(Integer id) {

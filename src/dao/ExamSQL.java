@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by QAQ on 2016/5/26 0026.
  */
-public class ExamSQL extends BaseCach<Integer,Exam>{
+public class ExamSQL extends BaseCache<Integer,Exam> {
 
     @Override
     protected Exam getByKeyFromSQL(Integer key) {

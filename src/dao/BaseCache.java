@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by QAQ on 2016/5/26 0026.
  */
-public abstract class BaseCach<K,T extends IBeanCanCach> {
+public abstract class BaseCache<K,T extends IBeanCanCach> {
     protected int maxSize = 100;
     protected long cachTime = 5*60*1000;//默认5分钟
 

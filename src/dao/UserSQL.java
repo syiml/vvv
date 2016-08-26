@@ -9,7 +9,6 @@ import entity.User;
 import servise.MessageMain;
 import util.HTML.HTML;
 import util.SQL;
-import action.edit;
 import util.Tool;
 
 import java.sql.*;
@@ -19,7 +18,7 @@ import java.util.*;
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class UserSQL extends BaseCach<String,User>{
+public class UserSQL extends BaseCache<String,User> {
     /*
     * users(username,password,nick,gender,Email,motto,registertime,type,solved,submissions,Mark)
     * permission(id,name)
