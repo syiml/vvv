@@ -1,12 +1,15 @@
 package entity;
 
+import util.Tool;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * Created by Administrator on 2015/5/22.
  */
-public class Problem {
+public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
     int type;//LOCAL OR OTHEROJ OR ONLYDES
     public String Title;
     public String Author;//作者
@@ -15,6 +18,12 @@ public class Problem {
     int ojid;
     String ojspid;
     public boolean spj;
+    public int totalSubmit;//总提交量
+    public int totalAc;//总AC量
+    public int totalAcUser;//总AC人数
+
+
+    public Problem(){}
     public Problem(int ojid,String ojspid,String title,String author,boolean spj){
         this.ojid=ojid;
         this.ojspid=ojspid;
@@ -62,4 +71,30 @@ public class Problem {
     static public int LOCAL=0;
     static public int OTHEROJ=1;
     static public int ONLYDES=2;
+
+    @Override
+    public Problem init(ResultSet rs) throws SQLException {
+        type=rs.getInt("ptype");
+        Title=rs.getString("title");
+        ojid=rs.getInt("ojid");
+        ojspid=rs.getString("ojspid");
+        visiable=rs.getInt("visiable");
+        Author=rs.getString("author");
+        spj = rs.getBoolean("spj");
+        totalSubmit = rs.getInt("totalSubmit");
+        totalAc = rs.getInt("totalAc");
+        totalAcUser = rs.getInt("totoalAcUser");
+        return this;
+    }
+
+    private Timestamp expiredTime;
+    @Override
+    public boolean isExpired() {
+        return expiredTime.before(Tool.now());
+    }
+
+    @Override
+    public void setExpired(Timestamp t) {
+        expiredTime = t;
+    }
 }

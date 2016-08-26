@@ -22,43 +22,16 @@ import java.util.Map;
 /**
  * Created by Administrator on 2015/5/23.
  */
-public class ProblemSQL {
+public class ProblemSQL extends BaseCach<Integer,Problem>{
     /*
     * problem(pid,ptype,title,ojid,ojspid)
     * */
-    //private List<Problem> pSQL;//if here is SQL
-    private Map<Integer, Problem> pSQL;//缓存problem
-    private final int MAXSIZE=10;
     public ProblemSQL(){
-        pSQL=new HashMap<>();
-    }
-    private void Insert(int pid,Problem p){
-        if(pSQL.size()>=MAXSIZE){
-            //控制缓存内的pid数量
-            pSQL.clear();
-        }
-        pSQL.put(pid, p);
-    }
-    public void remove(int pid){//从缓存里面清除
-        pSQL.remove(pid);
+        cachTime = 60*60*1000;
+        maxSize = 100;
     }
     public Problem getProblem(int pid){
-        //select pid,type,title,ojid,ojspid,visiable
-        if(pSQL.size()>=MAXSIZE) pSQL.clear();
-        Problem pr=pSQL.get(pid);
-        if(pr!=null) return pr;
-        SQL sql=new SQL("select * from problem where pid = ? ",pid);
-        try {
-            ResultSet r=sql.query();
-            r.next();
-            Problem pro=new Problem(r);
-            Insert(pid,pro);
-            return pro;
-        } catch (SQLException e) {
-            return null;
-        }finally {
-            sql.close();
-        }
+        return getBeanByKey(pid);
     }
     public List<problemView> getProblems(int pid1,int pid2,boolean showhide){
         String sql="select pid,title,visiable,acusernum,submitnum from v_problem where pid>=? and pid<=?";
@@ -83,7 +56,7 @@ public class ProblemSQL {
     }
     public void editProblem(int pid,Problem pro){
         new SQL("UPDATE problem SET title=?,ojid=?,ojspid=?,author=?,spj=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pro.isSpj(),pid).update();
-        remove(pid);
+        removeCatch(pid);
     }
     public int addProblem(int pid,Problem pro){
         int newpid;
@@ -95,13 +68,12 @@ public class ProblemSQL {
             return pid;
         }
         new SQL("Insert into problem values(?,?,?,?,?,?,?,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0,pro.getAuthor(),pro.isSpj()).update();
-        Insert(pid,pro);//插入缓存 和 数据库
         return newpid;
     }
     public String setProblemVisiable(int pid){
         if(pid!=-1){
             new SQL("update problem set visiable=1-visiable where pid=?",pid).update();
-            remove(pid);
+            removeCatch(pid);
             return "success";
         }else return "error";
     }
@@ -109,12 +81,12 @@ public class ProblemSQL {
         SQL sql=new SQL("update problem set visiable=? where pid=?",z,pid);
         boolean ret=(sql.update()==1);
         sql.close();
-        remove(pid);
+        removeCatch(pid);
         return ret;
     }
     public void setContestProblemVisiable(int cid,int z){
         new SQL("update problem set visiable=? where pid in (select tpid from contestproblems where cid=?)",z,cid).update();
-        pSQL.clear();
+        clearCatch();
     }
     public List<Integer> getProblemsByOjPid(int oj,String ojspid){
         SQL sql=new SQL("SELECT pid FROM problem WHERE ojid=? AND ojspid=?",oj,ojspid){
@@ -134,9 +106,6 @@ public class ProblemSQL {
     }
     public String getOjspid(int pid){
         return getProblem(pid).getOjspid();
-    }
-    public int size(){
-        return pSQL.size();
     }
     public String getTitle(int pid) { return getProblem(pid).getTitle();}
     public void saveProblemHTML(int pid,problemHTML ph){
@@ -286,5 +255,10 @@ public class ProblemSQL {
         if (u != null) username = u.getUsername();
         else username = "";
         return new SQL(sql, username, tagid, from, num).query();
+    }
+
+    @Override
+    protected Problem getByKeyFromSQL(Integer key) {
+        return new SQL("SELECT * FROM problem WHERE pid=?",key).queryBean(Problem.class);
     }
 }

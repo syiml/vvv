@@ -39,6 +39,9 @@ public abstract class BaseCach<K,T extends IBeanCanCach> {
         }
     }
     protected abstract T getByKeyFromSQL(K key);
+    protected void clearCatch(){
+        _catch.clear();
+    }
 
     private T getBeanFromCatch(K key){
         try {
