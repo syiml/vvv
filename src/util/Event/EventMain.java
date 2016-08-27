@@ -13,9 +13,20 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by QAQ on 2016/8/27.
  */
 public class EventMain implements Runnable{
+    private static Map<Integer,Set<BaseEventDeal>> map = new ConcurrentHashMap<>();
+    private static BlockingQueue<BaseEvent> events = new LinkedBlockingQueue<>();
+    private static BlockingQueue<BaseEventDeal> removeEventDeal =new LinkedBlockingQueue<>();
+    private static Thread eventThread;
+
     public static Thread getThread(){
         return eventThread;
     }
+
+    /**
+     * 添加事件处理器，重复添加会处理多次
+     * 要移除调用removeEventDeal
+     * @param eventDeal 事件处理器
+     */
     public static void addEventDeal(BaseEventDeal eventDeal){
         int hashCode = eventDeal.getEventClass().hashCode();
         Set<BaseEventDeal> set = map.get(hashCode);
@@ -25,9 +36,16 @@ public class EventMain implements Runnable{
         }
         set.add(eventDeal);
     }
+
+    /**
+     * 移除事件处理器，移除后不再处理事件
+     * @param eventDeal 事件处理器
+     */
     public static void removeEventDeal(BaseEventDeal eventDeal) {
+        eventDeal.isRemoved = true;
         removeEventDeal.add(eventDeal);
     }
+
     public static void triggerEvent(BaseEvent event){
         events.add(event);
     }
@@ -39,10 +57,7 @@ public class EventMain implements Runnable{
         addEventDeal(new EventDealOnStatusAdd());
         addEventDeal(new EventDealOnStatusChange());
     }
-    private static Map<Integer,Set<BaseEventDeal>> map = new ConcurrentHashMap<>();
-    private static BlockingQueue<BaseEvent> events = new LinkedBlockingQueue<>();
-    private static BlockingQueue<BaseEventDeal> removeEventDeal =new LinkedBlockingQueue<>();
-    private static Thread eventThread;
+
     private static void remvoeEventDeal(){
         BaseEventDeal eventDeal;
         while((eventDeal = removeEventDeal.poll())!=null) {
@@ -58,9 +73,9 @@ public class EventMain implements Runnable{
                 BaseEvent event=events.take();
                 Set<BaseEventDeal> set = map.get(event.getClass().hashCode());
                 if(set != null){
+                    remvoeEventDeal();
                     for(BaseEventDeal deal : set){
                         deal.run(event);
-                        remvoeEventDeal();
                     }
                 }
             } catch (InterruptedException e) {
