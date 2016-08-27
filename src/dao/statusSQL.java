@@ -2,6 +2,8 @@ package dao;
 
 import entity.*;
 import servise.ContestMain;
+import util.Event.EventMain;
+import util.Event.Events.EventStatusChange;
 import util.Main;
 import util.HTML.HTML;
 import util.Pair;
@@ -203,7 +205,7 @@ public class statusSQL {
         new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?", Status.resultToInt(res),time,Meory,rid).update();
         Tool.log(rid+"->"+res);
         Status s=getStatu(rid);
-        onStatusChange(ps,s);
+        EventMain.triggerEvent(new EventStatusChange(ps,s));
         if(s.getCid()!=-1&&res!=Result.JUDGING){
             Contest c=ContestMain.getContest(s.getCid());
             c.getRank().add(s, c);
@@ -234,7 +236,7 @@ public class statusSQL {
     }
     public void onStatusAdd(Status s){
         Problem p = Main.problems.getProblem(s.getPid());
-        int count = new SQL("SELECT COUNT(*) FROM statu WHERE ruser=? AND pid=? AND id!=?",s.getUser(), s.getPid(),s.getRid()).queryNum();
+        int count = new SQL("SELECT COUNT(*) FROM statu WHERE ruser=? AND pid=? AND id<?",s.getUser(), s.getPid(),s.getRid()).queryNum();
         if(count == 0){
             Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit + 1, p.totalSubmitUser+1, p.totalAc, p.totalAcUser);
         } else{

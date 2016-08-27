@@ -257,7 +257,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         p.totalSubmit = totalSubmit;
         p.totalAc = totalAc;
         p.totalAcUser = totalAcUser;
-        new SQL("UPDATE problem SET totalSubmit=?,totoalSubmitUser=?,totalAc=?,totalAcUser=? WHERE pid=?", totalSubmit, totalSubmitUser, totalAc, totalAcUser, pid).update();
+        new SQL("UPDATE problem SET totalSubmit=?,totalSubmitUser=?,totalAc=?,totalAcUser=? WHERE pid=?", totalSubmit, totalSubmitUser, totalAc, totalAcUser, pid).update();
     }
     @Override
     protected Problem getByKeyFromSQL(Integer key) {

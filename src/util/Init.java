@@ -1,5 +1,6 @@
 package util;
 
+import util.Event.EventMain;
 import util.TimerTasks.MyTimer;
 
 import javax.servlet.http.HttpServlet;
@@ -12,5 +13,6 @@ public class Init extends HttpServlet {
     public void init(){
         Main.Init();
         MyTimer.Init();
+        EventMain.Init();
     }
 }
