@@ -30,7 +30,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         return getBeanByKey(pid);
     }
     public List<problemView> getProblems(int pid1,int pid2,boolean showhide){
-        String sql="select pid,title,visiable,acusernum,submitnum from v_problem where pid>=? and pid<=?";
+        String sql="select pid,title,visiable,totalAcUser,totalSubmit from problem where pid>=? and pid<=?";
         if(!showhide){
             sql+=" and visiable=1";
         }
@@ -252,7 +252,13 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         else username = "";
         return new SQL(sql, username, tagid, from, num).query();
     }
-
+    public void updateProblemTotals(int pid,int totalSubmit,int totalSubmitUser,int totalAc,int totalAcUser) {
+        Problem p = getProblem(pid);
+        p.totalSubmit = totalSubmit;
+        p.totalAc = totalAc;
+        p.totalAcUser = totalAcUser;
+        new SQL("UPDATE problem SET totalSubmit=?,totoalSubmitUser=?,totalAc=?,totalAcUser=? WHERE pid=?", totalSubmit, totalSubmitUser, totalAc, totalAcUser, pid).update();
+    }
     @Override
     protected Problem getByKeyFromSQL(Integer key) {
         return new SQL("SELECT * FROM problem WHERE pid=?",key).queryBean(Problem.class);

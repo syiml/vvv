@@ -29,7 +29,7 @@ public class SQL {
         Timestamp t = Tool.now();
         ResultSet rs = p.executeQuery();
         String sql =p.toString();
-        Tool.debug((Tool.now().getTime() - t.getTime()) +" "+ sql.substring(sql.indexOf(':')+1));
+        Tool.debug((Tool.now().getTime() - t.getTime()) +" "+ sql.substring(sql.indexOf(':')+1) , SQL.class.getName());
         return rs;
     }
     public ResultSet query(){
@@ -224,8 +224,10 @@ public class SQL {
                 p.setObject(i+1,args[i]);
             }
             String sql =p.toString();
-            Tool.debug(sql.substring(sql.indexOf(':')+1));
-            return p.executeUpdate();
+            Timestamp t = Tool.now();
+            int ret = p.executeUpdate();
+            Tool.debug((Tool.now().getTime() - t.getTime()) +" "+ sql.substring(sql.indexOf(':')+1),SQL.class.getName());
+            return ret;
         } catch (SQLException e) {
             if(log)Tool.log(e);
             return -1;

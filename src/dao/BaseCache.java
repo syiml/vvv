@@ -53,7 +53,7 @@ public abstract class BaseCache<K,T extends IBeanCanCach> {
                 _catch.remove(key);
                 return null;
             }
-            Tool.log("GetFromCatchSuccess("+key+","+value+")");
+            //Tool.log("GetFromCatchSuccess("+key+","+value+")");
             return value;
         }finally {
             lock.unlock();

@@ -1,5 +1,6 @@
 package util.TimerTasks;
 
+import util.SQL;
 import util.Tool;
 
 import java.util.Timer;
@@ -12,6 +13,11 @@ public class TaskProblemSubmitCount extends MyTimer {
     @Override
     public void run() {
         Tool.debug("TaskProblemSubmitCount run");
+        new SQL("UPDATE problem SET " +
+                "totalSubmit=(SELECT COUNT(*) FROM statu WHERE statu.pid=problem.pid)," +
+                "totalSubmitUser=(SELECT COUNT(distinct statu.ruser) FROM statu WHERE statu.pid=problem.pid)," +
+                "totalAc=(SELECT COUNT(*) FROM statu WHERE statu.pid=problem.pid AND statu.result=1)," +
+                "totalAcUser=(SELECT COUNT(distinct statu.ruser) FROM statu WHERE statu.pid=problem.pid AND statu.result=1)").update();
     }
 
     @Override

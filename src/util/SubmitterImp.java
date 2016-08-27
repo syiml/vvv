@@ -27,7 +27,8 @@ public class SubmitterImp implements Submitter{
         if(cid!=-1) pid=ContestMain.getContest(cid).getGlobalPid(pid);//等于全局题目编号
         statu s=new statu(0,user,pid,cid,language,code,submittime);
         rid = Main.status.addStatu(s);//插入数据库，并获取rid
-
+        s.setRid(rid);
+        Main.status.onStatusAdd(s);
         if(!Main.problems.isProblemLocal(pid)){//is vj
             SubmitInfo ss=new SubmitInfo(rid,Main.problems.getOjspid(pid),language,code,false);
             submitVJ(ss, Main.problems.getOJid(pid));

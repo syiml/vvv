@@ -152,4 +152,5 @@ public class statu implements IBeanResultSetCreate<statu>{
     public void setCid(int cid){
         this.cid=cid;
     }
+    public void setRid(int rid) { this.rid=rid;}
 }

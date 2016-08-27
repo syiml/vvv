@@ -1,10 +1,8 @@
 package dao;
 
-import entity.Contest;
+import entity.*;
 import servise.ContestMain;
 import util.Main;
-import entity.Result;
-import entity.statu;
 import util.HTML.HTML;
 import util.Pair;
 import util.SQL;
@@ -201,17 +199,47 @@ public class statusSQL {
     }
 
     public synchronized statu setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
+        statu ps = getStatu(rid);
         new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?",statu.resultToInt(res),time,Meory,rid).update();
         Tool.log(rid+"->"+res);
         statu s=getStatu(rid);
+        onStatusChange(ps,s);
         if(s.getCid()!=-1&&res!=Result.JUDGING){
             Contest c=ContestMain.getContest(s.getCid());
-            c.getRank().add(s,c);
+            c.getRank().add(s, c);
         }
         if(res==Result.CE||res==Result.ERROR){
             addCEInfo(rid, CEinfo);
         }
         return s;
+    }
+    public void onStatusChange(statu ps,statu s){
+        if(ps.getRid() != s.getRid()) return ;
+        int chg;
+        if(!ps.getResult().isAc() && s.getResult().isAc()){
+            chg = 1;
+        }else if(ps.getResult().isAc() && !s.getResult().isAc()){
+            chg = -1;
+        }else{
+            return ;
+        }
+        Problem p = Main.problems.getProblem(s.getPid());
+        int count = new SQL("SELECT COUNT(*) FROM statu WHERE ruser=? AND pid=? AND result=? AND id!=?",s.getUser(), s.getPid(), Result.AC.getValue(),s.getRid()).queryNum();
+        if(count >0){
+            //如果有其他的AC
+            Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit, p.totalSubmitUser, p.totalAc + chg, p.totalAcUser);
+        }else{
+            Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit, p.totalSubmitUser, p.totalAc + chg, p.totalAcUser + chg);
+        }
+    }
+    public void onStatusAdd(statu s){
+        Problem p = Main.problems.getProblem(s.getPid());
+        int count = new SQL("SELECT COUNT(*) FROM statu WHERE ruser=? AND pid=? AND id!=?",s.getUser(), s.getPid(),s.getRid()).queryNum();
+        if(count == 0){
+            Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit + 1, p.totalSubmitUser+1, p.totalAc, p.totalAcUser);
+        } else{
+            Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit + 1, p.totalSubmitUser, p.totalAc, p.totalAcUser);
+        }
     }
     private Set<Integer> getProblems(String user,int solved){
         Set<Integer> ret=new TreeSet<Integer>();
@@ -231,29 +259,13 @@ public class statusSQL {
         }
     }
     public Set<Integer> getAcProblems(String user){//获取user已经AC题目列表（包括contest内的）
-        return getProblems(user,1);
+        return getProblems(user, 1);
     }
     public Set<Integer> getNotAcProblems(String user){//获取user提交过但没有AC的题目列表（不包括contest内的）
-        return getProblems(user,0);
+        return getProblems(user, 0);
     }
     public int getSubmitTime(String username){//获取user的提交次数
         return new SQL("SELECT COUNT(id) FROM statu WHERE ruser=?",username).queryNum();
-    }
-    public Map<Integer,Integer> getProblemUserNum(int pidl,int pidr,int solved,String count){
-        return new SQL("SELECT pid,COUNT("+count+") FROM usersolve_view WHERE pid>=? AND pid<=? "+(solved==1?"AND solved=1":"")+" group by pid",pidl,pidr){
-            protected Integer getObject(int i) throws SQLException {
-                return rs.getInt(i);
-            }
-        }.queryMap();
-    }
-    public int getProblemAcUserNum(int pid){
-        return new SQL("SELECT COUNT(username) FROM usersolve_view WHERE pid=? AND solved=1",pid).queryNum();
-    }
-    public int getProblemSubmitUserNum(int pid){
-        return new SQL("SELECT COUNT(username) FROM usersolve_view WHERE pid=?",pid).queryNum();
-    }
-    public int getProblemSubmitNum(int pid){
-        return new SQL("SELECT COUNT(id) FROM statu WHERE pid=?",pid).queryNum();
     }
     public List<Pair<Integer,Integer>> getSubmitCount(String user, int num, int sec){
         String sql="";

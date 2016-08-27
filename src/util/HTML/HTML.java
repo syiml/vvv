@@ -402,9 +402,10 @@ public class HTML {
         }
     }
     private static String problemInfo(int pid,int cid){
-        int acNum=Main.status.getProblemAcUserNum(pid);
-        int submitUserNum=Main.status.getProblemSubmitUserNum(pid);
-        int submitNum=Main.status.getProblemSubmitNum(pid);
+        Problem p = Main.problems.getProblem(pid);
+        int acNum=p.totalAcUser;
+        int submitUserNum=p.totalSubmitUser;
+        int submitNum=p.totalSubmit;
         TableHTML table=new TableHTML();
         table.setClass("table");
         table.addColname("");

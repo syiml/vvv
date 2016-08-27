@@ -30,4 +30,24 @@ public enum Result{
         public void setValue(int value) {
                 this.value = value;
         }
+
+        public boolean isAc(){
+                return this == Result.AC;
+        }
+        public boolean isErr(){
+                return  this == Result.WA||
+                        this == Result.CE||
+                        this == Result.RE||
+                        this == Result.TLE||
+                        this == Result.MLE||
+                        this == Result.OLE||
+                        this == Result.PE;
+        }
+        public boolean isPd(){
+                return this == Result.PENDING||
+                        this == Result.DANGER||
+                        this == Result.RUNNING||
+                        this == Result.ERROR||
+                        this == Result.JUDGING;
+        }
 }

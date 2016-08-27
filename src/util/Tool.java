@@ -30,7 +30,11 @@ public class Tool {
     }
 
     public static void log(String s){
-        System.out.println(now()+"-> "+s);
+        log(s,2);
+    }
+    public static void log(String s,int stackDepth){
+        StackTraceElement[] stacks = new Throwable().getStackTrace();
+        System.out.println("["+now()+"|"+stacks[stackDepth]+"]"+s);
     }
 
     public static void log(Exception e){
@@ -41,16 +45,30 @@ public class Tool {
             User loginUser=Main.loginUser();
             Log log=new Log(now(),expMessage,loginUser==null?null:loginUser.getUsername());
             Main.logs.save(log);
+            if(Main.isDebug) e.printStackTrace();
         }catch (Exception e1){
             e1.printStackTrace();
         }
     }
     public static void debug(String s){
+        debug(s,2);
+    }
+    public static void debug(String s,int stackDepth){
         if(Main.isDebug){
-            System.out.println(now()+"=> "+s);
+            StackTraceElement[] stacks = new Throwable().getStackTrace();
+            System.out.println("【"+now()+"|"+stacks[stackDepth]+"】"+s);
         }
     }
-
+    public static void debug(String s,String className){
+        if(Main.isDebug){
+            StackTraceElement[] stacks = new Throwable().getStackTrace();
+            int stackDepth;
+            for(stackDepth=1;stackDepth<stacks.length;stackDepth++){
+                if(!stacks[stackDepth].getClassName().equals(className)) break;
+            }
+            System.out.println("【"+now()+"|"+stacks[stackDepth]+"】"+s);
+        }
+    }
     public static Timestamp getTimestamp(String d,String s,String m){
         //System.out.println(d + " " + s + ":" + m + ":00");
         return Timestamp.valueOf(d + " " + s + ":" + m + ":00");

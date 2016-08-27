@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  * Created by Administrator on 2015/5/22.
  */
 public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
+    int pid;
     int type;//LOCAL OR OTHEROJ OR ONLYDES
     public String Title;
     public String Author;//作者
@@ -19,6 +20,7 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
     String ojspid;
     public boolean spj;
     public int totalSubmit;//总提交量
+    public int totalSubmitUser;//总提交人数
     public int totalAc;//总AC量
     public int totalAcUser;//总AC人数
 
@@ -41,6 +43,7 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
     }
     public Problem(ResultSet r) throws SQLException {
         //pid,type,title,ojid,ojspid,visiable,author,spj
+        pid=r.getInt(1);
         type=r.getInt(2);
         Title=r.getString(3);
         ojid=r.getInt(4);
@@ -74,6 +77,7 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
 
     @Override
     public Problem init(ResultSet rs) throws SQLException {
+        pid=rs.getInt("pid");
         type=rs.getInt("ptype");
         Title=rs.getString("title");
         ojid=rs.getInt("ojid");
@@ -82,8 +86,9 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
         Author=rs.getString("author");
         spj = rs.getBoolean("spj");
         totalSubmit = rs.getInt("totalSubmit");
+        totalSubmitUser = rs.getInt("totalSubmitUser");
         totalAc = rs.getInt("totalAc");
-        totalAcUser = rs.getInt("totoalAcUser");
+        totalAcUser = rs.getInt("totalAcUser");
         return this;
     }
 

@@ -57,15 +57,13 @@ public class ProblemInfo {
             from=HTML.spannull("badge", "题目将评测在：本OJ");
         }
         String s=HTML.row(HTML.col(12,HTML.text(pid + " - " + p.Title, 10)+HTML.floatRight(from)));
-        int ac=Main.status.getProblemAcUserNum(pid);
-        int sub=Main.status.getProblemSubmitNum(pid);
-        String  l =HTML.text("通过人数： ",3)+HTML.text(ac+"",8,"GREEN")+"<br>";
-                l+=HTML.text("提交人数：",3)+HTML.text(Main.status.getProblemSubmitUserNum(pid)+"",8,"GREEN")+"<br>";
-                l+=HTML.text("提交次数：",3)+HTML.text(sub+"",8,"GREEN")+"<br>";
-        if(sub==0){
-            l+=HTML.text("通过率：　",3)+HTML.text("还没有提及这题哦",8)+"<br><br>";
+        String  l =HTML.text("通过人数： ",3)+HTML.text(p.totalAcUser+"",8,"GREEN")+"<br>";
+                l+=HTML.text("提交人数：",3)+HTML.text(p.totalSubmitUser+"",8,"GREEN")+"<br>";
+                l+=HTML.text("提交次数：",3)+HTML.text(p.totalSubmit+"",8,"GREEN")+"<br>";
+        if(p.totalSubmit==0){
+            l+=HTML.text("通过率：　",3)+HTML.text("还没有人提交这题哦",8)+"<br><br>";
         }else{
-            l+=HTML.text("通过率：　",3)+HTML.text(String.format("%.2f",ac*100.0/sub)+"%",8)+"<br><br>";
+            l+=HTML.text("通过率：　",3)+HTML.text(String.format("%.2f",p.totalAcUser*100.0/p.totalSubmit)+"%",8)+"<br><br>";
         }
         if(Main.loginUser()!=null){
             if(Main.users.haveViewCode(Main.loginUser().getUsername(),pid)){
