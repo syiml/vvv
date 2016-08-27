@@ -2,12 +2,12 @@ package util;
 
 import WebSocket.MatchWebSocket;
 import dao.*;
+import entity.Status;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
 import entity.Permission;
 import entity.User;
 import entity.Problem;
-import entity.statu;
 import util.HTML.problemHTML;
 import action.addLocalProblem;
 import action.addproblem1;
@@ -152,7 +152,7 @@ public class Main {
     }
 
 
-    public static boolean canViewCode(statu s,User user) {
+    public static boolean canViewCode(Status s,User user) {
         return user != null && (user.getUsername().equals(s.getUser()) || Main.users.haveViewCode(user.getUsername(), s.getPid()) || user.getPermission().getViewCode());
     }
     public static String getIP(){

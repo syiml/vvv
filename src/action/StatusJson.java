@@ -1,13 +1,11 @@
 package action;
 
-import com.google.gson.JsonObject;
 import entity.Contest;
 import entity.Result;
-import entity.statu;
+import entity.Status;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import servise.ContestMain;
-import util.Main;
 import util.SQL;
 
 import java.sql.ResultSet;
@@ -33,9 +31,9 @@ public class StatusJson extends BaseAction{
                 astatus.put("pid",c.getcpid(rs.getInt("pid")));
                 astatus.put("username",rs.getString("ruser"));
                 int res=rs.getInt("result");
-                if(statu.intToResult(res)== Result.AC){
+                if(Status.intToResult(res)== Result.AC){
                     astatus.put("result",1);
-                }else if(statu.intToResult(res)== Result.PENDING||statu.intToResult(res)== Result.JUDGING){
+                }else if(Status.intToResult(res)== Result.PENDING|| Status.intToResult(res)== Result.JUDGING){
                     astatus.put("result",-1);
                 }else astatus.put("result",0);
                 astatus.put("time",(rs.getTimestamp("submittime").getTime()-c.getBeginDate().getTime())/1000);

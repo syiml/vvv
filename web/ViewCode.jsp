@@ -1,4 +1,4 @@
-<%@ page import="entity.statu" %>
+<%@ page import="entity.Status" %>
 <%@ page import="util.Main" %>
 <%@ page import="entity.Permission" %>
 <%@ page import="util.HTML.HTML" %>

@@ -4,7 +4,7 @@ import entity.rank.RankICPC.RankICPC;
 import entity.rank.RankShortCode.RankShortCode;
 import entity.Contest;
 import entity.rank.RankTraining.RankTraining;
-import entity.statu;
+import entity.Status;
 import util.SQL;
 import action.addcontest;
 
@@ -93,7 +93,7 @@ public class RankSQL {
         try {
             while(rs.next()){
                 //status.add(rs.getInt(1));
-                statu s=new statu(rs,9);
+                Status s=new Status(rs,9);
     //                status.add(s.getRid());
                 rank.add(s,c);
             }

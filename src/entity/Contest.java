@@ -372,8 +372,8 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
     public void computeUsernamePassword(String prefix){
         List<RegisterTeam> list = new ArrayList<>();
         for(RegisterUser ru:users){
-            /*if(ru.getStatu() == RegisterUser.STATUS_ACCEPTED
-                    ||ru.getStatu() == RegisterUser.STATUS_UNOFFICIAL){
+            /*if(ru.getStatus() == RegisterUser.STATUS_ACCEPTED
+                    ||ru.getStatus() == RegisterUser.STATUS_UNOFFICIAL){
             }*/
             list.add((RegisterTeam)ru);
         }

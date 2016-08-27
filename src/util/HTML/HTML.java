@@ -9,7 +9,6 @@ import servise.ContestMain;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import entity.OJ.OTHOJ;
-import util.HTML.FromHTML.form;
 import util.HTML.FromHTML.hidden.hidden;
 import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
@@ -338,7 +337,7 @@ public class HTML {
             if(p.getViewCode()){
                 return Main.status.getCEInfoHTML(Integer.parseInt(rid),havepanel);
             }else{
-                statu st=Main.status.getStatu(ridInt);
+                Status st=Main.status.getStatu(ridInt);
                 if(st.getUser().equals(user.getUsername())){
                     return Main.status.getCEInfoHTML(Integer.parseInt(rid),havepanel);
                 }else{
@@ -353,7 +352,7 @@ public class HTML {
         return "";
     }
     public static String viewCode(String rid,boolean havepanel){
-        statu s;
+        Status s;
         int ridInt;
         try{
             ridInt=Integer.parseInt(rid);

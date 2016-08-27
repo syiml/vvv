@@ -27,7 +27,7 @@ public class statuListHTML extends pageBean {
     String ssuser;//筛选的用户
     boolean incontest;
     boolean all;
-    List<statu> status;
+    List<Status> status;
     int PageNum;
     Contest contest = null;
     public statuListHTML(int cid,int num,int page,
@@ -91,7 +91,7 @@ public class statuListHTML extends pageBean {
 
     @Override
     public String getCellByHead(int i, String colname) {
-        statu s=status.get(i);
+        Status s=status.get(i);
         if(colname.equals("#")){
             return s.getRid()+"";
         }else if(colname.equals("用户")){
@@ -250,7 +250,7 @@ public class statuListHTML extends pageBean {
         f.setSubmitText("筛选");
         return f.toHTML();
     }
-    private String LanguageToHtml(statu s){
+    private String LanguageToHtml(Status s){
         int l=s.getLanguage();
         int rid=s.getRid();
         if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
@@ -282,7 +282,7 @@ public class statuListHTML extends pageBean {
         if(l==2)return "JAVA";
         return "UNKNOW";
     }
-    private String pidToHtml(statu s,boolean in){
+    private String pidToHtml(Status s,boolean in){
         if(!in){
             return HTML.a("Problem.jsp?pid="+s.getPid(),""+s.getPid());
         }else{
@@ -291,7 +291,7 @@ public class statuListHTML extends pageBean {
             return HTML.a("#P"+s.getContestPid(),ss);
         }
     }
-    private String userToHtml(statu s){
+    private String userToHtml(Status s){
         if(contest==null||contest.getType()!=Contest_Type.TEAM_OFFICIAL){
             User u=Main.users.getUser(s.getUser());
             if(!incontest) return u.getUsernameHTML()+"("+u.getNick()+")";

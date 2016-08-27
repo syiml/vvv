@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import entity.Status;
 import servise.ContestMain;
 import util.Main;
 import entity.Contest;
-import entity.statu;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
 
@@ -21,7 +21,7 @@ public class ContestCodeCompare {
     public ContestCodeCompare(int cid){
         this.c= ContestMain.getContest(cid);
     }
-    private void setCompareOne(int rid1,int rid2,statu s1,statu s2,ContestCodeCompareRecord cccr){
+    private void setCompareOne(int rid1,int rid2, Status s1, Status s2,ContestCodeCompareRecord cccr){
         cccr.rid1=rid1;
         cccr.rid2=rid2;
         cccr.user1=s1.getUser();
@@ -36,9 +36,9 @@ public class ContestCodeCompare {
             status=ContestMain.getAcRidFromCidPid(c.getCid(),pid);
             ContestCodeCompareRecord cccr=new ContestCodeCompareRecord();
             for(int i=0;i<status.size();i++){
-                statu s1=Main.status.getStatu(status.get(i));
+                Status s1=Main.status.getStatu(status.get(i));
                 for(int j=i+1;j<status.size();j++){
-                    statu s2=Main.status.getStatu(status.get(j));
+                    Status s2=Main.status.getStatu(status.get(j));
                     if(s1.getPid()==s2.getPid()&&!s1.getUser().equals(s2.getUser())){
                         setCompareOne(status.get(i),status.get(j),s1,s2,cccr);
                         if(cccr.f>=minf){

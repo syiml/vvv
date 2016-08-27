@@ -8,7 +8,7 @@ import entity.Contest;
 import entity.RegisterUser;
 import util.rating._rank;
 import entity.Result;
-import entity.statu;
+import entity.Status;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.text.text;
 import util.HTML.HTML;
@@ -150,7 +150,7 @@ public class RankShortCode extends Rank {
         m.setHavesubmit(false);
         return css+HTML.panelnobody("Shortest Code Rank"+HTML.floatRight(m.toHTML()),table.HTML());
     }
-    public void add(statu s,Contest c){
+    public void add(Status s,Contest c){
         if(s.getResult()== Result.DANGER||
                 s.getResult()==Result.PENDING ||
                 s.getResult()==Result.JUDGING||

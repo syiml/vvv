@@ -4,7 +4,6 @@ import entity.*;
 import servise.ContestMain;
 import util.Main;
 import entity.rank.Rank;
-import util.Tool;
 import util.rating._rank;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.text.text;
@@ -76,7 +75,7 @@ public class RankICPC extends Rank {
         if(r<=number3) return "rank_3";
         return "";
     }
-    public void add(statu s,Contest c){
+    public void add(Status s,Contest c){
         //去掉无效结果
         if(s.getResult()==Result.DANGER||
            s.getResult()==Result.PENDING ||

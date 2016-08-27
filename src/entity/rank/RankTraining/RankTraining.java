@@ -8,7 +8,7 @@ import entity.rank.Rank;
 import entity.rank.RankICPC.Form_text_select_inline;
 import util.rating._rank;
 import entity.Result;
-import entity.statu;
+import entity.Status;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
@@ -134,7 +134,7 @@ public class RankTraining extends Rank {
         m.setHavesubmit(false);
         return css+HTML.panelnobody("练习赛排名"+HTML.floatRight(m.toHTML()),table.HTML());
     }
-    public  void add(statu s,Contest c){
+    public  void add(Status s,Contest c){
         if(s.getResult()== Result.DANGER||
                 s.getResult()==Result.PENDING ||
                 s.getResult()==Result.JUDGING||

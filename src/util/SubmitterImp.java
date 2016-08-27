@@ -3,7 +3,7 @@ package util;
 import WebSocket.MatchServer;
 import entity.Contest;
 import entity.Result;
-import entity.statu;
+import entity.Status;
 import servise.ContestMain;
 import util.Vjudge.SubmitInfo;
 
@@ -25,7 +25,7 @@ public class SubmitterImp implements Submitter{
         }
         int ppid=pid;
         if(cid!=-1) pid=ContestMain.getContest(cid).getGlobalPid(pid);//等于全局题目编号
-        statu s=new statu(0,user,pid,cid,language,code,submittime);
+        Status s=new Status(0,user,pid,cid,language,code,submittime);
         rid = Main.status.addStatu(s);//插入数据库，并获取rid
         s.setRid(rid);
         Main.status.onStatusAdd(s);
@@ -52,7 +52,7 @@ public class SubmitterImp implements Submitter{
     }
 
     @Override
-    public void onSubmitDone(statu s) {
+    public void onSubmitDone(Status s) {
         if(s.getCid()!=-1){
             Contest c=ContestMain.getContest(s.getCid());
             int ppid=c.getcpid(s.getPid());
@@ -66,7 +66,7 @@ public class SubmitterImp implements Submitter{
 
     @Override
     public int reJudge(int rid) {
-        statu s=Main.status.getStatu(rid);
+        Status s=Main.status.getStatu(rid);
         int pid=s.getPid();
         if(!Main.problems.isProblemLocal(pid)){//is vj
             Main.status.setStatusResult(rid, Result.PENDING,"-","-",null);

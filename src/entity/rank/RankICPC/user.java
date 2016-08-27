@@ -1,9 +1,8 @@
 package entity.rank.RankICPC;
 
 import entity.Contest;
-import entity.RegisterUser;
 import entity.Result;
-import entity.statu;
+import entity.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class user implements Comparable<user>{
         }
     }
 
-    public void add(statu s,long time,int p,Contest c){
+    public void add(Status s,long time,int p,Contest c){
         int contestpid=c.getcpid(s.getPid());
         if(contestpid==-1) return ;
         if(submittime.get(contestpid)==-1L){

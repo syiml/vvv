@@ -29,7 +29,7 @@ public class statusSQL {
     private int getNewRid(){
         return new SQL("select MAX(id) from statu").queryNum();
     }
-    public synchronized int addStatu(statu s){
+    public synchronized int addStatu(Status s){
         int rid=maxRID+1;
         maxRID++;
         new SQL("insert into statu values(?,?,?,?,?,?,?,?,?,?,?)"
@@ -39,20 +39,20 @@ public class statusSQL {
                 ,s.getCid()
                 ,s.getLanguage()
                 ,s.getSbmitTime()
-                ,statu.resultToInt(s.getResult())
+                , Status.resultToInt(s.getResult())
                 ,s.getTimeUsed()
                 ,s.getMemoryUsed()
                 ,s.getCode()
                 ,s.getCodelen()).update();
         return rid;
     }
-    public statu getStatu(int rid){
+    public Status getStatu(int rid){
         SQL sql=new SQL("select id,ruser,pid,cid,lang,submittime,result,timeUsed,memoryUsed,code,codelen from statu where id=?",rid);
         ResultSet r=sql.query();
-        statu s=null;
+        Status s=null;
         try {
             r.next();
-            s = new statu(r,10);
+            s = new Status(r,10);
             r.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class statusSQL {
         }
         return s;
     }
-    public List<statu> getStatusKind0(int cid,int from,int num,
+    public List<Status> getStatusKind0(int cid,int from,int num,
                                       int pid,int result,int Language,String ssuser){
         String sql="SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,timeused,memoryUsed,codelen" +
                 " FROM statu LEFT JOIN contestproblems" +
@@ -75,7 +75,7 @@ public class statusSQL {
         if(ssuser!=null&&!ssuser.equals("")) sql+=" AND ruser='"+ssuser+"'";
         sql+=" ORDER BY id DESC";
         sql+=" LIMIT ?,?";
-        return new SQL(sql,cid,cid,from,num).queryBeanList(statu.class);
+        return new SQL(sql,cid,cid,from,num).queryBeanList(Status.class);
     }
     public int getStatusKind0Num(int cid,
                                        int pid,int result,int Language,String ssuser){
@@ -92,9 +92,9 @@ public class statusSQL {
         sql+=" ORDER BY id DESC";
         return new SQL(sql,cid,cid).queryNum();
     }
-    public List<statu> getStatus(int cid,int from,int num,
+    public List<Status> getStatus(int cid,int from,int num,
                      /*筛选信息：*/int pid,int result,int Language,String ssuser,boolean all){
-        List<statu> l=new ArrayList<statu>();
+        List<Status> l=new ArrayList<Status>();
         PreparedStatement p= null;
         SQL sql1;
         String sql="select id,ruser,pid,cid,lang,submitTime,result,timeUsed,memoryUsed,codelen from statu where ";
@@ -119,7 +119,7 @@ public class statusSQL {
         try {
             ResultSet r=sql1.query();
             while(r.next()){
-                statu st= new statu(r,9);
+                Status st= new Status(r,9);
                 l.add(st);
             }
         } catch (SQLException e) {
@@ -131,7 +131,7 @@ public class statusSQL {
     }
     public int getStatusNum(int cid,
                      /*筛选信息：*/int pid,int result,int Language,String ssuser,boolean all){
-        List<statu> l=new ArrayList<statu>();
+        List<Status> l=new ArrayList<Status>();
         int ret=1;
         PreparedStatement p= null;
         String sql="select count(*) from statu where ";
@@ -151,7 +151,7 @@ public class statusSQL {
         if(!all) return new SQL(sql,cid).queryNum();
         else return new SQL(sql).queryNum();
     }
-    public List<statu> getTeamStatus(int cid,int from,int num,
+    public List<Status> getTeamStatus(int cid,int from,int num,
                                      int pid,int result,int Language,String ssuser){
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT id,")
@@ -174,7 +174,7 @@ public class statusSQL {
         }
         sql.append(" ORDER BY id DESC")
                 .append(" LIMIT ?,?");
-        return new SQL(sql.toString(),cid,from,num).queryBeanList(statu.class);
+        return new SQL(sql.toString(),cid,from,num).queryBeanList(Status.class);
     }
     public int getTeamStatusNum(int cid,int pid,int result,int Language,String ssuser){
         StringBuilder sql = new StringBuilder();
@@ -198,11 +198,11 @@ public class statusSQL {
         return new SQL(sql.toString(),cid).queryNum();
     }
 
-    public synchronized statu setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
-        statu ps = getStatu(rid);
-        new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?",statu.resultToInt(res),time,Meory,rid).update();
+    public synchronized Status setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
+        Status ps = getStatu(rid);
+        new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?", Status.resultToInt(res),time,Meory,rid).update();
         Tool.log(rid+"->"+res);
-        statu s=getStatu(rid);
+        Status s=getStatu(rid);
         onStatusChange(ps,s);
         if(s.getCid()!=-1&&res!=Result.JUDGING){
             Contest c=ContestMain.getContest(s.getCid());
@@ -213,7 +213,7 @@ public class statusSQL {
         }
         return s;
     }
-    public void onStatusChange(statu ps,statu s){
+    public void onStatusChange(Status ps, Status s){
         if(ps.getRid() != s.getRid()) return ;
         int chg;
         if(!ps.getResult().isAc() && s.getResult().isAc()){
@@ -232,7 +232,7 @@ public class statusSQL {
             Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit, p.totalSubmitUser, p.totalAc + chg, p.totalAcUser + chg);
         }
     }
-    public void onStatusAdd(statu s){
+    public void onStatusAdd(Status s){
         Problem p = Main.problems.getProblem(s.getPid());
         int count = new SQL("SELECT COUNT(*) FROM statu WHERE ruser=? AND pid=? AND id!=?",s.getUser(), s.getPid(),s.getRid()).queryNum();
         if(count == 0){

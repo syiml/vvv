@@ -7,7 +7,7 @@ import entity.OJ.HUST.HUST;
 import entity.OJ.NBUT.NBUT;
 import entity.OJ.OTHOJ;
 import entity.OJ.PKU.PKU;
-import entity.statu;
+import entity.Status;
 import util.Vjudge.VJudge;
 
 import java.sql.Timestamp;
@@ -21,7 +21,7 @@ public interface Submitter {
     VJudge m=new VJudge();
 
     int doSubmit(String user,int pid,int cid,int language,String code,Timestamp submittime);
-    void onSubmitDone(statu s);
+    void onSubmitDone(Status s);
     int reJudge(int rid);
 
     /**
