@@ -15,9 +15,9 @@ public class TaskProblemSubmitCount extends MyTimer {
         Tool.debug("TaskProblemSubmitCount run");
         new SQL("UPDATE problem SET " +
                 "totalSubmit=(SELECT COUNT(*) FROM statu WHERE statu.pid=problem.pid)," +
-                "totalSubmitUser=(SELECT COUNT(distinct statu.ruser) FROM statu WHERE statu.pid=problem.pid)," +
+                "totalSubmitUser=(SELECT COUNT(*) FROM t_usersolve WHERE t_usersolve.pid=problem.pid)," +
                 "totalAc=(SELECT COUNT(*) FROM statu WHERE statu.pid=problem.pid AND statu.result=1)," +
-                "totalAcUser=(SELECT COUNT(distinct statu.ruser) FROM statu WHERE statu.pid=problem.pid AND statu.result=1)").update();
+                "totalAcUser=(SELECT COUNT(*) FROM t_usersolve WHERE t_usersolve.pid=problem.pid AND t_usersolve.status=1)").update();
     }
 
     @Override

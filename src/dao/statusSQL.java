@@ -233,6 +233,11 @@ public class statusSQL {
         }else{
             Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit, p.totalSubmitUser, p.totalAc + chg, p.totalAcUser + chg);
         }
+        new SQL("REPLACE INTO t_usersolve VALUES(?,?,(SELECT MAX(result=1) FROM statu WHERE ruser=? AND pid=? GROUP BY ruser))",
+                s.getUser(),
+                s.getPid(),
+                s.getUser(),
+                s.getPid()).update();
     }
     public void onStatusAdd(Status s){
         Problem p = Main.problems.getProblem(s.getPid());
@@ -242,11 +247,16 @@ public class statusSQL {
         } else{
             Main.problems.updateProblemTotals(s.getPid(), p.totalSubmit + 1, p.totalSubmitUser, p.totalAc, p.totalAcUser);
         }
+        new SQL("replace into t_usersolve values(?,?,(SELECT MAX(result=1) FROM statu WHERE ruser=? AND pid=? GROUP BY ruser))",
+                s.getUser(),
+                s.getPid(),
+                s.getUser(),
+                s.getPid()).update();
     }
     private Set<Integer> getProblems(String user,int solved){
         Set<Integer> ret=new TreeSet<Integer>();
         if(user==null) return null;
-        SQL sql=new SQL("SELECT pid FROM usersolve_view WHERE solved=? AND username=?",solved,user);
+        SQL sql=new SQL("SELECT pid FROM t_usersolve WHERE status=? AND username=?",solved,user);
         try{
             ResultSet rs=sql.query();
             while(rs.next()){
@@ -336,7 +346,7 @@ public class statusSQL {
         return havepanle?HTML.panel("Compilation Error Info", HTML.code(ret,false,-1),null,"warning"):HTML.code(ret,false,-1);
     }
     public Map<Integer,Integer> sbumitResult(String username,int pid1,int pid2){
-        return new SQL("select pid,solved from usersolve_view where username=? AND pid>=? AND pid<=?",username,pid1,pid2){
+        return new SQL("select pid,status from t_usersolve where username=? AND pid>=? AND pid<=?",username,pid1,pid2){
             protected Integer getObject(int i) throws SQLException {
                 return rs.getInt(i);
             }
