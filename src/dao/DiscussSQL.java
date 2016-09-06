@@ -7,12 +7,9 @@ import util.Main;
 import entity.DiscussReply;
 import servise.MessageMain;
 import util.HTML.HTML;
-import util.SQL;
+import util.SQL.SQL;
 import util.Tool;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

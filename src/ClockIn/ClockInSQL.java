@@ -2,7 +2,7 @@ package ClockIn;
 
 import util.Main;
 import entity.User;
-import util.SQL;
+import util.SQL.SQL;
 import util.Tool;
 
 import java.sql.ResultSet;

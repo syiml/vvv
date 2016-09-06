@@ -1,15 +1,12 @@
 package dao;
 
-import util.Main;
 import entity.User;
 
 import java.util.List;
 
 import entity.RatingCase;
-import servise.MessageMain;
-import util.SQL;
+import util.SQL.SQL;
 import com.google.gson.Gson;
-import util.Tool;
 
 /**
  * Created by Syiml on 2015/7/3 0003.

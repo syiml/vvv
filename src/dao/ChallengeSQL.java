@@ -5,7 +5,7 @@ import entity.Block;
 import servise.ChallengeMain;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
-import util.SQL;
+import util.SQL.SQL;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 

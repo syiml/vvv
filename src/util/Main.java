@@ -13,6 +13,7 @@ import action.addLocalProblem;
 import action.addproblem1;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import util.SQL.DBConnectionPool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,7 +28,6 @@ import java.util.Set;
  */
 public class Main {
     public static final JSONObject GV=GlobalVariables.read();
-    public static DBConnectionPool conns;
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
     public static UserSQL users = new UserSQL();
@@ -52,7 +52,6 @@ public class Main {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        conns = new DBConnectionPool();
         status.init();
     }
     public static String addProblem(addproblem1 action){

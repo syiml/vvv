@@ -8,7 +8,7 @@ import util.HTML.HTML;
 import util.HTML.problemHTML;
 import util.HTML.problemListHTML.problemView;
 import util.Pair;
-import util.SQL;
+import util.SQL.SQL;
 import action.editproblem;
 
 import java.sql.ResultSet;

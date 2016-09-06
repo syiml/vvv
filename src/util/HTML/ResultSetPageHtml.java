@@ -1,6 +1,6 @@
 package util.HTML;
 
-import util.SQL;
+import util.SQL.SQL;
 
 import java.sql.SQLException;
 

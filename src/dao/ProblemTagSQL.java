@@ -3,11 +3,10 @@ package dao;
 import util.Main;
 import entity.ProblemTagRecord;
 import entity.ProblemTag;
-import util.SQL;
+import util.SQL.SQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

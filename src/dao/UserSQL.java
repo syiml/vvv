@@ -8,7 +8,7 @@ import entity.RegisterUser;
 import entity.User;
 import servise.MessageMain;
 import util.HTML.HTML;
-import util.SQL;
+import util.SQL.SQL;
 import util.Tool;
 
 import java.sql.*;

@@ -1,6 +1,6 @@
 package dao;
 
-import util.SQL;
+import util.SQL.SQL;
 
 /**
  * Created by QAQ on 2016/6/26 0026.

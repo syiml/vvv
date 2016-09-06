@@ -6,7 +6,7 @@ import entity.Status;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import servise.ContestMain;
-import util.SQL;
+import util.SQL.SQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,12 +1,11 @@
 package entity;
 
-import action.RegisterContest;
 import servise.ContestMain;
 import util.Main;
 import entity.rank.Rank;
 import entity.rank.RankSQL;
 import util.HTML.HTML;
-import util.SQL;
+import util.SQL.SQL;
 import util.Tool;
 
 import java.sql.ResultSet;

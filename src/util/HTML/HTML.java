@@ -10,6 +10,7 @@ import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import entity.OJ.OTHOJ;
 import util.HTML.FromHTML.hidden.hidden;
+import util.SQL.SQL;
 import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
 import entity.rank.RankShortCode.RankShortCode;

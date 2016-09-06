@@ -5,7 +5,7 @@ import entity.rank.RankShortCode.RankShortCode;
 import entity.Contest;
 import entity.rank.RankTraining.RankTraining;
 import entity.Status;
-import util.SQL;
+import util.SQL.SQL;
 import action.addcontest;
 
 import java.sql.ResultSet;

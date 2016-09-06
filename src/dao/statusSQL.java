@@ -7,7 +7,7 @@ import util.Event.Events.EventStatusChange;
 import util.Main;
 import util.HTML.HTML;
 import util.Pair;
-import util.SQL;
+import util.SQL.SQL;
 import util.Tool;
 
 import java.sql.PreparedStatement;

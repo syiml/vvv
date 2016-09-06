@@ -1,8 +1,11 @@
 package util.TimerTasks;
 
+import util.SQL.SQL;
+
 import java.util.*;
 
 /**
+ * 定时任务
  * Created by QAQ on 2016/8/25.
  */
 public abstract class MyTimer extends TimerTask{
@@ -11,7 +14,7 @@ public abstract class MyTimer extends TimerTask{
      */
     private static void addAllTask() throws Exception {
         add(new TaskProblemSubmitCount());
-        add(new autoConnecter());
+        add(SQL.conns);
     }
 
 

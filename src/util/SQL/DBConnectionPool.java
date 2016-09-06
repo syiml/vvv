@@ -1,36 +1,43 @@
-package util;
+package util.SQL;
+
+import util.Main;
+import util.TimerTasks.MyTimer;
+import util.Tool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Timer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
  * 手写连接池
  * 队列存储，SQL对象的close方法即归还连接池。
+ *
+ * 并且自动连接数据库
+ * 由于mysql默认8小时没有数据交互就自动断开连接
+ * 所以每过一段时间(6小时)就自动重新连接上数据库
  * Created by Administrator on 2015/11/22 0022.
  */
-public class DBConnectionPool {
+public class DBConnectionPool extends MyTimer {
     public static int num=0;
     /**
      * 连接队列
      */
-    BlockingQueue<Connection> conns=new ArrayBlockingQueue<Connection>(10);
-    public DBConnectionPool(){}
+    private BlockingQueue<Connection> Connections =new ArrayBlockingQueue<>(10);
+    DBConnectionPool(){}
 
     /**
      * 创建一个新的连接
      * @return 连接
      */
     private Connection getNew(){
-        //Tool.debug(conns.size()+" 新建连接");
         num++;
         try {
             return DriverManager.getConnection(Main.GV.get("sqlconnstring").toString(), Main.GV.get("sqlusername").toString(), Main.GV.get("sqlpassword").toString());
         } catch (SQLException e) {
             Tool.log("===连接失败，请检查数据库是否已经启动===");
-            e.printStackTrace();
         }
         return null;
     }
@@ -39,12 +46,10 @@ public class DBConnectionPool {
      * 从连接池里取出一个连接
      * @return 连接
      */
-    public Connection getConn(){
-        Connection ret=conns.poll();
+    Connection getConn(){
+        Connection ret= Connections.poll();
         if(ret==null){
             ret=getNew();//队列为空则直接新建一个连接
-        }else{
-            //Tool.debug("取出连接 "+conns.size());
         }
         return ret;
     }
@@ -53,15 +58,12 @@ public class DBConnectionPool {
      * 归还连接池
      * @param c 连接
      */
-    public void putCondition(Connection c){
-        if(!conns.offer(c)){
+    void putCondition(Connection c){
+        if(!Connections.offer(c)){
             try {
                 c.close();
-                //Tool.debug(conns.size()+"删除连接");
                 num--;
             } catch (SQLException ignored) {}
-        }else{
-            //Tool.debug("存入连接"+conns.size()+"/"+num);
         }
     }
 
@@ -71,11 +73,22 @@ public class DBConnectionPool {
      */
     public void clear(){
         Connection ret;
-        while((ret=conns.poll())!=null){
+        while((ret= Connections.poll())!=null){
             try {
                 ret.close();
             } catch (Exception ignored) { }
         }
         num=0;
+    }
+
+    @Override
+    public void run() {
+        Tool.debug("autoConnect run");
+        clear();
+    }
+
+    @Override
+    public void getTimer() throws Exception {
+        new Timer().schedule(this,Main.autoConnectionTimeMinute * 60000,Main.autoConnectionTimeMinute * 60000);
     }
 }

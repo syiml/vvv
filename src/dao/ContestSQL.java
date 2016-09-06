@@ -5,7 +5,7 @@ import servise.ContestMain;
 import util.Main;
 import servise.MessageMain;
 import util.HTML.HTML;
-import util.SQL;
+import util.SQL.SQL;
 import action.addcontest;
 import util.Tool;
 

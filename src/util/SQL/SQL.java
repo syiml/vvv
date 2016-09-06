@@ -1,6 +1,9 @@
-package util;
+package util.SQL;
 
 import entity.IBeanResultSetCreate;
+import util.Main;
+import util.Pair;
+import util.Tool;
 
 import java.sql.*;
 import java.util.*;
@@ -10,16 +13,18 @@ import java.util.*;
  * Created by Syiml on 2015/7/10 0010.
  */
 public class SQL {
-    String sql;
-    Object[] args;
-    PreparedStatement p=null;
-    Connection conn;
+    public static DBConnectionPool conns = new DBConnectionPool();
+
+    private String sql;
+    private Object[] args;
+    private PreparedStatement p=null;
+    private Connection conn;
     protected ResultSet rs=null;
-    boolean log=true;
+    private boolean log=true;
     public SQL(String sql, Object... args){
         this.sql=sql;
         this.args=args;
-        conn= Main.conns.getConn();
+        conn= conns.getConn();
     }
     public SQL setLog(boolean log){
         this.log=log;
@@ -238,7 +243,7 @@ public class SQL {
     public void close(){
         pClose();
         cClose();
-        Main.conns.putCondition(conn);
+        conns.putCondition(conn);
     }
 
     private void cClose(){

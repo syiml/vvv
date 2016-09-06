@@ -1,6 +1,6 @@
 package util.TimerTasks;
 
-import util.SQL;
+import util.SQL.SQL;
 import util.Tool;
 
 import java.util.Timer;
