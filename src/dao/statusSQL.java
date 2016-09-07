@@ -10,9 +10,7 @@ import util.Pair;
 import util.SQL.SQL;
 import util.Tool;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -208,7 +206,7 @@ public class statusSQL {
         EventMain.triggerEvent(new EventStatusChange(ps,s));
         if(s.getCid()!=-1&&res!=Result.JUDGING){
             Contest c=ContestMain.getContest(s.getCid());
-            c.getRank().add(s, c);
+            c.getRank().add(s , c);
         }
         if(res==Result.CE||res==Result.ERROR){
             addCEInfo(rid, CEinfo);
@@ -282,18 +280,21 @@ public class statusSQL {
     public List<Pair<Integer,Integer>> getSubmitCount(String user, int num, int sec){
         String sql="";
         sql+=" select floor(timestampdiff(second,submittime ,current_timestamp())/(?)) as T,count(*) as count from statu ";
-        if(user!=null) sql+=" WHERE ruser='"+user+"' ";
+        sql+=" WHERE submitTime> date_sub(now(), interval ? SECOND) ";
+        if(user!=null) sql+=" AND ruser='"+user+"' ";
         sql+=" group by T order by T limit 0,?";
-        return new SQL(sql,sec,num){
+        return new SQL(sql,sec,num*sec,num){
             protected Integer getObject(int i) throws SQLException {return rs.getInt(i);}
         }.queryPairList();
     }
     public List<Pair<Integer,Integer>> getAcCount(String user,int num,int sec){
         String sql="";
-        sql+=" select floor(timestampdiff(second,submittime ,current_timestamp())/(?)) as T,count(*) as count from statu where result=1 ";
+        sql+=" select floor(timestampdiff(second,submittime ,current_timestamp())/(?)) as T,count(*) as count from statu ";
+        sql+=" WHERE submitTime> date_sub(now(), interval ? SECOND) ";
+        sql+=" and result=1 ";
         if(user!=null) sql+=" and ruser='"+user+"' ";
         sql+=" group by T order by T limit 0,?";
-        return new SQL(sql,sec,num){
+        return new SQL(sql,sec,sec*num,num){
             protected Integer getObject(int i) throws SQLException {return rs.getInt(i);}
         }.queryPairList();
     }
@@ -389,5 +390,9 @@ public class statusSQL {
             }
         };
         return sql.queryList();
+    }
+
+    public List<Status> getAcBetween(Timestamp from, Timestamp to){
+        return new SQL("SELECT id,ruser,pid,cid,lang,submittime,result,timeUsed,memoryUsed,code,codelen FROM statu WHERE submitTime>=? AND submitTime<? AND result=1",from,to).queryBeanList(Status.class);
     }
 }

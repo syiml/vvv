@@ -2,6 +2,7 @@ package util;
 
 import entity.Log;
 import entity.User;
+import util.SQL.SQL;
 
 import java.io.*;
 import java.sql.Timestamp;
@@ -56,7 +57,8 @@ public class Tool {
     public static void debug(String s,int stackDepth){
         if(Main.isDebug){
             StackTraceElement[] stacks = new Throwable().getStackTrace();
-            System.out.println("【"+now()+"|"+stacks[stackDepth]+"】"+s);
+            Thread current = Thread.currentThread();
+            System.out.println(ANSI.PURPLE+"【"+now()+"|"+current.getId()+"】"+ANSI.RESET+s+"【"+stacks[stackDepth]+"】");
         }
     }
     public static void debug(String s,String className){
@@ -64,13 +66,49 @@ public class Tool {
             StackTraceElement[] stacks = new Throwable().getStackTrace();
             int stackDepth;
             for(stackDepth=1;stackDepth<stacks.length;stackDepth++){
-                if(!stacks[stackDepth].getClassName().equals(className)) break;
+                if(!stacks[stackDepth].getClassName().equals(className)
+                        &&!stacks[stackDepth].getMethodName().equals("debug")
+                        &&!stacks[stackDepth].getMethodName().equals("SQLDebug")) break;
             }
-            System.out.println("【"+now()+"|"+stacks[stackDepth]+"】"+s);
+            Thread current = Thread.currentThread();
+            String nowTime = now().toString();
+            while(nowTime.length() < 23) nowTime+="0";
+            System.out.println(ANSI.CYAN+"【"+nowTime+"|"+current.getId()+"】"+ANSI.RESET+s+ANSI.GREEN+"["+stacks[stackDepth]+"]"+ANSI.RESET);
+        }
+    }
+    public static void SQLDebug(Long time, String sql){
+        if(Main.isDebug){
+            if(time < 10){
+                debug("{"+time+"}"+sql,SQL.class.getName());
+            }else if(time < 100){
+                debug(ANSI.YELLOW+"{"+time+"}"+ANSI.RESET+sql,SQL.class.getName());
+            }else{
+                debug(ANSI.RED+"{"+time+"}"+ANSI.RESET+sql,SQL.class.getName());
+            }
         }
     }
     public static Timestamp getTimestamp(String d,String s,String m){
         //System.out.println(d + " " + s + ":" + m + ":00");
         return Timestamp.valueOf(d + " " + s + ":" + m + ":00");
+    }
+}
+enum ANSI{
+    RESET("\u001B[0m"),
+    BLACK("\u001B[30m"),
+    RED("\u001B[31m"),
+    GREEN("\u001B[32m"),
+    YELLOW("\u001B[33m"),
+    BLUE("\u001B[34m"),
+    PURPLE("\u001B[35m"),
+    CYAN("\u001B[36m"),
+    WHITE("\u001B[37m");
+    String color;
+    ANSI(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return color;
     }
 }

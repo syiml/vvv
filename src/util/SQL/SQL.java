@@ -1,7 +1,6 @@
 package util.SQL;
 
 import entity.IBeanResultSetCreate;
-import util.Main;
 import util.Pair;
 import util.Tool;
 
@@ -34,7 +33,8 @@ public class SQL {
         Timestamp t = Tool.now();
         ResultSet rs = p.executeQuery();
         String sql =p.toString();
-        Tool.debug((Tool.now().getTime() - t.getTime()) +" "+ sql.substring(sql.indexOf(':')+1) , SQL.class.getName());
+        //Tool.debug("{"+(Tool.now().getTime() - t.getTime()) +"}"+ sql.substring(sql.indexOf(':')+1) , SQL.class.getName());
+        Tool.SQLDebug(Tool.now().getTime() - t.getTime(),sql.substring(sql.indexOf(':')+1));
         return rs;
     }
     public ResultSet query(){

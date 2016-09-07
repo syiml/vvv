@@ -6,6 +6,7 @@ import dao.ChallengeSQL;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
 import servise.ContestMain;
+import servise.WeekRankCount.WeekRankCountHTML;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import entity.OJ.OTHOJ;
@@ -749,6 +750,15 @@ public class HTML {
         ContestCodeCompare c=new ContestCodeCompare(cid);
 //        System.gc();
         return c.HTML(f);
+    }
+    public static String WeekRankCountHTML(String pa){
+        int page;
+        try {
+            page = Integer.parseInt(pa);
+        }catch (NumberFormatException e){
+            page = 1;
+        }
+        return new WeekRankCountHTML(page).HTML();
     }
     public static String fileSize(long l){
         if(l<1024) return l+"B";

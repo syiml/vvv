@@ -15,6 +15,7 @@ public abstract class MyTimer extends TimerTask{
     private static void addAllTask() throws Exception {
         add(new TaskProblemSubmitCount());
         add(SQL.conns);
+        add(new TaskWeekRankCount());
     }
 
 

@@ -2,7 +2,7 @@
   "sqlclass":"com.mysql.jdbc.Driver",
   "sqlconnstring":"jdbc:mysql://localhost:3306/vjudge?useUnicode=true&characterEncoding=utf8",
   "sqlusername":"root",
-  "sqlpassword":"",
+  "sqlpassword":"123456",
 
   "problemShowNum":"100",
   "statuShowNum":"20",

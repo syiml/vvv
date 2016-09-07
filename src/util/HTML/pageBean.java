@@ -16,7 +16,7 @@ public abstract class pageBean {
     public abstract String getTitle();
 
     /**
-     * @return 当前页大小
+     * @return 当前页的行数
      */
     public abstract int getPageSize();
     public abstract int getPageNum();//总页数

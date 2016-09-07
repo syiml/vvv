@@ -116,12 +116,12 @@ public class UserSQL extends BaseCache<String,User> {
         if(ret!=null)ret.setPermission(Main.getPermission(username));
         return ret;
     }
-    public List<User> getUsers(int from,int num,String serach,String order,boolean desc){
+    public List<User> getUsers(int from,int num,String search,String order,boolean desc){
         if(order==null||order.equals("")){
             order="rank";
         }
         SQL sql;
-        if(serach==null||serach.equals("")){
+        if(search==null||search.equals("")){
             sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus " +
                     " from v_user "+
                     " ORDER BY "+order+(desc?" desc ":" ")+
@@ -129,12 +129,16 @@ public class UserSQL extends BaseCache<String,User> {
         }else{
             sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus  from v_user where  (username like ? or nick like ?)  " +
                     " ORDER BY "+order+(desc?" desc ":" ")+
-                    " LIMIT "+from+","+num,"%"+serach+"%","%"+serach+"%");
+                    " LIMIT "+from+","+num,"%"+search+"%","%"+search+"%");
         }
         return sql.queryBeanList(User.class);
     }
     public int getUsersNum(String search){
-        return new SQL("select count(*) from users where (username like ? or nick like ?)","%"+search+"%","%"+search+"%").queryNum();
+        if(search==null||search.equals("")){
+            return new SQL("select count(*) from users").queryNum();
+        }else {
+            return new SQL("select count(*) from users where (username like ? or nick like ?)", "%" + search + "%", "%" + search + "%").queryNum();
+        }
     }
     public List<User> getRichTop10(){
         return new SQL("select * from users order by acb desc,rating desc " +
@@ -344,30 +348,10 @@ public class UserSQL extends BaseCache<String,User> {
         return new SQL("SELECT COUNT(*) FROM t_team_member_info").queryNum();
     }
     public boolean haveViewCode(String user,int pid){
-        SQL sql=new SQL("SELECT * FROM t_viewcode WHERE username=? AND pid=?", user, pid);
-        ResultSet rs=sql.query();
-        try {
-            return rs.next();
-        } catch (SQLException e) {
-            return false;
-        } finally {
-            sql.close();
-        }
+        return new SQL("SELECT COUNT(*) FROM t_viewcode WHERE username=? AND pid=?", user, pid).queryNum() != 0;
     }
     public Set<Integer> canViewCode(String user){
-        SQL sql=new SQL("SELECT pid FROM t_viewcode WHERE username=?",user);
-        ResultSet rs=sql.query();
-        Set<Integer> list=new HashSet<Integer>();
-        try {
-            while(rs.next()){
-                list.add(rs.getInt(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return list;
+        return new SQL("SELECT pid FROM t_viewcode WHERE username=?",user).querySet();
     }
     public int addViewCode(String user,int pid){
         return new SQL("INSERT INTO t_viewcode VALUES(?,?)",user,pid).update();
