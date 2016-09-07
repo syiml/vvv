@@ -56,7 +56,12 @@
         <%--<li><a href="ExamList.jsp"><span>考试</span></a></li>--%>
       </ul>
     </li>
-    <li><a href="User.jsp"><span>RANK</span></a></li>
+    <li><a href="User.jsp"><span>RANK</span></a>
+      <ul>
+        <li><a href="Awards.jsp"><span>荣誉榜</span></a></li>
+        <li><a href="Awards.jsp"><span>现役队员</span></a></li>
+      </ul>
+    </li>
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
     <li><a href="Challenge.jsp"><span>CHALLENGE</span></a></li>
     <li><a href="ClockIn.jsp"><span <%

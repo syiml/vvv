@@ -9,6 +9,10 @@ import java.util.*;
  * Created by QAQ on 2016/8/25.
  */
 public abstract class MyTimer extends TimerTask{
+    protected Date date;
+    protected long delay;
+    protected long period;
+
     /**
      * 添加所有定时任务。未添加的不执行
      */
@@ -18,11 +22,18 @@ public abstract class MyTimer extends TimerTask{
         add(new TaskWeekRankCount());
     }
 
+    public static void Init() throws Exception {
+        addAllTask();
+    }
 
+    private static void add(MyTimer t){
+        try {
+            t.getTimer();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-    protected Date date;
-    protected long delay;
-    protected long period;
     /**
      * 设定为每天的h:m:s时间执行
      * 执行后使用date和period 给 Timer
@@ -45,20 +56,7 @@ public abstract class MyTimer extends TimerTask{
         }
         date = ca.getTime();
     }
-    public static void Init(){
-        try {
-            addAllTask();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private static void add(MyTimer t){
-        try {
-            t.getTimer();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+
     public abstract void run();
     public abstract void getTimer() throws Exception;
 }

@@ -9,6 +9,20 @@ import net.sf.json.JSONObject;
  * Created by Syiml on 2015/7/7 0007.
  */
 public class GlobalVariables {
+    public static JSONObject read(){
+            String JsonContext = new GlobalVariables().ReadFile(GlobalVariables.class.getResource("GlobalVariables.json").getPath());
+            //System.out.println(JsonContext);
+            JSONObject jo = JSONObject.fromObject(JsonContext);
+            return jo;
+
+//        for(int  i = 0; i < size; i++){
+//            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//            System.out.println("[" + i + "]name=" + jsonObject.get("name"));
+//            System.out.println("[" + i + "]package_name=" + jsonObject.get("package_name"));
+//            System.out.println("[" + i + "]check_version=" + jsonObject.get("check_version"));
+//        }
+    }
+
     public String ReadFile(String Path){
 //        System.out.println(Path);
         BufferedReader reader = null;
@@ -34,11 +48,6 @@ public class GlobalVariables {
             }
         }
         return laststr;
-    }
-    public static JSONObject read(){
-        String JsonContext = new GlobalVariables().ReadFile(GlobalVariables.class.getResource("GlobalVariables.json").getPath());
-        //System.out.println(JsonContext);
-        return JSONObject.fromObject(JsonContext);
     }
 }
 

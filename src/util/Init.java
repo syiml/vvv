@@ -11,8 +11,14 @@ import javax.servlet.http.HttpServlet;
  */
 public class Init extends HttpServlet {
     public void init(){
-        Main.Init();
-        MyTimer.Init();
-        EventMain.Init();
+        try {
+            Main.Init();
+            MyTimer.Init();
+            EventMain.Init();
+            Tool.log("服务器启动完成");
+        }catch (Exception e){
+            Tool.log("服务器启动时出现异常");
+            e.printStackTrace();
+        }
     }
 }

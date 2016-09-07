@@ -63,7 +63,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
             editProblem(pid,pro);
             return pid;
         }
-        new SQL("Insert into problem values(?,?,?,?,?,?,?,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0,pro.getAuthor(),pro.isSpj()).update();
+        new SQL("Insert into problem values(?,?,?,?,?,?,?,?,0,0,0,0)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0,pro.getAuthor(),pro.isSpj()).update();
         return newpid;
     }
     public String setProblemVisiable(int pid){
