@@ -11,8 +11,8 @@ public class WeekRankRecord implements Comparable<WeekRankRecord>{
     int acNum[];
 
     WeekRankRecord(){
-        scoreEveryDay = new int[7];
-        acNum = new int[7];
+        scoreEveryDay = new int[WeekRankCount.config.length];
+        acNum = new int[WeekRankCount.config.length];
     }
 
     public String getUsername() {
@@ -44,6 +44,6 @@ public class WeekRankRecord implements Comparable<WeekRankRecord>{
 
     @Override
     public int compareTo(WeekRankRecord o) {
-        return score - o.score;
+        return o.score - score;
     }
 }

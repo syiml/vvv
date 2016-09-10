@@ -58,7 +58,7 @@ public class Tool {
         if(Main.isDebug){
             StackTraceElement[] stacks = new Throwable().getStackTrace();
             Thread current = Thread.currentThread();
-            System.out.println(ANSI.PURPLE+"【"+now()+"|"+current.getId()+"】"+ANSI.RESET+s+"【"+stacks[stackDepth]+"】");
+            System.out.println(ANSI.CYAN+"【"+now()+"|"+current.getId()+"】"+ANSI.RESET+s+ANSI.GREEN+"["+stacks[stackDepth]+"]"+ANSI.RESET);
         }
     }
     public static void debug(String s,String className){

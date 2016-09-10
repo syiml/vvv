@@ -231,7 +231,7 @@ public class SQL {
             String sql =p.toString();
             Timestamp t = Tool.now();
             int ret = p.executeUpdate();
-            Tool.debug((Tool.now().getTime() - t.getTime()) +" "+ sql.substring(sql.indexOf(':')+1),SQL.class.getName());
+            Tool.SQLDebug((Tool.now().getTime() - t.getTime())," "+ sql.substring(sql.indexOf(':')+1));
             return ret;
         } catch (SQLException e) {
             if(log)Tool.log(e);

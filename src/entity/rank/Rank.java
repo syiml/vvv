@@ -9,7 +9,7 @@ import entity.Status;
  */
 public abstract class Rank {
     public abstract String toHTML();
-    public abstract void add(Status s,Contest c);//处理rejudge
+    public abstract void add(Status  s,Contest c);//处理rejudge
     public abstract _rank get_rank();
     public abstract String getRuleHTML();
     //public abstract void init();

@@ -59,7 +59,8 @@
     <li><a href="User.jsp"><span>RANK</span></a>
       <ul>
         <li><a href="Awards.jsp"><span>荣誉榜</span></a></li>
-        <li><a href="Awards.jsp"><span>现役队员</span></a></li>
+        <li><a href="WeekRank.jsp"><span>活跃榜</span></a></li>
+        <%--<li><a href="Awards.jsp"><span>现役队员</span></a></li>--%>
       </ul>
     </li>
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>

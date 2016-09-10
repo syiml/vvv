@@ -15,7 +15,7 @@ public class TaskWeekRankCount extends MyTimer{
 
     @Override
     public void getTimer() throws Exception {
-        setEveryDay(1,0,0);
+        setEveryDay(0,30,0);
         new Timer().scheduleAtFixedRate(this, date, period);
     }
 }

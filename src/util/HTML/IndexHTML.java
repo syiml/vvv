@@ -1,5 +1,6 @@
 package util.HTML;
 
+import servise.WeekRankCount.WeekRankCountHTML;
 import util.Main;
 import entity.User;
 import util.Tool;
@@ -69,7 +70,7 @@ public class IndexHTML {
     }
     public static String HTML(){
         String l= DiscussHTML.IndexDiscuss();
-        String r=rank1()+rank2()+rank3();
+        String r=rank1()+rank2()+rank3()+new WeekRankCountHTML(1).IndexHTML();
         return HTML.row(HTML.col(9,"xs",l)+HTML.col(3,"xs",r));
     }
 }

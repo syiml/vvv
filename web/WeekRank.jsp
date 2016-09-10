@@ -13,7 +13,7 @@
 %>
 <html>
 <head>
-    <title>周活跃榜</title>
+    <title>活跃榜</title>
 </head>
 <body>
 <div class="container-fluid">

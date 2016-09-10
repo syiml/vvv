@@ -9,8 +9,8 @@ import java.util.List;
  */
 public abstract class pageBean {
     private String cl="table";
-    TableHTML table = new TableHTML();
-    List<String> Colname = new ArrayList<String>();
+    protected TableHTML table = new TableHTML();
+    protected List<String> Colname = new ArrayList<String>();
 
     protected String ERROR_CELL_TEXT="=ERROR=";
     public abstract String getTitle();
