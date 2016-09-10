@@ -84,6 +84,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         PreparedStatement p= null;
         deleteproblems(id);
         if(addProblems(id,a.getProblems()).equals("error")) return "error";
+        removeCatch(id);
         return "success";
     }
     public RegisterUser getRegisterStatu(String username, int cid){
@@ -118,7 +119,6 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
             }
         }
         if(statu==-2){//-2 -> 删除
-            removeCatch(cid);
             if(c.getType() == Contest_Type.TEAM_OFFICIAL) {
                 return delTeamContest(cid,username);
             }else {
@@ -145,7 +145,6 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         return "success";
     }
     public String delTeamContest(int cid,String username){
-        Tool.log("delTeamContest");
         new SQL("DELETE FROM t_register_team  WHERE cid=? AND username=?",cid,username).update();
         new SQL("DELETE FROM t_userinfo WHERE cid=? AND username=?",cid,username).update();
         removeCatch(cid);
@@ -223,24 +222,8 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         return new SQL(sql).queryNum();
     }
     public List<Contest> getRecentlyContests(int num){
-        //List<Contest> list=new ArrayList<Contest>();
-        String sql="SELECT *";
-        sql+=" FROM contest WHERE endTime>=NOW() and kind!=4";
-        sql+=" ORDER BY beginTime DESC";
-        sql+=" LIMIT 0,?";
-        return new SQL(sql,num).queryBeanList(Contest.class);
-        /*SQL sql1=new SQL(sql,num);
-        ResultSet c=sql1.query();
-        try {
-            while(c.next()){
-                list.add(new Contest(c));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql1.close();
-        }
-        return list;*/
+        return new SQL("SELECT * FROM contest WHERE endTime>=NOW() and kind!=4 ORDER BY beginTime DESC LIMIT 0,?",num)
+                .queryBeanList(Contest.class);
     }
     public List<Integer> getAcRidFromCidPid(int cid,int pid){
         return new SQL("SELECT id FROM statu WHERE cid=? AND pid=? AND result=1", cid,pid).queryList();
@@ -252,7 +235,8 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
      * @return 返回题目连接和名称的超链接
      */
     public String problemContest(int pid){
-        SQL sql=new SQL("SELECT * FROM `contestproblems` left join contest on cid=id WHERE tpid=? and kind!=4 order by begintime limit 0,1",pid);
+        SQL sql=new SQL("SELECT * FROM contestproblems left join contest on cid=id" +
+                " WHERE tpid=? and kind!=4 order by begintime limit 0,1",pid);
         ResultSet rs=sql.query();
         try {
             if(rs.next()){
@@ -274,9 +258,10 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
     }
 
     public List<RegisterTeam> getRegisterTeamByCid(int cid){
-        List<RegisterTeam> list = new SQL("SELECT * FROM t_register_team WHERE cid = ? " +
-                "ORDER BY time DESC",cid).queryBeanList(RegisterTeam.class);
-        List<TeamMember> list_member = new SQL("SELECT * FROM t_userinfo WHERE cid = ? ",cid).queryBeanList(TeamMember.class);
+        List<RegisterTeam> list = new SQL("SELECT * FROM t_register_team WHERE cid = ? ORDER BY time DESC",cid)
+                .queryBeanList(RegisterTeam.class);
+        List<TeamMember> list_member = new SQL("SELECT * FROM t_userinfo WHERE cid = ? ",cid)
+                .queryBeanList(TeamMember.class);
         int i = 0;
         for(TeamMember tm : list_member){
             for(RegisterTeam rt:list){

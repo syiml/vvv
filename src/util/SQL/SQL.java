@@ -13,12 +13,11 @@ import java.util.*;
  */
 public class SQL {
     public static DBConnectionPool conns = new DBConnectionPool();
-
+    protected ResultSet rs=null;
     private String sql;
     private Object[] args;
     private PreparedStatement p=null;
     private Connection conn;
-    protected ResultSet rs=null;
     private boolean log=true;
     public SQL(String sql, Object... args){
         this.sql=sql;
@@ -220,8 +219,10 @@ public class SQL {
         }
         return list;
     }
-
     public int update(){
+        return update(true);
+    }
+    public int update(boolean _log){
         p=null;
         try {
             p= conn.prepareStatement(sql);
@@ -234,7 +235,7 @@ public class SQL {
             Tool.SQLDebug((Tool.now().getTime() - t.getTime())," "+ sql.substring(sql.indexOf(':')+1));
             return ret;
         } catch (SQLException e) {
-            if(log)Tool.log(e);
+            if(log&&_log)Tool.log(e);
             return -1;
         } finally {
             close();
