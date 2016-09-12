@@ -7,8 +7,7 @@ import util.HTML.pageBean;
 import util.Main;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by syimlzhu on 2016/9/7.
@@ -32,7 +31,7 @@ public class WeekRankCountHTML extends pageBean {
         this.from = (page-1) * pageSize;
         this.num = from + pageSize;
         this.page = page;
-        addTableHead("#","用户名","积分","1天前","2天前","3天前","4天前","5天前","6天前");
+        addTableHead("Rank","用户名","积分","1天前","2天前","3天前","4天前","5天前","6天前");
     }
     public static void compute(){
         Calendar calendar = Calendar.getInstance();
@@ -54,11 +53,30 @@ public class WeekRankCountHTML extends pageBean {
         Timestamp getListFrom = new Timestamp(calendar.getTimeInMillis());
 
         List<Status> list = Main.status.getAcBetween(getListFrom,getListTo);
-        for (WeekRankCount rank:weekRank) {
-            for (Status status:list) {
+        Map<String,Set<Integer>> hash = new HashMap<>();
+        for (Status status:list) {
+            Set<Integer> set = hash.get(status.getUser());
+            if(set == null){
+                set = new HashSet<>();
+                hash.put(status.getUser(),set);
+            }
+            if(set.contains(status.getPid())) continue;
+            set.add(status.getPid());
+            for (WeekRankCount rank:weekRank) {
                 rank.addStatus(status);
             }
-            rank.sort();
+        }
+        for (WeekRankCount rank:weekRank) rank.sort();
+        for(int i=1;i<weekRank.length-1;i++){
+            for(WeekRankRecord record: weekRank[i].resultsList){
+                if(!weekRank[0].resultsMap.containsKey(record.username)){
+                    weekRank[0].resultsMap.put(record.username,null);
+                    WeekRankRecord newRecord = new WeekRankRecord();
+                    newRecord.username = record.username;
+                    newRecord.rank = -1;
+                    weekRank[0].resultsList.add(newRecord);
+                }
+            }
         }
     }
 
@@ -91,12 +109,16 @@ public class WeekRankCountHTML extends pageBean {
         WeekRankRecord currRecord = weekRank[0].get(i);
         WeekRankRecord lastRecord = weekRank[1].get(currRecord.username);
         if(colname.equals("Rank")){
-            if(lastRecord == null){
+            if(lastRecord == null && currRecord.rank!=-1){
                 return HTML.textb(currRecord.getRank()+"",4,"")+" "+HTML.textb("(new)","Green");
+            }else if(lastRecord == null){
+                return HTML.glyphicon("minus");
+            }else if(currRecord.rank==-1){
+                return HTML.glyphicon("minus");
             }else{
                 int chg = currRecord.getRank() - lastRecord.getRank();
                 if(chg == 0){
-                    return HTML.textb(currRecord.getRank()+"",4,"")+" "+HTML.glyphicon("minus");
+                    return HTML.textb(currRecord.getRank()+"",4,"");
                 }else if(chg >0){
                     return HTML.textb(currRecord.getRank()+"",4,"")+" "+HTML.textb(HTML.glyphicon("arrow-down")+chg,"Red");
                 }else{
@@ -118,7 +140,7 @@ public class WeekRankCountHTML extends pageBean {
             }
             int chg = currRecord.getScore() - lastScore;
             if(chg == 0){
-                return HTML.textb(currRecord.getScore()+"",getColorByRank(currRecord.getRank()))+HTML.textb("(+0)","");
+                return HTML.textb(currRecord.getScore()+"",getColorByRank(currRecord.getRank()));
             }else if(chg >0){
                 return HTML.textb(currRecord.getScore()+"",getColorByRank(currRecord.getRank()))+HTML.textb("(+"+chg+")","Green");
             }else{
@@ -143,7 +165,7 @@ public class WeekRankCountHTML extends pageBean {
         if(colname.equals("6天前")){
             return getRankShow(weekRank[6].get(currRecord.username),weekRank[7].get(currRecord.username));
         }
-        return "=ERROR=";
+        return ERROR_CELL_TEXT;
     }
     private String getColorByRank(int i){
         return "";
@@ -154,7 +176,7 @@ public class WeekRankCountHTML extends pageBean {
         }if(pre == null){
             return after.getRank()+" "+HTML.text("(new)",2,"Green");
         }else if(after == null){
-            return HTML.glyphicon("minus")+" "+HTML.text("(fail)",2,"Red");
+            return HTML.glyphicon("minus");
         }else{
             int chg = after.getRank() - pre.getRank();
             if(chg == 0){

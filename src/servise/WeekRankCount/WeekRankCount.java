@@ -2,6 +2,7 @@ package servise.WeekRankCount;
 
 import entity.Status;
 import util.Main;
+import util.Tool;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -27,6 +28,7 @@ public class WeekRankCount {
     }
     public int size(){return resultsList.size();}
     void addStatus(Status s){
+        if(s.getSbmitTime().before(from))return;
         int day = (int)((s.getSbmitTime().getTime() - from.getTime())/(1000*60*60*24));
         if(day<0 || day >=WeekRankCount.config.length) return ;
         WeekRankRecord record = resultsMap.get(s.getUser());
@@ -38,7 +40,6 @@ public class WeekRankCount {
         record.add(day,config[day]);
     }
     void sort(){
-
         for (WeekRankRecord record: resultsMap.values()) {
             resultsList.add(record);
         }
