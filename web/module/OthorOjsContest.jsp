@@ -1,4 +1,4 @@
-<%@ page import="util.MyClient" %>
+<%@ page import="util.JSON.JSON" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -7,4 +7,4 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%=new MyClient().get("http://contests.acmicpc.info/contests.json").html()%>
+<%=JSON.getOtherOjsContest()%>

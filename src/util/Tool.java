@@ -9,6 +9,27 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+enum ANSI{
+    RESET("\u001B[0m"),
+    BLACK("\u001B[30m"),
+    RED("\u001B[31m"),
+    GREEN("\u001B[32m"),
+    YELLOW("\u001B[33m"),
+    BLUE("\u001B[34m"),
+    PURPLE("\u001B[35m"),
+    CYAN("\u001B[36m"),
+    WHITE("\u001B[37m");
+    String color;
+    ANSI(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return color;
+    }
+}
+
 /**
  * 杂项功能
  * Created by Administrator on 2015/11/24 0024.
@@ -35,7 +56,7 @@ public class Tool {
     }
     public static void log(String s,int stackDepth){
         StackTraceElement[] stacks = new Throwable().getStackTrace();
-        System.out.println("["+now()+"|"+stacks[stackDepth]+"]"+s);
+        System.out.println("["+now()+"]"+s+"["+stacks[stackDepth]+"]");
     }
 
     public static void log(Exception e){
@@ -58,7 +79,9 @@ public class Tool {
         if(Main.isDebug){
             StackTraceElement[] stacks = new Throwable().getStackTrace();
             Thread current = Thread.currentThread();
-            System.out.println(ANSI.CYAN+"【"+now()+"|"+current.getId()+"】"+ANSI.RESET+s+ANSI.GREEN+"["+stacks[stackDepth]+"]"+ANSI.RESET);
+            String nowTime = now().toString();
+            while(nowTime.length() < 23) nowTime+="0";
+            System.out.println(ANSI.CYAN+"【"+nowTime+"|"+current.getId()+"】"+ANSI.RESET+s+ANSI.GREEN+"["+stacks[stackDepth]+"]"+ANSI.RESET);
         }
     }
     public static void debug(String s,String className){
@@ -90,25 +113,5 @@ public class Tool {
     public static Timestamp getTimestamp(String d,String s,String m){
         //System.out.println(d + " " + s + ":" + m + ":00");
         return Timestamp.valueOf(d + " " + s + ":" + m + ":00");
-    }
-}
-enum ANSI{
-    RESET("\u001B[0m"),
-    BLACK("\u001B[30m"),
-    RED("\u001B[31m"),
-    GREEN("\u001B[32m"),
-    YELLOW("\u001B[33m"),
-    BLUE("\u001B[34m"),
-    PURPLE("\u001B[35m"),
-    CYAN("\u001B[36m"),
-    WHITE("\u001B[37m");
-    String color;
-    ANSI(String color) {
-        this.color = color;
-    }
-
-    @Override
-    public String toString() {
-        return color;
     }
 }

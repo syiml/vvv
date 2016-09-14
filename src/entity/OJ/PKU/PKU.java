@@ -28,8 +28,8 @@ import sun.misc.BASE64Encoder;
  * Created by Syiml on 2015/8/11 0011.
  */
 public class PKU extends OTHOJ {
-    String url= Main.GV.getJSONObject("pku").getString("URL");
     public static Map<String,Result> ResultMap;
+    String url= Main.GV.getJSONObject("pku").getString("URL");
     public PKU(){
         ResultMap=new HashMap<String, Result>();
         ResultMap.put("Accepted",Result.AC);
@@ -85,12 +85,12 @@ public class PKU extends OTHOJ {
                             +d.select(".sio").eq(1).text()+"</pre>" );
             ph.setInt64("%lld");
             //String limit=d.select("#limit").text();
-            System.out.println("get:"+d.select(".plm").select("td").get(2));
+            //System.out.println("get:"+d.select(".plm").select("td").get(2));
             ph.setTimeLimit(d.select(".plm").select("td").get(0).text().substring(12));
             ph.setMenoryLimit(d.select(".plm").select("td").get(2).text().substring(14));
             if(d.select(".plm").text().contains("Special Judge")) ph.setSpj(1);
         } catch (IOException e1) {
-            System.out.print("connect timed out");
+            //System.out.print("connect timed out");
             //e1.printStackTrace();
         }
         return ph;
@@ -123,8 +123,8 @@ public class PKU extends OTHOJ {
         formparams.add(new BasicNameValuePair("user_id1",s.getUsername()));
         formparams.add(new BasicNameValuePair("password1",s.getPassword()));
         formparams.add(new BasicNameValuePair("url","/"));
-        System.out.println("user_id1" + s.getUsername());
-        System.out.println("password1"+s.getPassword());
+        //System.out.println("user_id1" + s.getUsername());
+        //System.out.println("password1"+s.getPassword());
         hc.Post(url+"/login", formparams);
         //if(hc.Post(url+"/login", formparams)==0) return "error";
         //else {

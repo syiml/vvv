@@ -16,7 +16,7 @@ public class VJudge {
     List<VjSubmitter> s=new ArrayList<VjSubmitter>();
     List<BlockingQueue<SubmitInfo>> queue = new ArrayList<BlockingQueue<SubmitInfo> >();
     BlockingQueue<SubmitInfo> localQueue = new LinkedBlockingQueue<SubmitInfo>();
-    public VJudge(){//初始化。从文件读取？？从数据库？？
+    public VJudge(){//初始化
         //System.out.println("create Main!!!");
         for(int i=0;i<Main.GV.getInt("LocalJudgeNumber");i++){
             s.add(new SubmitterLocal(0,"","",-1,this));

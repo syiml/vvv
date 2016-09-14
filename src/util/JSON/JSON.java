@@ -3,24 +3,26 @@ package util.JSON;
 import entity.*;
 import entity.OJ.OTHOJ;
 import dao.ratingSQL;
+import org.jsoup.nodes.Document;
 import servise.ContestMain;
-import util.Main;
+import util.*;
 import dao.MessageSQL;
 import util.HTML.problemListHTML.problemListFilterHTML.problemListFilterHTML;
 import util.HTML.problemListHTML.problemView;
-import util.Pair;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import util.Submitter;
-import util.Tool;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
  * Created by Syiml on 2015/7/10 0010.
  */
 public class JSON {
+    private static String otherOjsContest = "{}";
+    private static Timestamp nextOtherOjsContestTime = new Timestamp(0);
+
     public static String Messages(String from,String num){
         User user=((User)Main.getSession().getAttribute("user"));
         int fromInt=0,numInt=20;
@@ -36,6 +38,7 @@ public class JSON {
         Gson gson=new Gson();
         return gson.toJson(list);
     }
+
     /**
      * 通过cid获得contest的基础信息
      * @return {cid,name,begintime,endtime,type,now,admin,rating,info,computerating}
@@ -58,6 +61,7 @@ public class JSON {
         ret.put("compare",p.getComputrating());
         return ret.toString();
     }
+
     /**
      *  通过cid获得题目列表
      *  @return [{result,pid,title,acnum,submitnum},...]
@@ -106,6 +110,7 @@ public class JSON {
         jo.put("islast",p.islast());
         return jo.toString();
     }
+
     /**
      * 获取指定题目的标题，并获得当前题库内是否已经有这题
      * @param ojid ojid
@@ -175,5 +180,18 @@ public class JSON {
         jo.put("ac",ac_ja);
         jo.put("submit",sb_ja);
         return jo.toString();
+    }
+
+    public static String getOtherOjsContest(){
+        if(nextOtherOjsContestTime.before(Tool.now())) {
+            Document d = new MyClient().get("http://contests.acmicpc.info/contests.json");
+            if(d != null) {//拉取成功一小时后再拉取
+                otherOjsContest = d.html();
+                nextOtherOjsContestTime = new Timestamp(Tool.now().getTime() + 1000*60*60);
+            }else{//拉取失败10分钟后再拉取
+                nextOtherOjsContestTime = new Timestamp(Tool.now().getTime() + 1000*60*10);
+            }
+        }
+        return otherOjsContest;
     }
 }
