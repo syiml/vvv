@@ -218,6 +218,10 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         }
         if(kind!=-1){
             sql+=" and kind="+kind;
+        }else{
+            if(!Main.loginUserPermission().getAddContest()){
+                sql+=" and kind!=4";//4->隐藏
+            }
         }
         return new SQL(sql).queryNum();
     }

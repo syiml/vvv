@@ -255,6 +255,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
     public void updateProblemTotals(int pid,int totalSubmit,int totalSubmitUser,int totalAc,int totalAcUser) {
         Problem p = getProblem(pid);
         p.totalSubmit = totalSubmit;
+        p.totalSubmitUser = totalSubmitUser;
         p.totalAc = totalAc;
         p.totalAcUser = totalAcUser;
         new SQL("UPDATE problem SET totalSubmit=?,totalSubmitUser=?,totalAc=?,totalAcUser=? WHERE pid=?", totalSubmit, totalSubmitUser, totalAc, totalAcUser, pid).update();
