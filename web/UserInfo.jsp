@@ -33,5 +33,4 @@
 </body>
 </html>
 <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
-<%--<script type="text/javascript" src="js/highcharts/theme.js"></script>--%>
 <script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
