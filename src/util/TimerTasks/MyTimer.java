@@ -1,5 +1,7 @@
 package util.TimerTasks;
 
+import dao.LogDao;
+import util.Main;
 import util.SQL.SQL;
 
 import java.util.*;
@@ -19,6 +21,7 @@ public abstract class MyTimer extends TimerTask{
     private static void addAllTask() throws Exception {
         add(new TaskProblemSubmitCount());
         add(SQL.conns);
+        add(Main.logs);
         add(new TaskWeekRankCount());
     }
 

@@ -28,13 +28,6 @@ import java.util.Set;
  */
 public class Main {
     public static final JSONObject GV=GlobalVariables.read();
-    public static ProblemSQL problems = new ProblemSQL();
-    public static statusSQL status = new statusSQL();
-    public static UserSQL users = new UserSQL();
-    public static LogDao logs = new LogDao();
-
-    public static Submitter submitter=new SubmitterImp();
-
     //常量获取
     final public static int problemShowNum=GV.getInt("problemShowNum");//每页显示的题目数量
     final public static int statuShowNum=GV.getInt("statuShowNum");//statu每页显示数量
@@ -42,6 +35,12 @@ public class Main {
     final public static int userShowNum=GV.getInt("userShowNum");//user每页显示数量
     final public static int discussShowNum=GV.getInt("discussShowNum");//discuss的显示数量
     final public static int autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
+    public static ProblemSQL problems = new ProblemSQL();
+    public static statusSQL status = new statusSQL();
+    public static UserSQL users = new UserSQL();
+    public static LogDao logs = new LogDao();
+    public static GoodsSQL goods = new GoodsSQL();
+    public static Submitter submitter=new SubmitterImp();
     public static boolean isDebug=GV.getBoolean("debug");
     public static String version=GV.getString("version");
     public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();

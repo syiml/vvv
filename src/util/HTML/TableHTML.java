@@ -35,9 +35,7 @@ public class TableHTML {
     }
     public void addRow(String... ss){
         List<String> row=new ArrayList<String>();
-        for(String s:ss){
-            row.add(s);
-        }
+        Collections.addAll(row, ss);
         this.cell.add(row);
     }
     public void addCl(int r,int c,String s){

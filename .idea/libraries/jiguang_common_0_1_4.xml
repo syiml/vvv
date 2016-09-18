@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jiguang-common-0.1.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jiguang-common-0.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jpush-client-3.2.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

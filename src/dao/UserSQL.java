@@ -29,6 +29,25 @@ public class UserSQL extends BaseCache<String,User> {
         cachTime = 20*60*1000;
     }
 
+    public static int getUsersNum(int cid,String serach){
+        SQL sql=new SQL("select count(*) from v_contestuser where cid=? and (username like ? or nick like ?)",cid,"%"+serach+"%","%"+serach+"%");
+        ResultSet rs=sql.query();
+        try {
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            sql.close();
+        }
+        return 0;
+    }
+
+    public static int getUsersNum(int cid,int st){
+        return new SQL("select count(*) from contestuser where cid=? and statu=?",cid,st).queryNum();
+    }
+
     public int register(User u){
         SQL sql1=new SQL("select * from users where username=?",u.getUsername());
         try {
@@ -56,6 +75,7 @@ public class UserSQL extends BaseCache<String,User> {
         MessageMain.addMessageWelcome(u);
         return 1;
     }
+
     public int getRank(String user){
         SQL sql=new SQL("select rank+1 from v_user where username=?", user);
         ResultSet rs=sql.query();
@@ -68,6 +88,7 @@ public class UserSQL extends BaseCache<String,User> {
         sql.close();
         return -1;
     }
+
     public Permission getPermission(String username){
         if(username==null) return null;
         SQL sql=new SQL("select perid from userper where username=?",username);
@@ -76,6 +97,7 @@ public class UserSQL extends BaseCache<String,User> {
         sql.close();
         return p;
     }
+
     public List<List<String>> getPermissionTable(){
         //user,per,admin
         SQL sql=new SQL("SELECT username,perid,(select name from permission where id=perid) as name FROM userper");
@@ -95,10 +117,12 @@ public class UserSQL extends BaseCache<String,User> {
         sql.close();
         return table;
     }
+
     public void addPer(String user,int per){
         new SQL("INSERT INTO userper values(?,?)",user,per).update();
         removeCatch(user);
     }
+
     public void delPer(String user,int per){
         new SQL("delete from userper where username=? and perid=?",user,per).update();
         removeCatch(user);
@@ -107,7 +131,9 @@ public class UserSQL extends BaseCache<String,User> {
     public User getUserHaveRank(String username){
         return getUser(username,true);
     }
+
     public User getUser(String username){return getBeanByKey(username);}
+
     private User getUser(String username,boolean rank){
         SQL sql;
         if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from v_user where username=? ",username);
@@ -116,6 +142,7 @@ public class UserSQL extends BaseCache<String,User> {
         if(ret!=null)ret.setPermission(Main.getPermission(username));
         return ret;
     }
+
     public List<User> getUsers(int from,int num,String search,String order,boolean desc){
         if(order==null||order.equals("")){
             order="rank";
@@ -133,6 +160,7 @@ public class UserSQL extends BaseCache<String,User> {
         }
         return sql.queryBeanList(User.class);
     }
+
     public int getUsersNum(String search){
         if(search==null||search.equals("")){
             return new SQL("select count(*) from users").queryNum();
@@ -140,13 +168,16 @@ public class UserSQL extends BaseCache<String,User> {
             return new SQL("select count(*) from users where (username like ? or nick like ?)", "%" + search + "%", "%" + search + "%").queryNum();
         }
     }
+
     public List<User> getRichTop10(){
         return new SQL("select * from users order by acb desc,rating desc " +
                 "LIMIT 0,10").queryBeanList(User.class);
     }
+
     public List<User> getAcnumTop10(){
         return new SQL("select * from users order by acnum desc,rating desc LIMIT 0,10").queryBeanList(User.class);
     }
+
     public List<List<String>> getUsers(int cid,int from,int num,String serach,boolean is3){
         List<List<String>> list=new ArrayList<List<String>>();
         SQL sql=new SQL("select * from v_contestuser where cid=? and (username like ? or nick like ?) ORDER BY time desc" +
@@ -212,6 +243,7 @@ public class UserSQL extends BaseCache<String,User> {
             sql.close();
         }
     }
+
     public List<User> getRegisterUsers(int cid){
         SQL sql=new SQL("select * from v_contestuser where cid=?",cid);
         List<User> list=new ArrayList<User>();
@@ -236,23 +268,6 @@ public class UserSQL extends BaseCache<String,User> {
         }
         return list;
     }
-    public static int getUsersNum(int cid,String serach){
-        SQL sql=new SQL("select count(*) from v_contestuser where cid=? and (username like ? or nick like ?)",cid,"%"+serach+"%","%"+serach+"%");
-        ResultSet rs=sql.query();
-        try {
-            if(rs.next()){
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            sql.close();
-        }
-        return 0;
-    }
-    public static int getUsersNum(int cid,int st){
-        return new SQL("select count(*) from contestuser where cid=? and statu=?",cid,st).queryNum();
-    }
 
     public String login(String user,String pass){
         SQL sql=new SQL("select username,password from users where username=? and password=md5(?)", user, pass);
@@ -276,7 +291,7 @@ public class UserSQL extends BaseCache<String,User> {
         }finally {
             sql.close();
         }
-        return "SystemError";
+            return "SystemError";
     }
     public boolean update(User u){
         Tool.log("Edit:"+u.getUsername());

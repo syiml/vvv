@@ -106,7 +106,7 @@ public class WeekRankCountHTML extends pageBean {
 
     @Override
     public String getCellByHead(int i, String colname) {
-        WeekRankRecord currRecord = weekRank[0].get(i);
+        WeekRankRecord currRecord = weekRank[0].get((getNowPage()-1)*pageSize+i);
         WeekRankRecord lastRecord = weekRank[1].get(currRecord.username);
         if(colname.equals("Rank")){
             if(lastRecord == null && currRecord.rank!=-1){

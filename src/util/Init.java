@@ -1,6 +1,7 @@
 package util;
 
 import util.Event.EventMain;
+import util.JPush.Test;
 import util.TimerTasks.MyTimer;
 
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 public class Init extends HttpServlet {
     public void init(){
         try {
+            //Test.test();
             Main.Init();
             MyTimer.Init();
             EventMain.Init();

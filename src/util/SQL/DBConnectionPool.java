@@ -88,7 +88,7 @@ public class DBConnectionPool extends MyTimer {
     }
 
     @Override
-    public void getTimer() throws Exception {
+    public void getTimer(){
         new Timer().schedule(this,Main.autoConnectionTimeMinute * 60000,Main.autoConnectionTimeMinute * 60000);
     }
 }
