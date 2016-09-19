@@ -14,14 +14,34 @@ import util.Tool;
  * Created by QAQ on 2016/9/18.
  */
 public class Test {
-    public static PushPayload buildPushObject_all_all_alert() {
-        return PushPayload.alertAll("just a test");
+    private static JPushClient jpushClient = new JPushClient("b118aa33ff68ccc230981791", "32172531c963a486ed02849e");
+    public static PushPayload buildPushObject_all_alert(String text) {
+        return PushPayload.alertAll(text);
     }
+    public static boolean SendToAll(String text){
+        PushPayload payload = buildPushObject_all_alert(text);
+        try {
+            PushResult result = jpushClient.sendPush(payload);
+            Tool.debug("Got result - " + result);
+            return true;
+        } catch (APIConnectionException e) {
+            // Connection error, should retry later
+            Tool.debug("Connection error, should retry later");
+            return false;
+        } catch (APIRequestException e) {
+            // Should review the error, and fix the request
+            Tool.debug("Should review the error, and fix the request");
+            Tool.debug("HTTP Status: " + e.getStatus());
+            Tool.debug("Error Code: " + e.getErrorCode());
+            Tool.debug("Error Message: " + e.getErrorMessage());
+            return false;
+        }
+    }
+
     public static void test(){
-        JPushClient jpushClient = new JPushClient("b118aa33ff68ccc230981791", "32172531c963a486ed02849e", 3);
 
         // For push, all you need do is to build PushPayload object.
-        //PushPayload payload = buildPushObject_all_all_alert();
+        //PushPayload payload = buildPushObject_all_alert();
         PushPayload payload = buildPushObject_user();
 
         try {

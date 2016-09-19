@@ -1,6 +1,5 @@
 package util.HTML;
 
-import action.ExamProblem;
 import entity.User;
 import entity.exam.Base_Exam_problem;
 import servise.ExamMain;
@@ -22,7 +21,7 @@ public class ExamProblemList extends pageBean {
         this.page=page;
         u=Main.loginUser();
         list= ExamMain.getProblems(u.getUsername(),page,pageSize);
-        pageNum = getPageNum(ExamMain.getProblemsNum(u.getUsername()),pageSize);
+        pageNum = getTotalPageNum(ExamMain.getProblemsNum(u.getUsername()),pageSize);
         addTableHead("#","标题","类型","公开","作者");
     }
     @Override
@@ -31,17 +30,17 @@ public class ExamProblemList extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         return list.size();
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return pageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return page;
     }
 

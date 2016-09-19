@@ -1,19 +1,8 @@
 package util.HTML;
 
 import entity.TeamMemberAwardInfo;
-import entity.TeamMemberAwardInfo_AwardLevel;
-import entity.TeamMemberAwardInfo_ContestLevel;
-import util.HTML.FromHTML.FormHTML;
-import util.HTML.FromHTML.date.date;
-import util.HTML.FromHTML.hidden.hidden;
-import util.HTML.FromHTML.select.select;
-import util.HTML.FromHTML.text.text;
-import util.HTML.modal.modal;
 import util.Main;
-import util.Tool;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +20,7 @@ public class TeamAwardList extends pageBean {
         admin = Main.loginUserPermission().getTeamMemberAdmin();
         if(page>0) this.page = page;
         infos = Main.users.getTeamMemberAwardInfoList((page - 1) * pageSize, pageSize, admin);
-        pageNum = getPageNum(Main.users.getTeamMemberAwardInfoListNum(),pageSize);
+        pageNum = getTotalPageNum(Main.users.getTeamMemberAwardInfoListNum(),pageSize);
         this.addTableHead("时间","队员1","队员2","队员3","级别","奖项","备注");
         if(admin) this.addTableHead("admin");
     }
@@ -41,17 +30,17 @@ public class TeamAwardList extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         return infos.size();
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return pageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return page;
     }
 

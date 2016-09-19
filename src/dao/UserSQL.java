@@ -8,6 +8,7 @@ import entity.RegisterUser;
 import entity.User;
 import servise.MessageMain;
 import util.HTML.HTML;
+import util.MyTime;
 import util.SQL.SQL;
 import util.Tool;
 
@@ -26,7 +27,7 @@ public class UserSQL extends BaseCache<String,User> {
     * */
     public UserSQL(){
         maxSize = 100;
-        cachTime = 20*60*1000;
+        cachTime = 20 * MyTime.MINUTE;
     }
 
     public static int getUsersNum(int cid,String serach){

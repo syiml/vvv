@@ -194,4 +194,12 @@ public class JSON {
         }
         return otherOjsContest;
     }
+
+    public static JSONObject getJSONObject(String ... args){
+        JSONObject json = new JSONObject();
+        for(int i=0;i+1<args.length;i+=2){
+            json.put(args[i],args[i+1]);
+        }
+        return json;
+    }
 }

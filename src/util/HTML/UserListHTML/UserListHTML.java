@@ -28,7 +28,7 @@ public class UserListHTML extends pageBean {
         this.page=page;
         num=Main.userShowNum;
         list= Main.users.getUsers((page-1) * num, num, search,order,bo);
-        pageNum=getPageNum(Main.users.getUsersNum(search),num);
+        pageNum= getTotalPageNum(Main.users.getUsersNum(search),num);
         u=Main.loginUser();
         addTableHead("rank","username");
         if(u!=null&&u.getPermission().getUserAdmin()) addTableHead("name");
@@ -84,17 +84,17 @@ public class UserListHTML extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         return list.size();
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return pageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return page;
     }
 

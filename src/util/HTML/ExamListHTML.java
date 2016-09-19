@@ -19,7 +19,7 @@ public class ExamListHTML extends pageBean {
     public ExamListHTML(int page){
         if(page<=0) page=1;
         list= ExamMain.getExams(page, pageSize);
-        pageNum = getPageNum(ExamMain.getExamNum(),pageSize);
+        pageNum = getTotalPageNum(ExamMain.getExamNum(),pageSize);
         nowpage=page;
         addTableHead("#","名称","开始时间","结束时间","状态","考生列表");
     }
@@ -33,17 +33,17 @@ public class ExamListHTML extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         return list.size();
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return pageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return nowpage;
     }
 

@@ -10,7 +10,6 @@ import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.select.select;
 import util.HTML.FromHTML.text.text;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,17 +75,17 @@ public class contestListHTML extends pageBean{
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         return list.size();
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return pageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return page;
     }
 
@@ -177,7 +176,7 @@ public class contestListHTML extends pageBean{
     public String HTML(){
         if(page<=0) page=1;
         if(list==null) list = ContestMain.getContests((page-1)*num,num,status,name,type,kind);
-        pageNum=getPageNum(ContestMain.getContestsNum(status,name,type,kind),num);
+        pageNum= getTotalPageNum(ContestMain.getContestsNum(status,name,type,kind),num);
         addTableHead("#","名称","开始时间","结束时间","权限","状态");
         if(kind==-1) addTableHead("类型");
         return super.HTML();

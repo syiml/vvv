@@ -50,7 +50,7 @@ public class UserListContest extends pageBean {
             }
             list2=Main.users.getUsers(cid, (NowPage - 1) * num, num, "", c.getKind() == 3);
             RegisterUserNum=UserSQL.getUsersNum(c.getCid(),"");
-            PageNum=getPageNum(RegisterUserNum,Main.userShowNum);
+            PageNum= getTotalPageNum(RegisterUserNum,Main.userShowNum);
         }
         if(admin){
             super.addTableHead("admin");
@@ -67,7 +67,7 @@ public class UserListContest extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             return list_register_team.size();
         }
@@ -75,12 +75,12 @@ public class UserListContest extends pageBean {
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return PageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return NowPage;
     }
 

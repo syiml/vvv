@@ -65,18 +65,18 @@
     </li>
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
     <li><a href="Challenge.jsp"><span>CHALLENGE</span></a></li>
-    <li><a href="ClockIn.jsp"><span <%
-    if(ClockInSQL.mustClockIn()>=0){
-    out.print("style='background:red;color:white'");
-    }
-    %>>签到</span></a></li>
+    <%--<li><a href="ClockIn.jsp"><span <%--%>
+    <%--if(ClockInSQL.mustClockIn()>=0){--%>
+    <%--out.print("style='background:red;color:white'");--%>
+    <%--}--%>
+    <%--%>>签到</span></a></li>--%>
     <%
       String ss="";
       if(session.getAttribute("user")!=null){
         String s=((User)session.getAttribute("user")).getUsername();
         int messnoread=MessageSQL.getNoRead(s);
         ss+="<li  class=' mm-right' style='min-width:135px'>";//float:right; min-width: 115px;
-        ss+=HTML.a("UserInfo.jsp?user="+s,"<span><i class='icon-user'></i> "+s+(messnoread==0?"":"<text class='badge'>"+messnoread+"</text>")+"</span>");
+        ss+=HTML.a("ActionNoPara.jsp?user="+s,"<span><i class='icon-user'></i> "+s+(messnoread==0?"":"<text class='badge'>"+messnoread+"</text>")+"</span>");
         ss+="<ul>";
         if(messnoread>0) ss+="<li>"+HTML.a("Message.jsp","<span><i class='icon-envelope-alt'></i> MESSAGE<text class='badge'>"+messnoread+"</text></span>")+"</li>";
         else ss+="<li>"+HTML.a("Message.jsp","<span><i class='icon-envelope-alt'></i> MESSAGE</span>")+"</li>";

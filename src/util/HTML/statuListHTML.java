@@ -55,13 +55,13 @@ public class statuListHTML extends pageBean {
         }
         if(contest!=null&&contest.getType()==Contest_Type.TEAM_OFFICIAL) {
             status = Main.status.getTeamStatus(cid,this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
-            this.PageNum=getPageNum(Main.status.getTeamStatusNum(cid, this.pid, this.result, this.Language, this.ssuser),num);
+            this.PageNum= getTotalPageNum(Main.status.getTeamStatusNum(cid, this.pid, this.result, this.Language, this.ssuser),num);
         }else if(contest!=null && contest.getKind()==0){//练习场
             status = Main.status.getStatusKind0(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
-            this.PageNum = getPageNum(Main.status.getStatusKind0Num(this.cid, this.pid, this.result, this.Language, this.ssuser),num);
+            this.PageNum = getTotalPageNum(Main.status.getStatusKind0Num(this.cid, this.pid, this.result, this.Language, this.ssuser),num);
         }else{
             status = Main.status.getStatus(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser, all);
-            this.PageNum=getPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all), num);
+            this.PageNum= getTotalPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all), num);
         }
 
         setCl("table table-striped table-hover table-condensed");
@@ -75,17 +75,17 @@ public class statuListHTML extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         return status.size();
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return PageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return page;
     }
 

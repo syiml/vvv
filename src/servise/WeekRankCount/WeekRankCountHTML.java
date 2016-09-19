@@ -2,7 +2,6 @@ package servise.WeekRankCount;
 
 import entity.Status;
 import util.HTML.HTML;
-import util.HTML.TableHTML;
 import util.HTML.pageBean;
 import util.Main;
 
@@ -13,16 +12,16 @@ import java.util.*;
  * Created by syimlzhu on 2016/9/7.
  */
 public class WeekRankCountHTML extends pageBean {
-    public static int pageSize = 50;
+    private static int pageSize = 50;
 
     //private static WeekRankCount currWeekRank = null;
     //private static WeekRankCount lastWeekRank = null;
 
     private static WeekRankCount[] weekRank = new WeekRankCount[8];
 
-    int from = 1;
-    int num = 1;
-    int page = 1;
+    private int from = 1;
+    private int num = 1;
+    private int page = 1;
     public WeekRankCountHTML(int page){
         if(weekRank[0] == null){
             compute();
@@ -86,7 +85,7 @@ public class WeekRankCountHTML extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         int totalCount = weekRank[0].size();
         if(totalCount < from+num){
             return Math.max(0,totalCount-from);
@@ -95,18 +94,18 @@ public class WeekRankCountHTML extends pageBean {
     }
 
     @Override
-    public int getPageNum() {
-        return getPageNum(weekRank[0].size(),pageSize);
+    public int getTotalPageNum() {
+        return getTotalPageNum(weekRank[0].size(),pageSize);
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return page;
     }
 
     @Override
     public String getCellByHead(int i, String colname) {
-        WeekRankRecord currRecord = weekRank[0].get((getNowPage()-1)*pageSize+i);
+        WeekRankRecord currRecord = weekRank[0].get((getCurrPage()-1)*pageSize+i);
         WeekRankRecord lastRecord = weekRank[1].get(currRecord.username);
         if(colname.equals("Rank")){
             if(lastRecord == null && currRecord.rank!=-1){

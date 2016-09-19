@@ -18,7 +18,7 @@ public class LogHTML extends pageBean {
         this.page=page;
         list = Main.logs.getLogs((page-1)*num,num);
         int allNum=Main.logs.getLogsNum();
-        pageNum=pageBean.getPageNum(allNum,num);
+        pageNum=pageBean.getTotalPageNum(allNum,num);
         addTableHead("#","时间","触发人");
         this.setCl("table table-striped table-hover table-condensed");
     }
@@ -28,17 +28,17 @@ public class LogHTML extends pageBean {
     }
 
     @Override
-    public int getPageSize() {
+    public int getCurrPageSize() {
         return list.size();
     }
 
     @Override
-    public int getPageNum() {
+    public int getTotalPageNum() {
         return pageNum;
     }
 
     @Override
-    public int getNowPage() {
+    public int getCurrPage() {
         return page;
     }
 

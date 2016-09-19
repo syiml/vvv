@@ -165,6 +165,10 @@
                 <action name="computeOneUseranemPassword" class="action.RegisterContest" method="computeOneUseranemPassword">
                         <result name="success" type="redirect">User.jsp?cid=${cid}</result>
                 </action>
+
+        </package>
+        <package name="app" namespace="/app" extends="struts-default">
+                <action name="getSelfInfo" class="action.App.ActionNoPara" method="getSelfInfo"> </action>
         </package>
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>

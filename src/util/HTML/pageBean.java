@@ -18,16 +18,15 @@ public abstract class pageBean {
     /**
      * @return 当前页的行数
      */
-    public abstract int getPageSize();
-    public abstract int getPageNum();//总页数
-    public abstract int getNowPage();//当前页
+    public abstract int getCurrPageSize();
+    public abstract int getTotalPageNum();//总页数
+    public abstract int getCurrPage();//当前页
     public abstract String getCellByHead(int i,String colname);//第i行的每列的内容
-
     public abstract String getLinkByPage(int page);
     public abstract String rightForm();
 
     public String getTableClass(){return cl;}
-    public void setCl(String cl){this.cl=cl;}
+    protected void setCl(String cl){this.cl=cl;}
     protected void addTableHead(String... ss){
         Collections.addAll(Colname,ss);
     }
@@ -40,7 +39,7 @@ public abstract class pageBean {
             table.addColname(getColname(aColname));
         }
         table.setClass(getTableClass());
-        int PageSize=getPageSize();
+        int PageSize= getCurrPageSize();
         for(int i=0;i<PageSize;i++){
             List<String> row=new ArrayList<String>();
             for(int j=0;j<table.getColnameSize();j++){
@@ -55,18 +54,9 @@ public abstract class pageBean {
         table.addCl(r,c,cls);
     }
 
-    public String btn(String href,String text){
-        return HTML.abtn("sm",href,text,"");
-    }
-    public String btn_disabled(String href,String text){
-        return HTML.abtn("sm",href,text,"disabled");
-    }
-    public String btn_active(String href,String text){
-        return HTML.abtn("sm",href,text,"btn-primary");
-    }
     public String page(){
-        int PageNum=getPageNum();
-        int NowPage=getNowPage();
+        int PageNum= getTotalPageNum();
+        int NowPage= getCurrPage();
 //        if(PageNum==1) return "";
         int k=4;//当前页往外扩展页数
         int l=NowPage;
@@ -124,16 +114,27 @@ public abstract class pageBean {
     }
     public String foot(){
         return "";
-//        if(getPageNum()==1) return "";
+//        if(getTotalPageNum()==1) return "";
 //        return HTML.div("panel-body","style='padding:5px'",page());
     }
     public String HTML(){
         return HTML.panelnobody(getTitle(),head()+tableHTML()+foot());
     }
-    public static int getPageNum(int Num,int everyPageNum){
+
+    public static int getTotalPageNum(int Num, int everyPageNum){
         if(Num==0) return 1;
         if(Num%everyPageNum==0){
             return Num/everyPageNum;
         }else return Num/everyPageNum+1;
+    }
+
+    private String btn(String href, String text){
+        return HTML.abtn("sm",href,text,"");
+    }
+    private String btn_disabled(String href, String text){
+        return HTML.abtn("sm",href,text,"disabled");
+    }
+    private String btn_active(String href, String text){
+        return HTML.abtn("sm",href,text,"btn-primary");
     }
 }
