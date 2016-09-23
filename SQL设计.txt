@@ -27,7 +27,7 @@
     	cid			int(11)
     	pid			int(11)
     	tpid		int(11)
-
+？？？？
 功能：查询contest内的题目列表(按顺序) 以及每题的ac人数和提交人数
 
 	SELECT t.pid as pid,problem.pid as tpid,problem.title
