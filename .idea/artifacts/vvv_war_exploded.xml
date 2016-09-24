@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="vvv:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/vvv_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="vvv" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="jsoup-1.8.2" />
+          <element id="library" level="project" name="HttpClient" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="vvv/web/Web" />
+    </root>
+  </artifact>
+</component>

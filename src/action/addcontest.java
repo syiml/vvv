@@ -6,6 +6,7 @@ import entity.Permission;
 
 /**
  * Created by Syiml on 2015/6/23 0023.
+ * 试试试试试试试试试试试试试试试试试试试试试试试试试试
  */
 public class addcontest {
     public void setName(String name) {
