@@ -1,15 +1,13 @@
 package action.App;
 
 import action.BaseAction;
-import org.apache.struts2.ServletActionContext;
 import util.JSON.AppJson;
 
 /**
- * 没有参数的请求
- * Created by syimlzhu on 2016/9/18.
+ * Created by QAQ on 2016/9/23.
  */
-public class ActionNoPara extends BaseAction{
-
+public class ActionGetUserInfo extends BaseAction{
+    public String username;
     public String getSelfInfo(){
         out.print(AppJson.getSelfUserInfo());
         return NONE;

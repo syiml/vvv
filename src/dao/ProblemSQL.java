@@ -36,6 +36,20 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         }
         return new SQL(sql,pid1,pid2).queryBeanList(problemView.class);
     }
+    public List<problemView> getProblems(int from,int num,String search){
+        if(search==null||search.equals("")){
+            return new SQL("SELECT pid,title,visiable,totalAcUser,totalSubmit FROM  problem  WHERE visiable=1 LIMIT ?,?",from,num).queryBeanList(problemView.class);
+        }else{
+            return new SQL("SELECT pid,title,visiable,totalAcUser,totalSubmit FROM  problem  WHERE visiable=1 AND (pid=? OR title like %?%) LIMIT ?,?",search,search,from,num).queryBeanList(problemView.class);
+        }
+    }
+    public int getProblemsNum(String search){
+        if(search==null||search.equals("")) {
+            return new SQL("SELECT COUNT(*) FROM  problem  WHERE visiable=1").queryNum();
+        }else{
+            return new SQL("SELECT COUNT(*) FROM  problem  WHERE visiable=1 AND (pid=? OR title like %?%)",search,search).queryNum();
+        }
+    }
     public List<problemView> getProblems(int cid){
         //pid,title,visiable,ac,submit
         String sql="SELECT tpid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";

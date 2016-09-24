@@ -17,13 +17,14 @@ import java.io.PrintWriter;
  */
 public class BaseAction extends ActionSupport implements ServletRequestAware, ServletResponseAware {
 
+    public String prompt;
     protected  HttpServletRequest request;
     protected HttpServletResponse response;
     protected HttpSession session;
     protected PrintWriter out;
-
-    public String prompt;
-
+    protected BaseAction(){
+        ServletActionContext.getResponse().setContentType("text/html;charset=utf-8");
+    }
     @Override
     public void setServletRequest(HttpServletRequest httpServletRequest) {
         request=httpServletRequest;
