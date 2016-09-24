@@ -57,7 +57,7 @@ public class CodeVS extends OTHOJ {
         p.setOutput(panels.get(2).html());
         p.addSample(panels.get(3).html(),panels.get(4).html());
 
-        p.setInt64("%I64d");
+        p.setInt64("%lld");
 
         Elements limits =  doc.select(".m-r-xs");
         String timeLimit = limits.get(0).text();
