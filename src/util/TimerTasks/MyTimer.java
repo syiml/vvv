@@ -23,6 +23,7 @@ public abstract class MyTimer extends TimerTask{
         add(SQL.conns);
         add(Main.logs);
         add(new TaskWeekRankCount());
+        add(new OneProblemEveryDay());
     }
 
     public static void Init() throws Exception {

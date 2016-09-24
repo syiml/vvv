@@ -1,9 +1,7 @@
 package util;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.NameValuePair;
+import com.sun.beans.decoder.DocumentHandler;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -53,71 +51,6 @@ public class MyClient extends DefaultHttpClient{
         super(ccm,params);
     }
 
-    /**
-     * 对url提交一个post请求
-     * @param URL 提交地址
-     * @param form 表单的key value
-     * @return 1成功 0失败
-     */
-    public synchronized int Post(String URL,List<NameValuePair> form){
-        HttpEntity entity;
-        try {
-            entity = new UrlEncodedFormEntity(form, "UTF-8");
-            HttpPost httppost = new HttpPost(URL);
-            httppost.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-            httppost.setEntity(entity);
-            HttpResponse hr;
-            hr = execute(httppost);
-            entity = hr.getEntity();
-            if (entity != null) {
-                System.out.println("Response content lenght:"  + entity.getContentLength());
-                String content;
-                try {
-                    content = EntityUtils.toString(entity);
-                    Tool.log("Response content:" + content);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return 0;
-                }
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return 0;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return 0;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
-        }
-        return 1;
-    }
-    /**
-     * 获取指定url的内容，指定了utf-8编码
-     * 要获取登录后才能显示的页面，要先用Post提交登录表单，然后get指定页面
-     * 返回的页面没有执行页面的js脚本代码
-     * @param URL 地址
-     * @return 返回地址的Document类
-     */
-    public Document get(String URL){
-        HttpEntity entity = null;
-        try {
-            HttpGet httpget = new HttpGet(URL);
-            httpget.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-            HttpResponse hr = execute(httpget);
-            entity = hr.getEntity();
-            return Jsoup.parse(entity.getContent(), "utf-8", "");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
     public static MyClient getMyClient() {
         HttpClient base = new DefaultHttpClient() ;
         try {
@@ -148,6 +81,91 @@ public class MyClient extends DefaultHttpClient{
         } catch (Exception ex) {
             //ex.printStackTrace();
             Tool.log(ex);
+            return null;
+        }
+    }
+
+    /**
+     * 对url提交一个post请求
+     * @param URL 提交地址
+     * @param form 表单的key value
+     * @return 1成功 0失败
+     */
+    public synchronized String Post(String URL,List<NameValuePair> form){
+        HttpEntity entity;
+        try {
+            entity = new UrlEncodedFormEntity(form, "UTF-8");
+            HttpPost httppost = new HttpPost(URL);
+            httppost.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
+            //httppost.setHeader();
+
+            //httppost.setHeader("Accept","application/json, text/plain, */*");
+//            httppost.setHeader("Accept-Encoding","gzip, deflate");
+//            httppost.setHeader("Accept-Language","zh-CN,zh;q=0.8,en;q=0.6");
+//            httppost.setHeader("Authorization","No login");
+//            httppost.setHeader("Connection","keep-alive");
+//            //httppost.setHeader("Content-Length","54");
+//            httppost.setHeader("Content-Type","application/json;charset=UTF-8");
+//            httppost.setHeader("Host","login.codevs.com");
+//            httppost.setHeader("Origin","http://login.codevs.com");
+//            httppost.setHeader("Referer","http://login.codevs.com/auth/login");
+//            httppost.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36");
+//            httppost.setHeader("X-Requested-With","XMLHttpRequest");
+
+            httppost.setEntity(entity);
+            HttpResponse hr;
+            hr = execute(httppost);
+            entity = hr.getEntity();
+            if (entity != null) {
+                System.out.println("Response content lenght:"  + entity.getContentLength());
+                String content;
+                try {
+                    content = EntityUtils.toString(entity);
+                    Tool.log("Response content:" + content);
+
+                    return content;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    /**
+     * 获取指定url的内容，指定了utf-8编码
+     * 要获取登录后才能显示的页面，要先用Post提交登录表单，然后get指定页面
+     * 返回的页面没有执行页面的js脚本代码
+     * @param URL 地址
+     * @return 返回地址的Document类
+     */
+    public Document get(String URL){
+        HttpEntity entity = null;
+        try {
+            HttpGet httpget = new HttpGet(URL);
+            httpget.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
+            httpget.setHeader("Authorization","JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijk0Mzk4NjA4MEBxcS5jb20iLCJleHAiOjE0NzU0MTI3NTEsImVtYWlsIjoiOTQzOTg2MDgwQHFxLmNvbSIsInVzZXJfaWQiOjc5MDB9._BckR4ARfWfGLqFkrfrZtwkdqboNqEUW1jATxpd_Rc4");
+            HttpResponse hr = execute(httpget);
+            entity = hr.getEntity();
+            return Jsoup.parse(entity.getContent(), "utf-8", "");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }

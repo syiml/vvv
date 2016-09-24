@@ -49,7 +49,7 @@ public class PKU extends OTHOJ {
     public String getName(){
         return "POJ";
     }
-    public String getRid(String user){
+    public String getRid(String user,VjSubmitter ve){
         Element e;
         Document d;
         try {
@@ -136,7 +136,7 @@ public class PKU extends OTHOJ {
 
             formparams1.add(new BasicNameValuePair("source",code));
             formparams1.add(new BasicNameValuePair("encoded","1"));
-            if(hc.Post(url+"/submit",formparams1)==0) return "error";
+            if(hc.Post(url+"/submit",formparams1)==null) return "error";
             else return "success";
         //}
         //return "success";

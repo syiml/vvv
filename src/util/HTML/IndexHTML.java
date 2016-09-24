@@ -46,7 +46,7 @@ public class IndexHTML {
             row.add(k + "");
             k++;
             row.add(u.getUsernameHTML());
-            row.add(u.getACB()+"");
+            row.add(u.getAcb()+"");
             table.addRow(row);
         }
         return HTML.panelnobody("ACB富豪榜 Top10"+HTML.floatRight(HTML.a("User.jsp?search=&order=acb&desc=1", "All")), table.HTML());

@@ -58,21 +58,25 @@ public class BNUOJ extends OTHOJ {
         languageMap.put("1","2");//C
         languageMap.put("2","3");//JAVA
     }
-    public String getName(){
-        return "BNUOJ";
-    }
+
     private static String getSubmitURL(){
         return URL+submitURL;
     }
+
     private static String getLoginURL() {
         return URL+loginURL;
     }
+
+    public String getName(){
+        return "BNUOJ";
+    }
+
     public String getProblemURL(String pid){ return URL+problemURL+"?pid="+pid; }
     private Result getResultMap(String v){
         return resultMap.get(v);
     }
 
-    public String getRid(String user){
+    public String getRid(String user,VjSubmitter s){
         Document d = MyClient.getMyClient().get(URL + "/v3/ajax/status_data.php?sEcho=27&iDisplayLength=1&bSearchable_0=true&iDisplayStart=0&sSearch_0=" + user);
         if(d==null){
             return "error";
@@ -151,7 +155,7 @@ public class BNUOJ extends OTHOJ {
         formparams.add(new BasicNameValuePair("isshare","0"));//share code
         formparams.add(new BasicNameValuePair("user_id",s.getUsername()));
         formparams.add(new BasicNameValuePair("login","Submit"));
-        if(hc.Post(getSubmitURL(), formparams)==0) return "error";
+        if(hc.Post(getSubmitURL(), formparams)==null) return "error";
         return "success";
     }
     public RES getResult(VjSubmitter s) {
@@ -181,7 +185,7 @@ public class BNUOJ extends OTHOJ {
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
         formparams.add(new BasicNameValuePair("cksave","365"));//cookie save
         formparams.add(new BasicNameValuePair("login","Login"));
-        if(hc.Post(getLoginURL(), formparams)==0) return "error";
+        if(hc.Post(getLoginURL(), formparams)==null) return "error";
         return "success";
     }
     public String getCEInfo(VjSubmitter s){

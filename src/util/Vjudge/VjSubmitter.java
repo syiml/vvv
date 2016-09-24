@@ -17,17 +17,18 @@ import java.util.List;
 * 提交器
 * */
 public class VjSubmitter implements Runnable{
+    public static final int BUSY=1;
+    public static final int IDLE=0;
+    public String showstatus="";
+    public String rid = "";
     SubmitInfo info;//正在处理的info
     int status;//忙碌状态与否
+    int ojid;
+    int submitterID;
+    VJudge vj;
     private String username;
     private String password;
-    int ojid;
     private String ojsrid;
-    int submitterID;
-    public String showstatus="";
-
-    VJudge vj;
-
     public VjSubmitter(int ojid, String us, String pas, int id, VJudge vj){
         this.ojid=ojid;
         username=us;
@@ -36,20 +37,27 @@ public class VjSubmitter implements Runnable{
         submitterID=id;
         this.vj=vj;
     }
+
     public SubmitInfo getSubmitInfo(){return info;}
+
     public int getOjid() {
         return ojid;
     }
+
     public boolean isBusy(){
         return status==BUSY;
     }
+
     public String getUsername(){
         return username;
     }
+
     public String getPassword(){
         return password;
     }
+
     public String getOjsrid(){return ojsrid;}
+
     public void setShowstatus(String status){
         this.showstatus=status;
     }
@@ -72,6 +80,7 @@ public class VjSubmitter implements Runnable{
             }
         }
     }
+
     public void go() {
         try{
             //System.out.println(submitterID+":submitter go");
@@ -89,7 +98,7 @@ public class VjSubmitter implements Runnable{
                     setShowstatus("获取原rid出错");
                     return;
                 }
-                prid = oj.getRid(username);//获得原来的rid
+                prid = oj.getRid(username,this);//获得原来的rid
                 Tool.log("prdid = " + prid);
                 setShowstatus("第"+z+"次获取的原rid="+prid);
             }while(prid.equals("error"));
@@ -99,7 +108,7 @@ public class VjSubmitter implements Runnable{
             int num = 0;
             int k=2;
             do{
-                while (oj.submit(this).equals(submitterID+":error")) {
+                while (oj.submit(this).equals("error")) {
                     num++;
                     if (num >= 10) {
                         //System.out.println(submitterID+":doSubmit out time");
@@ -116,11 +125,11 @@ public class VjSubmitter implements Runnable{
                 num = 0;
                 do {
                     Tool.sleep(1000);
-                    nrid = oj.getRid(username);
+                    nrid = oj.getRid(username,this);
                     //System.out.println(submitterID+":get rid "+num+"=" + nrid);
                     setShowstatus("第"+num+"次获取rid="+nrid);
                     num++;
-                    if (num == 10) break;//提交失败重新提交
+                    if (num == 5) break;//提交失败重新提交
                 } while (nrid.equals(prid));
                 k--;
             }while(num==10&&k!=0);
@@ -129,11 +138,17 @@ public class VjSubmitter implements Runnable{
                 setShowstatus("提交失败");
             }else{
                 ojsrid = nrid;
+                int wait[] = {3,2,1,2,3,5,7,8,9,10};
+                int i=0;
                 do{
-                    Tool.sleep(1000);
+                    Tool.sleep(wait[i<wait.length?i:wait.length-1]*1000);
+                    i++;
                     r=oj.getResult(this);
                     //System.out.println(submitterID+":get res="+r.getR());
                     setShowstatus("评测结果="+r.getR());
+                    if(i>=30){
+                        Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:评测超时。可能是原oj繁忙");
+                    }
                 }while(!r.canReturn());
                 Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo()));
             }
@@ -159,7 +174,4 @@ public class VjSubmitter implements Runnable{
         row.add(showstatus);
         return row;
     }
-
-    public static final int BUSY=1;
-    public static final int IDLE=0;
 }

@@ -30,7 +30,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         new SQL("delete from contestproblems where cid=?",cid).update();
         return "success";
     }
-    private String addProblems(int cid,String s){
+    private String addProblems(int cid, String s){
         if(s.equals("")) return "success";
         //参数：s：以半角逗号分隔开的pid列表
         String[] pids=s.split(",");
@@ -41,11 +41,17 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         }
         return "success";
     }
+    public void ResetContestProblmes(int cid,String pids){
+        deleteproblems(cid);
+        addProblems(cid,pids);
+        removeCatch(cid);
+    }
     public String addContest(int id,addcontest a){
         PreparedStatement p= null;
         int ret=0;
         int type=Integer.parseInt(a.getType());
-        String user=((User)Main.getSession().getAttribute("user")).getUsername();
+        User u = Main.loginUser();
+        String user = u==null?"":u.getUsername();
         new SQL("INSERT INTO contest values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 ,id
                 ,a.getName()
@@ -328,6 +334,9 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         return new SQL("SELECT MAX(teamusername) FROM t_register_team WHERE cid=?",cid).queryString();
     }
 
+    public List<Integer> getCidByName(String name){
+        return new SQL("SELECT id FROM contest WHERE name=?",name).queryList();
+    }
     @Override
     protected Contest getByKeyFromSQL(Integer cid) {
         //cSQL作为缓存，如果里面有这个contest的话就直接获取，否则从数据库获取

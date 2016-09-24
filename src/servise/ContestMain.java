@@ -129,7 +129,16 @@ public class ContestMain {
     public static void updateRegisterTeamPassword(int cid,String username,String teamUsername,String pass){
         contests.updatePassword(cid,username,teamUsername,pass);
     }
+    public static int getCidByName(String name){
+        List<Integer> cids = contests.getCidByName(name);
+        if(cids.size()==0) return -1;
+        return cids.get(0);
+    }
     public static String getMaxTeamUsername(int cid){
         return contests.getMaxTeamUsername(cid);
+    }
+
+    public static void ResetContestProblmes(int cid,String pids){
+        contests.ResetContestProblmes(cid,pids);
     }
 }

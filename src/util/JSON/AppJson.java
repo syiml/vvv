@@ -17,7 +17,15 @@ public class AppJson {
                     "ret","success",
                     "username",u.getUsername(),
                     "nick",u.getNick(),
-                    "headImg", "pic/head/"+u.getUsername()+".jpg"
+                    "motto",u.getMajor(),
+                    "gender",u.getGender()+"",
+                    "school",u.getSchool(),
+                    "acb",u.getAcb()+"",
+                    "acnum",u.getAcnum()+"",
+                    "submitnum",Main.status.getSubmitTime(u.getUsername())+"",
+                    "rating",u.getShowRating()+"",
+                    "ratingnum",u.getRatingnum()+""
+                   // "headImg", "pic/head/"+u.getUsername()+".jpg"
             ).toString();
         }
     }

@@ -126,7 +126,7 @@ public class UserListHTML extends pageBean {
             return s.getAcnum()+"";
         }
         if(colname.equals("acb")) {
-            return s.getACB()+"";
+            return s.getAcb()+"";
         }
         if(colname.equals("rating")){
             return s.getRatingHTML();

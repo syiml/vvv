@@ -25,6 +25,7 @@ import java.util.Map;
  * Created by Syiml on 2015/7/4 0004.
  */
 public class NBUT extends OTHOJ {
+    public static Map<String,Result> ResultMap;
     String url= Main.GV.getJSONObject("nbut").getString("URL");
     MyClient hc = MyClient.getMyClient();
     public NBUT(){
@@ -44,10 +45,12 @@ public class NBUT extends OTHOJ {
         ResultMap.put("RUNNING",Result.JUDGING);
         ResultMap.put("COMPILING",Result.JUDGING);
     }
+
     public String getName(){
         return "NBUT";
     }
-    public String getRid(String user){
+
+    public String getRid(String user,VjSubmitter s){
         Element e;
         Document d;
         try {
@@ -58,9 +61,11 @@ public class NBUT extends OTHOJ {
         } catch (Exception ignored) {}
         return "error";
     }
+
     public String getProblemURL(String pid){
         return url+"/Problem/view.xhtml?id="+pid;
     }
+
     public problemHTML getProblemHTML(String pid){
         problemHTML ph=new problemHTML();
         Element e=null;
@@ -87,11 +92,13 @@ public class NBUT extends OTHOJ {
         ph.setMenoryLimit(limit.substring(limit.indexOf("内存限制: ")+5));
         return ph;
     }
+
     public String getTitle(String pid){
         Document d = MyClient.getMyClient().get(url + "/Problem/view.xhtml?id=" + pid);
         if(d==null) return GET_TITLE_ERROR;
         return d.select("#title").first().text();
     }
+
     private String getOJVERIFY(){
         Document d = MyClient.getMyClient().get(url + "/User/login.xhtml?url=%2F");
         if(d==null) return "";
@@ -100,6 +107,7 @@ public class NBUT extends OTHOJ {
         System.out.println(s.substring(z+21,z+21+32));
         return s.substring(z+21,z+21+32);
     }
+
     private String getLanguage(int l){
         if(l==0){
             return "2";
@@ -110,22 +118,23 @@ public class NBUT extends OTHOJ {
         }
         return "0";
     }
+
     public String submit(VjSubmitter s){
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
         formparams.add(new BasicNameValuePair("__OJVERIFY__",getOJVERIFY()));
-        if(hc.Post(url+"/User/chklogin.xhtml", formparams)==0) return "error";
+        if(hc.Post(url+"/User/chklogin.xhtml", formparams)==null) return "error";
         else {
             List<NameValuePair> formparams1 = new ArrayList<NameValuePair>();
             formparams1.add(new BasicNameValuePair("language",getLanguage(s.getSubmitInfo().language)));
             formparams1.add(new BasicNameValuePair("id",s.getSubmitInfo().pid));
             formparams1.add(new BasicNameValuePair("code",s.getSubmitInfo().code));
-            if(hc.Post(url+"/Problem/submitok.xhtml",formparams1)==0) return "error";
+            if(hc.Post(url+"/Problem/submitok.xhtml",formparams1)==null) return "error";
             else return "success";
         }
     }
-    public static Map<String,Result> ResultMap;
+
     private Result getResultMap(String s){
         return ResultMap.get(s);
     }
@@ -134,7 +143,7 @@ public class NBUT extends OTHOJ {
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
         formparams.add(new BasicNameValuePair("__OJVERIFY__",getOJVERIFY()));
-        if(hc.Post(url+"/User/chklogin.xhtml", formparams)==0) return "error";
+        if(hc.Post(url+"/User/chklogin.xhtml", formparams)==null) return "error";
         else {
             Element e;
             Document d = hc.get(url+"/Problem/viewce.xhtml?submitid="+s.getOjsrid());

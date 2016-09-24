@@ -37,8 +37,8 @@ public class HDU extends OTHOJ {
     private static Map<String,Result> resultMap;
     private static String loginURL="/userloginex.php?action=login";
     private static Map<String,String>  languageMap;
-    private MyClient hc = new MyClient();
     private static String Int64="%I64d";
+    private MyClient hc = new MyClient();
     public HDU(){
         resultMap = new HashMap<String, Result>();
         resultMap.put("Queuing",Result.PENDING);
@@ -67,24 +67,29 @@ public class HDU extends OTHOJ {
         languageMap.put("1", "1");
         languageMap.put("2", "5");
     }
-    public String getName(){
-        return "HDU";
-    }
+
     private static String getSubmitURL(){
         return URL+submitURL;
     }
+
     private static String getLoginURL() {
         return URL+loginURL;
     }
+
     private static String getStatusURL(String user){
         return URL+statusURL+"?"+statusFormUser+"="+user;
     }
+
+    public String getName(){
+        return "HDU";
+    }
+
     public String getProblemURL(String pid){ return URL+problemURL+"?pid="+pid; }
     private Result getResultMap(String v){
         return resultMap.get(v);
     }
 
-    public String getRid(String user){
+    public String getRid(String user,VjSubmitter s){
         try {
             Document d = Jsoup.connect(getStatusURL(user)).get();
             Element e = d.select(statuSelect).first();
@@ -145,7 +150,7 @@ public class HDU extends OTHOJ {
         formparams.add(new BasicNameValuePair("problemid",""+s.getSubmitInfo().pid));
         formparams.add(new BasicNameValuePair("language",languageMap.get(s.getSubmitInfo().language+"")));
         formparams.add(new BasicNameValuePair("usercode",s.getSubmitInfo().code));
-        if(hc.Post(getSubmitURL(), formparams)==0) return "error";
+        if(hc.Post(getSubmitURL(), formparams)==null) return "error";
         return "success";
     }
     public RES getResult(VjSubmitter s) {
@@ -176,7 +181,7 @@ public class HDU extends OTHOJ {
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("username",s.getUsername()));
         formparams.add(new BasicNameValuePair("userpass",s.getPassword()));
-        if(hc.Post(getLoginURL(), formparams)==0) return "error";
+        if(hc.Post(getLoginURL(), formparams)==null) return "error";
         return "success";
     }
     public String getCEInfo(VjSubmitter s){

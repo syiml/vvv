@@ -26,7 +26,7 @@ public class CF extends OTHOJ {
     private static String URL=Main.GV.getJSONObject("cf").getString("URL");
 
     @Override
-    public String getRid(String user) {
+    public String getRid(String user,VjSubmitter s) {
         Document doc;
         try {
             doc = Jsoup.connect(URL+"/submissions/"+user).get();
@@ -122,7 +122,9 @@ public class CF extends OTHOJ {
         formparams.add(new BasicNameValuePair("password",s.getPassword()));
         formparams.add(new BasicNameValuePair("remember","1"));
         formparams.add(new BasicNameValuePair("_tta","451"));
-        return hc.Post(URL+"/enter",formparams);
+        String ret = hc.Post(URL+"/enter",formparams);
+        if(ret == null ) return 0;
+        return 1;
     }
 
     /**
@@ -145,7 +147,7 @@ public class CF extends OTHOJ {
         formparams.add(new BasicNameValuePair("submittedProblemCode",s.getSubmitInfo().pid));
         formparams.add(new BasicNameValuePair("programTypeId",getLanguage(s.getSubmitInfo().language)));
         formparams.add(new BasicNameValuePair("source",s.getSubmitInfo().code+ getRandomCode()));
-        if(hc.Post(URL+"/problemset/submit?csrf_token="+csrf_token, formparams)==1) return "success";
+        if(hc.Post(URL+"/problemset/submit?csrf_token="+csrf_token, formparams)!=null) return "success";
         return "error";
     }
     private Result getRes(String s){

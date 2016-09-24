@@ -114,4 +114,8 @@ public class Tool {
         //System.out.println(d + " " + s + ":" + m + ":00");
         return Timestamp.valueOf(d + " " + s + ":" + m + ":00");
     }
+    public static int randNum(int l,int r){
+        if(l>r) return 0;
+        return (int)(Math.random()*(r-l+1)+l);
+    }
 }

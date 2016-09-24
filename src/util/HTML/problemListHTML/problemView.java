@@ -1,6 +1,8 @@
 package util.HTML.problemListHTML;
 
 import entity.IBeanResultSetCreate;
+import entity.ICanToJSON;
+import net.sf.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,12 +12,14 @@ import java.util.List;
 /**
  * Created by Syiml on 2015/6/12 0012.
  */
-public class problemView implements IBeanResultSetCreate {
+public class problemView implements IBeanResultSetCreate, ICanToJSON {
     int pid;
     String title;
     int hide;
     int ac;
     int submit;
+
+    public problemView(){}
 
     public int getPid() {
         return pid;
@@ -46,5 +50,15 @@ public class problemView implements IBeanResultSetCreate {
         submit=r.getInt(5);
         return this;
     }
-    public problemView(){}
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("pid",pid);
+        jsonObject.put("title",title);
+        jsonObject.put("hide",hide);
+        jsonObject.put("ac",ac);
+        jsonObject.put("submit",submit);
+        return jsonObject;
+    }
 }

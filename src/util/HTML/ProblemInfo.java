@@ -18,17 +18,7 @@ public class ProblemInfo {
         this.pid=pid;
         this.page=page;
     }
-    public String ShortCodeTop10(){
-        List<String[]> list=Main.status.getProblemShortCodeTop10(pid);
-        TableHTML table=new TableHTML();
-        table.setClass("table");
-        table.addColname("user","nick","codelen");
-        for(String[] row:list){
-            User u=Main.users.getUser(row[0]);
-            table.addRow(u.getUsernameHTML(),u.getNick(),HTML.aNew("Status.jsp?all=1&user="+row[0]+"&pid="+pid+"&result=1",row[1]));
-        }
-        return HTML.panelnobody("最短代码TOP10", "info", table.HTML());
-    }
+
     public static String getStatusJson(int pid){
         String ss[]={"AC","WA","CE","RE","TLE","MLE","OLE","PE"};
         Map<Integer,Integer> status=Main.status.getProblemStatus(pid);
@@ -48,6 +38,19 @@ public class ProblemInfo {
         s+="]";
         return s;
     }
+
+    public String ShortCodeTop10(){
+        List<String[]> list=Main.status.getProblemShortCodeTop10(pid);
+        TableHTML table=new TableHTML();
+        table.setClass("table");
+        table.addColname("user","nick","codelen");
+        for(String[] row:list){
+            User u=Main.users.getUser(row[0]);
+            table.addRow(u.getUsernameHTML(),u.getNick(),HTML.aNew("Status.jsp?all=1&user="+row[0]+"&pid="+pid+"&result=1",row[1]));
+        }
+        return HTML.panelnobody("最短代码TOP10", "info", table.HTML());
+    }
+
     public String front(){
         Problem p= Main.problems.getProblem(pid);
         String from;
@@ -69,7 +72,7 @@ public class ProblemInfo {
             if(Main.users.haveViewCode(Main.loginUser().getUsername(),pid)){
                 l+=HTML.text("您已经可以查看该题目的所有代码了 "+HTML.a("Status.jsp?all=1&pid="+pid+"&result=1","点击查看"),4)+"<br>";
             }else{
-                int acb=Main.loginUser().getACB();
+                int acb=Main.loginUser().getAcb();
                 modal m=new modal("buy","确认购买","您当前ACB为："+acb+"<br>"+(acb>=100?"购买将花费100ACB购买本题的代码查看权，是否确定？":"ACB不足100不能购买"),"花100ACB购买查看代码权限");
                 if(acb>=100)m.setHavesubmit(true);
                 else m.setHavesubmit(false);

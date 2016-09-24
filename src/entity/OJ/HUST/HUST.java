@@ -25,9 +25,9 @@ import java.util.Map;
  * Created by Syiml on 2015/8/24 0024.
  */
 public class HUST extends OTHOJ {
+    public static Map<String,Result> ResultMap;
     //status.php?user_id=
     String url= Main.GV.getJSONObject("hust").getString("URL");
-    public static Map<String,Result> ResultMap;
     public HUST(){
         ResultMap=new HashMap<String, Result>();
         ResultMap.put("Accepted",Result.AC);
@@ -47,7 +47,7 @@ public class HUST extends OTHOJ {
     public String getName(){
         return "FJUTOJ";
     }
-    public String getRid(String user){
+    public String getRid(String user,VjSubmitter s){
         Element e;
         Document d;
         try {
@@ -141,7 +141,7 @@ public class HUST extends OTHOJ {
 
         formparams1.add(new BasicNameValuePair("source", s.getSubmitInfo().code));
 //        formparams1.add(new BasicNameValuePair("encoded", "1"));
-        if(hc.Post(url+"/submit.php",formparams1)==0) return "error";
+        if(hc.Post(url+"/submit.php",formparams1)==null) return "error";
         else return "success";
 
     }

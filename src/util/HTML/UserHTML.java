@@ -79,7 +79,7 @@ public class UserHTML {
         if(tagnum!=0)
             r+="一共给"+ HTML.text(tagnum+"",5)+"道题目贴过标签，";
         else r+="还没有给题目贴过标签，";
-        r+="当前有"+HTML.text(showuser.getACB()+"",5)+"ACB。<br>";
+        r+="当前有"+HTML.text(showuser.getAcb()+"",5)+"ACB。<br>";
 
         if(showuser.getInTeamLv()>0){
             r+=TeamMemberInfo();

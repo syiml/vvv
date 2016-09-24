@@ -9,7 +9,7 @@ import util.HTML.problemHTML;
  */
 public abstract class OTHOJ {
     public static String GET_TITLE_ERROR="获取题目错误！";
-    public abstract String getRid(String user);
+    public abstract String getRid(String user,VjSubmitter s);
     public abstract problemHTML getProblemHTML(String pid);
     public abstract String getTitle(String pid);
     public abstract String submit(VjSubmitter s);
