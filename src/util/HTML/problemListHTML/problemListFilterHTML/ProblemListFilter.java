@@ -40,15 +40,15 @@ public class ProblemListFilter extends ResultSetPageHtml {
         boolean vis;
         vis = ( u != null && u.getPermission().getShowHideProblem() );
         if(tag==-1){
-            sql+="SELECT v_problem.pid, ptype, title, ojid, ojspid, visiable, acusernum, submitnum, solved+1 as solved " +
-                    "FROM v_problem LEFT JOIN usersolve_view ON username=? AND usersolve_view.pid=v_problem.pid WHERE 1=1 ";
+            sql+="SELECT v_problem.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, solved+1 as solved " +
+                    "FROM problem LEFT JOIN usersolve_view ON username=? AND usersolve_view.pid=v_problem.pid WHERE 1=1 ";
             if(!name.equals("")) sql+="AND (title like ? OR v_problem.pid=?)";
             if(!vis ) sql+=" AND visiable=1 ";
             sql+="ORDER BY v_problem.pid ";
         }else{
-            sql += "SELECT v_problem_tag.pid, ptype, title, ojid, ojspid, visiable, acusernum, submitnum, tagid, rating, solved+1 as solved " +
+            sql += "SELECT v_problem_tag.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, tagid, rating, solved+1 as solved " +
                     "FROM v_problem_tag " +
-                    "LEFT JOIN v_problem ON v_problem_tag.pid = v_problem.pid " +
+                    "LEFT JOIN problem ON v_problem_tag.pid = problem.pid " +
                     "LEFT JOIN usersolve_view ON username = ? " +
                     "AND usersolve_view.pid = v_problem_tag.pid " +
                     "WHERE 1 " +
@@ -103,8 +103,8 @@ public class ProblemListFilter extends ResultSetPageHtml {
             case 1: return rs.getInt("pid")+"";
             case 2: return HTML.a("Problem.jsp?pid="+rs.getInt("pid"), rs.getString("title"));
             case 3:
-                int ac=rs.getInt("acusernum");
-                int sub=rs.getInt("submitnum");
+                int ac=rs.getInt("totalAcUser");
+                int sub=rs.getInt("totalSubmit");
                 if(sub!=0){
                     return String.format("%.2f", 1.0*ac/sub*100)+
                             "%("+

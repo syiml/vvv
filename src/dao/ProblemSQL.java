@@ -40,14 +40,14 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         if(search==null||search.equals("")){
             return new SQL("SELECT pid,title,visiable,totalAcUser,totalSubmit FROM  problem  WHERE visiable=1 LIMIT ?,?",from,num).queryBeanList(problemView.class);
         }else{
-            return new SQL("SELECT pid,title,visiable,totalAcUser,totalSubmit FROM  problem  WHERE visiable=1 AND (pid=? OR title like %?%) LIMIT ?,?",search,search,from,num).queryBeanList(problemView.class);
+            return new SQL("SELECT pid,title,visiable,totalAcUser,totalSubmit FROM  problem  WHERE visiable=1 AND (pid=? OR title like ?) LIMIT ?,?",search,"%"+search+"%",from,num).queryBeanList(problemView.class);
         }
     }
     public int getProblemsNum(String search){
         if(search==null||search.equals("")) {
             return new SQL("SELECT COUNT(*) FROM  problem  WHERE visiable=1").queryNum();
         }else{
-            return new SQL("SELECT COUNT(*) FROM  problem  WHERE visiable=1 AND (pid=? OR title like %?%)",search,search).queryNum();
+            return new SQL("SELECT COUNT(*) FROM  problem  WHERE visiable=1 AND (pid=? OR title like ?)",search,"%"+search+"%").queryNum();
         }
     }
     public List<problemView> getProblems(int cid){

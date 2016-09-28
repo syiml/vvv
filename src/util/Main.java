@@ -3,6 +3,7 @@ package util;
 import WebSocket.MatchWebSocket;
 import dao.*;
 import dao.Mall.GoodsSQL;
+import entity.OJ.OTHOJ;
 import entity.Status;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
@@ -86,6 +87,18 @@ public class Main {
     }
     public static String setProblemVisiable(int pid){
         return problems.setProblemVisiable(pid);
+    }
+    public static problemHTML getProblemHTML(int pid){
+        Problem p = problems.getProblem(pid);
+        if(p == null) return null;
+        problemHTML ph=Main.problems.getProblemHTML(pid);
+        if(ph==null){
+            OTHOJ oj= Submitter.ojs[p.getOjid()];
+            ph=oj.getProblemHTML(p.getOjspid());
+            //System.out.println("save:pid="+tpid);
+            Main.problems.saveProblemHTML(pid,ph);
+        }
+        return ph;
     }
 
     public static Permission getPermission(String user){

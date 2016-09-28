@@ -32,7 +32,7 @@
 <body>
 <div class="container-fluid">
   <jsp:include page="module/head.jsp?page=problemset"/>
-  <%=HTML.problemList(Main.problemShowNum,paInt,user)%>
+  <%=HTML.problemList(Main.config.problemShowNum,paInt,user)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

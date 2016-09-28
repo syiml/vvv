@@ -44,7 +44,7 @@ public class RankShortCode extends Rank<user> {
 //        }
     }
 
-public static FormHTML getFormHTML(Rank r){
+    public static FormHTML getFormHTML(Rank r){
         FormHTML f= new FormHTML();
         f.setPartFrom();
 
@@ -154,30 +154,7 @@ public static FormHTML getFormHTML(Rank r){
         }
     }//处理rejudge
 
-        public void add(Status s,Contest c){
-        if(s.getResult()== Result.DANGER||
-                s.getResult()==Result.PENDING ||
-                s.getResult()==Result.JUDGING||
-                s.getResult()==Result.ERROR)return ;
-        if(s.getCid()!=c.getCid()) return;
-        int j;
-        for(j=0;j<this.list.size();j++){
-            if(this.list.get(j).username.equals(s.getUser())){
-                this.list.get(j).addres(c.getcpid(s.getPid()),s.getResult(),s.getCodelen());
-                break;
-            }
-        }
-        if(j==this.list.size()){
-            user u = new user();
-            u.init(s.getUser(),pnum,1,chengfa);
-            User us = Main.users.getUser(s.getUser());
-            u.showUsername = us.getUsernameHTML();
-            u.showNick = us.getNick();
-            this.list.add(u);
-            this.list.get(j).addres(c.getcpid(s.getPid()),s.getResult(),s.getCodelen());
-        }
-    }//处理rejudge
-public String getRuleHTML(){
+    public String getRuleHTML(){
         return "短码赛规则：顾名思义就是使你的代码尽可能的短。<br>"+
                "两个人先比较AC的题目数量，AC题目数量多的排名较靠前<br>"+
                "AC题目相同，则计算两者AC代码的总长度，总长度是指代码中所有字符的数量，但是"+HTML.textb("不包括空格和回车以及制表符","red")+"</b>。<br>"+

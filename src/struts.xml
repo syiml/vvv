@@ -170,6 +170,7 @@
         <package name="app" namespace="/app" extends="struts-default">
                 <action name="getSelfInfo" class="action.App.ActionNoPara" method="getSelfInfo"> </action>
                 <action name="getProblemList" class="action.App.ActionGetProblemList" method="getProblemList"> </action>
+                <action name="getProblem" class="action.App.ActionGetProblem" method="getProblem"> </action>
         </package>
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>

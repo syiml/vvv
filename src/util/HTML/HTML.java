@@ -497,14 +497,7 @@ public class HTML {
                 admin=per.getAddLocalProblem();
             }
             String ret;
-            problemHTML ph=Main.problems.getProblemHTML(tpid);
-
-            if(ph==null){
-                OTHOJ oj= Submitter.ojs[p.getOjid()];
-                ph=oj.getProblemHTML(p.getOjspid());
-                //System.out.println("save:pid="+tpid);
-                Main.problems.saveProblemHTML(tpid,ph);
-            }
+            problemHTML ph=Main.getProblemHTML(tpid);
             if(ph==null) ret="ERROR";
             else {
                 ph.setPid(tpid);
