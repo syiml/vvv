@@ -17,14 +17,15 @@ public class AppJson {
                     "ret","success",
                     "username",u.getUsername(),
                     "nick",u.getNick(),
-                    "motto",u.getMajor(),
+                    "motto",u.getMotto(),
                     "gender",u.getGender()+"",
                     "school",u.getSchool(),
                     "acb",u.getAcb()+"",
                     "acnum",u.getAcnum()+"",
                     "submitnum",Main.status.getSubmitTime(u.getUsername())+"",
                     "rating",u.getShowRating()+"",
-                    "ratingnum",u.getRatingnum()+""
+                    "ratingnum",u.getRatingnum()+"",
+                    "email",u.getEmail()
                    // "headImg", "pic/head/"+u.getUsername()+".jpg"
             ).toString();
         }

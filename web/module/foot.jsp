@@ -10,9 +10,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="foot">
-  <%=HTML.center("<h3>T^T Online Judge</h3>")%>
+  <%=HTML.center("<h3>"+Main.config.OJName+"</h3>")%>
   <%=HTML.center("[<a href='Discuss.jsp?id=6'>BUG反馈</a>] [<a href='Discuss.jsp?id=4'>FAQ</a>]")%>
-  当前版本：<%=Main.version%>
+  当前版本：<%=Main.config.version%>
   <%=HTML.floatRight("系统时间：" + HTML.timeHTML("time", Tool.now().getTime()))%>
   <%--<%=HTML.floatRight("当前访问IP：" + request.getRemoteAddr())%>--%>
   <br>

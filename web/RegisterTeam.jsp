@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>比赛注册 - T^T Online Judge</title>
+  <title>比赛注册 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <%

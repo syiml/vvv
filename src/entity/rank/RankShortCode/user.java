@@ -1,5 +1,6 @@
 package entity.rank.RankShortCode;
 import entity.Result;
+import entity.rank.RankBaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,17 +8,18 @@ import java.util.List;
 /**
  * Created by Syiml on 2015/7/23 0023.
  */
-public class user implements Comparable<user>{
+public class user extends RankBaseUser{
     String username;
     boolean valid;
     int pnum;
     int chengfa;
     List<Integer> codelen;//0表示未过  >0表示通过的最短代码长度
     List<Integer> wrongtime;
-    public user(String username,int pnum,boolean valid,int chengfa){
-        this.username=username;
+    public user(){}
+
+    public void init(String username,int pnum,int valid,int chengfa){
+        super.init(username,valid,pnum);
         this.pnum=pnum;
-        this.valid=valid;
         codelen=new ArrayList<Integer>();
         wrongtime=new ArrayList<Integer>();
         for(int i=0;i<pnum;i++){
@@ -57,7 +59,10 @@ public class user implements Comparable<user>{
         }
         return ret;
     }
-    public int compareTo(user u){
+
+    @Override
+    public int compareTo(RankBaseUser o) {
+        user u = (user)o;
         int ac=getAcNum();
         int uac=u.getAcNum();
         if(ac==uac){
@@ -67,5 +72,10 @@ public class user implements Comparable<user>{
         }else{
             return uac-ac;
         }
+    }
+
+    @Override
+    protected boolean noRank() {
+        return getAcNum() == 0;
     }
 }

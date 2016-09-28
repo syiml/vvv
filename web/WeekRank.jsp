@@ -13,7 +13,7 @@
 %>
 <html>
 <head>
-    <title>活跃榜</title>
+    <title>活跃榜 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

@@ -6,17 +6,52 @@ import util.Main;
  * Created by Syiml on 2015/10/20 0020.
  */
 public class addLocalProblem {
-    public String getMemory() {
-        return memory;
-    }
-    public String getTime() {
+    public String title;
+    public int time;
+    public int memory;
+    public int pid;
+    public boolean isSpj;
+    public String author;
+
+    public int getTime() {
+
         return time;
     }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getMemory() {
+        return memory;
+    }
+
+    public void setMemory(int memory) {
+        this.memory = memory;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    public boolean isSpj() {
+        return isSpj;
+    }
+
+    public void setSpj(boolean spj) {
+        isSpj = spj;
+    }
+
     public String getTitle() {
         return title;
     }
-    public String getPid() {
-        return pid;
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAuthor() {
@@ -27,38 +62,17 @@ public class addLocalProblem {
         this.author = author;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setTime(String time) {
-        this.time = time;
-    }
-    public void setMemory(String memory) {
-        this.memory = memory;
-    }
-    public void setPid(String pid) {
-        this.pid = pid;
+    public String getIsSpj() {
+        return isSpj?"true":null;
     }
 
     public void setIsSpj(String isSpj) {
         this.isSpj = isSpj!=null;
     }
 
-    public String getIsSpj() {
-        return isSpj?"true":null;
-    }
-
-    public String title;
-    public String time;
-    public String memory;
-    public String pid;
-    public boolean isSpj;
-    String author;
-
-
     public String add(){
         if(!Main.loginUserPermission().getAddLocalProblem()) return "error";
-        if(pid.equals("-1"))
+        if(pid == -1)
             return Main.addLocalProblem(this);
         else return Main.editLocalProblem(this);
     }

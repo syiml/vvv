@@ -10,17 +10,8 @@ import net.sf.json.JSONObject;
  */
 public class GlobalVariables {
     public static JSONObject read(){
-            String JsonContext = new GlobalVariables().ReadFile(GlobalVariables.class.getResource("GlobalVariables.json").getPath());
-            //System.out.println(JsonContext);
-            JSONObject jo = JSONObject.fromObject(JsonContext);
-            return jo;
-
-//        for(int  i = 0; i < size; i++){
-//            JSONObject jsonObject = jsonArray.getJSONObject(i);
-//            System.out.println("[" + i + "]name=" + jsonObject.get("name"));
-//            System.out.println("[" + i + "]package_name=" + jsonObject.get("package_name"));
-//            System.out.println("[" + i + "]check_version=" + jsonObject.get("check_version"));
-//        }
+        String JsonContext = new GlobalVariables().ReadFile(GlobalVariables.class.getResource("GlobalVariables.json").getPath());
+        return JSONObject.fromObject(JsonContext);
     }
 
     public String ReadFile(String Path){

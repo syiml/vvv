@@ -20,7 +20,7 @@
 <%--<script src="js/prism/js.js"></script>--%>
 <html>
 <head>
-  <title>代码对比 - T^T Online Judge</title>
+  <title>代码对比 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

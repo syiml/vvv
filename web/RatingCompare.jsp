@@ -16,7 +16,7 @@
 %>
 <html>
 <head>
-  <title>Rating Compare - T^T Online Judge</title>
+  <title>Rating Compare - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

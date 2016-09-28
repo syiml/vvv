@@ -18,7 +18,7 @@ public class VJudge {
     BlockingQueue<SubmitInfo> localQueue = new LinkedBlockingQueue<SubmitInfo>();
     public VJudge(){//初始化
         //System.out.println("create Main!!!");
-        for(int i=0;i<Main.GV.getInt("LocalJudgeNumber");i++){
+        for(int i=0;i<Main.config.LocalJudgeNumber;i++){
             s.add(new SubmitterLocal(0,"","",-1,this));
         }
 

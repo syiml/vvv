@@ -12,7 +12,7 @@
 %>
 <html>
 <head>
-  <title>错误 - T^T Online Judge</title>
+  <title>错误 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

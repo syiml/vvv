@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>ACB商城 - T^T Online Judge</title>
+    <title>ACB商城 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

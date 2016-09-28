@@ -32,7 +32,7 @@ public class statusSQL {
     public synchronized int addStatu(Status s){
         int rid=maxRID+1;
         maxRID++;
-        new SQL("insert into statu values(?,?,?,?,?,?,?,?,?,?,?)"
+        new SQL("insert into statu values(?,?,?,?,?,?,?,?,?,?,?,?)"
                 ,rid
                 ,s.getUser()
                 ,s.getPid()
@@ -40,6 +40,7 @@ public class statusSQL {
                 ,s.getLanguage()
                 ,s.getSbmitTime()
                 , Status.resultToInt(s.getResult())
+                ,s.getScore()
                 ,s.getTimeUsed()
                 ,s.getMemoryUsed()
                 ,s.getCode()
@@ -47,7 +48,7 @@ public class statusSQL {
         return rid;
     }
     public Status getStatu(int rid){
-        SQL sql=new SQL("select id,ruser,pid,cid,lang,submittime,result,timeUsed,memoryUsed,code,codelen from statu where id=?",rid);
+        SQL sql=new SQL("select id,ruser,pid,cid,lang,submittime,result,score,timeUsed,memoryUsed,code,codelen from statu where id=?",rid);
         ResultSet r=sql.query();
         Status s=null;
         try {
@@ -63,7 +64,7 @@ public class statusSQL {
     }
     public List<Status> getStatusKind0(int cid,int from,int num,
                                       int pid,int result,int Language,String ssuser){
-        String sql="SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,timeused,memoryUsed,codelen" +
+        String sql="SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,score,timeused,memoryUsed,codelen" +
                 " FROM statu LEFT JOIN contestproblems" +
                 " ON contestproblems.cid=? AND tpid=statu.pid" +
                 " WHERE contestproblems.cid=? ";
@@ -97,7 +98,7 @@ public class statusSQL {
         List<Status> l=new ArrayList<Status>();
         PreparedStatement p= null;
         SQL sql1;
-        String sql="select id,ruser,pid,cid,lang,submitTime,result,timeUsed,memoryUsed,codelen from statu where ";
+        String sql="select id,ruser,pid,cid,lang,submitTime,result,score,timeUsed,memoryUsed,codelen from statu where ";
         if(!all) sql+=" cid=?";
         else sql+=" 1";
         //筛选
@@ -156,7 +157,7 @@ public class statusSQL {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT id,")
                 .append("teamusername as ruser,")
-                .append("pid,statu.cid as cid,lang,submitTime,result,timeUsed,memoryUsed,codelen")
+                .append("pid,statu.cid as cid,lang,submitTime,result,score,timeUsed,memoryUsed,codelen")
                 .append(" FROM statu RIGHT JOIN t_register_team")
                 .append(" ON statu.cid=t_register_team.cid AND ruser=username")
                 .append(" WHERE statu.cid=?");
@@ -197,10 +198,12 @@ public class statusSQL {
         sql.append(" ORDER BY id DESC");
         return new SQL(sql.toString(),cid).queryNum();
     }
-
-    public synchronized Status setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
+    public Status setStatusResult (int rid, Result res, String time, String Meory, String CEinfo){
+        return setStatusResult(rid,res,time,Meory,CEinfo,-1);
+    }
+    public synchronized Status setStatusResult (int rid, Result res, String time, String Meory, String CEinfo,int score){
         Status ps = getStatu(rid);
-        new SQL("update statu set result=?,timeUsed=?,memoryUsed=? where id=?", Status.resultToInt(res),time,Meory,rid).update();
+        new SQL("update statu set result=?,timeUsed=?,memoryUsed=?,score=? where id=?", Status.resultToInt(res),time,Meory,score,rid).update();
         Tool.log(rid+"->"+res);
         Status s=getStatu(rid);
         EventMain.triggerEvent(new EventStatusChange(ps,s));
@@ -208,7 +211,7 @@ public class statusSQL {
             Contest c=ContestMain.getContest(s.getCid());
             c.getRank().add(s , c);
         }
-        if(res==Result.CE||res==Result.ERROR){
+        if(CEinfo!=null){
             addCEInfo(rid, CEinfo);
         }
         return s;
@@ -393,6 +396,6 @@ public class statusSQL {
     }
 
     public List<Status> getAcBetween(Timestamp from, Timestamp to){
-        return new SQL("SELECT id,ruser,pid,cid,lang,submittime,result,timeUsed,memoryUsed,code,codelen FROM statu WHERE submitTime>=? AND submitTime<? AND result=1",from,to).queryBeanList(Status.class);
+        return new SQL("SELECT id,ruser,pid,cid,lang,submittime,result,score,timeUsed,memoryUsed,code,codelen FROM statu WHERE submitTime>=? AND submitTime<? AND result=1",from,to).queryBeanList(Status.class);
     }
 }

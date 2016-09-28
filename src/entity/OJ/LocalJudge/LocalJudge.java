@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by Syiml on 2015/10/14 0014.
  */
 public class LocalJudge {
-    private static String workPath = Main.GV.getString("localJudgeWorkPath");
+    private static String workPath = Main.config.localJudgeWorkPath;
     private static String path     = workPath+"data\\";//标准数据存放 = paht/pid
     private static String outPath  = workPath+"run\\";//临时输出路径 = outPath/rid
     private static String gccPath  = workPath+"bin\\gcc\\bin\\";
@@ -413,7 +413,7 @@ public class LocalJudge {
                 case 7: res.setR(Result.CE); break;
                 default: res.setR(Result.ERROR);break;
             }
-            if(Main.GV.getBoolean("delRun")) delFile(outPath + s.getSubmitInfo().rid+"\\");
+            if(Main.config.delRun) delFile(outPath + s.getSubmitInfo().rid+"\\");
         }
         s.showstatus="res="+res.getR();
         return res;

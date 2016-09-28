@@ -89,6 +89,11 @@ public class statuListHTML extends pageBean {
         return page;
     }
 
+    private String scoreHTML(int score){
+        if(score==100) return HTML.text(score+"","#27c24c");
+        else if(score>=60) return HTML.text(score+"","#fad733");
+        else return HTML.text(score+"","#f05050");
+    }
     @Override
     public String getCellByHead(int i, String colname) {
         Status s=status.get(i);
@@ -115,10 +120,16 @@ public class statuListHTML extends pageBean {
                     return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("warning", "Compilation Error"));
                 }
             }else if(s.getResult() == Result.ERROR) {
+                if (incontest) {
+                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", HTML.span("info", "Submit Error"));
+                } else {
+                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("info", "Submit Error"));
+                }
+            }else if(s.getScore()!=-1){
                 if(incontest){
-                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", HTML.span("info","Submit Error"));
+                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", s.resultToHTML(s.getResult()))+" "+scoreHTML(s.getScore());
                 }else{
-                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("info","Submit Error"));
+                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), s.resultToHTML(s.getResult()))+" "+scoreHTML(s.getScore());
                 }
             }else{
                 return ""+s.resultToHTML(s.getResult());

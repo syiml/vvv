@@ -98,14 +98,13 @@ public class OneProblemEveryDay extends MyTimer{
         contest.setKind("0");
         contest.setProblems("");
         contest.setInfo("");
-        contest.setRank("0");
-        contest.setIcpc_penalty("20");
-        contest.setIcpc_m1_s("1");//金奖个数
-        contest.setIcpc_m2_s("2");//银奖个数
-        contest.setIcpc_m3_s("3");//铜奖个数
-        contest.setIcpc_m1_t("0");
-        contest.setIcpc_m2_t("0");
-        contest.setIcpc_m3_t("0");
+        contest.setRank("3");
+//        contest.setTraining_m1_s("1");//金奖个数
+//        contest.setTraining_m2_s("3");//银奖个数
+//        contest.setTraining_m3_s("6");//铜奖个数
+//        contest.setTraining_m1_t("0");
+//        contest.setTraining_m2_t("0");
+//        contest.setTraining_m3_t("0");
         ContestMain.addContest(contest);
         //////-------------//////
         return ContestMain.getCidByName(name);

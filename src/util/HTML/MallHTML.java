@@ -1,9 +1,8 @@
 package util.HTML;
 
-import entity.Goods;
+import entity.Mall.Goods;
 import util.Main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

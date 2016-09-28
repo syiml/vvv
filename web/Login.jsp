@@ -1,8 +1,9 @@
 <%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>登录 - T^T Online Judge</title>
+  <title>登录 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

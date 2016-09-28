@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Syiml on 2015/10/21 0021.
  */
 public class FILE {
-    private static String rootPath= Main.GV.getString("localJudgeWorkPath");
+    private static String rootPath= Main.config.localJudgeWorkPath;
 
     /**
      * 为题目创建一个保存数据的目录
@@ -66,7 +66,7 @@ public class FILE {
      */
     public static boolean uploadFile(int pid,String filename,File f){
         try {
-            if(f.length()>Main.GV.getLong("maxSampleFileSize")){
+            if(f.length()>Main.config.maxSampleFileSize){
                 return false;
             }
             return Main.uploadFile(f,rootPath+"data\\"+pid+"\\"+filename).equals("success");

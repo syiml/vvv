@@ -28,7 +28,7 @@
 %>
 <html>
 <head>
-  <title>评测状态 - T^T Online Judge</title>
+  <title>评测状态 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

@@ -23,7 +23,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>T^T Online Judge</title>
+    <title><%=Main.config.OJName%></title>
   </head>
   <body>
     <div class="container-fluid">

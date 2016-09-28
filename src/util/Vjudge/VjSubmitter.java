@@ -150,7 +150,7 @@ public class VjSubmitter implements Runnable{
                         Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:评测超时。可能是原oj繁忙");
                     }
                 }while(!r.canReturn());
-                Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo()));
+                Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo(),r.getScore()));
             }
             this.status=IDLE;
         }catch(Exception e){

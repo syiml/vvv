@@ -573,12 +573,12 @@ public class HTML {
 //        if(Main.loginUser()==null){
 //            return "会话超时，请重新登录";
 //        }
-        statuListHTML s=new statuListHTML(cid,Main.statuShowNum,page,
+        statuListHTML s=new statuListHTML(cid,Main.config.statusShowNum,page,
                                             pid,Language,result,ssuser,all);
         return s.HTML();
     }
     public static String contestList(String num,String page,String statu,String name,String type,String kind){
-        if(num==null||num.equals("")){num=Main.contestShowNum+"";}
+        if(num==null||num.equals("")){num=Main.config.contestShowNum+"";}
         if(page==null||page.equals("")){page="1";}
         if(statu==null||statu.equals("")){statu="-1";}
         if(name==null) name="";

@@ -3,6 +3,7 @@ package entity.rank.RankICPC;
 import entity.Contest;
 import entity.Result;
 import entity.Status;
+import entity.rank.RankBaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +11,15 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/5/26.
  */
-public class user implements Comparable<user>{
-    String username;
-    boolean valid;
+public class user extends RankBaseUser{
     int submitnum;//解出题目的数量
     Long penalty;//罚时 单位毫秒
     List<Long> submittime;//解出第i题的时间  单位毫秒
     List<Integer> errortime;//第i题错误的次数
 
-    public String showUsername;
-    public String showNick;
-    public user(String user,boolean va,int pnum){
-        valid=va;
-        username=user;
+    public user(){}
+    public void init(String user,int va,int pnum){
+        super.init(user,va,pnum);
         submitnum=0;
         penalty = 0L;
         submittime=new ArrayList<Long>(pnum);
@@ -74,14 +71,6 @@ public class user implements Comparable<user>{
             }
         }
     }
-    public int compareTo(user u){
-        int z=0;
-        if(this.submitnum==u.submitnum){
-            return (this.penalty - u.penalty)>0?1:-1;
-        }else{
-            return u.submitnum-this.submitnum;
-        }
-    }
     public Long getSubmittime(int pid){
         return submittime.get(pid);
     }
@@ -91,4 +80,20 @@ public class user implements Comparable<user>{
     public long getPenalty(){
         return penalty;
     }
+
+    @Override
+    public int compareTo(RankBaseUser o) {
+        user u = (user)o;
+        if(this.submitnum==u.submitnum){
+            return (this.penalty - u.penalty)>0?1:-1;
+        }else{
+            return u.submitnum-this.submitnum;
+        }
+    }
+
+    @Override
+    protected boolean noRank() {
+        return submitnum == 0;
+    }
+
 }

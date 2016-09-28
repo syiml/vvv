@@ -10,7 +10,7 @@
 %>
 <html>
 <head>
-  <title>编译错误信息 - T^T Online Judge</title>
+  <title>编译错误信息 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

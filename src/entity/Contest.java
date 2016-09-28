@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
     public static String TRUE_USERNAME = "trueusername";
-
+    public static int typenum=6;
     private int cid;
     private String name;
     private Timestamp begintime;
@@ -31,7 +31,6 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
     //private statusSQL status;
     //private List<Integer> status;
     private Contest_Type type;// 0public 1password 2private 3register 4register2(要审核)//修改时要改addcontest
-    public static int typenum=6;
     private String password;//if type is 1
     private List<RegisterUser> users;//if type is 2
     private Timestamp registerstarttime;//if type is 3 or 4
@@ -47,6 +46,8 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
 
 
     private String createuser;//创建人。创建人和超级管理员可以修改其配置
+    private Timestamp t;
+
     public Contest(ResultSet re){
         //用ResultSet创建临时Contest变量
         //id,name,beignTime,endTime,rankType,ctype
@@ -63,19 +64,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
             e.printStackTrace();
         }
     }
-
     public Contest(){}
-    @Override
-    public Contest init(ResultSet rs) throws SQLException {
-        cid=rs.getInt(1);
-        name=rs.getString(2);
-        begintime=rs.getTimestamp(3);
-        endtime=rs.getTimestamp(4);
-        rankType=rs.getInt(5);
-        type=Contest_Type.getByCode(rs.getInt(6));
-        kind=rs.getInt("kind");
-        return this;
-    }
     public Contest(ResultSet re,ResultSet ps){
         //re:   id,name,beginTime,endTime,rankType,ctype,password,registerstarttime,registerendtime
         //ps:   pid,tpid
@@ -115,9 +104,9 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
 
             ResultSet rs;
             if(getKind() != 0) {
-                rs=new SQL("select id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,codelen from statu where cid=?",cid).query();
+                rs=new SQL("select id,ruser,pid,cid,lang,submittime,result,score,timeused,memoryUsed,codelen from statu where cid=?",cid).query();
             }else{
-                rs=new SQL("SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,timeused,memoryUsed,codelen" +
+                rs=new SQL("SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,score,timeused,memoryUsed,codelen" +
                         " FROM statu LEFT JOIN contestproblems" +
                         " ON contestproblems.cid=? AND tpid=statu.pid" +
                         " WHERE contestproblems.cid=? ",cid,cid).query();
@@ -129,84 +118,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
             System.out.println("没有result");
         }
     }
-    public void setUsers(ResultSet us) throws SQLException {
-        users = new ArrayList<RegisterUser>();
-        if(this.getType() == Contest_Type.TEAM_OFFICIAL){
-            while (us.next()) {
-                users.add(new RegisterTeam(us));
-            }
-        }else {
-            while (us.next()) {
-                users.add(new RegisterUser(us));
-            }
-        }
-    }
-    public int getCid(){return cid;}
-    public int getRankType(){return rankType;}
-    public Problem getProblem(int pid){
-        return Main.problems.getProblem(problems.get(pid));
-    }
-    public int getGlobalPid(int pid) {
-        return problems.get(pid);
-    }
-    public int getProblemNum(){
-        return problems.size();
-    }
-    public RegisterUser getUser(int i){return users.get(i);}
-    public int getUserNum(){ return users.size();}
-    public String getName(){
-        return name;
-    }
-    public Rank getRank(){return rank;}
-    public String getBeginTimeString(){
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(begintime);
-    }
-    public String getEndTimeString(){
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(endtime);
-    }
-    public Timestamp getBeginDate(){return begintime;}
-    public Timestamp getEndTime(){return endtime;}
-    public Timestamp getRegisterendtime(){return registerendtime;}
-    public Timestamp getRegisterstarttime(){return registerstarttime;}
-    public String getProblemId(int pid){//pid->
-        int x=problems.indexOf(pid);
-        if(problems.size()>26) return 1+x+"";
-        else return (char)(x+'A')+"";
-    }
-    public int getcpid(int tpid){
-        return problems.indexOf(tpid);
-    }
-    public String getProblems(){
-        String s="";
-        for(int i=0;i<problems.size();i++){
-            if(i!=0) s+=",";
-            s+=problems.get(i);
-        }
-        return s;
-    }
-    public List<Integer> getProblemList(){
-        return problems;
-    }
-    public String getInfo(){return  info;}
-    public boolean isComputerating(){return computerating;}
-    public boolean isBegin(){
-        return getBeginDate().before(Tool.now());
-    }
-    public boolean isPending(){
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        return getBeginDate().after(now);
-    }
-    public boolean isRunning(){
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        return getBeginDate().before(now)&&getEndTime().after(now);
-    }
-    public boolean isEnd(){
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        return getEndTime().before(now);
-    }
-    public String getRankHTML(){
-        return rank.toHTML();
-    }
+
     public static String getTypeText(int type){
         if(type==0){
             return "public";
@@ -224,6 +136,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
             return "";
         }
     }
+
     public static String getTypeStyle(int type){
         if(type==0){
             return "style='color:green'";
@@ -241,15 +154,145 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
             return "";
         }
     }
+
+    public static String randomPassword(int len){
+        String rad = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        String ret="";
+        for(int i=0;i<len;i++){
+            ret+=rad.charAt((int)(Math.random()*rad.length()));
+        }
+        return ret;
+    }
+
+    @Override
+    public Contest init(ResultSet rs) throws SQLException {
+        cid=rs.getInt(1);
+        name=rs.getString(2);
+        begintime=rs.getTimestamp(3);
+        endtime=rs.getTimestamp(4);
+        rankType=rs.getInt(5);
+        type=Contest_Type.getByCode(rs.getInt(6));
+        kind=rs.getInt("kind");
+        return this;
+    }
+
+    public void setUsers(ResultSet us) throws SQLException {
+        users = new ArrayList<RegisterUser>();
+        if(this.getType() == Contest_Type.TEAM_OFFICIAL){
+            while (us.next()) {
+                users.add(new RegisterTeam(us));
+            }
+        }else {
+            while (us.next()) {
+                users.add(new RegisterUser(us));
+            }
+        }
+    }
+
+    public int getCid(){return cid;}
+
+    public int getRankType(){return rankType;}
+
+    public Problem getProblem(int pid){
+        return Main.problems.getProblem(problems.get(pid));
+    }
+
+    public int getGlobalPid(int pid) {
+        return problems.get(pid);
+    }
+
+    public int getProblemNum(){
+        return problems.size();
+    }
+
+    public RegisterUser getUser(int i){return users.get(i);}
+
+    public int getUserNum(){ return users.size();}
+
+    public String getName(){
+        return name;
+    }
+
+    public Rank getRank(){return rank;}
+
+    public String getBeginTimeString(){
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(begintime);
+    }
+
+    public String getEndTimeString(){
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(endtime);
+    }
+
+    public Timestamp getBeginDate(){return begintime;}
+
+    public Timestamp getEndTime(){return endtime;}
+
+    public Timestamp getRegisterendtime(){return registerendtime;}
+
+    public Timestamp getRegisterstarttime(){return registerstarttime;}
+
+    public String getProblemId(int pid){//pid->
+        int x=problems.indexOf(pid);
+        if(problems.size()>26) return 1+x+"";
+        else return (char)(x+'A')+"";
+    }
+
+    public int getcpid(int tpid){
+        return problems.indexOf(tpid);
+    }
+
+    public String getProblems(){
+        String s="";
+        for(int i=0;i<problems.size();i++){
+            if(i!=0) s+=",";
+            s+=problems.get(i);
+        }
+        return s;
+    }
+
+    public List<Integer> getProblemList(){
+        return problems;
+    }
+
+    public String getInfo(){return  info;}
+
+    public boolean isComputerating(){return computerating;}
+
+    public boolean isBegin(){
+        return getBeginDate().before(Tool.now());
+    }
+
+    public boolean isPending(){
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        return getBeginDate().after(now);
+    }
+
+    public boolean isRunning(){
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        return getBeginDate().before(now)&&getEndTime().after(now);
+    }
+
+    public boolean isEnd(){
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        return getEndTime().before(now);
+    }
+
+    public String getRankHTML(){
+        return rank.toHTML();
+    }
+
     public Contest_Type getType(){
         return type;
     }
+
     public int getKind(){
         return kind;
     }
+
     public String getTypeHTML(){
         return type.getHTML(cid);
     }
+
     public String getStatuHTML(){
         Timestamp now=new Timestamp(System.currentTimeMillis());
         if(begintime.after(now)){
@@ -260,6 +303,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
             return HTML.a("match/?cid="+cid,"<b style='color:red'>可观战</b>");//RUNNING
         }
     }
+
     public int canin(User user){//判断用户是否有权限进入比赛
         if(type==Contest_Type.TEAM_OFFICIAL){
             String username = (String)Main.getSession().getAttribute("contestusername"+cid);
@@ -314,7 +358,9 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
         }
         return 0;
     }
+
     public String getPassword(){return password;}
+
     public String getHomeHTML(){
         String s="";
 //        s+=HTML.floatLeft("<h3>Start Time:"+getBeginTimeString()+"</h3>");
@@ -334,6 +380,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
         }
         return s;
     }
+
     public boolean team_canin(String username,String password){
         if(getType()!=Contest_Type.TEAM_OFFICIAL) return false;
         for(RegisterUser ru: users){
@@ -360,14 +407,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
         }
         return false;
     }
-    public static String randomPassword(int len){
-        String rad = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        String ret="";
-        for(int i=0;i<len;i++){
-            ret+=rad.charAt((int)(Math.random()*rad.length()));
-        }
-        return ret;
-    }
+
     public void computeUsernamePassword(String prefix){
         List<RegisterTeam> list = new ArrayList<>();
         for(RegisterUser ru:users){
@@ -392,6 +432,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
             ContestMain.updateRegisterTeamPassword(cid, list.get(i));
         }
     }
+
     public void computeOneUsernamePassword(String username){
         String prefix = null;
         for(RegisterUser ru:users){
@@ -412,7 +453,6 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
         ContestMain.updateRegisterTeamPassword(cid,username,String.format("%s%03d", prefix, number),randomPassword(6));
     }
 
-    private Timestamp t;
     @Override
     public boolean isExpired() {
         return t.before(Tool.now());

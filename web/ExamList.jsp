@@ -35,7 +35,7 @@ kind   int    -1
 <!DOCTYPE html>
 <html>
 <head>
-  <title>考试列表 - T^T Online Judge</title>
+  <title>考试列表 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

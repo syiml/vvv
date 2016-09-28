@@ -71,8 +71,10 @@ public class UserHTML {
             else if(acnum<200) r+=HTML.text("OJ已经不能阻止他AC了",4,"#00C0FF")+"，";
             else if(acnum<300) r+=HTML.text("正在走向成神之路",5,"#0000FF")+"，";
             else if(acnum<500) r+=HTML.text("正在进入神的殿堂",6,"#C000FF")+"，";
-            else if(acnum<1000) r+=HTML.text("AC的题目比走过的路还多",7,"#FF00FF")+"，";
-            else r+=HTML.text("神都不能阻止他AC了",8,"#FF0080")+",";
+            else if(acnum<600) r+=HTML.text("已经主宰OJ了",6,"#C000FF")+"，";
+            else if(acnum<800) r+=HTML.text("简直如神一般",6,"#C000FF")+"，";
+            else if(acnum<1000) r+=HTML.text("已经超神了",7,"#FF00FF")+"，";
+            else r+=HTML.text("简直就是个挂逼",8,"#FF0080")+",";
         }
         r+="一共提交过"+HTML.text(Main.status.getSubmitTime(showuser.getUsername())+"",8) + "次。<br>";
         int tagnum=ProblemTagSQL.getTagNum(showuser.getUsername());

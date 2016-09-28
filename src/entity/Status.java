@@ -25,6 +25,7 @@ public class Status implements IBeanResultSetCreate<Status>{
     private int codelen;
     private Timestamp SubmitTime;
     private Result result;
+    private int score = -1;//得分 -1 表示不计分
     private String TimeUsed;
     private String MemoryUsed;
     //int user;
@@ -51,6 +52,7 @@ public class Status implements IBeanResultSetCreate<Status>{
             this.language = r.getInt("lang");
             this.SubmitTime = r.getTimestamp("submittime");
             this.result = intToResult(r.getInt("result"));
+            this.score = r.getInt("score");
             this.TimeUsed = r.getString("timeused");
             this.MemoryUsed = r.getString("memoryUsed");
             if(z>=10) this.Code = r.getString("code");
@@ -89,6 +91,7 @@ public class Status implements IBeanResultSetCreate<Status>{
         language = rs.getInt("lang");
         SubmitTime = rs.getTimestamp("submittime");
         result = intToResult(rs.getInt("result"));
+        score = rs.getInt("score");
         TimeUsed = rs.getString("timeused");
         MemoryUsed = rs.getString("memoryUsed");
         codelen = rs.getInt("codelen");
@@ -172,5 +175,11 @@ public class Status implements IBeanResultSetCreate<Status>{
         if(s==Result.WA) return HTML.span("danger","Wrong Answer");
         if(s==Result.ERROR) return HTML.span("info","Submit Error");
         return HTML.span("primary","System Error");
+    }
+    public int getScore() {
+        return score;
+    }
+    public void setScore(int score) {
+        this.score = score;
     }
 }

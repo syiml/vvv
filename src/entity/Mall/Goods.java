@@ -1,5 +1,7 @@
-package entity;
+package entity.Mall;
 
+import entity.IBeanCanCach;
+import entity.IBeanResultSetCreate;
 import util.Tool;
 
 import java.sql.ResultSet;
@@ -12,12 +14,12 @@ import java.sql.Timestamp;
 public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
     private int id;
     private String title;
-    private String cover;
+    private String cover;//封面
     private int acb;
     private int stock;
     private String des;//描述
     private boolean isHidden;
-    private Timestamp t;
+    private Timestamp t;//发布时间
 
     public Goods(){}
 
@@ -35,6 +37,10 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

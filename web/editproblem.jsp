@@ -29,7 +29,7 @@
 <script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
 <html>
 <head>
-    <title>编辑题目 - T^T Online Judge</title>
+    <title>编辑题目 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

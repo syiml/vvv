@@ -2,6 +2,7 @@ package util;
 
 import WebSocket.MatchWebSocket;
 import dao.*;
+import dao.Mall.GoodsSQL;
 import entity.Status;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
@@ -13,7 +14,6 @@ import action.addLocalProblem;
 import action.addproblem1;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
-import util.SQL.DBConnectionPool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,31 +27,30 @@ import java.util.Set;
  * 实现业务逻辑和一些简单的杂项功能
  */
 public class Main {
-    public static final JSONObject GV=GlobalVariables.read();
-    //常量获取
-    final public static int problemShowNum=GV.getInt("problemShowNum");//每页显示的题目数量
-    final public static int statuShowNum=GV.getInt("statuShowNum");//statu每页显示数量
-    final public static int contestShowNum=GV.getInt("contestShowNum");//contest每页显示数量
-    final public static int userShowNum=GV.getInt("userShowNum");//user每页显示数量
-    final public static int discussShowNum=GV.getInt("discussShowNum");//discuss的显示数量
-    final public static int autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
+    public static JSONObject GV = GlobalVariables.read();
+    public static Config config = (new Config()).readConfig(GV);
+
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
     public static UserSQL users = new UserSQL();
     public static LogDao logs = new LogDao();
     public static GoodsSQL goods = new GoodsSQL();
     public static Submitter submitter=new SubmitterImp();
-    public static boolean isDebug=GV.getBoolean("debug");
-    public static String version=GV.getString("version");
+
     public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();
 
     public static void Init(){
         try {
-            Class.forName(Main.GV.get("sqlclass").toString());
+            Class.forName(config.sqlclass);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         status.init();
+    }
+    public static void readConfig()
+    {
+        GV = GlobalVariables.read();
+        config.readConfig(GV);
     }
     public static String addProblem(addproblem1 action){
         Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle(),action.getAuthor(),action.getIsSpj()!=null);
@@ -72,7 +71,7 @@ public class Main {
         return "success";
     }
     public static String editLocalProblem(addLocalProblem action){
-        int pid=Integer.parseInt(action.getPid());
+        int pid=action.getPid();
         Problem p=Main.problems.getProblem(pid);
         p.Title=action.getTitle();
         p.Author=action.getAuthor();

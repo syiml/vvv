@@ -149,6 +149,11 @@ table{
 .btn-toolbar .btn-group .btn{
     transition-duration: 0.2s;
 }
+pre .sample{
+    background-color: rgba(255,255,255,0);
+    border: 0;
+    padding: 0;
+}
 /*.btn-toolbar .btn-group .btn-default:hover{*/
     /*background-color: skyblue;*/
 /*}*/

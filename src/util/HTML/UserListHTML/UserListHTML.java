@@ -26,7 +26,7 @@ public class UserListHTML extends pageBean {
         this.bo=bo;
         if(search!=null) this.search=search;
         this.page=page;
-        num=Main.userShowNum;
+        num=Main.config.userShowNum;
         list= Main.users.getUsers((page-1) * num, num, search,order,bo);
         pageNum= getTotalPageNum(Main.users.getUsersNum(search),num);
         u=Main.loginUser();

@@ -30,6 +30,10 @@ public class TableHTML {
     public void addColname(String... ss){
         Collections.addAll(colname, ss);
     }
+    public void addColname(List<String> ss){
+        if(ss == null) return ;
+        for(String s:ss) colname.add(s);
+    }
     public void addRow(List<String> row){
         this.cell.add(row);
     }

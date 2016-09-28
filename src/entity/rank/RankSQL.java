@@ -1,6 +1,7 @@
 package entity.rank;
 
 import entity.rank.RankICPC.RankICPC;
+import entity.rank.RankNOIP.RankNOIP;
 import entity.rank.RankShortCode.RankShortCode;
 import entity.Contest;
 import entity.rank.RankTraining.RankTraining;
@@ -74,6 +75,15 @@ public class RankSQL {
         }
         return rank;
     }
+    public static RankNOIP RankNOIP(int cid,RankNOIP rank) {
+        rank.type_1=0;
+        rank.type_2=0;
+        rank.type_3=0;
+        rank.m1=1;
+        rank.m2=3;
+        rank.m3=6;
+        return rank;
+    }
     public static Rank getRank(Contest c,ResultSet rs){
         //rs: id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,code,codelen
         Rank rank;
@@ -86,6 +96,9 @@ public class RankSQL {
                 break;
             case 2:
                 rank=RankTraining(c.getCid(),new RankTraining(c));
+                break;
+            case 3:
+                rank=RankNOIP(c.getCid(),new RankNOIP(c));
                 break;
             default:
                 rank=new RankICPC(c);

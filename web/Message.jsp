@@ -17,7 +17,7 @@ Main.saveURL();
 %>
 <html>
 <head>
-  <title>消息 - T^T Online Judge</title>
+  <title>消息 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

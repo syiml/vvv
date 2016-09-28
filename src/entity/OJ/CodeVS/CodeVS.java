@@ -47,6 +47,13 @@ public class CodeVS extends OTHOJ {
         Elements e =  doc.select("h3 b");
         if(e == null) return null;
         Elements panels =  doc.select(".panel-body");
+
+        Elements img=doc.select("img");
+        for(Element element:img){
+            String link=element.attr("src");
+            e.attr("src",URL+link);
+        }
+
         if(panels.size()!=8) return null;
 
         problemHTML p = new problemHTML();
@@ -148,20 +155,50 @@ public class CodeVS extends OTHOJ {
         if(s.contains("COMPILING")) return Result.RUNNING;
         return Result.ERROR;
     }
+    private int getScoreFormResults(String Results){
+        int totalTestPoint = 0;
+        int index = 0;
+        while((index = Results.indexOf("测试点",index)) !=-1){
+            totalTestPoint ++;
+            index ++;
+        }
+        int acTestPointNum = 0;
+        index = 0;
+        while((index = Results.indexOf("结果:AC",index)) !=-1){
+            acTestPointNum ++;
+            index ++;
+        }
+        return acTestPointNum*100/totalTestPoint;
+    }
+    private String getInfoFormResults(JSONObject ret){
+        StringBuilder sb = new StringBuilder();
+        if(ret.containsKey("inputname")){
+            sb.append("最近的错误点信息：").append(ret.getString("inputname")).append(" ")
+                    .append(ret.getString("outputname")).append("<br>");
+        }
+        if(ret.containsKey("input")) sb.append(ret.getString("input")).append("<br>");
+        if(ret.containsKey("useroutput")) sb.append(ret.getString("useroutput")).append("<br>");
+        if(ret.containsKey("rightoutput")) sb.append(ret.getString("rightoutput")).append("<br><br>");
+        if(ret.containsKey("results")) sb.append("运行结果：").append(ret.getString("results").replaceAll("测试点","<br>测试点"));
+        return sb.toString();
+    }
     @Override
     public RES getResult(VjSubmitter s) {
         Document d = hc.get("http://codevs.cn/submission/api/refresh/?id="+s.rid+"&waiting_time=0");
-        Tool.debug(d.html());
-        JSONObject json = JSONObject.fromObject(d.text());
+        Tool.debug(d.select("body").html());
+        JSONObject json = JSONObject.fromObject(d.select("body").text());
         Result r = getResult(json.getString("status"));
         RES res = new RES();
         res.setR(r);
-        if(Result.AC == r || Result.WA == r || Result.TLE == r || Result.RE == r || Result.MLE == r) {
+
+        if(res.canReturn()) {
             res.setTime(json.getInt("time_cost") + "MS");
             res.setMemory(json.getLong("memory_cost")/1024 + "KB");
-        }
-        if(Result.CE == r){
-            res.setCEInfo(json.getString("results"));
+            if(json.containsKey("results")) res.setScore(getScoreFormResults(json.getString("results")));
+            if(r == Result.CE)
+                res.setCEInfo(json.getString("results"));
+            else
+                res.setCEInfo(getInfoFormResults(json));
         }
         return res;
     }

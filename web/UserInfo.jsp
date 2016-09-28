@@ -23,7 +23,7 @@
 %>
 <html>
 <head>
-  <title>用户信息 - T^T Online Judge</title>
+  <title>用户信息 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

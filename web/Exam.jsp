@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>考试 - T^T Online Judge</title>
+  <title>考试 - <%=Main.config.OJName%></title>
 </head>
 <body><div class="container-fluid">
     <jsp:include page="module/head.jsp"/>

@@ -25,7 +25,7 @@
 </script>
 <html>
 <head>
-    <title>挑战模式 - T^T Online Judge</title>
+    <title>挑战模式 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

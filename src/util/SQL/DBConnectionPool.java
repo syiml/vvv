@@ -35,7 +35,7 @@ public class DBConnectionPool extends MyTimer {
     private Connection getNew(){
         num++;
         try {
-            return DriverManager.getConnection(Main.GV.get("sqlconnstring").toString(), Main.GV.get("sqlusername").toString(), Main.GV.get("sqlpassword").toString());
+            return DriverManager.getConnection(Main.config.sqlconnstring, Main.config.sqlusername, Main.config.sqlpassword);
         } catch (SQLException e) {
             Tool.log("===连接失败，请检查数据库是否已经启动===");
         }
@@ -89,6 +89,6 @@ public class DBConnectionPool extends MyTimer {
 
     @Override
     public void getTimer(){
-        new Timer().schedule(this,Main.autoConnectionTimeMinute * 60000,Main.autoConnectionTimeMinute * 60000);
+        new Timer().schedule(this,Main.config.autoConnectionTimeMinute * 60000,Main.config.autoConnectionTimeMinute * 60000);
     }
 }

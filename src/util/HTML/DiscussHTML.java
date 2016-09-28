@@ -158,6 +158,33 @@ public class DiscussHTML {
         form.setCol(2,10);
         return form.toHTML();
     }
+
+    public static String addDiscussForm(int did,int cid){
+
+        text f0=new text("id","id");
+        f0.setDisabled();
+        f0.setValue(did + "");
+        text fcid=new text("cid","cid");
+        fcid.setDisabled();
+        fcid.setValue(cid+"");
+
+        text f1=null;
+        if(did==-1){
+            f1=new text("title","标题");
+            f1.setId("title");
+        }
+
+        textarea f11 = new textarea("text","text");
+//        if(d!=null) f11.setValue(HTML.HTMLtoString(d.text));
+//        else
+        if(cid==-1) f11.setUEditor(true);
+        else f11.setUEditor(false);
+        f11.setId("addDiscuss");
+        f11.setValue("");
+        f11.setPlaceholder("这里输入正文");
+        return HTML.row(fcid.toHTML()+f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
+    }
+
     public String page(int page,int pagenum){
         if(pagenum==1) return "";
         String size="sm";
@@ -167,8 +194,9 @@ public class DiscussHTML {
         s+="</div></div>";
         return HTML.div("","style='margin-bottom: 15px;'",s);
     }
+
     public String DiscussReply(int page){
-        int num=Main.discussShowNum;
+        int num=Main.config.discussShowNum;
         int did= d.getId();
         boolean admin=false;
         if(loginuser!=null){
@@ -183,6 +211,7 @@ public class DiscussHTML {
         s+=page(page,pagenum);
         return s;
     }
+
     public String Reply(DiscussReply r){
         text t=new text("text","text");
         if(r.getAdminreplay() !=null) t.setValue(r.getAdminreplay());
@@ -197,6 +226,7 @@ public class DiscussHTML {
         m.setAction("adminReplay");
         return m.toHTML();
     }
+
     public String EveryDiscussReply(DiscussReply r){
         boolean admin=false;
         if(loginuser!=null){
@@ -243,6 +273,7 @@ public class DiscussHTML {
 
         return HTML.panel(title, body,null, Discuss.getPanelClass()[r.getPanelclass()],false);
     }
+
     public String ReplyForm(){
         int did= d.getId();
         User u=(User)Main.getSession().getAttribute("user");
@@ -266,32 +297,6 @@ public class DiscussHTML {
         form.addForm(t2);
         form.setCol(0,12);
         return HTML.panel("回复",HTML.col(12,form.toHTML()),null,"primary");
-    }
-
-    public static String addDiscussForm(int did,int cid){
-
-        text f0=new text("id","id");
-        f0.setDisabled();
-        f0.setValue(did + "");
-        text fcid=new text("cid","cid");
-        fcid.setDisabled();
-        fcid.setValue(cid+"");
-
-        text f1=null;
-        if(did==-1){
-            f1=new text("title","标题");
-            f1.setId("title");
-        }
-
-        textarea f11 = new textarea("text","text");
-//        if(d!=null) f11.setValue(HTML.HTMLtoString(d.text));
-//        else
-        if(cid==-1) f11.setUEditor(true);
-        else f11.setUEditor(false);
-        f11.setId("addDiscuss");
-        f11.setValue("");
-        f11.setPlaceholder("这里输入正文");
-        return HTML.row(fcid.toHTML()+f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
     }
 
     public String Discuss(){

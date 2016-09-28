@@ -25,7 +25,7 @@
 <script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
 <html>
 <head>
-  <title>讨论 - T^T Online Judge</title>
+  <title>讨论 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

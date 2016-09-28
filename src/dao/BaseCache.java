@@ -59,7 +59,7 @@ public abstract class BaseCache<K,T extends IBeanCanCach> {
             lock.unlock();
         }
     }
-    private void set_catch(K key,T value){
+    protected void set_catch(K key,T value){
         value.setExpired(new Timestamp(System.currentTimeMillis()+cachTime));
         _catch.put(key, value);
     }

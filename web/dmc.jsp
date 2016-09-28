@@ -19,7 +19,7 @@
 </style>
 <html>
 <head>
-  <title>点名册 - T^T Online Judge</title>
+  <title>点名册 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

@@ -22,7 +22,7 @@
 %>
 <html>
 <head>
-  <title>题目信息 - T^T Online Judge</title>
+  <title>题目信息 - <%=Main.config.OJName%></title>
 </head>
 <body><div class="container-fluid">
     <jsp:include page="module/head.jsp"/>

@@ -1,6 +1,7 @@
 package entity.rank.RankTraining;
 
 import entity.Result;
+import entity.rank.RankBaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +9,13 @@ import java.util.List;
 /**
  * Created by Syiml on 2015/8/11 0011.
  */
-public class user implements Comparable<user>{
-    String username;
+public class user extends RankBaseUser{
     int pnum;
-    boolean valid;
     List<Integer> num;//0未提交 正数表示第i次提交首次通过 负数表示错误次数
 
-
-    public user(String username,int pnum,boolean valid){
-        this.username=username;
-        this.pnum=pnum;
-        this.valid=valid;
+    public user(){}
+    public void init(String username,int valid,int pnum){
+        super.init(username,valid,pnum);
         num=new ArrayList<Integer>();
         for(int i=0;i<pnum;i++){
             num.add(0);
@@ -49,7 +46,10 @@ public class user implements Comparable<user>{
         }
         return ret;
     }
-    public int compareTo(user u){
+
+    @Override
+    public int compareTo(RankBaseUser o) {
+        user u = (user)o;
         int ac=getAcNum();
         int uac=u.getAcNum();
         if(ac==uac){
@@ -57,5 +57,10 @@ public class user implements Comparable<user>{
         }else{
             return uac-ac;
         }
+    }
+
+    @Override
+    protected boolean noRank() {
+        return getAcNum() == 0;
     }
 }

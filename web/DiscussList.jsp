@@ -14,7 +14,7 @@
 //    response.sendRedirect("Login.jsp");
 //    return;
 //  }
-  int num= Main.contestShowNum;
+  int num= Main.config.contestShowNum;
   String pa=request.getParameter("page");
   if(pa==null||pa.equals("")) pa="1";
   String search=request.getParameter("search");
@@ -26,7 +26,7 @@
 %>
 <html>
 <head>
-  <title>讨论列表 - T^T Online Judge</title>
+  <title>讨论列表 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

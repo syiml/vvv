@@ -15,7 +15,7 @@
 %>
 <html>
 <head>
-  <title>退出 - T^T Online Judge</title>
+  <title>退出 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

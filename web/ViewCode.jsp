@@ -21,7 +21,7 @@
 <script src="js/prism/js.js"></script>
 <html>
 <head>
-  <title>查看代码 - T^T Online Judge</title>
+  <title>查看代码 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

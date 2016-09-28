@@ -22,7 +22,7 @@
 %>
 <html>
 <head>
-    <title>上传数据</title>
+    <title>上传数据 - <%=Main.config.OJName%></title>
 </head>
 <body>
   <div class="container-fluid">

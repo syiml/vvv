@@ -21,7 +21,7 @@
 
 <html>
 <head>
-  <title>题目筛选列表 - T^T Online Judge</title>
+  <title>题目筛选列表 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="util.Main" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2015/5/21
@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>提交 - T^T Online Judge</title>
+    <title>提交 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

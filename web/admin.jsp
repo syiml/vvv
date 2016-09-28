@@ -27,7 +27,7 @@
 %>
 <html>
 <head>
-    <title>管理 - T^T Online Judge</title>
+    <title>管理 - <%=Main.config.OJName%></title>
 </head>
 <body>
 <div class="container-fluid">

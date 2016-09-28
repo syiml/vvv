@@ -97,20 +97,6 @@ public class MyClient extends DefaultHttpClient{
             entity = new UrlEncodedFormEntity(form, "UTF-8");
             HttpPost httppost = new HttpPost(URL);
             httppost.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-            //httppost.setHeader();
-
-            //httppost.setHeader("Accept","application/json, text/plain, */*");
-//            httppost.setHeader("Accept-Encoding","gzip, deflate");
-//            httppost.setHeader("Accept-Language","zh-CN,zh;q=0.8,en;q=0.6");
-//            httppost.setHeader("Authorization","No login");
-//            httppost.setHeader("Connection","keep-alive");
-//            //httppost.setHeader("Content-Length","54");
-//            httppost.setHeader("Content-Type","application/json;charset=UTF-8");
-//            httppost.setHeader("Host","login.codevs.com");
-//            httppost.setHeader("Origin","http://login.codevs.com");
-//            httppost.setHeader("Referer","http://login.codevs.com/auth/login");
-//            httppost.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36");
-//            httppost.setHeader("X-Requested-With","XMLHttpRequest");
 
             httppost.setEntity(entity);
             HttpResponse hr;
