@@ -6,7 +6,7 @@ import util.Tool;
 /**
  * Created by Syiml on 2015/6/15 0015.
  */
-public class rejudge {
+public class rejudge  extends BaseAction{
     int rid;
     int pid;
     int status;
@@ -17,12 +17,12 @@ public class rejudge {
         return pid;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
     public void setPid(int pid) {
         this.pid = pid;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void setStatus(int status) {

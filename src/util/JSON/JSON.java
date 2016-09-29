@@ -186,7 +186,7 @@ public class JSON {
         if(nextOtherOjsContestTime.before(Tool.now())) {
             Document d = new MyClient().get("http://contests.acmicpc.info/contests.json");
             if(d != null) {//拉取成功一小时后再拉取
-                otherOjsContest = d.html();
+                otherOjsContest = d.text();
                 nextOtherOjsContestTime = new Timestamp(Tool.now().getTime() + 1000*60*60);
             }else{//拉取失败10分钟后再拉取
                 nextOtherOjsContestTime = new Timestamp(Tool.now().getTime() + 1000*60*10);

@@ -10,7 +10,7 @@ import util.Tool;
 /**
  * Created by QAQ on 2016/5/4 0004.
  */
-public class Action_RegisterTeam{
+public class Action_RegisterTeam extends BaseAction{
     int cid;
     String username;
 
@@ -95,13 +95,13 @@ public class Action_RegisterTeam{
         return "success";
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getUsername() {
 
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getCid() {
@@ -112,203 +112,203 @@ public class Action_RegisterTeam{
         this.cid = cid;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public void setName1(String name1) {
-        this.name1 = name1;
-    }
-
-    public void setGender1(int gender1) {
-        this.gender1 = gender1;
-    }
-
-    public void setSchool1(String school1) {
-        this.school1 = school1;
-    }
-
-    public void setFaculty1(String faculty1) {
-        this.faculty1 = faculty1;
-    }
-
-    public void setMajor1(String major1) {
-        this.major1 = major1;
-    }
-
-    public void setCla1(String cla1) {
-        this.cla1 = cla1;
-    }
-
-    public void setNo1(String no1) {
-        this.no1 = no1;
-    }
-
-    public void setPhone1(String phone1) {
-        this.phone1 = phone1;
-    }
-
     public String getTeamName() {
         return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
     public String getName1() {
         return name1;
     }
 
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
     public int getGender1() {
         return gender1;
+    }
+
+    public void setGender1(int gender1) {
+        this.gender1 = gender1;
     }
 
     public String getSchool1() {
         return school1;
     }
 
+    public void setSchool1(String school1) {
+        this.school1 = school1;
+    }
+
     public String getFaculty1() {
         return faculty1;
+    }
+
+    public void setFaculty1(String faculty1) {
+        this.faculty1 = faculty1;
     }
 
     public String getMajor1() {
         return major1;
     }
 
+    public void setMajor1(String major1) {
+        this.major1 = major1;
+    }
+
     public String getCla1() {
         return cla1;
+    }
+
+    public void setCla1(String cla1) {
+        this.cla1 = cla1;
     }
 
     public String getNo1() {
         return no1;
     }
 
+    public void setNo1(String no1) {
+        this.no1 = no1;
+    }
+
     public String getPhone1() {
         return phone1;
     }
 
-    public void setSchool2(String school2) {
-        this.school2 = school2;
-    }
-
-    public void setFaculty2(String faculty2) {
-        this.faculty2 = faculty2;
-    }
-
-    public void setMajor2(String major2) {
-        this.major2 = major2;
-    }
-
-    public void setCla2(String cla2) {
-        this.cla2 = cla2;
-    }
-
-    public void setNo2(String no2) {
-        this.no2 = no2;
-    }
-
-    public void setPhone2(String phone2) {
-        this.phone2 = phone2;
-    }
-
-    public void setSchool3(String school3) {
-        this.school3 = school3;
-    }
-
-    public void setFaculty3(String faculty3) {
-        this.faculty3 = faculty3;
-    }
-
-    public void setMajor3(String major3) {
-        this.major3 = major3;
-    }
-
-    public void setCla3(String cla3) {
-        this.cla3 = cla3;
-    }
-
-    public void setNo3(String no3) {
-        this.no3 = no3;
-    }
-
-    public void setPhone3(String phone3) {
-        this.phone3 = phone3;
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
     }
 
     public String getSchool2() {
         return school2;
     }
 
+    public void setSchool2(String school2) {
+        this.school2 = school2;
+    }
+
     public String getFaculty2() {
         return faculty2;
+    }
+
+    public void setFaculty2(String faculty2) {
+        this.faculty2 = faculty2;
     }
 
     public String getMajor2() {
         return major2;
     }
 
+    public void setMajor2(String major2) {
+        this.major2 = major2;
+    }
+
     public String getCla2() {
         return cla2;
+    }
+
+    public void setCla2(String cla2) {
+        this.cla2 = cla2;
     }
 
     public String getNo2() {
         return no2;
     }
 
+    public void setNo2(String no2) {
+        this.no2 = no2;
+    }
+
     public String getPhone2() {
         return phone2;
+    }
+
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
     }
 
     public String getSchool3() {
         return school3;
     }
 
+    public void setSchool3(String school3) {
+        this.school3 = school3;
+    }
+
     public String getFaculty3() {
         return faculty3;
+    }
+
+    public void setFaculty3(String faculty3) {
+        this.faculty3 = faculty3;
     }
 
     public String getMajor3() {
         return major3;
     }
 
+    public void setMajor3(String major3) {
+        this.major3 = major3;
+    }
+
     public String getCla3() {
         return cla3;
+    }
+
+    public void setCla3(String cla3) {
+        this.cla3 = cla3;
     }
 
     public String getNo3() {
         return no3;
     }
 
+    public void setNo3(String no3) {
+        this.no3 = no3;
+    }
+
     public String getPhone3() {
         return phone3;
     }
 
-    public void setName2(String name2) {
-        this.name2 = name2;
-    }
-
-    public void setGender2(int gender2) {
-        this.gender2 = gender2;
-    }
-
-    public void setName3(String name3) {
-        this.name3 = name3;
-    }
-
-    public void setGender3(int gender3) {
-        this.gender3 = gender3;
+    public void setPhone3(String phone3) {
+        this.phone3 = phone3;
     }
 
     public String getName2() {
         return name2;
     }
 
+    public void setName2(String name2) {
+        this.name2 = name2;
+    }
+
     public int getGender2() {
         return gender2;
+    }
+
+    public void setGender2(int gender2) {
+        this.gender2 = gender2;
     }
 
     public String getName3() {
         return name3;
     }
 
+    public void setName3(String name3) {
+        this.name3 = name3;
+    }
+
     public int getGender3() {
         return gender3;
+    }
+
+    public void setGender3(int gender3) {
+        this.gender3 = gender3;
     }
 }

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="util.Main" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2015/6/3

@@ -5,6 +5,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import sun.net.www.http.HttpCaptureOutputStream;
+import util.Tool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,9 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
     public void setServletRequest(HttpServletRequest httpServletRequest) {
         request=httpServletRequest;
         session = request.getSession();
+//        if(isPost()){
+            Tool.log("["+(isPost()?"post":"get")+"]"+request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+//        }
     }
 
     @Override

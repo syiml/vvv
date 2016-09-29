@@ -5,23 +5,26 @@ import util.Main;
 /**
  * Created by Syiml on 2015/8/19 0019.
  */
-public class userper {
+public class userper  extends BaseAction{
+
+    public String user;
+    public String perid;
 
     public String getUser() {
         return user;
     }
-    public String getPerid() {
-        return perid;
-    }
+
     public void setUser(String user) {
         this.user = user;
     }
+
+    public String getPerid() {
+        return perid;
+    }
+
     public void setPerid(String perid) {
         this.perid = perid;
     }
-
-    public String user;
-    public String perid;
 
     public String add(){
         if(Main.loginUserPermission().getPermissionAdmin())

@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
 * Created by Administrator on 2015/5/19.
         */
-public class submit {
+public class submit  extends BaseAction{
     public String code;
     public String pid;
     public String language;

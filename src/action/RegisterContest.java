@@ -9,29 +9,35 @@ import util.Main;
  * Created by Syiml on 2015/7/4 0004.
  */
 
-public class RegisterContest {
+public class RegisterContest  extends BaseAction{
     public String cid;
     public String prefix;
     public String username;
-    public void setCid(String cid) {
-        this.cid = cid;
-    }
+
     public String getCid() {
         return cid;
     }
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
+
     public String getPrefix() {
 
         return prefix;
     }
-    public void setUsername(String username) {
-        this.username = username;
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
+
     public String getUsername() {
 
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String regCon(){

@@ -1,4 +1,5 @@
-<%@ page import="util.HTML.MallHTML" %><%--
+<%@ page import="util.HTML.MallHTML" %>
+<%@ page import="util.Main" %><%--
   Created by IntelliJ IDEA.
   User: QAQ
   Date: 2016/9/17

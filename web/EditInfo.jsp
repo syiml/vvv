@@ -1,5 +1,6 @@
 <%@ page import="entity.User" %>
 <%@ page import="util.HTML.HTML" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml

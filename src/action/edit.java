@@ -9,7 +9,7 @@ import util.Tool;
 /**
  * Created by Syiml on 2015/6/27 0027.
  */
-public class edit {
+public class edit extends BaseAction{
 
     String username;
     String pass;
@@ -93,107 +93,141 @@ public class edit {
         if(phone!=null) u.setPhone(phone);
         return u;
     }
+
+    public int getInTeamLv() {
+        return inTeamLv;
+    }
+
+    public void setInTeamLv(int inTeamLv) {
+        this.inTeamLv = inTeamLv;
+    }
+
+    public int getInTeamStatus() {
+        return inTeamStatus;
+    }
+
+    public void setInTeamStatus(int inTeamStatus) {
+        this.inTeamStatus = inTeamStatus;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     ///////////////get set ///////////////////
     public void setName(String name) {
         this.name = name;
     }
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-    public void setFaculty_text(String faculty) {
-        this.faculty_text = faculty;
-    }
-    public void setMajor_text(String major) {
-        this.major_text = major;
-    }
-    public void setCla(String cla) {
-        this.cla = cla;
-    }
-    public void setNo(String no) {
-        this.no = no;
-    }
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    public int getInTeamLv() {
-        return inTeamLv;
-    }
-    public int getInTeamStatus() {
-        return inTeamStatus;
-    }
-    public void setInTeamLv(int inTeamLv) {
-        this.inTeamLv = inTeamLv;
-    }
-    public void setInTeamStatus(int inTeamStatus) {
-        this.inTeamStatus = inTeamStatus;
-    }
-    public String getGender() {
-        return gender;
-    }
-    public String getName() {
-        return name;
-    }
+
     public String getFaculty_text() {
         return faculty_text;
     }
+
+    public void setFaculty_text(String faculty) {
+        this.faculty_text = faculty;
+    }
+
     public String getMajor_text() {
         return major_text;
     }
+
+    public void setMajor_text(String major) {
+        this.major_text = major;
+    }
+
     public String getCla() {
         return cla;
     }
+
+    public void setCla(String cla) {
+        this.cla = cla;
+    }
+
     public String getNo() {
         return no;
     }
+
+    public void setNo(String no) {
+        this.no = no;
+    }
+
     public String getPhone() {
         return phone;
     }
-    public void setPass(String pass) {
-        this.pass = pass;
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
-    public void setNewpass(String newpass) {
-        this.newpass = newpass;
-    }
-    public void setRenewpass(String renewpass) {
-        this.renewpass = renewpass;
-    }
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
-    public void setSchool(String school) {
-        this.school = school;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setMotto(String motto) {
-        this.motto = motto;
-    }
+
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getMotto() {
         return motto;
     }
+
+    public void setMotto(String motto) {
+        this.motto = motto;
+    }
+
     public String getPass() {
         return pass;
     }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
     public String getNewpass() {
         return newpass;
     }
+
+    public void setNewpass(String newpass) {
+        this.newpass = newpass;
+    }
+
     public String getRenewpass() {
         return renewpass;
     }
+
+    public void setRenewpass(String renewpass) {
+        this.renewpass = renewpass;
+    }
+
     public String getNick() {
         return nick;
     }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
     public String getSchool() {
         return school;
     }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

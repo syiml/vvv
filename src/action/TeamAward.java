@@ -9,7 +9,7 @@ import java.sql.Date;
 /**
  * Created by QAQ on 2016/6/30 0030.
  */
-public class TeamAward {
+public class TeamAward  extends BaseAction{
     int id;
     String awardTime_d;
     String username1;
@@ -40,46 +40,12 @@ public class TeamAward {
         return "success";
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
-    public void setUsername1(String username1) {
-        this.username1 = username1;
-    }
-
-    public void setUsername2(String username2) {
-        this.username2 = username2;
-    }
-
-    public void setUsername3(String username3) {
-        this.username3 = username3;
-    }
-
-    public void setName1(String name1) {
-        this.name1 = name1;
-    }
-
-    public void setName2(String name2) {
-        this.name2 = name2;
-    }
-
-    public void setName3(String name3) {
-        this.name3 = name3;
-    }
-
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public int getId() {
         return id;
     }
 
-    public void setAwardTime_d(String awardTime) {
-        this.awardTime_d = awardTime;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getAwardTime_d() {
@@ -87,36 +53,56 @@ public class TeamAward {
         return awardTime_d;
     }
 
+    public void setAwardTime_d(String awardTime) {
+        this.awardTime_d = awardTime;
+    }
+
     public String getUsername1() {
         return username1;
+    }
+
+    public void setUsername1(String username1) {
+        this.username1 = username1;
     }
 
     public String getUsername2() {
         return username2;
     }
 
+    public void setUsername2(String username2) {
+        this.username2 = username2;
+    }
+
     public String getUsername3() {
         return username3;
+    }
+
+    public void setUsername3(String username3) {
+        this.username3 = username3;
     }
 
     public String getName1() {
         return name1;
     }
 
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
     public String getName2() {
         return name2;
+    }
+
+    public void setName2(String name2) {
+        this.name2 = name2;
     }
 
     public String getName3() {
         return name3;
     }
 
-    public void setContestLevel(int contestLevel) {
-        this.contestLevel = contestLevel;
-    }
-
-    public void setAwardLevel(int awardLevel) {
-        this.awardLevel = awardLevel;
+    public void setName3(String name3) {
+        this.name3 = name3;
     }
 
     public int getAwardLevel() {
@@ -124,12 +110,24 @@ public class TeamAward {
         return awardLevel;
     }
 
+    public void setAwardLevel(int awardLevel) {
+        this.awardLevel = awardLevel;
+    }
+
     public int getContestLevel() {
 
         return contestLevel;
     }
 
+    public void setContestLevel(int contestLevel) {
+        this.contestLevel = contestLevel;
+    }
+
     public String getText() {
         return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

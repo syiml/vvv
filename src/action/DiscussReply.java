@@ -10,29 +10,34 @@ import util.Tool;
 /**
  * Created by Syiml on 2015/7/5 0005.
  */
-public class DiscussReply {
+public class DiscussReply extends BaseAction{
+    public String text;
+    public int id;//discuss id
+    public int rid;//replay id
+
     public String getText() {
         return text;
     }
+
     public void setText(String text) {
         this.text = text;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public void setRid(int rid) {
-        this.rid = rid;
-    }
+
     public int getId() {
         return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getRid() {
         return rid;
     }
 
-    public String text;
-    public int id;//discuss id
-    public int rid;//replay id
+    public void setRid(int rid) {
+        this.rid = rid;
+    }
 
     public String dr(){
         try{

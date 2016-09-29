@@ -18,6 +18,6 @@ public class login extends BaseAction{
         }else {
             out.println("{\"ret\":\""+ret+"\"}");
         }
-        return null;
+        return NONE;
     }
 }

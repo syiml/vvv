@@ -5,40 +5,7 @@ import util.Main;
 /**
  * Created by Syiml on 2015/6/14 0014.
  */
-public class addproblem1 {
-    public int getPid() {
-        if(pid==null||pid.equals("")) return -1;
-        return Integer.parseInt(pid);
-    }
-    public int getOjid() {
-        return Integer.parseInt(ojid);
-    }
-    public String getOjspid() {
-        return ojspid;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
-    public void setOjid(String ojid) {
-        this.ojid = ojid;
-    }
-    public void setOjspid(String ojspid) {
-        this.ojspid = ojspid;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
+public class addproblem1 extends BaseAction{
     String pid;
     String ojid;
     String ojspid;
@@ -46,8 +13,45 @@ public class addproblem1 {
     String author;
     String isSpj;
 
-    public void setIsSpj(String isSpj) {
-        this.isSpj = isSpj;
+    public int getPid() {
+        if(pid==null||pid.equals("")) return -1;
+        return Integer.parseInt(pid);
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public int getOjid() {
+        return Integer.parseInt(ojid);
+    }
+
+    public void setOjid(String ojid) {
+        this.ojid = ojid;
+    }
+
+    public String getOjspid() {
+        return ojspid;
+    }
+
+    public void setOjspid(String ojspid) {
+        this.ojspid = ojspid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getIsSpj() {
@@ -55,6 +59,9 @@ public class addproblem1 {
         return isSpj;
     }
 
+    public void setIsSpj(String isSpj) {
+        this.isSpj = isSpj;
+    }
 
     public String addproblem1(){
         if(!Main.loginUserPermission().getAddProblem()) return "error";

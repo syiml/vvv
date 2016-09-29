@@ -5,7 +5,7 @@ import util.Main;
 /**
  * Created by Syiml on 2015/10/20 0020.
  */
-public class addLocalProblem {
+public class addLocalProblem extends BaseAction{
     public String title;
     public int time;
     public int memory;

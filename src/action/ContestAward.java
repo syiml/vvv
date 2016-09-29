@@ -11,30 +11,34 @@ import java.util.List;
 /**
  * Created by Syiml on 2015/11/7 0007.
  */
-public class ContestAward {
-    public void setCid(int cid) {
-        this.cid = cid;
-    }
-    public void setRank(List<Integer> rank) {
-        this.rank = rank;
-    }
-    public void setAcb(List<Integer> acb) {
-        this.acb = acb;
-    }
+public class ContestAward extends BaseAction{
+    int cid;
+    List<Integer> rank;
+    List<Integer> acb;
 
     public int getCid() {
         return cid;
     }
+
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
     public List<Integer> getRank() {
         return rank;
     }
+
+    public void setRank(List<Integer> rank) {
+        this.rank = rank;
+    }
+
     public List<Integer> getAcb() {
         return acb;
     }
 
-    int cid;
-    List<Integer> rank;
-    List<Integer> acb;
+    public void setAcb(List<Integer> acb) {
+        this.acb = acb;
+    }
 
     public String award(){
         Tool.debug("award: cid="+cid);

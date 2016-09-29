@@ -7,23 +7,26 @@ import util.Tool;
 /**
  * Created by Syiml on 2015/9/28 0028.
  */
-public class uploadhead {
+public class uploadhead  extends BaseAction{
+    public static long maxHeadImgSize=Main.GV.getLong("maxHeadImgSize");
+    private File upload;
+    private String uploadFileName;
+
     public File getUpload() {
         return upload;
     }
-    public String getUploadFileName() {
-        return uploadFileName;
-    }
+
     public void setUpload(File upload) {
         this.upload = upload;
     }
+
+    public String getUploadFileName() {
+        return uploadFileName;
+    }
+
     public void setUploadFileName(String uploadFileName) {
         this.uploadFileName = uploadFileName;
     }
-
-    private File upload;
-    private String uploadFileName;
-    public static long maxHeadImgSize=Main.GV.getLong("maxHeadImgSize");
 
     public String upload() throws Exception{
         Tool.debug("上传头像文件大小：" + upload.length());

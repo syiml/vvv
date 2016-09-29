@@ -45,7 +45,7 @@ public class ProblemTagSQL {
     public static void addTag(int pid,String username,int tagid){
         int rating= Main.users.getUser(username).getShowRating();
         if(rating==-100000) rating=700;
-        new SQL("INSERT INTO t_problem_tag_record VALUES(?,?,?,?)",pid,username,tagid,rating).update();
+        new SQL("REPLACE INTO t_problem_tag_record VALUES(?,?,?,?)",pid,username,tagid,rating).update();
         try{
             if(Main.users.addViewCode(username,pid)==1) {
                 Main.users.addACB(username, 20);

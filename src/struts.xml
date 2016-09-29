@@ -25,9 +25,11 @@
                 </action>
                 <action name="addproblem1" class="action.addproblem1" method="addproblem1">
                         <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
                 </action>
                 <action name="addlocalproblem" class="action.addLocalProblem" method="add">
                         <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
                 </action>
                 <action name="rejudge" class="action.rejudge" method="rej">
                         <result name="error">return.jsp</result>
@@ -171,6 +173,7 @@
                 <action name="getSelfInfo" class="action.App.ActionNoPara" method="getSelfInfo"> </action>
                 <action name="getProblemList" class="action.App.ActionGetProblemList" method="getProblemList"> </action>
                 <action name="getProblem" class="action.App.ActionGetProblem" method="getProblem"> </action>
+                <action name="getOtherOjsContest" class="action.App.ActionNoPara" method="getOtherOjsContest"> </action>
         </package>
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>

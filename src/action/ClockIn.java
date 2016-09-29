@@ -6,28 +6,43 @@ import util.Tool;
 /**
  * Created by Syiml on 2015/7/27 0027.
  */
-public class ClockIn {
+public class ClockIn extends BaseAction{
+    public int id;
+    public String username;
+    public String ttime_d;
+    public String sign;
+    public String ip;
+    public String todytimes;
+    public String info;
+
     public int getId() {
         return id;
     }
-    public String getUsername() {
-        return username;
-    }
-    public String getSign() {
-        return sign;
-    }
-    public String getIp() {
-        return ip;
-    }
+
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getSign() {
+        return sign;
+    }
+
     public void setSign(String sign) {
         this.sign = sign;
     }
+
+    public String getIp() {
+        return ip;
+    }
+
     public void setIp(String ip) {
         this.ip = ip;
     }
@@ -36,25 +51,17 @@ public class ClockIn {
         return ttime_d;
     }
 
-    public String getTodytimes() {
-        return todytimes;
-    }
-
     public void setTtime_d(String time_d) {
         this.ttime_d = time_d;
+    }
+
+    public String getTodytimes() {
+        return todytimes;
     }
 
     public void setTodytimes(String todytimes) {
         this.todytimes = todytimes;
     }
-
-    public int id;
-    public String username;
-    public String ttime_d;
-    public String sign;
-    public String ip;
-    public String todytimes;
-    public String info;
 
     public String userClockIn(){
         ClockInSQL.ClockIn();

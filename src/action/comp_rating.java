@@ -8,15 +8,17 @@ import util.rating.Computer;
 /**
  * Created by Syiml on 2015/7/3 0003.
  */
-public class comp_rating {
-    public void setCid(String cid) {
-        this.cid = cid;
-    }
+public class comp_rating extends BaseAction{
+    String cid;
+
     public String getCid() {
         return cid;
     }
 
-    String cid;
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+
     public String save(){
         if(!Main.loginUserPermission().getComputrating()) return "error";
         int cidInt;

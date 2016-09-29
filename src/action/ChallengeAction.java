@@ -10,80 +10,97 @@ import util.Tool;
 /**
  * Created by Syiml on 2015/10/10 0010.
  */
-public class ChallengeAction {
-    public String getUser() {
-        return user;
-    }
-    public String getId() {
-        return id;
-    }
-    public String getText() {
-        return text;
-    }
-    public void setText(String text) {
-        this.text = text;
-    }
-    public void setUser(String user) {
-        this.user = user;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getType() {
-        return type;
-    }
-    public String getPar() {
-        return par;
-    }
-    public String getNum() {
-        return num;
-    }
-    public String getBlock() {
-        return block;
-    }
-    public void setType(String type) {
-        this.type = type;
-    }
-    public void setPar(String par) {
-        this.par = par;
-    }
-    public void setNum(String num) {
-        this.num = num;
-    }
-    public void setBlock(String block) {
-        this.block = block;
-    }
-    public String getPos() {
-        return pos;
-    }
-    public String getScore() {
-        return score;
-    }
-    public String getPid() {
-        return pid;
-    }
-    public void setPos(String pos) {
-        this.pos = pos;
-    }
-    public void setScore(String score) {
-        this.score = score;
-    }
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
-
+public class ChallengeAction extends BaseAction{
     public String user;
     public String id;
     public String text;
-
     public String type;
     public String par;
     public String num;
     public String block;
-
     public String pos;
     public String score;
     public String pid;
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPar() {
+        return par;
+    }
+
+    public void setPar(String par) {
+        this.par = par;
+    }
+
+    public String getNum() {
+        return num;
+    }
+
+    public void setNum(String num) {
+        this.num = num;
+    }
+
+    public String getBlock() {
+        return block;
+    }
+
+    public void setBlock(String block) {
+        this.block = block;
+    }
+
+    public String getPos() {
+        return pos;
+    }
+
+    public void setPos(String pos) {
+        this.pos = pos;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
 
     public String init(){
         ServletActionContext.getResponse().setContentType("text/html;charset=utf-8");

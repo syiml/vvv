@@ -1,5 +1,6 @@
 <%@ page import="util.HTML.HTML" %>
 <%@ page import="ClockIn.ClockInHTML" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
