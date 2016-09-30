@@ -29,7 +29,7 @@ public class LogDao extends MyTimer{
 
     public void save(Log log){
         new SQL("insert into t_log(time,text,sessionUser) values(?,?,?)"
-                ,log.getTime(),log.getText(),log.getSessionUser()).update();
+                ,log.getTime(),log.getText(),log.getSessionUser()).update(false);
     }
 
     public List<Log> getLogs(int from,int num){
