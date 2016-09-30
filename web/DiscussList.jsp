@@ -14,7 +14,7 @@
 //    response.sendRedirect("Login.jsp");
 //    return;
 //  }
-  int num= Main.config.contestShowNum;
+  int num= Main.config.discussShowNum;
   String pa=request.getParameter("page");
   if(pa==null||pa.equals("")) pa="1";
   String search=request.getParameter("search");

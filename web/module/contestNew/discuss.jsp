@@ -16,7 +16,7 @@
     if(request.getParameter("page")!=null){
       pa=Integer.parseInt(request.getParameter("page"));
     }
-    out.print(DiscussHTML.DiscussList(cid,Main.contestShowNum,pa,"",""));
+    out.print(DiscussHTML.DiscussList(cid,Main.config.discussShowNum,pa,"",""));
   }else{
     id=Integer.parseInt(request.getParameter("id"));
     out.print(DiscussHTML.Discuss(id+"","0"));
