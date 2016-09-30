@@ -26,8 +26,8 @@ public class UserSQL extends BaseCache<String,User> {
     * userper(username,perid)
     * */
     public UserSQL(){
-        maxSize = 100;
-        cachTime = 20 * MyTime.MINUTE;
+        maxSize = 500;
+        cachTime = 30 * MyTime.MINUTE;
     }
 
     public static int getUsersNum(int cid,String serach){

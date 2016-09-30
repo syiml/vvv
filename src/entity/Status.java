@@ -1,6 +1,8 @@
 package entity;
 
+import net.sf.json.JSONObject;
 import servise.ContestMain;
+import util.JSON.JSON;
 import util.Main;
 import util.HTML.HTML;
 
@@ -8,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class Status implements IBeanResultSetCreate<Status>{
+public class Status implements IBeanResultSetCreate<Status> , ICanToJSON{
     private static Result[] r={
             Result.PENDING, Result.AC,      Result.WA,
             Result.CE,      Result.RE,      Result.TLE,
@@ -181,5 +183,22 @@ public class Status implements IBeanResultSetCreate<Status>{
     }
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jo = new JSONObject();
+        jo.put("rid",rid);
+        jo.put("username",user);
+        jo.put("pid",pid);
+        jo.put("cid",cid);
+        jo.put("lang",language);
+        jo.put("submitTime",SubmitTime);
+        jo.put("result",result);
+        jo.put("score",score);
+        jo.put("timeUsed",TimeUsed);
+        jo.put("memoryUsed",MemoryUsed);
+        jo.put("codeLength",codelen);
+        return jo;
     }
 }

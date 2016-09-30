@@ -1,8 +1,10 @@
 package util.JSON;
 
 import entity.ICanToJSON;
+import entity.User;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import util.Main;
 
 import java.util.List;
 
@@ -27,16 +29,25 @@ public abstract class BaseJsonPageBean<T extends ICanToJSON> {
         }else return Num/everyPageNum+1;
     }
 
-    abstract List<T> getList(int from,int num);
+    protected abstract List<T> getList(int from, int num);
 
-    abstract int getTotalNum();
+    protected abstract int getTotalNum();
 
     protected int getTotalPage(){
         return getTotalPageNum(getTotalNum(), everyPageNum);
     }
 
     protected List<T> getList(){
+        if(nowPage<=0) nowPage=1;
         return getList((nowPage-1)* everyPageNum, everyPageNum);
+    }
+
+    protected JSONObject processing(JSONObject jo){
+        return jo;
+    }
+
+    protected JSONObject processingData(JSONObject jo){
+        return jo;
     }
 
     public JSONObject toJSON(){
@@ -48,9 +59,10 @@ public abstract class BaseJsonPageBean<T extends ICanToJSON> {
         ret.put("everyPageNum",everyPageNum);
         JSONArray jo = new JSONArray();
         for(T t: list){
-            jo.add(t.toJSON());
+            jo.add(processingData(t.toJSON()));
         }
         ret.put("data",jo);
+        processing(ret);
         return ret;
     }
 }

@@ -20,7 +20,7 @@ public class AppJsonProblemList extends BaseJsonPageBean<problemView> {
     }
 
     @Override
-    List<problemView> getList(int from, int num) {
+    protected List<problemView> getList(int from, int num) {
         return Main.problems.getProblems(from + (index * 20), 20, search);
     }
 
@@ -36,7 +36,7 @@ public class AppJsonProblemList extends BaseJsonPageBean<problemView> {
     }
 
     @Override
-    int getTotalNum() {
+    protected int getTotalNum() {
         return Main.problems.getProblemsNum(search);
     }
 
