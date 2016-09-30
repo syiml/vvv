@@ -24,7 +24,10 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
     protected HttpSession session;
     protected PrintWriter out;
     protected BaseAction(){
-        ServletActionContext.getResponse().setContentType("text/html;charset=utf-8");
+        try {
+            HttpServletResponse response = ServletActionContext.getResponse();
+            if (response != null) response.setContentType("text/html;charset=utf-8");
+        }catch (Exception ignored){ }
     }
     @Override
     public void setServletRequest(HttpServletRequest httpServletRequest) {

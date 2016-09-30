@@ -15,4 +15,26 @@ public class GvMain {
     public static void setChallengeJson(String value){
         gvSQL.set("challenge",value);
     }
+    public static int getOneProblemEveryDayCid(){
+        String s = gvSQL.get("oneProblemEveryDayCid");
+        int ret;
+        try {
+            ret = Integer.parseInt(s);
+        }catch (Exception e){
+            ret = -1;
+        }
+        return ret;
+    }
+
+    public static void setOneProblemEveryDayCid(int cid){
+        gvSQL.set("oneProblemEveryDayCid",cid+"");
+    }
+
+    public static String getOneProblemEveryDayName(){
+        return gvSQL.get("oneProblemEveryDayName");
+    }
+
+    public static void setOneProblemEveryDayName(String name){
+        gvSQL.set("oneProblemEveryDayName",name);
+    }
 }

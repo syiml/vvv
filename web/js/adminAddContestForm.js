@@ -50,6 +50,11 @@ var c=function(){
         $("#icpcrank").hide();
         $("#training").show();
     }
+    if(select == "3"){
+        $("#shortcode").hide();
+        $("#icpcrank").hide();
+        $("#training").hide();
+    }
     return 1;
 }();
 $('#rank').bind('change',
@@ -67,6 +72,11 @@ $('#rank').bind('change',
             $("#shortcode").hide();
             $("#icpcrank").hide();
             $("#training").show();
+        }
+        if(select == "3"){
+            $("#shortcode").hide();
+            $("#icpcrank").hide();
+            $("#training").hide();
         }
     }
 );

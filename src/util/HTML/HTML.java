@@ -1247,6 +1247,7 @@ public class HTML {
         f8.add(0, "ICPC");
         f8.add(1,"ShortCode");
         f8.add(2,"练习模式");
+        f8.add(3,"积分模式");
         if(c==null) f8.setValue("0");
         else f8.setValue(c.getRankType()+"");
         form.addForm(f8);

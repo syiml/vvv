@@ -173,6 +173,8 @@ public class RankSQL {
             return addShortCodeRank(cid,a);
         }else if(a.getRank().equals("2")){
             return addTrainingRank(cid,a);
+        }else if(a.getRank().equals("3")){
+            return "success";
         }
         return "error";
     }

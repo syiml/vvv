@@ -22,6 +22,12 @@ public class ContestMain {
         if (RankSQL.addRank(cid, a).equals("error")) return "error";
         return "success";
     }
+    public static int addContestReturnResult(addcontest a) {
+        int cid = contests.getNewId();
+        if (contests.addContest(cid, a).equals("error")) return -1;
+        if (RankSQL.addRank(cid, a).equals("error")) return -1;
+        return cid;
+    }
 
     public static String editContest(addcontest a) {
         int cid = Integer.parseInt(a.cid);

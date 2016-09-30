@@ -337,9 +337,9 @@ public class statusSQL {
     }
     public void addCEInfo(int rid, String info){
         //new SQL("delete from ceinfo where rid=?",rid).update();
-        if(info.length()>800){
-            info=info.substring(0,797)+"...";
-        }
+//        if(info.length()>800){
+//            info=info.substring(0,797)+"...";
+//        }
         new SQL("replace into ceinfo values(?,?)",rid,info).update();
     }
     public String getCEInfoHTML(int rid, boolean havepanle){

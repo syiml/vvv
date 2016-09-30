@@ -5,6 +5,7 @@ import action.addproblem1;
 import entity.Contest;
 import entity.OJ.CodeVS.CodeVS;
 import servise.ContestMain;
+import servise.GvMain;
 import util.Main;
 import util.Submitter;
 import util.Tool;
@@ -18,17 +19,15 @@ import java.util.Timer;
  */
 public class OneProblemEveryDay extends MyTimer{
     private static int OJID = 6;
-    private int cid = -1;
 
     @Override
     public void run() {
         Calendar ca = Calendar.getInstance();
         String contestName = "【每日一题】"+ca.get(Calendar.YEAR)+"年"+(ca.get(Calendar.MONTH)+1)+"月";
-        if(cid == -1){
-            cid = ContestMain.getCidByName(contestName);
-            if(cid == -1){
-                cid = addContest(contestName);
-            }
+        int cid = GvMain.getOneProblemEveryDayCid();
+        String gvName = GvMain.getOneProblemEveryDayName();
+        if(cid == -1 || !contestName.equals(gvName)){
+            cid = addContest(contestName);
         }
         if(cid != -1){
             int tryTimes = 0;
@@ -105,13 +104,15 @@ public class OneProblemEveryDay extends MyTimer{
 //        contest.setTraining_m1_t("0");
 //        contest.setTraining_m2_t("0");
 //        contest.setTraining_m3_t("0");
-        ContestMain.addContest(contest);
+        int cid = ContestMain.addContestReturnResult(contest);
         //////-------------//////
-        return ContestMain.getCidByName(name);
+        GvMain.setOneProblemEveryDayCid(cid);
+        GvMain.setOneProblemEveryDayName(name);
+        return cid;
     }
     @Override
     public void getTimer() throws Exception {
-        setEveryDay(0,0,0);
+        setEveryDay(22,14,30);
         new Timer().scheduleAtFixedRate(this, date, period);
     }
 }
