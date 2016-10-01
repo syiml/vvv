@@ -112,7 +112,7 @@ public class OneProblemEveryDay extends MyTimer{
     }
     @Override
     public void getTimer() throws Exception {
-        setEveryDay(22,14,30);
+        setEveryDay(0,0,0);
         new Timer().scheduleAtFixedRate(this, date, period);
     }
 }
