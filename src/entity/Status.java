@@ -9,6 +9,7 @@ import util.HTML.HTML;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class Status implements IBeanResultSetCreate<Status> , ICanToJSON{
     private static Result[] r={
@@ -193,8 +194,8 @@ public class Status implements IBeanResultSetCreate<Status> , ICanToJSON{
         jo.put("pid",pid);
         jo.put("cid",cid);
         jo.put("lang",language);
-        jo.put("submitTime",SubmitTime);
-        jo.put("result",result);
+        jo.put("submitTime",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getSbmitTime()));
+        jo.put("result",result.value);
         jo.put("score",score);
         jo.put("timeUsed",TimeUsed);
         jo.put("memoryUsed",MemoryUsed);
