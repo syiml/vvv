@@ -40,11 +40,11 @@ public class ProblemListFilter extends ResultSetPageHtml {
         boolean vis;
         vis = ( u != null && u.getPermission().getShowHideProblem() );
         if(tag==-1){
-            sql+="SELECT v_problem.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, solved+1 as solved " +
-                    "FROM problem LEFT JOIN usersolve_view ON username=? AND usersolve_view.pid=v_problem.pid WHERE 1=1 ";
-            if(!name.equals("")) sql+="AND (title like ? OR v_problem.pid=?)";
+            sql+="SELECT problem.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, solved+1 as solved " +
+                    "FROM problem LEFT JOIN usersolve_view ON username=? AND usersolve_view.pid=problem.pid WHERE 1=1 ";
+            if(!name.equals("")) sql+="AND (title like ? OR problem.pid=?)";
             if(!vis ) sql+=" AND visiable=1 ";
-            sql+="ORDER BY v_problem.pid ";
+            sql+="ORDER BY problem.pid ";
         }else{
             sql += "SELECT v_problem_tag.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, tagid, rating, solved+1 as solved " +
                     "FROM v_problem_tag " +
@@ -54,7 +54,7 @@ public class ProblemListFilter extends ResultSetPageHtml {
                     "WHERE 1 " +
                     "AND tagid = ? " +
                     (vis ? "" : " AND visiable=1 ") +
-                    (!name.equals("")?"AND (title like ? OR v_problem.pid=?) ":"")+
+                    (!name.equals("")?"AND (title like ? OR problem.pid=?) ":"")+
                     "ORDER BY rating DESC ";
         }
         String username;
