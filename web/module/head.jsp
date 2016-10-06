@@ -65,6 +65,7 @@
     </li>
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
     <li><a href="Challenge.jsp"><span>CHALLENGE</span></a></li>
+    <li><a href="mall.jsp"><span>MALL</span></a> </li>
     <%--<li><a href="ClockIn.jsp"><span <%--%>
     <%--if(ClockInSQL.mustClockIn()>=0){--%>
     <%--out.print("style='background:red;color:white'");--%>
@@ -104,7 +105,8 @@
     Register:"注册",
     MESSAGE:"消息",
     EDIT:"编辑",
-    LOGOUT:"退出"
+    LOGOUT:"退出",
+    MALL:"商城"
   };
   $(".mm-over,.mm-hdrop-over").each(function () {
     var $th=$(this);

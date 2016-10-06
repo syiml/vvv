@@ -1,11 +1,13 @@
 package util.HTML;
 
 import entity.*;
+import entity.Mall.Goods;
 import servise.ChallengeMain;
 import dao.ChallengeSQL;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
 import servise.ContestMain;
+import servise.MallMain;
 import servise.WeekRankCount.WeekRankCountHTML;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
@@ -1032,55 +1034,39 @@ public class HTML {
             s+=li("查看Log","ViewLog",nowpage);
         if(p.getTeamMemberAdmin())
             s+=li("获奖管理","TeamAward",nowpage);
+        if(p.getMallAdmin()) {
+            s += li("添加商品", "AddGoods", nowpage);
+            s += li("订单详情", "OrderList", nowpage);
+        }
         s+="</ul>";
         return s;
     }
+    private static String returnPage(boolean per, String context){
+        if(per) return context;
+        else return panel("ERROR","NO PERMISSION",null,"danger");
+    }
     public static String adminMAIN(Permission p,String nowpage){
         if(nowpage==null) nowpage="";
-        if(p!=null&&nowpage.equals("AddProblem")){
-            if(p.getAddProblem())
-                return panel("新增/编辑题目", adminAddProblemForm());
-            else return panel("ERROR","NO PERMISSION",null,"danger");
+        if(p==null) return panel("ERROR","NO PERMISSION",null,"danger");
+        switch (nowpage){
+            case "AddProblem":      return returnPage(p.getAddProblem(),panel("新增/编辑题目", adminAddProblemForm()));
+            case "ReJudge":         return returnPage(p.getReJudge(),panel("重判题目", adminReJudgeForm()));
+            case "AddContest":      return returnPage(p.getAddContest(),panel("新增比赛", adminAddContestForm()));
+            case "AddDiscuss":      return returnPage(p.getAddDiscuss(),panel("新增/编辑通知", adminAddDiscuss()));
+            case "AddTag":          return returnPage(p.getAddTag(),panel("题目标签管理", adminAddTag()));
+            case "SubmitterInfo":   return returnPage(Main.loginUser().getUsername().equals("admin"),panel("评测机",adminSubmitterInfo()));
+            case "PermissionAdmin": return returnPage(p.getPermissionAdmin(),panel("权限管理",adminPerimission()));
+            case "AwardACBAdmin":   return returnPage(p.getAwardACB(),panel("奖励ACB",adminAwardACB())+panel("比赛奖励",adminAwardContestACB()));
+            case "AddLocalProblem": return returnPage(p.getAddLocalProblem(),panel("添加本地题目",adminAddLocalProblem()));
+            case "ChallengeAdmin":  return returnPage(p.getChallengeAdmin(),panel("挑战模式管理",adminChallengeAdmin()));
+            case "ResetPassword":   return returnPage(p.getResetPassword(),panel("重置密码",adminResetPassword()));
+            case "UserAdmin":       return returnPage(p.getUserAdmin(),panel("用户管理",adminUser()));
+            case "ViewLog":         return returnPage(p.getViewLog(),panel("运行日志",viewLog()));
+            case "TeamAward":       return returnPage(p.getTeamMemberAdmin(),panel("集训队获奖管理",TeamAwardAdmin()));
+            case "AddGoods":        return returnPage(p.getMallAdmin(),panel("添加商品",adminAddGoods()));
+            case "OrderList":       return returnPage(p.getMallAdmin(),adminOrderList());
+            default:                return panel("Index","管理员界面，点击左边链接进行后台管理");
         }
-        else if(p!=null&&nowpage.equals("ReJudge")){
-            if(p.getAddProblem())
-                return panel("重判", adminReJudgeForm());
-            else return panel("ERROR","NO PERMISSION",null,"danger");
-        }
-        else if(p!=null&&nowpage.equals("AddContest")){
-            if(p.getAddContest())
-                return panel("新增/编辑比赛", adminAddContestForm());
-            else return panel("ERROR","NO PERMISSION",null,"danger");
-        }
-        else if(p!=null&&nowpage.equals("AddDiscuss")){
-            if(p.getAddDiscuss())
-                return panel("新增/编辑通知", adminAddDiscuss());
-            else return panel("ERROR","NO PERMISSION",null,"danger");
-        }
-        else if(p!=null&&nowpage.equals("AddTag")){
-            if(p.getAddTag())
-                return panel("题目标签管理", adminAddTag());
-            else return panel("ERROR","NO PERMISSION",null,"danger");
-        }else if(p!=null&&nowpage.equals("SubmitterInfo")){
-            return panel("评测机",adminSubmitterInfo());
-        }else if(p!=null&&nowpage.equals("PermissionAdmin")){
-            return panel("权限管理",adminPerimission());
-        }else if(p!=null&&nowpage.equals("AwardACBAdmin")){
-            return panel("奖励ACB",adminAwardACB())+panel("比赛奖励",adminAwardContestACB());
-        }else if(p!=null&&nowpage.equals("AddLocalProblem")){
-            return panel("添加本地题目",adminAddLocalProblem());
-        }else if(p!=null&&nowpage.equals("ChallengeAdmin")){
-            return panel("挑战模式管理",adminChallengeAdmin());
-        }else if(p!=null&&nowpage.equals("ResetPassword")){
-            return panel("密码重置",adminResetPassword());
-        }else if(p!=null&&nowpage.equals("UserAdmin")){
-            return panel("用户管理",adminUser());
-        }else if(p!=null&&nowpage.equals("ViewLog")){
-            return viewLog();
-        }else if(p!=null&&nowpage.equals("TeamAward")){
-            return panel("集训队获奖管理", TeamAwardAdmin());
-        }
-        return panel("Index","管理员界面，点击左边链接进行后台管理");
     }
     public static String adminAddProblemForm(){
         int pid;
@@ -1601,5 +1587,47 @@ public class HTML {
         form.addForm(time,t1,n1,t2,n2,t3,n3,s1,s2,des);
 
         return form.toHTML();
+    }
+    public static String adminAddGoods(){
+        int id=-1;
+        try{
+            id=Integer.parseInt(Main.getRequest().getParameter("id"));
+        }catch(NumberFormatException ignored){}
+        Goods goods = null;
+        if(id!=-1) goods = MallMain.getGoodsSQL().getBeanByKey(id);
+        FormHTML f = new FormHTML();
+        f.setAction("addGoods.action");
+        f.setSubmitText("确定");
+        text textId = new text("id","id");
+            //textId.setDisabled();
+            textId.setValue((goods==null?-1:id)+"");
+        text textTitle = new text("title","标题");
+            if(goods!=null)textTitle.setValue(goods.getTitle());
+        text textAcb = new text("acb","ACB");
+            if(goods!=null)textAcb.setValue(goods.getAcb()+"");
+        text textStock = new text("stock","库存数量");
+            if(goods!=null) textStock.setValue(goods.getStock()+"");
+        text textBuyLimit = new text("buyLimit","限购数量");
+            textBuyLimit.setPlaceholder("每个用户最多能购买的数量，负数表示不限");
+            if(goods!=null) textBuyLimit.setValue(goods.getBuyLimit()+"");
+        check checkIsHidden = new check("isHidden","是否隐藏");
+            if(goods!=null && goods.isHidden()) checkIsHidden.setValue("true");
+        file fileCover = new file("upload","封面图片");
+        fileCover.setAccept("image/jpeg,image/png");
+        textarea textareaDes = new textarea("des","描述");
+            textareaDes.setId("des");
+            if(goods!=null) textareaDes.setValue(goods.getDes());
+        textareaDes.setUEditor(true);
+
+        f.setEnctype();
+        f.addForm(textId,textTitle,textAcb,textStock,textBuyLimit,checkIsHidden,fileCover,textareaDes);
+        return f.toHTML();
+    }
+    public static String adminOrderList(){
+        int page=1;
+        try{
+            page=Integer.parseInt(Main.getRequest().getParameter("pa"));
+        }catch(NumberFormatException ignored){}
+        return new OrderHTML(page).HTML();
     }
 }

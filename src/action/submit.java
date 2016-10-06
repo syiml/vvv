@@ -22,74 +22,83 @@ import java.util.Objects;
         */
 public class submit  extends BaseAction{
     public String code;
-    public String pid;
-    public String language;
-    public String cid;
-    public void print(HttpResponse r){
-        HttpEntity entity = r.getEntity();
-        Tool.debug(r.getStatusLine().toString());
-        if (entity != null) {
-            Tool.debug("Response content lenght:"  + entity.getContentLength());
-            String content = null;
-            try {
-                content = EntityUtils.toString(entity);
-                Tool.debug("Response content:"  +content);
-                //System.out.println("Response content:"   + new String(content.getBytes("ISO-8859-1"),"UTF-8"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    public int pid;
+    public int language;
+    public int cid;
+    public int noRedirect = 0; //如果是app提交的返回json
+
     public String submitProblem() {
         try{
             //if(cid==null) cid="-1";
-            int iCid = Integer.parseInt(cid);
             User u=Main.loginUser();
+            if(u == null ){
+                if(noRedirect == 1){
+                    out.print("{\"ret\":\"fail\",\"info\":\"登录已过期\"}");
+                    return NONE;
+                }
+                return "login";
+            }
             String username;
-            if(iCid == -1){
-                if(u == null ) return "login";
-                if(Main.problems.getProblem(Integer.parseInt(pid)).visiable==0){
+            if(cid == -1){
+                if(Main.problems.getProblem(pid).visiable==0){
                     Permission p=Main.getPermission(u.getUsername());
                     if(!p.getShowHideProblem()){
+                        if(noRedirect == 1){
+                            out.print("{\"ret\":\"fail\",\"info\":\"没有权限\"}");
+                            return NONE;
+                        }
                         return "nopermission";
                     }
                 }
                 username = u.getUsername();
             }else{
-                Contest contest = ContestMain.getContest(iCid);
+                Contest contest = ContestMain.getContest(cid);
                 if(contest.getType() == Contest_Type.TEAM_OFFICIAL){
                     Object obj = Main.getSession().getAttribute("trueusername"+cid);
-                    Tool.log("obj="+obj);
+                    //Tool.log("obj="+obj);
                     if(obj==null) {
+                        if(noRedirect == 1){
+                            out.print("{\"ret\":\"fail\",\"info\":\"没有权限\"}");
+                            return NONE;
+                        }
                         return "nopermission";
                     }else{
                         username = (String) obj;
                     }
                 }else{
-                    if(u == null ) return "login";
                     username = u.getUsername();
                 }
             }
-            Timestamp submittime=Tool.now();
-
-            //Tool.log("username="+username);
-            int z=Main.submitter.doSubmit(username,Integer.parseInt(pid),Integer.parseInt(cid),Integer.parseInt(language),code,submittime);
-            //Main.m.submitProblem(s);
+            int z=Main.submitter.doSubmit(username,pid,cid,language,code,Tool.now());
             if(z==-1){
+                if(noRedirect == 1){
+                    out.print("{\"ret\":\"fail\",\"info\":\"比赛已经结束\"}");
+                    return NONE;
+                }
                 return "OutOfContest";
             }
-            if(cid.equals("-1")){
-                //System.out.println("->submit:"+user+" contest:"+cid+" pid="+pid);
+            if(cid==-1){
                 Tool.log("submit:"+username+"提交了"+pid);
+                if(noRedirect == 1){
+                    out.print("{\"ret\":\"success\"}");
+                    return NONE;
+                }
                 return "success1";
             }else{
-                //System.out.println("->submit:"+user+" pid="+pid);
                 Tool.log("submit:" + username + "提交了比赛"+cid+"的"+ pid);
                 Main.saveURL("Contest.jsp?cid="+cid+"#Status");
+                if(noRedirect == 1){
+                    out.print("{\"ret\":\"success\"}");
+                    return NONE;
+                }
                 return "success2";
             }
-        }catch(NumberFormatException e){
-            return "argerror";
+        }catch(Exception e){
+            if(noRedirect == 1){
+                out.print("{\"ret\":\"fail\",\"info\":\"提交失败\"}");
+                return NONE;
+            }
+            return INPUT;
         }
     }
 }

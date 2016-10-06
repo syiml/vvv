@@ -222,6 +222,32 @@ public class SQL {
     public int update(){
         return update(true);
     }
+
+    public int isnertGetLastInsertId(){
+        p=null;
+        try {
+            p= conn.prepareStatement(sql);
+            for(int i=0;i<args.length;i++){
+                p.setObject(i+1,args[i]);
+            }
+            String sql =p.toString();
+            Timestamp t = Tool.now();
+            int ret = p.executeUpdate();
+            Tool.SQLDebug((Tool.now().getTime() - t.getTime())," "+ sql.substring(sql.indexOf(':')+1));
+            if(ret <= 0) return ret;
+            sql = "SELECT LAST_INSERT_ID()";
+            p= conn.prepareStatement(sql);
+            rs = p.executeQuery();
+            if (rs != null && rs.next()) {
+                return rs.getInt(1);
+            } else return -1;
+        } catch (SQLException e) {
+            if(log)Tool.log(e);
+            return -1;
+        } finally {
+            close();
+        }
+    }
     public int update(boolean _log){
         p=null;
         try {

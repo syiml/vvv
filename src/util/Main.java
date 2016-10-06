@@ -35,7 +35,6 @@ public class Main {
     public static statusSQL status = new statusSQL();
     public static UserSQL users = new UserSQL();
     public static LogDao logs = new LogDao();
-    public static GoodsSQL goods = new GoodsSQL();
     public static Submitter submitter=new SubmitterImp();
 
     public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();

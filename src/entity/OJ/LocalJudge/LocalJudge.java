@@ -307,9 +307,9 @@ public class LocalJudge {
             int FileListSize = inFileList.size();
             Pair<Integer,Integer> limit=Main.problems.getProblemLimit(Integer.parseInt(s.getSubmitInfo().pid));
             runExeOutputStream.write((limit.getKey()+"\n").getBytes());//时限(MS)
-        Tool.debug("时限"+limit.getKey()+"MS");
+        //Tool.debug("时限"+limit.getKey()+"MS");
             runExeOutputStream.write(("30000\n").getBytes());//单点时限
-        Tool.debug(("30000"));
+        //Tool.debug(("30000"));
             file = new File(fixPath(outPath) + s.getSubmitInfo().getRid());
             try {
                 String filename = "Main";

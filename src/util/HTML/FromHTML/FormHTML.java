@@ -1,5 +1,6 @@
 package util.HTML.FromHTML;
 
+import util.HTML.FromHTML.file.file;
 import util.HTML.HTML;
 
 import java.util.ArrayList;
@@ -21,12 +22,6 @@ public class FormHTML {
     List<form> list;
     boolean isscript=false;
     boolean enctype=false;
-    public void setAction(String s){action=s;}
-    public void setEnctype(){enctype=true;}
-    public void setScript(String scriptfunction){
-        isscript=true;
-        action=scriptfunction;
-    }
     public FormHTML(){
         type=0;
         list = new ArrayList<form>();
@@ -35,6 +30,16 @@ public class FormHTML {
         col2=10;
         isForm=true;
     }
+
+    public void setAction(String s){action=s;}
+
+    public void setEnctype(){enctype=true;}
+
+    public void setScript(String scriptfunction){
+        isscript=true;
+        action=scriptfunction;
+    }
+
     public void setType(int type){
         this.type=type;
         if(type==1){
@@ -51,6 +56,11 @@ public class FormHTML {
         this.col2=col2;
     }
     public void addForm(form... f){
+        for( form ff:f){
+            if(ff.getClass().equals(file.class)){
+                setEnctype();
+            }
+        }
         Collections.addAll(list, f);
     }
     public void setSubmitText(String s){submitText=s;}

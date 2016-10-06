@@ -15,7 +15,7 @@
                         <result name="OutOfContest">module/ErrorInfo/OutOfContest.jsp</result>
                         <result name="login" type="redirect">Login.jsp</result>
                         <result name="nopermission" type="redirect">Error.jsp?name=NoPermission</result>
-                        <result name="argerror" type="redirect">Error.jsp?name=ArgError</result>
+                        <result name="input" type="redirect">Error.jsp?name=ArgError</result>
                 </action>
                 <action name="reg" class="action.register" method="reg">
                         <result name="success">return.jsp</result>
@@ -174,8 +174,22 @@
                 <action name="getProblemList" class="action.App.ActionGetProblemList" method="getProblemList"> </action>
                 <action name="getProblem" class="action.App.ActionGetProblem" method="getProblem"> </action>
                 <action name="getOtherOjsContest" class="action.App.ActionNoPara" method="getOtherOjsContest"> </action>
-                <action name="getRecentlyContestTable" class="action.App.ActionNoPara" method="getRecentlyContestTable"> </action>
+                <action name="getRecentlyContest" class="action.App.ActionNoPara" method="getRecentlyContest"> </action>
                 <action name="getStatus" class="action.App.ActionGetStatus" method="getStatus"> </action>
+        </package>
+        <package name="mall" extends="struts-default">
+                <action name="addGoods" class="action.Mall.ActionAddGoods" method="addGoods">
+                        <result name="success">return.jsp</result>
+                        <result name="error">admin.jsp?page=AddGoods</result>
+                </action>
+                <action name="buy" class="action.Mall.ActionBuyGoods" method="buy">
+                        <result name="success" type="redirect">goods.jsp?id=${id}</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=goods.jsp?id=${id}</result>
+                        <result name="login">info.jsp?info=${prompt}&amp;next=Login.jsp</result>
+                </action>
+                <action name="cancelOrder" class="action.Mall.ActionBuyGoods" method="cancelOrder">
+                        <result name="success">admin.jsp?page=OrderList</result>
+                </action>
         </package>
         <package name="challenge" extends="struts-default">
                 <action name="blocklist" class="action.ChallengeAction" method="init"> </action>

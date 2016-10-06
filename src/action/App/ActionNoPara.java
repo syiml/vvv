@@ -31,7 +31,7 @@ public class ActionNoPara extends BaseAction{
         out.print(JSON.getOtherOjsContest());
         return NONE;
     }
-    public String getRecentlyContestTable(){
+    public String getRecentlyContest(){
         List<Contest> list = ContestMain.getContests(0,6,-1,null,-1,-1);
         JSONArray ja = new JSONArray();
         for(Contest c:list){

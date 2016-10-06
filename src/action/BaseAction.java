@@ -18,11 +18,11 @@ import java.io.PrintWriter;
  */
 public class BaseAction extends ActionSupport implements ServletRequestAware, ServletResponseAware {
 
-    public String prompt;
     protected  HttpServletRequest request;
     protected HttpServletResponse response;
     protected HttpSession session;
     protected PrintWriter out;
+    private String prompt;
     protected BaseAction(){
         try {
             HttpServletResponse response = ServletActionContext.getResponse();

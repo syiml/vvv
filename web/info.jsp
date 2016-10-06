@@ -13,7 +13,7 @@
 <body>
   <script>
     alert('<%=request.getParameter("info")%>');
-    location.href="return.jsp";
+    location.href="<%=!request.getParameter("next").equals("")?request.getParameter("next"):"return.jsp"%>";
   </script>
 </body>
 </html>

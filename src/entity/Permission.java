@@ -37,6 +37,8 @@ public class Permission{
 
     boolean examAdmin=false;
     boolean teamMemberAdmin=false;
+
+    boolean mallAdmin=false;
     /**
      * 根据数据库结果集产生
      * @param rs 数据库结果集，userPer表的单个User记录
@@ -66,6 +68,7 @@ public class Permission{
                     case 16:viewLog=true;break;
                     case 17:examAdmin=true;break;
                     case 18:teamMemberAdmin=true;break;
+                    case 19:mallAdmin=true;break;
                 }
             }
         } catch (SQLException e) {
@@ -92,6 +95,7 @@ public class Permission{
     public boolean getViewLog(){return viewLog;}
     public boolean getExamAdmin(){return examAdmin;}
     public boolean getTeamMemberAdmin() {return teamMemberAdmin;}
+    public boolean getMallAdmin(){return mallAdmin;}
 
     /**
      * 产生显示在个人页面的权限列表
@@ -118,6 +122,7 @@ public class Permission{
         if(viewLog) s+=(HTML.span("success","Log查看"))+" ";
         if(examAdmin) s+=(HTML.span("success","考试管理"))+" ";
         if(teamMemberAdmin) s+=(HTML.span("success","集训队员管理"))+" ";
+        if(mallAdmin) s+=(HTML.span("success","商城管理"));
         return s;
     }
 }

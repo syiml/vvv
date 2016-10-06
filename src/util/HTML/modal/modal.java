@@ -58,7 +58,7 @@ public class modal {
                 "      </div>\n" +
                 "      <div class=\"modal-footer\">\n" +
                 "        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n" +
-                (havesubmit?"        <button type=\"submit\" class=\"btn btn-primary\" >Submit</button>\n":"") +
+                (havesubmit?"        <button type=\"submit\" class=\"btn btn-primary\" >确定</button>\n":"") +
                 "      </div>\n" +
                 "    </div>\n" +
                 "  </div>\n" +
@@ -84,7 +84,7 @@ public class modal {
             "      </div>\n" +
             "      <div class=\"modal-footer\">\n" +
             "        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n" +
-            (havesubmit?"        <button type=\"submit\" class=\"btn btn-primary\" >Submit</button>\n":"") +
+            (havesubmit?"        <button type=\"submit\" class=\"btn btn-primary\" >确定</button>\n":"") +
             "      </div>\n" +
             "    </div>\n" +
             "  </form>\n"+

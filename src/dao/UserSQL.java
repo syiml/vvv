@@ -389,10 +389,14 @@ public class UserSQL extends BaseCache<String,User> {
         return x;
     }
     public int addACB(String user,int num){
-        return new SQL("UPDATE users SET acb=acb+? WHERE username=?",num,user).update();
+        int ret= new SQL("UPDATE users SET acb=acb+? WHERE username=?",num,user).update();
+        removeCatch(user);
+        return ret;
     }
     public int subACB(String user,int num) {
-        return new SQL("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?", num, user, num).update();
+        int ret = new SQL("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?", num, user, num).update();
+        removeCatch(user);
+        return ret;
     }
 
     @Override
