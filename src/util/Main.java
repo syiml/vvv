@@ -162,7 +162,7 @@ public class Main {
 
 
     public static boolean canViewCode(Status s,User user) {
-        return user != null && (user.getUsername().equals(s.getUser()) || Main.users.haveViewCode(user.getUsername(), s.getPid()) || user.getPermission().getViewCode());
+        return user != null && (user.getUsername().equals(s.getUser()) || user.getPermission().getViewCode() || Main.users.haveViewCode(user.getUsername(), s.getPid()) );
     }
     public static String getIP(){
         return getRequest().getRemoteAddr();

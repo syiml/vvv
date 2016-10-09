@@ -51,7 +51,8 @@ public class CodeVS extends OTHOJ {
         Elements img=doc.select("img");
         for(Element element:img){
             String link=element.attr("src");
-            element.attr("src",URL+link);
+            if(element.attr("src").indexOf("htpp") != 0)
+                element.attr("src",URL+link);
         }
 
         if(panels.size()!=8) return null;

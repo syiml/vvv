@@ -7,6 +7,7 @@ import entity.rank.RankBaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Administrator on 2015/5/26.
@@ -85,6 +86,7 @@ public class user extends RankBaseUser{
     public int compareTo(RankBaseUser o) {
         user u = (user)o;
         if(this.submitnum==u.submitnum){
+            if(Objects.equals(this.penalty, u.penalty)) return 0;
             return (this.penalty - u.penalty)>0?1:-1;
         }else{
             return u.submitnum-this.submitnum;

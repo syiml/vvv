@@ -57,7 +57,8 @@ public class Tool {
     public static void log(String s,int stackDepth){
         StackTraceElement[] stacks = new Throwable().getStackTrace();
         User u = Main.loginUser();
-        System.out.println("["+now()+"]["+(u==null?"null":u.getUsername())+"]"+s+"["+stacks[stackDepth]+"]");
+        Thread current = Thread.currentThread();
+        System.out.println("["+now()+"|"+current.getId()+"]["+(u==null?"null":u.getUsername())+"]"+s+"["+stacks[stackDepth]+"]");
     }
 
     public static void log(Exception e){

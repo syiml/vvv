@@ -130,9 +130,9 @@ public class VjSubmitter implements Runnable{
                     setShowstatus("第"+num+"次获取rid="+nrid);
                     num++;
                     if (num == 5) break;//提交失败重新提交
-                } while (nrid.equals(prid));
+                } while (nrid.equals("error")||nrid.equals(prid));
                 k--;
-            }while(num==10&&k!=0);
+            }while(num==5&&k!=0);
             if(k==0){
                 Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:提交失败。可能是连接不上原oj导致的错误");
                 setShowstatus("提交失败");
