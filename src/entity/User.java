@@ -1,5 +1,6 @@
 package entity;
 
+import net.sf.json.JSONObject;
 import util.Main;
 import util.HTML.HTML;
 import action.register;
@@ -12,7 +13,7 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class User implements IBeanResultSetCreate,IBeanCanCach{
+public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     String username;
     String password;
     String nick;
@@ -41,10 +42,11 @@ public class User implements IBeanResultSetCreate,IBeanCanCach{
     String cla;//班级
     String no;//学号
     String phone;//联系方式
-
     private Timestamp catch_time;
 
+
     public User(){}
+
     public User(register r){
         username=r.username;
         password=r.password;
@@ -92,6 +94,21 @@ public class User implements IBeanResultSetCreate,IBeanCanCach{
     public static String ratingToHTML(int rating){
         if(rating==-100000) return"-";
         return HTML.textb(rating+"",ratingColor(rating));
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("username",username);
+        jsonObject.put("nick",nick);
+        jsonObject.put("motto",motto);
+        jsonObject.put("submissions",submissions);
+        jsonObject.put("acnum",acnum);
+        jsonObject.put("acb",acb);
+        jsonObject.put("rating",getShowRating());
+        jsonObject.put("ratingnum",getRatingnum());
+        jsonObject.put("rank",rank);
+        return jsonObject;
     }
 
     public User init(ResultSet rs) throws SQLException {
@@ -369,4 +386,5 @@ public class User implements IBeanResultSetCreate,IBeanCanCach{
     public void setExpired(Timestamp t) {
         setCatch_time(t);
     }
+
 }

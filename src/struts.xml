@@ -176,6 +176,7 @@
                 <action name="getOtherOjsContest" class="action.App.ActionNoPara" method="getOtherOjsContest"> </action>
                 <action name="getRecentlyContest" class="action.App.ActionNoPara" method="getRecentlyContest"> </action>
                 <action name="getStatus" class="action.App.ActionGetStatus" method="getStatus"> </action>
+                <action name="getUserList" class="action.App.ActionUserList" method="getUserList"> </action>
         </package>
         <package name="mall" extends="struts-default">
                 <action name="addGoods" class="action.Mall.ActionAddGoods" method="addGoods">
