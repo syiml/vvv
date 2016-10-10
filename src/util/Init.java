@@ -1,7 +1,6 @@
 package util;
 
 import util.Event.EventMain;
-import util.JPush.Test;
 import util.TimerTasks.MyTimer;
 
 import javax.servlet.http.HttpServlet;
