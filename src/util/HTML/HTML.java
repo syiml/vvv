@@ -1061,7 +1061,7 @@ public class HTML {
             case "ChallengeAdmin":  return returnPage(p.getChallengeAdmin(),panel("挑战模式管理",adminChallengeAdmin()));
             case "ResetPassword":   return returnPage(p.getResetPassword(),panel("重置密码",adminResetPassword()));
             case "UserAdmin":       return returnPage(p.getUserAdmin(),panel("用户管理",adminUser()));
-            case "ViewLog":         return returnPage(p.getViewLog(),panel("运行日志",viewLog()));
+            case "ViewLog":         return returnPage(p.getViewLog(),viewLog());
             case "TeamAward":       return returnPage(p.getTeamMemberAdmin(),panel("集训队获奖管理",TeamAwardAdmin()));
             case "AddGoods":        return returnPage(p.getMallAdmin(),panel("添加商品",adminAddGoods()));
             case "OrderList":       return returnPage(p.getMallAdmin(),adminOrderList());
