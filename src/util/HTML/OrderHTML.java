@@ -59,6 +59,11 @@ public class OrderHTML extends pageBean {
     }
 
     @Override
+    public String getTableClass() {
+        return "table table-striped table-hover table-condensed";
+    }
+
+    @Override
     public String getLinkByPage(int page) {
         return "admin.jsp?page=OrderList&pa="+page;
     }
