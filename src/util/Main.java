@@ -1,10 +1,12 @@
 package util;
 
 import WebSocket.MatchWebSocket;
+import action.App.ActionAppUpdate;
 import dao.*;
 import dao.Mall.GoodsSQL;
 import entity.OJ.OTHOJ;
 import entity.Status;
+import servise.GvMain;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
 import entity.Permission;
@@ -29,7 +31,7 @@ import java.util.Set;
  */
 public class Main {
     public static JSONObject GV = GlobalVariables.read();
-    public static Config config = (new Config()).readConfig(GV);
+    public static Config config;
 
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
@@ -37,9 +39,10 @@ public class Main {
     public static LogDao logs = new LogDao();
     public static Submitter submitter=new SubmitterImp();
 
-    public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<Integer, Set<MatchWebSocket>>();
+    public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<>();
 
     public static void Init(){
+        config = (new Config()).readConfig(GV);
         try {
             Class.forName(config.sqlclass);
         } catch (ClassNotFoundException e) {
@@ -47,8 +50,7 @@ public class Main {
         }
         status.init();
     }
-    public static void readConfig()
-    {
+    public static void readConfig(){
         GV = GlobalVariables.read();
         config.readConfig(GV);
     }
@@ -98,6 +100,18 @@ public class Main {
             Main.problems.saveProblemHTML(pid,ph);
         }
         return ph;
+    }
+    public static MainResult appUpdate(ActionAppUpdate action){
+        if(!Main.loginUserPermission().getAppUpdate()) return MainResult.NO_PERMISSION;
+        try {
+            uploadFile(action.getApp(), Main.getRealPath("/")+Main.config.appPath);
+        }catch (IOException e){
+            return MainResult.FAIL;
+        }
+        GvMain.setAppVersionName(action.getVersionName());
+        GvMain.setAppVersionCode(action.getVersionCode());
+        GvMain.setAppUpdate(action.getUpdate());
+        return MainResult.SUCCESS;
     }
 
     public static Permission getPermission(String user){

@@ -118,7 +118,7 @@ public class UserHTML {
         if(user!=null&&user.getUsername().equals(showuser.getUsername())){
             Permission p=Main.getPermission(showuser.getUsername());
             String title="拥有权限";
-            if(p.getAddContest()||p.getReJudge()||p.getAddProblem()||p.getAddTag()){
+            if(p.haveAdmin()){
                 title=title+"["+HTML.a("admin.jsp","Admin")+"]";
             }
             title+=": ";

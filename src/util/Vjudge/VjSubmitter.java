@@ -72,6 +72,7 @@ public class VjSubmitter implements Runnable{
                 Main.status.setStatusResult(info.rid,Result.JUDGING,"-","-","");
                 go();
                 ojsrid="->"+ojsrid;
+                this.status=IDLE;
             } catch (Exception e) {
                 this.status=IDLE;
                 Tool.log(e);
@@ -134,9 +135,10 @@ public class VjSubmitter implements Runnable{
                 k--;
             }while(num==5&&k!=0);
             if(k==0){
-                Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:提交失败。可能是连接不上原oj导致的错误");
+                Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:提交失败。提交时错误，检查64位整数格式是否正确");
                 setShowstatus("提交失败");
             }else{
+                boolean flag = false;
                 ojsrid = nrid;
                 int wait[] = {3,2,1,2,3,5,7,8,9,10};
                 int i=0;
@@ -146,11 +148,14 @@ public class VjSubmitter implements Runnable{
                     r=oj.getResult(this);
                     //System.out.println(submitterID+":get res="+r.getR());
                     setShowstatus("评测结果="+r.getR());
-                    if(i>=30){
+                    if(i>=300){
                         Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:评测超时。可能是原oj繁忙");
+                        flag = true;
+                        break;
                     }
                 }while(!r.canReturn());
-                Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo(),r.getScore()));
+                if(!flag)
+                    Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo(),r.getScore()));
             }
             this.status=IDLE;
         }catch(Exception e){

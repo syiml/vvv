@@ -24,6 +24,7 @@ public class Config {
 
     public String localJudgeWorkPath;
     public int LocalJudgeNumber;
+    public String appPath = "/file/FJUTACM.apk";
 
     public String sqlclass;
     public String sqlconnstring;

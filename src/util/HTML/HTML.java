@@ -7,6 +7,7 @@ import dao.ChallengeSQL;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
 import servise.ContestMain;
+import servise.GvMain;
 import servise.MallMain;
 import servise.WeekRankCount.WeekRankCountHTML;
 import util.*;
@@ -1038,6 +1039,7 @@ public class HTML {
             s += li("添加商品", "AddGoods", nowpage);
             s += li("订单详情", "OrderList", nowpage);
         }
+        if(p.getAppUpdate()) s+= li("APP更新","AppUpdate",nowpage);
         s+="</ul>";
         return s;
     }
@@ -1065,6 +1067,7 @@ public class HTML {
             case "TeamAward":       return returnPage(p.getTeamMemberAdmin(),panel("集训队获奖管理",TeamAwardAdmin()));
             case "AddGoods":        return returnPage(p.getMallAdmin(),panel("添加商品",adminAddGoods()));
             case "OrderList":       return returnPage(p.getMallAdmin(),adminOrderList());
+            case "AppUpdate":       return returnPage(p.getAppUpdate(),panel("APP更新",adminAppUpdate()));
             default:                return panel("Index","管理员界面，点击左边链接进行后台管理");
         }
     }
@@ -1629,5 +1632,21 @@ public class HTML {
             page=Integer.parseInt(Main.getRequest().getParameter("pa"));
         }catch(NumberFormatException ignored){}
         return new OrderHTML(page).HTML();
+    }
+    public static String adminAppUpdate(){
+        FormHTML formHTML = new FormHTML();
+        text textVersionCode = new text("versionCode","版本号");
+             textVersionCode.setValue(GvMain.getAppVersionCode()+"");
+        text textVersion = new text("versionName","版本名");
+             textVersion.setValue(GvMain.getAppVersionName()+"");
+        file fileApp = new file("app","apk文件");
+             fileApp.setAccept(".apk");
+        textarea textareaUpdate =  new textarea("update","更新内容");
+                 textareaUpdate.setUEditor(true);
+                 textareaUpdate.setId("update");
+                 textareaUpdate.setValue(GvMain.getAppUpdate());
+        formHTML.addForm(textVersionCode,textVersion,fileApp,textareaUpdate);
+        formHTML.setAction("app/adminAppUpdate.action");
+        return formHTML.toHTML();
     }
 }

@@ -177,6 +177,10 @@
                 <action name="getRecentlyContest" class="action.App.ActionNoPara" method="getRecentlyContest"> </action>
                 <action name="getStatus" class="action.App.ActionGetStatus" method="getStatus"> </action>
                 <action name="getUserList" class="action.App.ActionUserList" method="getUserList"> </action>
+                <action name="adminAppUpdate" class="action.App.ActionAppUpdate" method="update">
+                        <result name="success">../info.jsp?info=${prompt}&amp;next=../admin.jsp?page=AppUpdate</result>
+                </action>
+                <action name="appVersion" class="action.App.ActionAppUpdate" method="getVersionInfo"> </action>
         </package>
         <package name="mall" extends="struts-default">
                 <action name="addGoods" class="action.Mall.ActionAddGoods" method="addGoods">
