@@ -1,11 +1,8 @@
 package dao;
 
 import action.TeamAward;
-import entity.TeamMemberAwardInfo;
+import entity.*;
 import util.Main;
-import entity.Permission;
-import entity.RegisterUser;
-import entity.User;
 import servise.MessageMain;
 import util.HTML.HTML;
 import util.MyTime;
@@ -101,15 +98,16 @@ public class UserSQL extends BaseCache<String,User> {
 
     public List<List<String>> getPermissionTable(){
         //user,per,admin
-        SQL sql=new SQL("SELECT username,perid,(select name from permission where id=perid) as name FROM userper");
+        SQL sql=new SQL("SELECT username,perid FROM userper");
         ResultSet rs=sql.query();
         List<List<String>> table=new ArrayList<List<String>>();
         try {
             while(rs.next()){
+                int perId = rs.getInt("perid");
                 List<String> row=new ArrayList<String>();
                 row.add(rs.getString("username"));
-                row.add(rs.getString("name"));
-                row.add(HTML.a("delper.action?user="+rs.getString("username")+"&perid="+rs.getString("perid"),"删除"));
+                row.add(PermissionType.getPerByCode(perId).getName());
+                row.add(HTML.a("delper.action?user="+rs.getString("username")+"&perid="+perId,"删除"));
                 table.add(row);
             }
         } catch (SQLException e) {

@@ -1293,16 +1293,10 @@ public class HTML {
         text t=new text("user","user");
         f.addForm(t);
         select s=new select("perid","per");
-        SQL sql=new SQL("select * from permission");
-        ResultSet rs=sql.query();
-        try {
-            while(rs.next()){
-                s.add(rs.getInt(1),rs.getString(2));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        for(PermissionType p : PermissionType.values()){
+            s.add(p.getCode(),p.getName());
         }
-        sql.close();
+
         f.addForm(s);
         f.setAction("addper.action");
         f.setType(1);
