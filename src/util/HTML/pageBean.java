@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * pageBean 的基类，显示一个带翻页的表格列表panel
  * Created by Syiml on 2015/11/2 0002.
  */
 public abstract class pageBean {
@@ -13,28 +14,81 @@ public abstract class pageBean {
     protected List<String> Colname = new ArrayList<String>();
 
     protected String ERROR_CELL_TEXT="=ERROR=";
+
+    /**
+     * 返回panel顶上的标题栏显示的内容
+     * @return 标题
+     */
     public abstract String getTitle();
 
     /**
      * @return 当前页的行数
      */
     public abstract int getCurrPageSize();
-    public abstract int getTotalPageNum();//总页数
-    public abstract int getCurrPage();//当前页
+
+    /**
+     * 重写这个方法，返回当前页的总页数
+     * @return 总页数
+     */
+    public abstract int getTotalPageNum();
+
+    /**
+     * 重写这个方法，返回当前的页码是第几页
+     * @return 当前页码数
+     */
+    public abstract int getCurrPage();
+
+    /**
+     * 重写这个方法，指定第i行的列名为colname的单元格要显示的内容
+     * @param i 第i行
+     * @param colname 列名
+     * @return 单元格显示的内容
+     */
     public abstract String getCellByHead(int i,String colname);//第i行的每列的内容
+
+    /**
+     * 重写这个方法，指定当用户点击第page页的按钮时，应该跳转到哪个页面
+     * @param page 页码
+     * @return 跳转的超链接
+     */
     public abstract String getLinkByPage(int page);
+
+    /**
+     * 返回在页码右侧的表单内容（一般用于做筛选表单）
+     * 如果不需要这个表单，请返回空串
+     * @return 表单内容
+     */
     public abstract String rightForm();
 
+    /**
+     * 表格的class，用于前端显示表格的样式（参考bootstrap表格样式）
+     * @return table class
+     */
     public String getTableClass(){return cl;}
     protected void setCl(String cl){this.cl=cl;}
+
+    /**
+     * 添加表格的列名，会按添加的顺序显示
+     * @param ss 列名列表
+     */
     protected void addTableHead(String... ss){
         Collections.addAll(Colname,ss);
     }
+
+    /**
+     * 当表头显示的内容和列名不同时，可以重写该方法。
+     * @param colname 当前列名
+     * @return 返回新的表头位置显示的内容
+     */
     protected String getColname(String colname){
         return colname;
     }
 
-    public String tableHTML(){
+    /**
+     * 返回表格的HTML代码，HTML()方法会调用，一般不用重写
+     * @return 表格HTML代码
+     */
+    protected String tableHTML(){
         for (String aColname : Colname) {
             table.addColname(getColname(aColname));
         }
@@ -50,10 +104,20 @@ public abstract class pageBean {
         }
         return table.HTML();
     }
+
+    /**
+     * 给第r行，第c列单元格设定一个class，用来控制样式的显示。（参考bootstrap的表格单元格样式）
+     * @param r 行
+     * @param c 列
+     * @param cls 类名
+     */
     public void addClass(int r,int c,String cls){
         table.addCl(r,c,cls);
     }
 
+    /**
+     * @return 返回翻页按钮组的HTML代码，一般不用重写
+     */
     public String page(){
         int PageNum= getTotalPageNum();
         int NowPage= getCurrPage();
@@ -121,6 +185,12 @@ public abstract class pageBean {
         return HTML.panelnobody(getTitle(),head()+tableHTML()+foot());
     }
 
+    /**
+     * 静态函数，根据总数和每页显示的数量计算总页码数
+     * @param Num 总条目数
+     * @param everyPageNum 每页的数量
+     * @return 总页数
+     */
     public static int getTotalPageNum(int Num, int everyPageNum){
         if(Num==0) return 1;
         if(Num%everyPageNum==0){
