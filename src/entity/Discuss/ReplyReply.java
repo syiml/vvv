@@ -100,4 +100,11 @@ public class ReplyReply implements IBeanResultSetCreate {
         this.visible = visible;
     }
 
+    public int getRrid() {
+        return rrid;
+    }
+
+    public void setRrid(int rrid) {
+        this.rrid = rrid;
+    }
 }

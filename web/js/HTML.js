@@ -231,7 +231,7 @@ function _formToHTML(d,col){
         return "<input type='hidden' name='"+ d.name+"' value='"+ d.value+"' id='"+ d.id+"'>";
     }else if(d.type=="textarea"){
         if(d.label) ret+="<label for='"+d.id+"' class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
-        if(d.label) ret+="<div class='col-xs-"+col[1]+"'>";
+        ret+="<div class='col-xs-"+col[1]+"'>";
         ret+="<textarea ";
         if(d.type=="password") ret+="type='password' ";
         ret+="name='"+d.name+"' class='form-control' ";
@@ -240,7 +240,7 @@ function _formToHTML(d,col){
         if(d.id) ret+=" id='"+d.id+"' ";
         if(d.placeholder) ret+=" placeholder='"+d.placeholder+"' ";
         ret+=" ></textarea>";
-        if(d.label) ret+="</div>";
+        ret+="</div>";
     }else if(d.type=="button"){
         if(!d.class) d.class="btn btn-primary";
         ret+="<div class='col-xs-"+col[1]+" col-xs-offset-"+col[0]+"'>";

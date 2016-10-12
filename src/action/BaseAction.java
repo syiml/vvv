@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * Action的基类
+ * Action 层只处理 参数的简单合法性验证、以及返回跳转部分，其他逻辑都应该放在Service层
  * Created by Administrator on 2015/11/21 0021.
  */
 public class BaseAction extends ActionSupport implements ServletRequestAware, ServletResponseAware {
@@ -48,10 +50,16 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
         }
     }
 
+    /**
+     * @return 当前请求如果是Get请求，则返回True
+     */
     public boolean isGet() {
         return "GET".equals(this.request.getMethod());
     }
 
+    /**
+     * @return 当前请求如果是Post请求，则返回True
+     */
     public boolean isPost() {
         return "POST".equals(this.request.getMethod());
     }

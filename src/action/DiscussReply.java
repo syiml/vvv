@@ -3,7 +3,9 @@ package action;
 
 import dao.Discuss.DiscussSQL;
 import entity.User;
+import net.sf.json.JSONObject;
 import servise.DiscussMain;
+import util.HTML.HTML;
 import util.Main;
 import servise.MessageMain;
 import util.MainResult;
@@ -36,10 +38,22 @@ public class DiscussReply extends BaseAction{
         return DiscussSQL.adminReply(id,rid,text);
     }
     public String replyReply(){
+        HTML.HTMLtoString(text);
         MainResult mr = DiscussMain.replyReply(this);
         setPrompt(mr.getPrompt());
-        if(mr == MainResult.SUCCESS) return SUCCESS;
-        return ERROR;
+        if(mr == MainResult.SUCCESS) {
+            out.print("{\"ret\",\"SUCCESS\"}");
+        }else{
+            out.print("{\"ret\",\""+mr.getPrompt()+"\"}");
+        }
+        return NONE;
+//        if(mr == MainResult.SUCCESS) return SUCCESS;
+//        return ERROR;
+    }
+    public String getReplyReply(){
+        JSONObject jo = DiscussMain.getReplyReplyJSON(id,rid,rrid);
+        out.print(jo.toString());
+        return NONE;
     }
 
     public String getText() {

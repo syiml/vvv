@@ -1,5 +1,7 @@
 package util.HTML;
 
+import entity.Discuss.ReplyReply;
+import servise.DiscussMain;
 import util.Main;
 import entity.Permission;
 import entity.User;
@@ -262,16 +264,79 @@ public class DiscussHTML {
             footer=HTML.textb("管理员回复: ","black")+ r.getAdminreplay();
         }
 
+        String replyReplyHTML = getReplyReplyHTML(r.getDid(),r.getRid(),0, DiscussMain.replyReplyShowNum,admin,loginuser);
         TableHTML table=new TableHTML();
+        table.setClass("discusstable");
         table.addColname("","");
         table.addCl(0, -1, "hidden");
-        table.addRow(l, HTML.pre(HTML.replaceAt(r.getText()))+(footer!=null?HTML.div("adminreply",footer):""));
+        table.addRow(l, HTML.div("replytext",HTML.pre(HTML.replaceAt(r.getText())))+(footer!=null?HTML.div("adminreply",footer):"")+replyReplyHTML);
         table.addCl(1, 1, "discussright");
         table.addCl(1,0,"discussleft");
         String body=table.HTML();
 
 
         return HTML.panel(title, body,null, Discuss.getPanelClass()[r.getPanelclass()],false);
+    }
+
+    private String getReplyReplyHTML(int did,int rid,int from,int num,boolean admin,User loginuser){
+        List<ReplyReply> list = DiscussSQL.getReplyReply(did,rid,from,num,admin,loginuser);
+        int totalNum = DiscussSQL.getReplyReplyNum(did,rid,admin,loginuser);
+        StringBuilder ret = new StringBuilder();
+        StringBuilder replyListHTML = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            ReplyReply rr = list.get(i);
+            String ss = HTML.floatLeft(HTML.a("UserInfo.jsp?username=" + rr.getUsername(), HTML.headImg(rr.getUsername(), 0)));
+            ReplyReply replyRR = null;
+            User replyUser = null;
+            if (rr.getReplyRid() != -1) {
+                replyRR = DiscussSQL.getReplyReply(rr.getDid(), rr.getRid(), rr.getReplyRid());
+                replyUser = Main.users.getUser(replyRR.getUsername());
+            }
+            User user = Main.users.getUser(rr.getUsername());
+            ss += HTML.div("replyreplytext",
+                    user.getUsernameAndNickHTML() + (replyRR == null ? "" : (" 回复 " + replyUser.getUsernameAndNickHTML())) + ":<p>"
+                            + rr.getText()+"</p>"
+            ) + HTML.div("replyreplytime", rr.getTime().toString().substring(0, 16) + " "
+                    + HTML.a("javascript:replyreply(" + rr.getDid() + "," + rr.getRid() + "," + rr.getRrid() + ")", "回复"));
+            replyListHTML.append(HTML.div("replyreply", "id='replyreply-" + rid + "-" + i + "'", ss));
+        }
+        //page
+        String pageHTML = "";
+        int totalPageNum = pageBean.getTotalPageNum(totalNum, num);
+        if (totalPageNum > 1) {
+            int nowpage = from/num +1;
+            if(from == 0) {
+                pageHTML += "首页"+"　";
+                pageHTML += "上一页"+"　";
+            }else{
+                pageHTML += HTML.a("javascript:getReplyReply(" + did + "," + rid + ",1)", "首页")+"　";
+                pageHTML += HTML.a("javascript:getReplyReply(" + did + "," + rid + "," + (nowpage-1) + ")", "上一页")+"　";
+            }
+            for (int i = 1; i <= totalPageNum && i <= 10; i++) {
+                if((i-1)*num == from) {
+                    pageHTML += i + "　";
+                }else{
+                    pageHTML += HTML.a("javascript:getReplyReply(" + did + "," + rid + "," + i + ")", i + "") + "　";
+                }
+            }
+            if (totalPageNum > 10) {
+                pageHTML += "...";
+            }
+            if(nowpage == totalPageNum) {
+                pageHTML += "下一页"+"　";
+                pageHTML += "尾页";
+            }else{
+                pageHTML += HTML.a("javascript:getReplyReply(" + did + "," + rid + "," + (nowpage+1) + ")", "下一页")+"　";
+                pageHTML += HTML.a("javascript:getReplyReply(" + did + "," + rid + "," + totalPageNum + ")", "尾页");
+            }
+        }
+        if(totalNum != 0) {
+            ret.append(HTML.div("replylist replylist-" + rid, replyListHTML.toString() + (totalPageNum > 1 ? HTML.div("replyreplypage", pageHTML) : "")));
+        }else{
+            ret.append(HTML.div("replylist replylistnone replylist-" + rid, replyListHTML.toString() + (totalPageNum > 1 ? HTML.div("replyreplypage", pageHTML) : "")));
+        }
+        ret.append(HTML.div("replylink",HTML.a("javascript:replyreply("+did+","+rid+",-1)","回复层主")));
+        return ret.toString();
     }
 
     public String ReplyForm(){

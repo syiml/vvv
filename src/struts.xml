@@ -104,6 +104,7 @@
                         <result name="success">return.jsp</result>
                         <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>
+                <action name="getReplyReply" class="action.DiscussReply" method="getReplyReply"> </action>
                 <action name="clockin" class="action.ClockIn" method="userClockIn">
                         <result name="success">return.jsp</result>
                 </action>

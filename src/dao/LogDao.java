@@ -44,7 +44,7 @@ public class LogDao extends MyTimer{
      * 删除一个月前的数据
      */
     private void removeExpired(){
-        Timestamp time = new Timestamp(Tool.now().getTime() - (1000L*60*60*24*30));
+        Timestamp time = new Timestamp(Tool.now().getTime() - (30*MyTime.DAY));
         new SQL("DELETE FROM t_log WHERE time < ?",time).update();
     }
 

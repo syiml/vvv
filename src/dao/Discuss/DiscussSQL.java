@@ -185,26 +185,37 @@ public class DiscussSQL {
         return "success";
     }
     ////////////////ReplyReply//////////////
-    public static List<ReplyReply> getReplayReply(int did,int rid,int from,int num,boolean admin,User loginuser){
+    public static List<ReplyReply> getReplyReply(int did, int rid, int from, int num, boolean admin, User loginuser){
         if(admin){
             return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? LIMIT ?,?",did,rid,from,num).queryBeanList(ReplyReply.class);
         }
         if(loginuser == null){
-            return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND visiable=1 LIMIT ?,?",did,rid,from,num)
+            return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND visible=1 LIMIT ?,?",did,rid,from,num)
                     .queryBeanList(ReplyReply.class);
         }
-        return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND (visiable=1 OR (visiable=0 AND username=?)) LIMIT ?,?",did,rid,loginuser.getUsername(),from,num)
+        return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND (visible=1 OR (visible=0 AND username=?)) LIMIT ?,?",did,rid,loginuser.getUsername(),from,num)
                 .queryBeanList(ReplyReply.class);
+    }
+    public static int getReplyReplyNum(int did, int rid, boolean admin, User loginuser) {
+        if(admin){
+            return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=?",did,rid).queryNum();
+        }
+        if(loginuser == null){
+            return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=? AND visible=1",did,rid)
+                    .queryNum();
+        }
+        return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=? AND (visible=1 OR (visible=0 AND username=?))",did,rid,loginuser.getUsername())
+                .queryNum();
     }
     public static synchronized String addReplyReply(int did,int rid,int replyRid,User loginUser,String text){
         int newId=getNewReplyReplyID(did,rid);
-        new SQL("INSERT INTO t_replyreply VALUES(?,?,?,?,?,?,?,?)",did,rid,newId,replyRid,loginUser.getUsername(),Tool.now(),text,false).update();
+        new SQL("INSERT INTO t_replyreply VALUES(?,?,?,?,?,?,?,?)",did,rid,newId,replyRid,loginUser.getUsername(),Tool.now(),text,true).update();
         return "success";
     }
     private static int getNewReplyReplyID(int did,int rid){
-        return new SQL("SELECT MAX(rrid) FROM t_discussreply WHERE did=? AND rid=?",did,rid).queryNum()+1;
+        return new SQL("SELECT MAX(rrid) FROM t_replyreply WHERE did=? AND rid=?",did,rid).queryNum()+1;
     }
-    public static ReplyReply getReplayReply(int did, int rid, int rrid){
+    public static ReplyReply getReplyReply(int did, int rid, int rrid){
         return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND rrid=?",did,rid,rrid).queryBean(ReplyReply.class);
     }
 }

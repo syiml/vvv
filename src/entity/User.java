@@ -166,6 +166,9 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     public String getUsernameHTML(){
         return HTML.a("UserInfo.jsp?user="+username,getUsernameHTMLNoA());
     }
+    public String getUsernameAndNickHTML(){
+        return HTML.a("UserInfo.jsp?user="+username,getUsernameHTMLNoA())+"("+nick+")";
+    }
 
     public boolean canRegisterOfficalContest(){
         return gender!=0&&!name.equals("")&&!faculty.equals("")&&!major.equals("")&&!cla.equals("")&&!no.equals("")&&!phone.equals("");

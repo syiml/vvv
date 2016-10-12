@@ -32,6 +32,8 @@
     <jsp:include page="module/head.jsp?page=home"/>
     <%=DiscussHTML.Discuss(id,pa)%>
 </div>
+<div id="modal"></div>
 <jsp:include page="module/foot.jsp"/>
 </body>
 </html>
+<script src="js/discuss.js"></script>
