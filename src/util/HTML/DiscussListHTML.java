@@ -2,8 +2,8 @@ package util.HTML;
 
 import util.Main;
 import entity.User;
-import dao.DiscussSQL;
-import entity.Discuss;
+import dao.Discuss.DiscussSQL;
+import entity.Discuss.Discuss;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.text.text;
 import util.HTML.modal.modal;
@@ -15,22 +15,21 @@ import java.util.List;
  */
 public class DiscussListHTML extends pageBean {
 
-    int cid;
-    int num;
-    int page;
-    String seach;
-    String user;
-
-    User LoginUser;
-    boolean admin;
-    List<Discuss> list;
-    int PageNum;
     private static String ID="#";
     private static String TITLE="标题";
     private static String TIME="发表时间";
     private static String AUTHOR="发布人";
     private static String REPLY="回复";
     private static String PRIORITY="优先级";
+    int cid;
+    int num;
+    int page;
+    String seach;
+    String user;
+    User LoginUser;
+    boolean admin;
+    List<Discuss> list;
+    int PageNum;
     public DiscussListHTML(int cid,int num,int page,String seach,String user){
         if(seach==null) seach="";
         if(user==null) user="";
@@ -46,6 +45,20 @@ public class DiscussListHTML extends pageBean {
         PageNum = getTotalPageNum(DiscussSQL.getDiscussListNum(cid, admin, seach, user) , num );
         addTableHead(ID, TITLE, TIME, AUTHOR, REPLY);
         if(admin) addTableHead(PRIORITY);
+    }
+
+    public static String seach(String seach,String user){
+        FormHTML f=new FormHTML();
+        f.setType(1);
+        f.setAction("DiscussList.jsp");
+        text t1=new text("seach","名称");
+        t1.setValue(seach);
+        text t2=new text("user","作者");
+        t2.setValue(user);
+        f.addForm(t1);
+        f.addForm(t2);
+        f.setSubmitText("查找");
+        return f.toHTML();
     }
 
     @Override
@@ -132,19 +145,5 @@ public class DiscussListHTML extends pageBean {
     public String rightForm() {
         if(cid!=-1) return "";
         return HTML.floatRight(seach(seach,user));
-    }
-
-    public static String seach(String seach,String user){
-        FormHTML f=new FormHTML();
-        f.setType(1);
-        f.setAction("DiscussList.jsp");
-        text t1=new text("seach","名称");
-        t1.setValue(seach);
-        text t2=new text("user","作者");
-        t2.setValue(user);
-        f.addForm(t1);
-        f.addForm(t2);
-        f.setSubmitText("查找");
-        return f.toHTML();
     }
 }

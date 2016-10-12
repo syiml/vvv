@@ -1,12 +1,12 @@
 package servise;
 
 import entity.User;
-import entity.Discuss;
-import dao.DiscussSQL;
+import entity.Discuss.Discuss;
+import dao.Discuss.DiscussSQL;
 import entity.Contest;
 import entity.RegisterUser;
 import dao.MessageSQL;
-import entity.DiscussReply;
+import entity.Discuss.DiscussReply;
 import entity.Message;
 import util.HTML.HTML;
 import util.Main;

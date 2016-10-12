@@ -1,7 +1,7 @@
 package action;
 
-import entity.Discuss;
-import dao.DiscussSQL;
+import entity.Discuss.Discuss;
+import dao.Discuss.DiscussSQL;
 import util.HTML.HTML;
 import util.Main;
 import util.Tool;

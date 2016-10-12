@@ -100,6 +100,10 @@
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>
                 </action>
+                <action name="replyReply" class="action.DiscussReply" method="replyReply">
+                        <result name="success">return.jsp</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
+                </action>
                 <action name="clockin" class="action.ClockIn" method="userClockIn">
                         <result name="success">return.jsp</result>
                 </action>

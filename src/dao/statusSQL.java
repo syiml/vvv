@@ -380,11 +380,11 @@ public class statusSQL {
         SQL sql;
         String sqlString="SELECT id FROM statu WHERE pid=? AND id>=? ";
         if(status==1){
-            sqlString=sqlString+"AND result==1";
+            sqlString=sqlString+"AND result=1";
         }else if(status==2){
             sqlString=sqlString+"AND result!=3";
         }else if(status==4){
-            sqlString=sqlString+"AND (result==0 OR result==12)";
+            sqlString=sqlString+"AND (result=0 OR result=12)";
         }
         sql=new SQL(sqlString,pid,fromRid){
             @Override

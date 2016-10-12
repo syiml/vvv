@@ -1,4 +1,6 @@
-package entity;
+package entity.Discuss;
+
+import entity.IBeanResultSetCreate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +20,10 @@ public class DiscussReply implements IBeanResultSetCreate {
     String adminreplay;
     public String getUsername(){return username;}
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public DiscussReply init(ResultSet rs) throws SQLException {
         rid=rs.getInt("rid");
@@ -35,56 +41,52 @@ public class DiscussReply implements IBeanResultSetCreate {
         return rid;
     }
 
-    public int getDid() {
-        return did;
-    }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public boolean isVisiable() {
-        return visiable;
-    }
-
-    public int getPanelclass() {
-        return panelclass;
-    }
-
-    public String getAdminreplay() {
-        return adminreplay;
-    }
-
     public void setRid(int rid) {
         this.rid = rid;
+    }
+
+    public int getDid() {
+        return did;
     }
 
     public void setDid(int did) {
         this.did = did;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public Timestamp getTime() {
+        return time;
     }
 
     public void setTime(Timestamp time) {
         this.time = time;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isVisiable() {
+        return visiable;
     }
 
     public void setVisiable(boolean visiable) {
         this.visiable = visiable;
     }
 
+    public int getPanelclass() {
+        return panelclass;
+    }
+
     public void setPanelclass(int panelclass) {
         this.panelclass = panelclass;
+    }
+
+    public String getAdminreplay() {
+        return adminreplay;
     }
 
     public void setAdminreplay(String adminreplay) {

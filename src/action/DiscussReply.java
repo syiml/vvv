@@ -1,10 +1,12 @@
 package action;
 
 
-import dao.DiscussSQL;
+import dao.Discuss.DiscussSQL;
 import entity.User;
+import servise.DiscussMain;
 import util.Main;
 import servise.MessageMain;
+import util.MainResult;
 import util.Tool;
 
 /**
@@ -13,7 +15,32 @@ import util.Tool;
 public class DiscussReply extends BaseAction{
     public String text;
     public int id;//discuss id
-    public int rid;//replay id
+    public int rid;//reply id
+    public int rrid;//replyReply id;
+
+    public String dr(){
+        try{
+            User u=Main.loginUser();
+            Tool.log(u.getUsername()+"回复了id为"+id+"的帖子");
+            MessageMain.discussAt(id,text,true);
+            return DiscussSQL.reply(u,id,text);
+        }catch(NumberFormatException e){
+            return "error";
+        }
+    }
+    public String hideshow(){
+        return DiscussSQL.hideshow(id,rid);
+    }
+    public String adminReply(){
+        Tool.log("管理员"+Main.loginUser().getUsername()+"回复了id为"+id+"的回复");
+        return DiscussSQL.adminReply(id,rid,text);
+    }
+    public String replyReply(){
+        MainResult mr = DiscussMain.replyReply(this);
+        setPrompt(mr.getPrompt());
+        if(mr == MainResult.SUCCESS) return SUCCESS;
+        return ERROR;
+    }
 
     public String getText() {
         return text;
@@ -39,21 +66,11 @@ public class DiscussReply extends BaseAction{
         this.rid = rid;
     }
 
-    public String dr(){
-        try{
-            User u=Main.loginUser();
-            Tool.log(u.getUsername()+"回复了id为"+id+"的帖子");
-            MessageMain.discussAt(id,text,true);
-            return DiscussSQL.reply(u,id,text);
-        }catch(NumberFormatException e){
-            return "error";
-        }
+    public int getRrid() {
+        return rrid;
     }
-    public String hideshow(){
-        return DiscussSQL.hideshow(id,rid);
-    }
-    public String adminReply(){
-        Tool.log("管理员"+Main.loginUser().getUsername()+"回复了id为"+id+"的回复");
-        return DiscussSQL.adminReply(id,rid,text);
+
+    public void setRrid(int rrid) {
+        this.rrid = rrid;
     }
 }

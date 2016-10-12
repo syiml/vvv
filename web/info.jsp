@@ -8,12 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>info</title>
 </head>
 <body>
   <script>
     alert('<%=request.getParameter("info")%>');
-    location.href="<%=!request.getParameter("next").equals("")?request.getParameter("next"):"return.jsp"%>";
+    location.href="<%=request.getParameter("next")!=null?request.getParameter("next"):"return.jsp"%>";
   </script>
 </body>
 </html>

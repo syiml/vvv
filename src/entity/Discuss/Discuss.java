@@ -1,7 +1,9 @@
-package entity;
+package entity.Discuss;
 
+import entity.IBeanResultSetCreate;
+import entity.User;
 import util.Main;
-import dao.DiscussSQL;
+import dao.Discuss.DiscussSQL;
 import servise.MessageMain;
 import action.addDiscuss;
 import util.Tool;
@@ -13,7 +15,8 @@ import java.sql.Timestamp;
 /**
  * Created by Syiml on 2015/7/3 0003.
  */
-public class Discuss implements IBeanResultSetCreate<Discuss>{
+public class Discuss implements IBeanResultSetCreate<Discuss> {
+    static String[] PanelClass={"default","primary","success","info","warning","danger"};
     /**
      * id 主键
      */
@@ -82,46 +85,11 @@ public class Discuss implements IBeanResultSetCreate<Discuss>{
      * 回复的数量
      */
     int replyNum=0;
-
     /**
      * 当前登录是否有admin权限
      */
     boolean isAdmin=false;
-
     public Discuss(){}
-    @Override
-    public Discuss init(ResultSet rs) throws SQLException {
-        id=rs.getInt("id");
-        cid=rs.getInt("cid");
-        title=rs.getString("title");
-        username=rs.getString("username");
-        time=rs.getTimestamp("time");
-        text=rs.getString("text");
-        priority=rs.getDouble("priority");
-        top=rs.getBoolean("top");
-        shownum=rs.getInt("shownum");
-        visiable=rs.getBoolean("visiable");
-        reply=rs.getBoolean("reply");
-        panelclass=rs.getInt("panelclass");
-        panelnobody=rs.getBoolean("panelnobody");
-        showauthor=rs.getBoolean("showauthor");
-        showtime=rs.getBoolean("showtime");
-        replyHidden=rs.getBoolean("replyhidden");
-        replyNum=rs.getInt("replynum");
-        return this;
-    }
-
-    public boolean isReplyHidden() {
-        return replyHidden;
-    }
-    public void setAdmin(){
-        isAdmin =true;}
-//    public Discuss(){
-//
-//    }
-    public String getUsername(){return username;}
-    public String getTitle(){return title;}
-    public int getId(){return id;}
 
     public Discuss(addDiscuss ad){
         id= Integer.parseInt(ad.getId());
@@ -148,7 +116,69 @@ public class Discuss implements IBeanResultSetCreate<Discuss>{
         shownum= Integer.parseInt(ad.getShownum());
         replyHidden=ad.getReplyhidden()!=null;
     }
-    static String[] PanelClass={"default","primary","success","info","warning","danger"};
+
+    public static String[] getPanelClass() {
+        return PanelClass;
+    }
+
+    public static void setPanelClass(String[] panelClass) {
+        PanelClass = panelClass;
+    }
+
+    @Override
+    public Discuss init(ResultSet rs) throws SQLException {
+        id=rs.getInt("id");
+        cid=rs.getInt("cid");
+        title=rs.getString("title");
+        username=rs.getString("username");
+        time=rs.getTimestamp("time");
+        text=rs.getString("text");
+        priority=rs.getDouble("priority");
+        top=rs.getBoolean("top");
+        shownum=rs.getInt("shownum");
+        visiable=rs.getBoolean("visiable");
+        reply=rs.getBoolean("reply");
+        panelclass=rs.getInt("panelclass");
+        panelnobody=rs.getBoolean("panelnobody");
+        showauthor=rs.getBoolean("showauthor");
+        showtime=rs.getBoolean("showtime");
+        replyHidden=rs.getBoolean("replyhidden");
+        replyNum=rs.getInt("replynum");
+        return this;
+    }
+
+    public boolean isReplyHidden() {
+        return replyHidden;
+    }
+
+    public void setReplyHidden(boolean replyHidden) {
+        this.replyHidden = replyHidden;
+    }
+
+    public void setAdmin(){
+        isAdmin =true;}
+
+//    public Discuss(){
+//
+//    }
+    public String getUsername(){return username;}
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getTitle(){return title;}
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getId(){return id;}
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String goAddOrEdit(){
         User u=Main.loginUser();
         if(u==null) return "error";
@@ -167,140 +197,116 @@ public class Discuss implements IBeanResultSetCreate<Discuss>{
         return "error";
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setCid(int cid) {
-        this.cid = cid;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setPriority(double priority) {
-        this.priority = priority;
-    }
-
-    public void setTop(boolean top) {
-        this.top = top;
-    }
-
-    public void setVisiable(boolean visiable) {
-        this.visiable = visiable;
-    }
-
-    public void setReply(boolean reply) {
-        this.reply = reply;
-    }
-
-    public void setPanelclass(int panelclass) {
-        this.panelclass = panelclass;
-    }
-
-    public void setPanelnobody(boolean panelnobody) {
-        this.panelnobody = panelnobody;
-    }
-
-    public void setShowauthor(boolean showauthor) {
-        this.showauthor = showauthor;
-    }
-
-    public void setShowtime(boolean showtime) {
-        this.showtime = showtime;
-    }
-
-    public void setShownum(int shownum) {
-        this.shownum = shownum;
-    }
-
-    public void setReplyNum(int replyNum) {
-        this.replyNum = replyNum;
-    }
-
     public void setAdmin(boolean admin) {
         this.isAdmin = admin;
-    }
-
-    public void setReplyHidden(boolean replyHidden) {
-        this.replyHidden = replyHidden;
-    }
-
-    public static void setPanelClass(String[] panelClass) {
-        PanelClass = panelClass;
     }
 
     public int getCid() {
         return cid;
     }
 
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
     public Timestamp getTime() {
         return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
     public String getText() {
         return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public double getPriority() {
         return priority;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
     }
 
     public boolean isTop() {
         return top;
     }
 
+    public void setTop(boolean top) {
+        this.top = top;
+    }
+
     public boolean isVisiable() {
         return visiable;
+    }
+
+    public void setVisiable(boolean visiable) {
+        this.visiable = visiable;
     }
 
     public boolean isReply() {
         return reply;
     }
 
+    public void setReply(boolean reply) {
+        this.reply = reply;
+    }
+
     public int getPanelclass() {
         return panelclass;
+    }
+
+    public void setPanelclass(int panelclass) {
+        this.panelclass = panelclass;
     }
 
     public boolean isPanelnobody() {
         return panelnobody;
     }
 
+    public void setPanelnobody(boolean panelnobody) {
+        this.panelnobody = panelnobody;
+    }
+
     public boolean isShowauthor() {
         return showauthor;
+    }
+
+    public void setShowauthor(boolean showauthor) {
+        this.showauthor = showauthor;
     }
 
     public boolean isShowtime() {
         return showtime;
     }
 
+    public void setShowtime(boolean showtime) {
+        this.showtime = showtime;
+    }
+
     public int getShownum() {
         return shownum;
+    }
+
+    public void setShownum(int shownum) {
+        this.shownum = shownum;
     }
 
     public int getReplyNum() {
         return replyNum;
     }
 
-    public boolean isadmin() {
-        return isAdmin;
+    public void setReplyNum(int replyNum) {
+        this.replyNum = replyNum;
     }
 
-    public static String[] getPanelClass() {
-        return PanelClass;
+    public boolean isadmin() {
+        return isAdmin;
     }
 
 }

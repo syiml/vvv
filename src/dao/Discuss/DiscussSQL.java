@@ -1,10 +1,11 @@
-package dao;
+package dao.Discuss;
 
-import entity.Discuss;
+import entity.Discuss.Discuss;
+import entity.Discuss.ReplyReply;
 import entity.Permission;
 import entity.User;
 import util.Main;
-import entity.DiscussReply;
+import entity.Discuss.DiscussReply;
 import servise.MessageMain;
 import util.HTML.HTML;
 import util.SQL.SQL;
@@ -156,15 +157,15 @@ public class DiscussSQL {
         return new SQL("SELECT * FROM t_discussreply WHERE did=? AND rid=?",did,rid)
                 .queryBean(DiscussReply.class);
     }
-    public static int getNewReplyId(int did){
+    private static int getNewReplyId(int did){
         return new SQL("SELECT MAX(rid) FROM t_discussreply WHERE did=?",did).queryNum()+1;
     }
-    public static String reply(User loginuser,int did,String text){
+    public static synchronized String reply(User loginuser,int did,String text){
         if(loginuser==null) return "error";
         Discuss d=getDiscuss(did);
         if(d==null) return "error";
-        int newid=getNewReplyId(did);
-        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,0,null)",newid,did,loginuser.getUsername(),Tool.now(),text,!d.isReplyHidden()).update();
+        int newId=getNewReplyId(did);
+        new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,0,null)",newId,did,loginuser.getUsername(),Tool.now(),text,!d.isReplyHidden()).update();
         MessageMain.addMessageDisscussReply(d.getCid(),loginuser.getUsername(),did,HTML.HTMLtoString(text));
         return "success";
     }
@@ -182,5 +183,28 @@ public class DiscussSQL {
         new SQL(sql,text,did,rid).update();
         MessageMain.addMessageDiscussReplyAdmin(did, rid, text);
         return "success";
+    }
+    ////////////////ReplyReply//////////////
+    public static List<ReplyReply> getReplayReply(int did,int rid,int from,int num,boolean admin,User loginuser){
+        if(admin){
+            return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? LIMIT ?,?",did,rid,from,num).queryBeanList(ReplyReply.class);
+        }
+        if(loginuser == null){
+            return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND visiable=1 LIMIT ?,?",did,rid,from,num)
+                    .queryBeanList(ReplyReply.class);
+        }
+        return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND (visiable=1 OR (visiable=0 AND username=?)) LIMIT ?,?",did,rid,loginuser.getUsername(),from,num)
+                .queryBeanList(ReplyReply.class);
+    }
+    public static synchronized String addReplyReply(int did,int rid,int replyRid,User loginUser,String text){
+        int newId=getNewReplyReplyID(did,rid);
+        new SQL("INSERT INTO t_replyreply VALUES(?,?,?,?,?,?,?,?)",did,rid,newId,replyRid,loginUser.getUsername(),Tool.now(),text,false).update();
+        return "success";
+    }
+    private static int getNewReplyReplyID(int did,int rid){
+        return new SQL("SELECT MAX(rrid) FROM t_discussreply WHERE did=? AND rid=?",did,rid).queryNum()+1;
+    }
+    public static ReplyReply getReplayReply(int did, int rid, int rrid){
+        return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND rrid=?",did,rid,rrid).queryBean(ReplyReply.class);
     }
 }
