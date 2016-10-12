@@ -29,6 +29,13 @@ public class submit  extends BaseAction{
 
     public String submitProblem() {
         try{
+            if(code.length()<=50){
+                if(noRedirect == 1) {
+                    out.print("{\"ret\":\"fail\",\"info\":\"代码长度至少为50\"}");
+                    return NONE;
+                }
+                return INPUT;
+            }
             //if(cid==null) cid="-1";
             User u=Main.loginUser();
             if(u == null ){
