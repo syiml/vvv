@@ -1,6 +1,7 @@
 package util.HTML;
 
 import entity.*;
+import util.HTML.UserListHTML.AdminUserListHTML;
 import entity.Mall.Goods;
 import servise.ChallengeMain;
 import dao.ChallengeSQL;
@@ -633,7 +634,6 @@ public class HTML {
              }
              try{
                  int cidInt=Integer.parseInt(cid);
-//                 return new UserListHTML(cidInt , page, search).toHTML();
                  return new UserListContest(cidInt,page).HTML();
              }catch(NumberFormatException e) {
                  return new UserListHTML(page, search,order,desc).HTML();
@@ -1062,7 +1062,7 @@ public class HTML {
             case "AddLocalProblem": return returnPage(p.getAddLocalProblem(),panel("添加本地题目",adminAddLocalProblem()));
             case "ChallengeAdmin":  return returnPage(p.getChallengeAdmin(),panel("挑战模式管理",adminChallengeAdmin()));
             case "ResetPassword":   return returnPage(p.getResetPassword(),panel("重置密码",adminResetPassword()));
-            case "UserAdmin":       return returnPage(p.getUserAdmin(),panel("用户管理",adminUser()));
+            case "UserAdmin":       return returnPage(p.getUserAdmin(),adminUser());
             case "ViewLog":         return returnPage(p.getViewLog(),viewLog());
             case "TeamAward":       return returnPage(p.getTeamMemberAdmin(),panel("集训队获奖管理",TeamAwardAdmin()));
             case "AddGoods":        return returnPage(p.getMallAdmin(),panel("添加商品",adminAddGoods()));
@@ -1469,48 +1469,57 @@ public class HTML {
         f.setCol(2, 10);
         return f.toHTML();
     }
-    public static String adminUser(){
-        try{
-            String user=Main.getRequest().getParameter("user");
-            if(user==null||user.equals("")){
-                FormHTML form=new FormHTML();
-                text t=new text("user","用户名");
-                text page=new text("page","page");
-                page.setValue("UserAdmin");
-                page.setDisabled();
-                form.addForm(t,page);
-                form.setAction("admin.jsp");
-                form.setSubmitText("进入管理");
-                form.setMethod("get");
-                return form.toHTML();
-            }else{
-                User u=Main.users.getUser(user);
-                if(u==null){
+    public static String adminUser() {
+        try {
+            String user = Main.getRequest().getParameter("user");
+            if (user == null || user.equals("")) {
+                try {
+                    String pa = Main.getRequest().getParameter("pa");
+                    String search = Main.getRequest().getParameter("search");
+//                    if (search != null) {//处理中文乱码
+//                        byte source[] = search.getBytes("iso8859-1");
+//                        search = new String(source, "UTF-8");
+//                    }
+                    String order = Main.getRequest().getParameter("order");
+                    String desc = Main.getRequest().getParameter("desc");
+                    if (search == null) search = "";
+                    if (order == null) order = "";
+                    int page = 1;
+                    if (pa != null && !pa.equals("")) {
+                        page = Integer.parseInt(pa);
+                    }
+                    return new AdminUserListHTML(page, search, order, desc != null).HTML();
+                } catch (NumberFormatException ee) {
+                    return panel("error", "参数错误", null, "danger");
+                }
+            } else {
+                User u = Main.users.getUser(user);
+                if (u == null) {
                     return "用户不存在";
-                }else{
-                    FormHTML editInfo=editInfoForm(u);
+                } else {
+                    FormHTML editInfo = editInfoForm(u);
                     editInfo.setAction("AdminEditUser.action");
 
-                    select inTeamStatus=new select("inTeamStatus","队员状态");
-                    inTeamStatus.add(0,"非队员");
-                    inTeamStatus.add(1,"现役队员");
-                    inTeamStatus.add(2,"退役队员");
-                    inTeamStatus.setValue(u.getInTeamStatus()+"");
+                    select inTeamStatus = new select("inTeamStatus", "队员状态");
+                    inTeamStatus.add(0, "非队员");
+                    inTeamStatus.add(1, "现役队员");
+                    inTeamStatus.add(2, "退役队员");
+                    inTeamStatus.setValue(u.getInTeamStatus() + "");
 
-                    text inTeamLv=new text("inTeamLv","队员等级");
+                    text inTeamLv = new text("inTeamLv", "队员等级");
                     inTeamLv.setPlaceholder("等级0~6，非队员无效");
-                    inTeamLv.setValue(u.getInTeamLv()+"");
-                    text username=new text("username","username");
+                    inTeamLv.setValue(u.getInTeamLv() + "");
+                    text username = new text("username", "username");
                     username.setValue(user);
                     username.setDisabled();
-                    editInfo.addForm(inTeamStatus,inTeamLv,username);
+                    editInfo.addForm(inTeamStatus, inTeamLv, username);
                     editInfo.delForm(2);
                     editInfo.delForm(1);
                     editInfo.delForm(0);
-                    return "用户-"+u.getUsernameHTMLNoA()+" 管理"+editInfo.toHTML();
+                    return HTML.panel("用户管理","用户-" + u.getUsernameHTMLNoA() + " 管理" + editInfo.toHTML());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
