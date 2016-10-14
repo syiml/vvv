@@ -57,7 +57,7 @@ public class UserSQL extends BaseCache<String,User> {
         }finally {
             sql1.close();
         }
-        new SQL("insert into users values(?,md5(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        new SQL("insert into users values(?,md5(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 , u.getUsername()
                 , u.getPassword()
                 , HTML.HTMLtoString(u.getNick())
@@ -69,11 +69,15 @@ public class UserSQL extends BaseCache<String,User> {
                 , u.getType()
                 , HTML.HTMLtoString(u.getMark())
                 , -100000
-                , 0,0,"","","","","","",0,0,0).update();
+                , 0,0,"","","","","","",0,0,0,-1).update();
+        new SQL("UPDATE users SET rank=(select rank+1 FROM v_user WHERE username=?) WHERE username=?",u.getUsername(),u.getUsername()).update();
         MessageMain.addMessageWelcome(u);
         return 1;
     }
 
+    public void updateAllUserRank(){
+        new SQL("UPDATE users SET rank=(select rank+1 FROM v_user WHERE v_user.username=users.username)").update();
+    }
     public int getRank(String user){
         SQL sql=new SQL("select rank+1 from v_user where username=?", user);
         ResultSet rs=sql.query();
@@ -127,37 +131,19 @@ public class UserSQL extends BaseCache<String,User> {
         removeCatch(user);
     }
 
-    public User getUserHaveRank(String username){
-        return getUser(username,true);
-    }
-
     public User getUser(String username){return getBeanByKey(username);}
-
-    private User getUser(String username,boolean rank){
-        SQL sql;
-        if(rank)sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from v_user where username=? ",username);
-        else sql=new SQL("SELECT username,nick,gender,school,Email,motto,registertime,type,Mark,rating,-1 as rank,ratingnum,acb,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus,acnum from users where username=?",username);
-        User ret = sql.queryBean(User.class);
-        if(ret!=null)ret.setPermission(Main.getPermission(username));
-        return ret;
-    }
 
     public List<User> getUsers(int from,int num,String search,String order,boolean desc){
         if(order==null||order.equals("")){
             order="rank";
         }
-        SQL sql;
         if(search==null||search.equals("")){
-            sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus " +
-                    " from v_user "+
-                    " ORDER BY "+order+(desc?" desc ":" ")+
-                    " LIMIT "+from+","+num);
+            return new SQL("select *  from users  ORDER BY "+order+(desc?" desc ":" ")+" LIMIT ?,?",from,num).queryBeanList(User.class);
         }else{
-            sql=new SQL("select username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank+1 as rank,ratingnum,acb,acnum,name,faculty,major,cla,no,phone,inTeamLv,inTeamStatus  from v_user where  (username like ? or nick like ?)  " +
+            return new SQL("select * from users where  (username like ? or nick like ?)  " +
                     " ORDER BY "+order+(desc?" desc ":" ")+
-                    " LIMIT "+from+","+num,"%"+search+"%","%"+search+"%");
+                    " LIMIT ?:,?","%"+search+"%","%"+search+"%",from,num).queryBeanList(User.class);
         }
-        return sql.queryBeanList(User.class);
     }
 
     public int getUsersNum(String search){
@@ -399,6 +385,8 @@ public class UserSQL extends BaseCache<String,User> {
 
     @Override
     protected User getByKeyFromSQL(String username) {
-        return getUser(username,false);
+        User ret = new SQL("SELECT * from users where username=?",username).queryBean(User.class);
+        if(ret!=null)ret.setPermission(Main.getPermission(username));
+        return ret;
     }
 }

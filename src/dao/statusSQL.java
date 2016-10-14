@@ -278,7 +278,7 @@ public class statusSQL {
         return getProblems(user, 0);
     }
     public int getSubmitTime(String username){//获取user的提交次数
-        return new SQL("SELECT COUNT(id) FROM statu WHERE ruser=?",username).queryNum();
+        return new SQL("SELECT COUNT(*) FROM statu WHERE ruser=?",username).queryNum();
     }
     public List<Pair<Integer,Integer>> getSubmitCount(String user, int num, int sec){
         String sql="";

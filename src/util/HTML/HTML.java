@@ -646,7 +646,7 @@ public class HTML {
         if(showuser==null||showuser.equals("")){
             return panel("error","参数错误",null,"danger");
         }
-        User su=Main.users.getUserHaveRank(showuser);
+        User su=Main.users.getUser(showuser);
         User u=null;
         if(user!=null){
             u=(User)user;

@@ -115,5 +115,11 @@ public class Computer {
             MessageMain.addMessageRatingChange(ratingCase.getCid(), ratingCase.getUsername(), ratingCase.getTruePRating(), ratingCase.getTrueRating());
             Tool.log(ratingCase.getUsername() + ":" + ratingCase.getRating());
         }
+        new Thread(){
+            @Override
+            public void run() {
+                Main.users.updateAllUserRank();
+            }
+        }.start();
     }
 }
