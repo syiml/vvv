@@ -59,9 +59,9 @@
           second: '%H:%M:%S',
           minute: '%H:%M',
           hour: '%H:%M',
-          day: '%b-%e',
-          week: '%b-%e',
-          month: '%Y-%b',
+          day: '%m-%e',
+          week: '%m-%e',
+          month: '%Y-%m',
           year: '%Y'
         },
         title: {
@@ -69,6 +69,7 @@
         }
       },
       yAxis: {
+        allowDecimals:false,
         title: {
           text: '提交数'
         },

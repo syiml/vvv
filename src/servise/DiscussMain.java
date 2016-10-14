@@ -32,7 +32,9 @@ public class DiscussMain {
             ReplyReply replyReply = DiscussSQL.getReplyReply(adr.getId(),adr.getRid(),adr.getRrid());
             if(replyReply == null) return MainResult.ARR_ERROR;
         }
-        DiscussSQL.addReplyReply(adr.getId(),adr.getRid(),adr.getRrid(),u,adr.getText());
+        int newId = DiscussSQL.addReplyReply(adr.getId(),adr.getRid(),adr.getRrid(),u,adr.getText());
+        ReplyReply rr = DiscussSQL.getReplyReply(adr.getId(),adr.getRid(),newId);
+        MessageMain.addMessageReplyReply(rr);
         return MainResult.SUCCESS;
     }
 

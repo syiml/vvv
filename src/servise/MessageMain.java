@@ -1,5 +1,6 @@
 package servise;
 
+import entity.Discuss.ReplyReply;
 import entity.User;
 import entity.Discuss.Discuss;
 import dao.Discuss.DiscussSQL;
@@ -150,12 +151,38 @@ public class MessageMain {
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }
-    public static int subMessageAwardACB(String u,int num,String text){
+    public static int addMessageSubACB(String u, int num, String text){
         Message m=new Message();
         m.setUser(u);
         m.setStatu(0);
         m.setTitle("您被扣去了" + num + "ACB");
         m.setText("您被扣去了" + num + "ACB<br>备注信息：" + text);
+        m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
+        return MessageSQL.save(m);
+    }
+
+    public static int addMessageReplyReply(ReplyReply rr){
+        Discuss d = DiscussSQL.getDiscuss(rr.getDid());
+        DiscussReply dr = DiscussSQL.getDiscussReply(rr.getDid(),rr.getRid());
+        ReplyReply replyRr = null;
+        if(rr.getReplyRid() != -1){
+            replyRr = DiscussSQL.getReplyReply(rr.getDid(),rr.getRid(),rr.getReplyRid());
+        }
+        int cid = d.getCid();
+        Message m=new Message();
+        m.setStatu(0);
+        if(replyRr == null){
+            m.setUser(dr.getUsername());
+        }else{
+            m.setUser(replyRr.getUsername());
+        }
+        if(m.getUser().equals(rr.getUsername())) return 0;
+        m.setTitle("你在【"+d.getTitle()+"】中有新回复");
+        String url;
+        if(cid==-1) url="Discuss.jsp?id="+d.getId();
+        else url="Contest.jsp?cid="+cid+"#D"+d.getId();
+        User u = Main.users.getUser(rr.getUsername());
+        m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")在帖子【" + d.getTitle() + "】中回复了你：</br>" + rr.getText() + "</br>" + HTML.a(url, "查看帖子"));
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }

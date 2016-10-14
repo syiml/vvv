@@ -142,8 +142,10 @@
         <%@include file="module/contestNew/main.html"%>
 <%}%>
 </div><jsp:include page="module/foot.jsp"/>
+<div id="modal"></div>
 </body>
 </html>
 <script>
     $(startWebSocket(<%=cid%>));
 </script>
+<script src="js/discuss.js"></script>

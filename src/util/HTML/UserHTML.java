@@ -132,8 +132,8 @@ public class UserHTML {
 //        String rr=HTML.UserRating(showuser.getUsername());
         String script="<div id='rating'>"+HTML.loader("400px")+"</div>"+
                 "<script>" +
-                "$('#rating').load('module/ratingshow.jsp?user="+
-                showuser.getUsername();
+                "$('#rating').load('module/ratingshow.jsp?user="+showuser.getUsername()
+                +(user==null||user.getUsername().equals(showuser.getUsername())?"":"&user2="+user.getUsername());
 //        User loginUser=(User)Main.getSession().getAttribute("user");
 //        if(loginUser!=null&&!loginUser.getUsername().equals(showuser.getUsername())){
 //            script+="&user2="+loginUser.getUsername();

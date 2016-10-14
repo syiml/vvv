@@ -140,7 +140,7 @@ public class MyClient extends DefaultHttpClient{
         try {
             HttpGet httpget = new HttpGet(URL);
             httpget.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-            httpget.setHeader("Authorization","JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijk0Mzk4NjA4MEBxcS5jb20iLCJleHAiOjE0NzYzMjY4OTMsImVtYWlsIjoiOTQzOTg2MDgwQHFxLmNvbSIsInVzZXJfaWQiOjc5MDB9.Ubz4nqF5Jql6IkZI0sH2zV2AyeDFXaL_uaCj0knrHQQ");
+            httpget.setHeader("Authorization","JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijk0Mzk4NjA4MEBxcS5jb20iLCJleHAiOjE0NzcyNDMxNzYsImVtYWlsIjoiOTQzOTg2MDgwQHFxLmNvbSIsInVzZXJfaWQiOjc5MDB9.ySRpEVJ-9Lud1cbWXAgf40YcSFYveBbtQiKTndqormU");
             HttpResponse hr = execute(httpget);
             entity = hr.getEntity();
             return Jsoup.parse(entity.getContent(), "utf-8", "");

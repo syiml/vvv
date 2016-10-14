@@ -27,7 +27,7 @@
     var d=[];
     var d2=[];
     var s={
-      colors: ['#000000', '#ED561B' , '#50B432', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+      colors: ['#000000', '#000000' , '#50B432', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
       chart: {
           backgroundColor: {
               linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
@@ -39,8 +39,8 @@
           borderWidth: 0,
           plotBackgroundColor: 'rgba(255, 255, 255, .9)',
           plotShadow: true,
-          plotBorderWidth: 1,
-        type: 'spline'
+          plotBorderWidth: 1/*,
+          type: 'spline'*/
       },
       title: {
         text: ''
@@ -48,6 +48,16 @@
 //          subtitle: {
 //            text: ''
 //          },
+      plotOptions: {
+        series: {
+          marker:{
+            fillColor: '#ffffff',
+            lineWidth: 2,
+            radius:2,
+            lineColor: null // inherit from series
+          }
+        }
+      },
       xAxis: {
           gridLineWidth: 0,
           lineColor: '#000',
@@ -67,13 +77,23 @@
 
               }
           },
-        type: 'datetime',
-        dateTimeLabelFormats: { // don't display the dummy year
-          month: '%b月%e日',
-          year: '%Y年%b月'
-        }
+          type: 'datetime',
+          dateTimeLabelFormats: {
+            millisecond: '%Y-%m-%e',
+            second: '%Y-%m-%e',
+            minute: '%Y-%m-%e',
+            hour: '%Y-%m-%e',
+            day: '%Y-%m-%e',
+            week: '%Y-%m-%e',
+            month: '%Y年%m月',
+            year: '%Y年%m月'
+          }/*{ // don't display the dummy year
+            month: '%b月%e日',
+            year: '%Y年%b月'
+          }*/
       },
       yAxis: {
+          allowDecimals:false,
           //minorTickInterval: 'auto',
           gridLineWidth: 0,
           lineColor: '#000',
@@ -194,7 +214,7 @@
       tooltip: {
         formatter: function() {
           return '<b>'+ this.series.name +'</b><br/>'+
-                  Highcharts.dateFormat('%b月%e日', this.x) +':Rating='+ this.y +'<br>'+this.point.text;
+                  Highcharts.dateFormat('%Y-%m-%e', this.x) +':Rating='+ this.y +'<br>'+this.point.text;
         }
       },
       series: [{
@@ -203,6 +223,7 @@
         // of 1970/71 in order to be compared on the same x axis. Note
         // that in JavaScript, months start at 0 for January, 1 for February etc.
         data: d
+      },{
       }]
     };
 //    $.getJSON("module/ratingget.jsp?user="+username,function(data){
@@ -229,7 +250,10 @@
             s.series[1]={};
             s.series[1].name=user2;
             s.series[1].data=d2;
-            $('#container').highcharts(s);
+            s.series[1].dashStyle = 'longdash';
+            var $con = $('#container');
+            $con.highcharts(s);
+            $con.highcharts().series[1].hide();
           });
         });
       }else{
@@ -240,7 +264,6 @@
         });
       }
 //    });
-
 
 
 

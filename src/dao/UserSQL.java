@@ -376,7 +376,7 @@ public class UserSQL extends BaseCache<String,User> {
             num=-num;
             int ret=subACB(user,num);
             if(ret>0){
-                MessageMain.subMessageAwardACB(user,num,text);
+                MessageMain.addMessageSubACB(user,num,text);
                 Tool.log("管理员扣去"+user+" "+num+"ACB"+" 备注："+text);
             }
             return ret;

@@ -207,10 +207,10 @@ public class DiscussSQL {
         return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=? AND (visible=1 OR (visible=0 AND username=?))",did,rid,loginuser.getUsername())
                 .queryNum();
     }
-    public static synchronized String addReplyReply(int did,int rid,int replyRid,User loginUser,String text){
+    public static synchronized int addReplyReply(int did,int rid,int replyRid,User loginUser,String text){
         int newId=getNewReplyReplyID(did,rid);
         new SQL("INSERT INTO t_replyreply VALUES(?,?,?,?,?,?,?,?)",did,rid,newId,replyRid,loginUser.getUsername(),Tool.now(),text,true).update();
-        return "success";
+        return newId;
     }
     private static int getNewReplyReplyID(int did,int rid){
         return new SQL("SELECT MAX(rrid) FROM t_replyreply WHERE did=? AND rid=?",did,rid).queryNum()+1;
