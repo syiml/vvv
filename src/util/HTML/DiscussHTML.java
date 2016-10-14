@@ -204,12 +204,17 @@ public class DiscussHTML {
         if(loginuser!=null){
             admin=loginuser.getPermission().getAddDiscuss();
         }
-        List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num, num ,admin,loginuser);
+        List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num, num );
         String s="";
         for (DiscussReply aList : list) {
-            s += EveryDiscussReply(aList);
+            if(!aList.isVisiable()){
+                s += EveryDiscussReply(aList);
+            }
+            else if(admin || (loginuser!=null&& aList.getUsername().equals(loginuser.getUsername()))){
+                s += EveryDiscussReply(aList);
+            }
         }
-        int pagenum=(DiscussSQL.getDiscussReplayNum(did ,admin,loginuser)+num-1)/num;
+        int pagenum=(DiscussSQL.getDiscussReplayNum(did)+num-1)/num;
         s+=page(page,pagenum);
         return s;
     }
@@ -235,16 +240,14 @@ public class DiscussHTML {
             admin=loginuser.getPermission().getAddDiscuss();
         }
         User u=Main.users.getUser(r.getUsername());
+        String title="<span class='badge'>"+ r.getRid() +"</span> reply by "+u.getUsernameHTML()+" at "+ r.getTime().toString().substring(0,16);
         if(!r.isVisiable()){
-            if(loginuser==null) return "";
-            else if(!loginuser.getUsername().equals(u.getUsername())){
-                if(!admin){
-                    return "";
-                }
+            if(!(admin || (loginuser!=null&&loginuser.getUsername().equals(r.getUsername())))){
+                title="<span class='badge'>"+ r.getRid() +"</span>";
+                return HTML.panel(title,"此处有一条回复被隐藏",null,"warning");
             }
         }
         if(!r.isVisiable()) r.setPanelclass(4);
-        String title="<span class='badge'>"+ r.getRid() +"</span> reply by "+u.getUsernameHTML()+" at "+ r.getTime().toString().substring(0,16);
         String right="";
         if(!r.isVisiable()) right="该条已经被隐藏 ";
         if(admin){
@@ -264,7 +267,7 @@ public class DiscussHTML {
             footer=HTML.textb("管理员回复: ","black")+ r.getAdminreplay();
         }
 
-        String replyReplyHTML = getReplyReplyHTML(r.getDid(),r.getRid(),0, DiscussMain.replyReplyShowNum,admin,loginuser);
+        String replyReplyHTML = getReplyReplyHTML(r.getDid(),r.getRid(),0, DiscussMain.replyReplyShowNum);
         TableHTML table=new TableHTML();
         table.setClass("discusstable");
         table.addColname("","");
@@ -278,9 +281,9 @@ public class DiscussHTML {
         return HTML.panel(title, body,null, Discuss.getPanelClass()[r.getPanelclass()],false);
     }
 
-    private String getReplyReplyHTML(int did,int rid,int from,int num,boolean admin,User loginuser){
-        List<ReplyReply> list = DiscussSQL.getReplyReply(did,rid,from,num,admin,loginuser);
-        int totalNum = DiscussSQL.getReplyReplyNum(did,rid,admin,loginuser);
+    private String getReplyReplyHTML(int did,int rid,int from,int num){
+        List<ReplyReply> list = DiscussSQL.getReplyReply(did,rid,from,num);
+        int totalNum = DiscussSQL.getReplyReplyNum(did,rid);
         StringBuilder ret = new StringBuilder();
         StringBuilder replyListHTML = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {

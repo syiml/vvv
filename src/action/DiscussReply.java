@@ -38,6 +38,10 @@ public class DiscussReply extends BaseAction{
         return DiscussSQL.adminReply(id,rid,text);
     }
     public String replyReply(){
+        if(text.length()<5){
+            out.print("{\"ret\",\"回复太短，至少要5个字\"}");
+            return NONE;
+        }
         HTML.HTMLtoString(text);
         MainResult mr = DiscussMain.replyReply(this);
         setPrompt(mr.getPrompt());

@@ -51,6 +51,7 @@
       plotOptions: {
         series: {
           marker:{
+            enabled:true,
             fillColor: '#ffffff',
             lineWidth: 2,
             radius:2,

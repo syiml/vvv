@@ -40,12 +40,12 @@ public class DiscussMain {
 
     public static JSONObject getReplyReplyJSON(int did,int rid,int page){
         Permission p = Main.loginUserPermission();
-        int totalNum = DiscussSQL.getReplyReplyNum(did,rid,p.getAddDiscuss(),Main.loginUser());
+        int totalNum = DiscussSQL.getReplyReplyNum(did,rid);
         int totalPage = pageBean.getTotalPageNum(totalNum, replyReplyShowNum);
         if(page == -1){
             page = totalPage;
         }
-        List<ReplyReply> replyReplyList = DiscussSQL.getReplyReply(did,rid,(page-1)* replyReplyShowNum, replyReplyShowNum,p.getAddDiscuss(),Main.loginUser());
+        List<ReplyReply> replyReplyList = DiscussSQL.getReplyReply(did,rid,(page-1)* replyReplyShowNum, replyReplyShowNum);
         JSONObject ret = new JSONObject();
         ret.put("page",page);
         ret.put("totalPage",totalPage);
@@ -54,6 +54,9 @@ public class DiscussMain {
         ret.put("rid",rid);
         JSONArray ja = new JSONArray();
         for (ReplyReply rr : replyReplyList) {
+            if(!rr.isVisible()){
+                rr.setText("<font color='gray'>该条已经被隐藏</font>");
+            }
             User u = Main.users.getUser(rr.getUsername());
             ReplyReply replyrr = DiscussSQL.getReplyReply(did,rid,rr.getReplyRid());
             User replyUser = null;

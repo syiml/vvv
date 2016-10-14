@@ -125,33 +125,13 @@ public class DiscussSQL {
                 , d.getId()).update();
     }
     ////////////////discuss replay///////////////////
-    public static List<DiscussReply> getDiscussReplay(int did, int from, int num,boolean admin,User loginuser){
-        if(admin){
-            return new SQL("SELECT * FROM t_discussreply WHERE did=? LIMIT ?,?",did,from,num)
-                    .queryBeanList(DiscussReply.class);
-        }else{
-            if(loginuser==null){
-                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND visiable=1 LIMIT ?,?",did,from,num)
-                        .queryBeanList(DiscussReply.class);
-            }else{
-                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND (visiable=1 OR (visiable=0 AND username=?)) LIMIT ?,?",did,loginuser.getUsername(),from,num)
-                        .queryBeanList(DiscussReply.class);
-            }
-        }
+    public static List<DiscussReply> getDiscussReplay(int did, int from, int num){
+        return new SQL("SELECT * FROM t_discussreply WHERE did=? LIMIT ?,?",did,from,num)
+                .queryBeanList(DiscussReply.class);
     }
-    public static int getDiscussReplayNum(int did,boolean admin,User loginuser){
-        if(admin){
-            return new SQL("SELECT COUNT(*) FROM t_discussreply WHERE did=?",did)
-                    .queryNum();
-        }else{
-            if(loginuser==null){
-                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND visiable=1",did)
-                        .queryNum();
-            }else{
-                return new SQL("SELECT * FROM t_discussreply WHERE did=? AND (visiable=1 OR (visiable=0 AND username=?))",did,loginuser.getUsername())
-                        .queryNum();
-            }
-        }
+    public static int getDiscussReplayNum(int did){
+        return new SQL("SELECT COUNT(*) FROM t_discussreply WHERE did=?",did)
+                .queryNum();
     }
     public static DiscussReply getDiscussReply(int did,int rid){
         return new SQL("SELECT * FROM t_discussreply WHERE did=? AND rid=?",did,rid)
@@ -185,27 +165,11 @@ public class DiscussSQL {
         return "success";
     }
     ////////////////ReplyReply//////////////
-    public static List<ReplyReply> getReplyReply(int did, int rid, int from, int num, boolean admin, User loginuser){
-        if(admin){
-            return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? LIMIT ?,?",did,rid,from,num).queryBeanList(ReplyReply.class);
-        }
-        if(loginuser == null){
-            return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND visible=1 LIMIT ?,?",did,rid,from,num)
-                    .queryBeanList(ReplyReply.class);
-        }
-        return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? AND (visible=1 OR (visible=0 AND username=?)) LIMIT ?,?",did,rid,loginuser.getUsername(),from,num)
-                .queryBeanList(ReplyReply.class);
+    public static List<ReplyReply> getReplyReply(int did, int rid, int from, int num){
+        return new SQL("SELECT * FROM t_replyreply WHERE did=? AND rid=? LIMIT ?,?",did,rid,from,num).queryBeanList(ReplyReply.class);
     }
-    public static int getReplyReplyNum(int did, int rid, boolean admin, User loginuser) {
-        if(admin){
-            return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=?",did,rid).queryNum();
-        }
-        if(loginuser == null){
-            return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=? AND visible=1",did,rid)
-                    .queryNum();
-        }
-        return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=? AND (visible=1 OR (visible=0 AND username=?))",did,rid,loginuser.getUsername())
-                .queryNum();
+    public static int getReplyReplyNum(int did, int rid) {
+        return new SQL("SELECT COUNT(*) FROM t_replyreply WHERE did=? AND rid=?",did,rid).queryNum();
     }
     public static synchronized int addReplyReply(int did,int rid,int replyRid,User loginUser,String text){
         int newId=getNewReplyReplyID(did,rid);
