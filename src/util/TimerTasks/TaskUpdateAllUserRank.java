@@ -10,9 +10,13 @@ import java.util.Timer;
  * Created by QAQ on 2016/10/14.
  */
 public class TaskUpdateAllUserRank extends MyTimer {
+    public static boolean updateNextTime = true;
     @Override
     public void run() {
-        Main.users.updateAllUserRank();
+        if(updateNextTime) {
+            Main.users.updateAllUserRank();
+            updateNextTime = false;
+        }
     }
 
     @Override

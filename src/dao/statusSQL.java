@@ -8,6 +8,7 @@ import util.Main;
 import util.HTML.HTML;
 import util.Pair;
 import util.SQL.SQL;
+import util.TimerTasks.TaskUpdateAllUserRank;
 import util.Tool;
 
 import java.sql.*;
@@ -239,6 +240,8 @@ public class statusSQL {
                 s.getPid(),
                 s.getUser(),
                 s.getPid()).update();
+        //此时标记下次要更新用户排名
+        TaskUpdateAllUserRank.updateNextTime = true;
     }
     public void onStatusAdd(Status s){
         Problem p = Main.problems.getProblem(s.getPid());
