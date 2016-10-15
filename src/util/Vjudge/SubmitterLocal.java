@@ -17,9 +17,9 @@ public class SubmitterLocal extends VjSubmitter {
 
     public void go() {
         showstatus="go";
-        Tool.debug("==2==");
+//        Tool.debug("==2==");
         RES res= LocalJudge.judge(this);
-        Tool.debug("==3==");
+//        Tool.debug("==3==");
         Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid,res.getR(),res.getTime(),res.getMemory(),res.getCEInfo()));
     }
     public void run(){//开始执行线程

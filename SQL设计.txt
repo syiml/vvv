@@ -1,3 +1,24 @@
+
+//下次更新内容
+CREATE TABLE `t_replyreply` (
+  `did` int(11) NOT NULL,
+  `rid` int(11) NOT NULL,
+  `rrid` int(11) NOT NULL,
+  `replyRid` int(11) NOT NULL,
+  `username` varchar(30) collate utf8_unicode_ci NOT NULL,
+  `time` datetime NOT NULL,
+  `text` text collate utf8_unicode_ci NOT NULL,
+  `visible` tinyint(4) NOT NULL,
+  PRIMARY KEY  (`did`,`rid`,`rrid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE  `users` ADD  `rank` INT NOT NULL DEFAULT  '0';
+UPDATE users SET rank=(select rank+1 FROM v_user WHERE v_user.username=users.username)
+
+////
+drop view v_solved;
+CREATE ALGORITHM=TEMPTABLE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_solved` AS select `t_usersolve`.`username` AS `username`,sum(`t_usersolve`.`status`) AS `acnum` from `t_usersolve` group by `t_usersolve`.`username`;
+
 表结构：
     statu：
         id	        int(11)

@@ -34,7 +34,7 @@ public class LocalJudge {
         }
     }
     private static void createFile(String path,String text) throws IOException {
-        Tool.debug(path);
+//        Tool.debug(path);
         File outFile = null;
         outFile = new File(path);
         outFile.createNewFile();
@@ -315,14 +315,14 @@ public class LocalJudge {
                 String filename = "Main";
                 long exMemory = 0L;
                 runExeOutputStream.write(((limit.getValue()*1024L +  exMemory) * 1024L + "\n").getBytes());//内存限制MB
-            Tool.debug("内存限制"+(limit.getValue()*1024L +  exMemory) * 1024L + "B");
+//            Tool.debug("内存限制"+(limit.getValue()*1024L +  exMemory) * 1024L + "B");
                 String mainExe = filename+".exe";
                 runExeOutputStream.write((file.getAbsolutePath()+"\\"+mainExe + "\n").getBytes());
-            Tool.debug((file.getAbsolutePath() + "\\" + mainExe));
+//            Tool.debug((file.getAbsolutePath() + "\\" + mainExe));
                 runExeOutputStream.write((file.getAbsolutePath() + "\\\n").getBytes());
-            Tool.debug(file.getAbsolutePath() + "\\");
+//            Tool.debug(file.getAbsolutePath() + "\\");
                 runExeOutputStream.write((FileListSize + "\n").getBytes());
-            Tool.debug(FileListSize + "");
+//            Tool.debug(FileListSize + "");
                 long TimeUsed = 0L;
                 long MemoryUsed = 0L;
                 try {
@@ -364,7 +364,7 @@ public class LocalJudge {
                 if(ret != 0 && esOut.contains("Exception")) {
                     ret = 5;
                 }
-                Tool.debug("judge return:"+ret +" esOut:"+esOut);
+//                Tool.debug("judge return:"+ret +" esOut:"+esOut);
                 res.setTime(TimeUsed+"MS");
                 res.setMemory(MemoryUsed+"KB");
                 return ret;
@@ -390,10 +390,10 @@ public class LocalJudge {
                 s.showstatus="Running";
                 if(Main.problems.getProblem(Integer.parseInt(s.getSubmitInfo().pid)).isSpj()){
 
-                    Tool.debug("LocalJudge SPJ");
+//                    Tool.debug("LocalJudge SPJ");
                     ret=spjRun(s, res);
                 }else{
-                    Tool.debug("LocalJudge");
+//                    Tool.debug("LocalJudge");
                     ret=run(s,res);
                 }
 
@@ -401,7 +401,7 @@ public class LocalJudge {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Tool.debug("LocalJudge ret="+ret);
+//            Tool.debug("LocalJudge ret="+ret);
             switch (ret){
                 case 0: res.setR(Result.AC); break;
                 case 1: res.setR(Result.PE); break;
