@@ -1,6 +1,7 @@
 package util.SQL;
 
 import entity.IBeanResultSetCreate;
+import util.FileLog;
 import util.Pair;
 import util.Tool;
 
@@ -258,7 +259,9 @@ public class SQL {
             String sql =p.toString();
             Timestamp t = Tool.now();
             int ret = p.executeUpdate();
-            Tool.SQLDebug((Tool.now().getTime() - t.getTime())," "+ sql.substring(sql.indexOf(':')+1));
+            String sqlString = sql.substring(sql.indexOf(':')+1);
+            Tool.SQLDebug((Tool.now().getTime() - t.getTime())," "+ sqlString);
+            FileLog.updateSqlLog(Tool.now()+": "+sqlString);
             return ret;
         } catch (SQLException e) {
             if(log&&_log)Tool.log(e);
