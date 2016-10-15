@@ -40,7 +40,6 @@ public class FileLog{
     public static synchronized void updateSqlLog(String content) {
         try {
             openUpdateSqlLogFile();
-            Tool.debug("save");
             updateSqlLogFile.write(content+"\r\n");
             updateSqlLogFile.close();
         } catch (IOException e) {

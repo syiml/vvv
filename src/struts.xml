@@ -186,6 +186,7 @@
                         <result name="success">../info.jsp?info=${prompt}&amp;next=../admin.jsp?page=AppUpdate</result>
                 </action>
                 <action name="appVersion" class="action.App.ActionAppUpdate" method="getVersionInfo"> </action>
+                <action name="getIndexDiscuss" class="action.App.ActionNoPara" method="getIndexDiscuss"> </action>
         </package>
         <package name="mall" extends="struts-default">
                 <action name="addGoods" class="action.Mall.ActionAddGoods" method="addGoods">

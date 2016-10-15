@@ -1,7 +1,9 @@
 package entity.Discuss;
 
 import entity.IBeanResultSetCreate;
+import entity.ICanToJSON;
 import entity.User;
+import net.sf.json.JSONObject;
 import util.Main;
 import dao.Discuss.DiscussSQL;
 import servise.MessageMain;
@@ -15,7 +17,7 @@ import java.sql.Timestamp;
 /**
  * Created by Syiml on 2015/7/3 0003.
  */
-public class Discuss implements IBeanResultSetCreate<Discuss> {
+public class Discuss implements IBeanResultSetCreate<Discuss>, ICanToJSON {
     static String[] PanelClass={"default","primary","success","info","warning","danger"};
     /**
      * id 主键
@@ -309,4 +311,14 @@ public class Discuss implements IBeanResultSetCreate<Discuss> {
         return isAdmin;
     }
 
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jo = new JSONObject();
+        jo.put("id",id);
+        jo.put("title",title);
+        jo.put("text",text);
+        jo.put("username",username);
+        jo.put("time",time.toString().substring(0,16));
+        return jo;
+    }
 }
