@@ -174,6 +174,12 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
         return gender!=0&&!name.equals("")&&!faculty.equals("")&&!major.equals("")&&!cla.equals("")&&!no.equals("")&&!phone.equals("");
     }
 
+    /**
+     * @return 返回是否是现役队员
+     */
+    public boolean isInTeam(){
+        return false;  // 你自己写一下
+    }
     /////get set////
 
     public int getRank(){return rank;}

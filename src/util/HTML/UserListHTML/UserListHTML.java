@@ -20,14 +20,14 @@ public class UserListHTML extends pageBean {
     int pageNum;
     String search="";
     String order;
-    boolean bo;
-    public UserListHTML(int page,String search,String order,boolean bo){
+    boolean desc;
+    public UserListHTML(int page,String search,String order,boolean desc){
         this.order=order;
-        this.bo=bo;
+        this.desc = desc;
         if(search!=null) this.search=search;
         this.page=page;
         num=Main.config.userShowNum;
-        list= Main.users.getUsers((page-1) * num, num, search,order,bo);
+        list= Main.users.getUsers((page-1) * num, num, search,order, desc);
         pageNum= getTotalPageNum(Main.users.getUsersNum(search),num);
         u=Main.loginUser();
         addTableHead("rank","username");
@@ -40,21 +40,23 @@ public class UserListHTML extends pageBean {
         f.setType(1);
         text t=new text("search", "查找");
         t.setValue(search);
+        t.setPlaceholder("UserName/Nick");
         f.addForm(t);
         f.setAction("User.jsp");
         f.addForm(new hidden("order", order));
-        if(bo) f.addForm(new hidden("desc","1"));
+        if(desc)
+            f.addForm(new hidden("desc","1"));
         f.setSubmitText("确定");
         return f.toHTML();
     }
     private String getHead(String name,String label,boolean def){
         String s="";
         if(order!=null&&order.equals(name)){
-            if(bo) s="↓";
+            if(desc) s="↓";
             else s="↑";
         }
         StringBuilder link=new StringBuilder("");
-        if(order==null||!order.equals(name)||(order.equals(name)&&bo!=def)){
+        if(order==null||!order.equals(name)||(order.equals(name)&& desc !=def)){
             link.append("&order=").append(name);
             if(def) link.append("&desc=1");
         }else{
@@ -139,7 +141,7 @@ public class UserListHTML extends pageBean {
 
     @Override
     public String getLinkByPage(int page) {
-        return "User.jsp?page="+page+(search==null?"":"&search="+search)+(order==null?"":"&order="+order)+(bo?"&desc=1":"");
+        return "User.jsp?page="+page+(search==null?"":"&search="+search)+(order==null?"":"&order="+order)+(desc ?"&desc=1":"");
     }
 
     @Override
