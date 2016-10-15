@@ -12,13 +12,13 @@
   int cid= Integer.parseInt(request.getParameter("cid"));
   int id;
   int pa=0;
+  if(request.getParameter("page")!=null){
+    pa=Integer.parseInt(request.getParameter("page"));
+  }
   if(request.getParameter("id")==null){
-    if(request.getParameter("page")!=null){
-      pa=Integer.parseInt(request.getParameter("page"));
-    }
     out.print(DiscussHTML.DiscussList(cid,Main.config.discussShowNum,pa,"",""));
   }else{
     id=Integer.parseInt(request.getParameter("id"));
-    out.print(DiscussHTML.Discuss(id+"","0"));
+    out.print(DiscussHTML.Discuss(id+"",pa+""));
   }
 %>

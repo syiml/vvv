@@ -68,23 +68,24 @@ public class MessageMain {
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }
-    public static int addMessageDisscussReply(int cid, String append, int did, String text){
-        Discuss d=DiscussSQL.getDiscuss(did);
-        User u=Main.users.getUser(append);
+    public static int addMessageDisscussReply(DiscussReply dr){
+        Discuss d=DiscussSQL.getDiscuss(dr.getDid());
+        User u=Main.users.getUser(dr.getUsername());
         Message m=new Message();
         m.setUser(d.getUsername());
-        if(m.getUser().equals(append)) return 0;
+        if(m.getUser().equals(dr.getUsername())) return 0;
         m.setStatu(0);
-        if(cid==-1){
+        if(d.getCid()==-1){
             m.setTitle("你的帖子【"+d.getTitle()+"】有新回复");
         }else{
-            Contest c=ContestMain.getContest(cid);
+            Contest c=ContestMain.getContest(d.getCid());
             m.setTitle("你在比赛【"+c.getName()+"】中的提问【"+d.getTitle()+"】有新回复");
         }
         String url;
-        if(cid==-1) url="Discuss.jsp?id="+did;
-        else url="Contest.jsp?cid="+cid+"#D"+did;
-        m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")回复了你的帖子【" + d.getTitle() + "】：</br>" + text + "</br>" + HTML.a(url, "查看帖子"));
+        if(d.getCid()==-1) url="Discuss.jsp?id="+dr.getDid()+"&page="+(dr.getRid()-1)/DiscussMain.replyReplyShowNum;
+        else url="Contest.jsp?cid="+d.getCid()+"#D"+dr.getDid();
+        m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")回复了你的帖子【" + d.getTitle() + "】：</br>"
+                + HTML.HTMLtoString(dr.getText()) + "</br>" + HTML.a(url, "查看帖子"));
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }
@@ -179,7 +180,7 @@ public class MessageMain {
         if(m.getUser().equals(rr.getUsername())) return 0;
         m.setTitle("你在【"+d.getTitle()+"】中有新回复");
         String url;
-        if(cid==-1) url="Discuss.jsp?id="+d.getId();
+        if(cid==-1) url="Discuss.jsp?id="+dr.getDid()+"&page="+(dr.getRid()-1)/DiscussMain.replyReplyShowNum;
         else url="Contest.jsp?cid="+cid+"#D"+d.getId();
         User u = Main.users.getUser(rr.getUsername());
         m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")在帖子【" + d.getTitle() + "】中回复了你：</br>" + rr.getText() + "</br>" + HTML.a(url, "查看帖子"));

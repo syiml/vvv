@@ -4,6 +4,7 @@ import entity.Discuss.Discuss;
 import entity.Discuss.ReplyReply;
 import entity.Permission;
 import entity.User;
+import servise.DiscussMain;
 import util.Main;
 import entity.Discuss.DiscussReply;
 import servise.MessageMain;
@@ -146,7 +147,10 @@ public class DiscussSQL {
         if(d==null) return "error";
         int newId=getNewReplyId(did);
         new SQL("INSERT INTO t_discussreply VALUES(?,?,?,?,?,?,0,null)",newId,did,loginuser.getUsername(),Tool.now(),text,!d.isReplyHidden()).update();
-        MessageMain.addMessageDisscussReply(d.getCid(),loginuser.getUsername(),did,HTML.HTMLtoString(text));
+        DiscussReply dr = getDiscussReply(did,newId);
+        if(dr != null){
+            MessageMain.addMessageDisscussReply(dr);
+        }
         return "success";
     }
     public static String hideshow(int did,int rid){

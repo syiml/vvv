@@ -375,7 +375,14 @@ function loadDiscussList(page){
     $('#discussNAV').addClass("active");
 }
 function loadDiscuss(id) {
-    $('#main').show().html(HTML.loader).load("module/contestNew/discuss.jsp?cid=" + cid + "&id=" + id );
+    var page = 0;
+    for(var i=0;i<id.length;i++){
+        if(id.charAt(i)=='_'){
+            page = id.substr(i+1,30);
+            id = id.substr(0,i);
+        }
+    }
+    $('#main').show().html(HTML.loader).load("module/contestNew/discuss.jsp?cid=" + cid + "&id=" + id + "&page=" + page);
     $('#problems').hide();
     $('#NAV').find('li').removeClass("active");
     $('#discussNAV').addClass("active");

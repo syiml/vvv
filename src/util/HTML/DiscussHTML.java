@@ -187,12 +187,18 @@ public class DiscussHTML {
         return HTML.row(fcid.toHTML()+f0.toHTML())+(f1!=null?f1.toHTML(2, 10):"")+HTML.row(HTML.col(12,f11.toHTML()));
     }
 
-    public String page(int page,int pagenum){
+    public String page(int page,int pagenum,int cid){
         if(pagenum==1) return "";
         String size="sm";
         String s ="<div class='btn-toolbar' role='toolbar'>";
         s+="<div class='btn-group' role='group'>";
-        for(int i=0;i<pagenum;i++){s+=HTML.abtn(size,"Discuss.jsp?id="+ d.getId() +"&page="+(i),i+1+"",page==i?"btn-primary":"");}
+        for(int i=0;i<pagenum;i++){
+            if(cid==-1) {
+                s += HTML.abtn(size, "Discuss.jsp?id=" + d.getId() + "&page=" + (i), i + 1 + "", page == i ? "btn-primary" : "");
+            }else{
+                s += HTML.abtn(size, "Contest.jsp?cid="+cid+"#D"+d.getId()+"_"+i, i + 1 + "", page == i ? "btn-primary" : "");
+            }
+        }
         s+="</div></div>";
         return HTML.div("","style='margin-bottom: 15px;'",s);
     }
@@ -204,6 +210,7 @@ public class DiscussHTML {
         if(loginuser!=null){
             admin=loginuser.getPermission().getAddDiscuss();
         }
+        Discuss d = DiscussSQL.getDiscuss(did);
         List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num, num );
         String s="";
         for (DiscussReply aList : list) {
@@ -215,7 +222,7 @@ public class DiscussHTML {
             }
         }
         int pagenum=(DiscussSQL.getDiscussReplayNum(did)+num-1)/num;
-        s+=page(page,pagenum);
+        s+=page(page,pagenum,d.getCid());
         return s;
     }
 
