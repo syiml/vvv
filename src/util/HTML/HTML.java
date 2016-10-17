@@ -624,11 +624,18 @@ public class HTML {
         ProblemListFilter ret=new ProblemListFilter(name,ta,pa);
         return ret.HTML();
     }
-    public static String userList(String cid,String pa,String search,String order,boolean desc){
+    public static String userList(String cid,String pa,String search,String order,boolean desc,String status){
          if(search==null) search="";
          if(order==null) order="";
          try{
              int page=1;
+             int inTeamStuatus = -1;
+             try {
+                 inTeamStuatus = Integer.parseInt(status);
+             }catch(NumberFormatException e){
+                 //转换失败
+                 inTeamStuatus = -1;//用-1表示转换失败或者没填写status参数
+             }
              if(pa!=null&&!pa.equals("")){
                  page=Integer.parseInt(pa);
              }
@@ -636,7 +643,7 @@ public class HTML {
                  int cidInt=Integer.parseInt(cid);
                  return new UserListContest(cidInt,page).HTML();
              }catch(NumberFormatException e) {
-                 return new UserListHTML(page, search,order,desc).HTML();
+                 return new UserListHTML(page, search,order,desc,inTeamStuatus).HTML();
              }
          }catch (NumberFormatException ee){
              return panel("error","参数错误",null,"danger");

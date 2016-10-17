@@ -142,9 +142,24 @@ public class UserSQL extends BaseCache<String,User> {
         }else{
             return new SQL("select * from users where  (username like ? or nick like ?)  " +
                     " ORDER BY "+order+(desc?" desc ":" ")+
-                    " LIMIT ?:,?","%"+search+"%","%"+search+"%",from,num).queryBeanList(User.class);
+                    " LIMIT ?,?","%"+search+"%","%"+search+"%",from,num).queryBeanList(User.class);
         }
     }
+
+
+    public List<User> getUsersInTeam(int from,int num,String search,String order,boolean desc,int Status){
+        if(order==null||order.equals("")){
+            order="rank";
+        }
+        if(search==null||search.equals("")){
+            return new SQL("select *  from users where inTeamStatus=?  ORDER BY "+order+(desc?" desc ":" ")+" LIMIT ?,?",Status,from,num).queryBeanList(User.class);
+        }else{
+            return new SQL("select * from users where  (username like ? or nick like ?) and inTeamStatus=?" +
+                    " ORDER BY "+order+(desc?" desc ":" ")+
+                    " LIMIT ?,?","%"+search+"%","%"+search+"%",Status,from,num).queryBeanList(User.class);
+        }
+    }
+
 
     public int getUsersNum(String search){
         if(search==null||search.equals("")){
@@ -153,6 +168,15 @@ public class UserSQL extends BaseCache<String,User> {
             return new SQL("select count(*) from users where (username like ? or nick like ?)", "%" + search + "%", "%" + search + "%").queryNum();
         }
     }
+
+    public int getUsersNumInTeam(String search,int status){
+        if(search==null||search.equals("")){
+            return new SQL("select count(*) from users where inTeamStatus=?",status).queryNum();
+        }else {
+            return new SQL("select count(*) from users where (username like ? or nick like ?) and inTeamStatus=?", "%" + search + "%", "%" + search + "%",status).queryNum();
+        }
+    }
+
 
     public List<User> getRichTop10(){
         return new SQL("select * from users order by acb desc,rating desc " +
