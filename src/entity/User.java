@@ -182,7 +182,7 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
                 return "<em class='inTeam graduated'></em>";
             }
         }
-        return HTML.textb(username, ratingColor(getShowRating()));
+        return "";
     }
 
     public String getUsernameHTML(){
