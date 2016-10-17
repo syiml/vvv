@@ -24,6 +24,7 @@
 
   String order=request.getParameter("order");
   String desc=request.getParameter("desc");
+  String status = request.getParameter("status");
 %>
 <html>
 <head>
@@ -32,7 +33,7 @@
 <body>
 <div class="container-fluid">
    <jsp:include page="module/head.jsp"/>
-  <%=HTML.userList(cid,pa,search,order,desc!=null)%>
+  <%=HTML.userList(cid,pa,search,order,desc!=null,status)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

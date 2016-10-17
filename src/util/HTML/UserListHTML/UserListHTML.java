@@ -17,18 +17,30 @@ public class UserListHTML extends pageBean {
     List<User> list;
     User u=null;//当前登录的用户
     int num,page;
+
+    int inTeamStatus;
+
     int pageNum;
     String search="";
     String order;
     boolean desc;
-    public UserListHTML(int page,String search,String order,boolean desc){
+    public UserListHTML(int page,String search,String order,boolean desc,int inTeamStatus){
         this.order=order;
         this.desc = desc;
+        this.inTeamStatus=inTeamStatus;
         if(search!=null) this.search=search;
         this.page=page;
         num=Main.config.userShowNum;
-        list= Main.users.getUsers((page-1) * num, num, search,order, desc);
-        pageNum= getTotalPageNum(Main.users.getUsersNum(search),num);
+        if(inTeamStatus!=-1){//取到了status的值
+            list= Main.users.getUsersInTeam((page-1) * num, num, search,order, desc,inTeamStatus);
+        }else{//全部
+            list= Main.users.getUsers((page-1) * num, num, search,order, desc);
+        }
+        if(inTeamStatus!=-1){//集训
+            pageNum= getTotalPageNum(Main.users.getUsersNumInTeam(search,inTeamStatus),num);
+        }else{
+            pageNum= getTotalPageNum(Main.users.getUsersNum(search),num);
+        }
         u=Main.loginUser();
         addTableHead("rank","username");
         if(u!=null&&u.getPermission().getUserAdmin()) addTableHead("name");
@@ -44,6 +56,7 @@ public class UserListHTML extends pageBean {
         f.addForm(t);
         f.setAction("User.jsp");
         f.addForm(new hidden("order", order));
+        if(inTeamStatus!=-1) f.addForm(new hidden("status", inTeamStatus+""));
         if(desc)
             f.addForm(new hidden("desc","1"));
         f.setSubmitText("确定");
@@ -59,9 +72,11 @@ public class UserListHTML extends pageBean {
         if(order==null||!order.equals(name)||(order.equals(name)&& desc !=def)){
             link.append("&order=").append(name);
             if(def) link.append("&desc=1");
+            if(inTeamStatus!=-1) link.append("&status=").append(inTeamStatus);
         }else{
             link.append("&order=").append(name);
             if(!def) link.append("&desc=1");
+            if(inTeamStatus!=-1) link.append("&status=").append(inTeamStatus);
         }
         return HTML.a("User.jsp?search="+search+link,label+s);
     }

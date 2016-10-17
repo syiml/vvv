@@ -53,14 +53,14 @@
         <li><a href="Contests.jsp?kind=1"><span>积分</span></a></li>
         <li><a href="Contests.jsp?kind=2"><span>趣味</span></a></li>
         <li><a href="Contests.jsp?kind=3"><span>正式</span></a></li>
-        <%--<li><a href="ExamList.jsp"><span>考试</span></a></li>--%>
+        <li><a href="ExamList.jsp?kind=4"><span>考试</span></a></li>
       </ul>
     </li>
     <li><a href="User.jsp"><span>RANK</span></a>
       <ul>
         <li><a href="Awards.jsp"><span>荣誉榜</span></a></li>
         <li><a href="WeekRank.jsp"><span>活跃榜</span></a></li>
-        <%--<li><a href="Awards.jsp"><span>现役队员</span></a></li>--%>
+        <li><a href="User.jsp?status=1"><span>现役榜</span></a></li>
       </ul>
     </li>
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
