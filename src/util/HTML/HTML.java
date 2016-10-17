@@ -1,20 +1,18 @@
 package util.HTML;
 
 import entity.*;
+import servise.*;
 import util.HTML.UserListHTML.AdminUserListHTML;
 import entity.Mall.Goods;
-import servise.ChallengeMain;
 import dao.ChallengeSQL;
 import ClockIn.ClockInHTML;
 import ClockIn.ClockInSQL;
-import servise.ContestMain;
-import servise.GvMain;
-import servise.MallMain;
 import servise.WeekRankCount.WeekRankCountHTML;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import entity.OJ.OTHOJ;
 import util.HTML.FromHTML.hidden.hidden;
+import util.HTML.modal.modal;
 import util.SQL.SQL;
 import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
@@ -869,7 +867,7 @@ public class HTML {
         f4.setId("nick");
         f4.setValue(user.getNick());
         f.addForm(f4);
-
+/*
         text name=new text("name","姓名");
         name.setValue(user.getName());
         name.setPlaceholder("注册正式比赛时必填");
@@ -931,7 +929,7 @@ public class HTML {
         f6.setId("email");
         f6.setValue(user.getEmail());
         f.addForm(f6);
-
+*/
         text f7=new text("motto","个性签名");
         f7.setId("motto");
         f7.setValue(user.getMotto());
@@ -1046,6 +1044,13 @@ public class HTML {
             s += li("添加商品", "AddGoods", nowpage);
             s += li("订单详情", "OrderList", nowpage);
         }
+        if(p.havePermissions(PermissionType.verify_all)||
+                p.havePermissions(PermissionType.verify_team)||
+                p.havePermissions(PermissionType.verify_school)||
+                p.havePermissions(PermissionType.verify_retired)||
+                p.havePermissions(PermissionType.verify_association)) {
+            s += li("认证管理","Verify",nowpage);
+        }
         if(p.getAppUpdate()) s+= li("APP更新","AppUpdate",nowpage);
         s+="</ul>";
         return s;
@@ -1075,6 +1080,13 @@ public class HTML {
             case "AddGoods":        return returnPage(p.getMallAdmin(),panel("添加商品",adminAddGoods()));
             case "OrderList":       return returnPage(p.getMallAdmin(),adminOrderList());
             case "AppUpdate":       return returnPage(p.getAppUpdate(),panel("APP更新",adminAppUpdate()));
+            case "Verify":          return returnPage(
+                                                p.havePermissions(PermissionType.verify_all)||
+                                                        p.havePermissions(PermissionType.verify_association)||
+                                                        p.havePermissions(PermissionType.verify_retired)||
+                                                        p.havePermissions(PermissionType.verify_school)||
+                                                        p.havePermissions(PermissionType.verify_team),
+                                                panel("处理认证",adminVerify()));
             default:                return panel("Index","管理员界面，点击左边链接进行后台管理");
         }
     }
@@ -1658,5 +1670,83 @@ public class HTML {
         formHTML.addForm(textVersionCode,textVersion,fileApp,textareaUpdate);
         formHTML.setAction("app/adminAppUpdate.action");
         return formHTML.toHTML();
+    }
+    public static String adminVerify() {
+        int id = -1;
+        try {
+            id = Integer.parseInt(Main.getRequest().getParameter("id"));
+        } catch (NumberFormatException ignored) { }
+        Permission p = Main.loginUserPermission();
+        if (id == -1) {
+            TableHTML tableHTML = new TableHTML();
+            tableHTML.setClass("table");
+            List<UserVerifyInfo> list = UserService.verifySQL.getUserVerifyInfoList();
+            tableHTML.addColname("#","用户","认证类型","admin");
+            for (UserVerifyInfo userVerifyInfo : list) {
+                List<String> row = new ArrayList<>();
+                row.add(userVerifyInfo.id+"");
+                User u = Main.users.getUser(userVerifyInfo.username);
+                row.add(u.getUsernameHTML());
+                row.add(userVerifyInfo.getVerifyTypeText());
+                String href = "admin.jsp?page=Verify&id="+userVerifyInfo.id;
+                switch (userVerifyInfo.VerifyType){
+                    case User.V_TEAM:
+                        if(p.havePermissions(PermissionType.verify_all)||p.havePermissions(PermissionType.verify_team)){
+                            row.add(HTML.a(href,"查看"));
+                        }else row.add("");
+                        break;
+                    case User.V_RETIRED:
+                        if(p.havePermissions(PermissionType.verify_all)||p.havePermissions(PermissionType.verify_retired)){
+                            row.add(HTML.a(href,"查看"));
+                        }else row.add("");
+                        break;
+                    case User.V_ASSOCIATION:
+                        if(p.havePermissions(PermissionType.verify_all)||p.havePermissions(PermissionType.verify_association)){
+                            row.add(HTML.a(href,"查看"));
+                        }else row.add("");
+                        break;
+                    case User.V_SCHOOL:
+                        if(p.havePermissions(PermissionType.verify_all)||p.havePermissions(PermissionType.verify_school)){
+                            row.add(HTML.a(href,"查看"));
+                        }else row.add("");
+                        break;
+                    default:row.add("");
+                }
+                tableHTML.addRow(row);
+            }
+            return tableHTML.HTML();
+        }else{
+            UserVerifyInfo userVerifyInfo = UserService.verifySQL.getUserVerifyInfo(id);
+            if(userVerifyInfo == null) return "参数错误";
+            User u = Main.users.getUser(userVerifyInfo.username);
+            TableHTML tableHTML = new TableHTML();
+            tableHTML.setClass("table");
+            tableHTML.addColname("#","认证内容","原本值");
+            tableHTML.addRow("认证人",u.getUsernameAndNickHTML(),"");
+            tableHTML.addRow("认证类型",userVerifyInfo.getVerifyTypeText(),u.getVerifyText()+"");
+            tableHTML.addRow("真实姓名",userVerifyInfo.name,userVerifyInfo.name.equals(u.getName())?"":u.getName());
+            tableHTML.addRow("性别",userVerifyInfo.gender+"",userVerifyInfo.gender==u.getGender()?"":u.getGender()+"");
+            tableHTML.addRow("学校全称",userVerifyInfo.school,userVerifyInfo.school.equals(u.getSchool())?"":u.getSchool());
+            tableHTML.addRow("学院全称",userVerifyInfo.faculty,userVerifyInfo.faculty.equals(u.getFaculty())?"":u.getFaculty());
+            tableHTML.addRow("专业全称",userVerifyInfo.major,userVerifyInfo.major.equals(u.getMajor())?"":u.getMajor());
+            tableHTML.addRow("班级编号",userVerifyInfo.cla,userVerifyInfo.cla.equals(u.getCla())?"":u.getCla());
+            tableHTML.addRow("学号",userVerifyInfo.no,userVerifyInfo.no.equals(u.getNo())?"":u.getNo());
+            tableHTML.addRow("联系方式",userVerifyInfo.phone,userVerifyInfo.phone.equals(u.getPhone())?"":u.getPhone());
+            tableHTML.addRow("邮箱",userVerifyInfo.email,userVerifyInfo.email.equals(u.getEmail())?"":u.getEmail());
+            tableHTML.addRow("毕业时间",userVerifyInfo.graduationTime.toString().substring(0,4),
+                    userVerifyInfo.graduationTime.equals(u.getGraduationTime())||u.getGraduationTime()==null?"":u.getGraduationTime().toString().substring(0,4));
+            tableHTML.addRow("提交时间",userVerifyInfo.time.toString().substring(0,16),"");
+
+            FormHTML formHTML = new FormHTML();
+            formHTML.addForm(new hidden("id",id+""));
+            formHTML.addForm(new hidden("result","-1"));
+            formHTML.addForm(new text("reason","拒绝理由"));
+            formHTML.setPartFrom();
+            modal m = new modal("verify","输入拒绝理由",formHTML.toHTML(),"拒绝");
+            m.setBtnCls("danger");
+            m.setAction("adminVerify.action");
+            return tableHTML.HTML()+HTML.abtn("","adminVerify.action?result=1&id="+id,"通过","btn-primary")
+                    +"　"+m.toHTML();
+        }
     }
 }

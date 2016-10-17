@@ -28,7 +28,7 @@ public class WeekRankCountHTML extends pageBean {
         }
         if(page<=0) page = 1;
         this.from = (page-1) * pageSize;
-        this.num = from + pageSize;
+        this.num = pageSize;
         this.page = page;
         addTableHead("Rank","用户名","积分","1天前","2天前","3天前","4天前","5天前","6天前");
     }

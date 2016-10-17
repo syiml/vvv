@@ -31,6 +31,9 @@ var HTML={
         s+="</div>";
         return s;
     },
+    $panel:function($div,title,ss,footer,arge,css){
+        return $div.append(HTML.panel(title,ss,footer,arge,css));
+    },
     panelnobody:function(Title,ss,cl,css){
         var s="";
         s+="<div class='panel panel-"+cl+" "+css+"'>";
@@ -206,6 +209,26 @@ function formToHTML(json){
     ret+="</form>";
     return ret;
 }
+function $formToHTML($div,json){
+    $div.append(formToHTML(json));
+    $div.find(".text_select").each(function (i,$everyDiv) {
+        $($everyDiv).change(function(){
+            var v=($(this).children('option:selected').val());
+            var id = $($everyDiv).attr("id");
+            id = id.substr(0,id.length - 7);
+            if(v=='手动输入'){
+                $("#"+id).attr("value","");
+                $("#"+id+"_left_select").attr("class","col-xs-"+parseInt(json.col[1]/2));
+                $("#"+id+"_right_text").show();
+            }else{
+                $("#"+id).attr("value",v);
+                $("#"+id+"_left_select").attr("class","col-xs-"+json.col[1]);
+                $("#"+id+"_right_text").hide();
+            }
+        })
+    });
+    return $div;
+}
 function _formToHTML(d,col){
     var ret="<div class='form-group row'>";
     if(d.type=="text"||d.type=="password"){
@@ -218,7 +241,7 @@ function _formToHTML(d,col){
         if(d.value) ret+="value='"+ d.value +"' " ;
         if(d.id) ret+="id='"+d.id+"' ";
         if(d.placeholder) ret+="placeholder='"+d.placeholder+"' ";
-        ret+="'>";
+        ret+=">";
         if(d.label) ret+="</div>";
     }else if(d.type=="submit"){
         if(!d.class) d.class="btn btn-primary";
@@ -247,6 +270,38 @@ function _formToHTML(d,col){
         ret+="<button class='"+d.class+"' type='button' ";
         if(d.onclick) ret+=" onclick='"+ d.onclick+"' ";
         ret+=" >"+d.label+"</button>";
+        ret+="</div>";
+    }else if(d.type=="select"){
+        if(d.label) ret+="<label for='"+d.id+"' class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
+        ret+="<div class='col-xs-"+col[1]+"'>";
+        ret+="<select type='select' ";
+        ret+="name='"+d.name+"' class='form-control' ";
+        ret+=">";
+        for(var i=0;i<d.option.length;i++){
+            ret+="<option value='"+d.option[i][0]+"' "+(d.value==d.option[i][0]?"selected=selected":"")+">"+d.option[i][1]+"</option>"
+        }
+        ret+="</select></div>";
+    }else if(d.type == "text_select"){ //可选择的text
+        if(d.label) ret+="<label class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
+
+        ret+="<div class='col-xs-"+col[1]+"' id='"+d.id+"_left_select'>";
+        ret+="<select type='select' class='form-control text_select' id='"+d.id+"_select'";
+        ret+=">";
+        ret+="<option value='手动输入'>手动输入</option>";
+        var flag = false;
+        for(var i=0;i<d.option.length;i++){
+            if(d.value==d.option[i][0]) flag = true;
+            ret+="<option value='"+d.option[i][0]+"' "+(d.value==d.option[i][0]?"selected=selected":"")+">"+d.option[i][1]+"</option>"
+        }
+        ret+="</select>";
+        ret+="</div>";
+        ret+="<div class='col-xs-"+parseInt((col[1]+1)/2)+"' id='"+d.id+"_right_text' style='display: none'>";
+        ret+="<input type='text' ";
+        ret+="name='"+d.name+"' class='form-control' ";
+        if(d.value) ret+="value='"+ d.value +"' " ;
+        if(d.id) ret+="id='"+d.id+"' ";
+        if(d.placeholder) ret+="placeholder='"+d.placeholder+"' ";
+        ret+=">";
         ret+="</div>";
     }
     ret+="</div>";

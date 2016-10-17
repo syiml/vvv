@@ -57,7 +57,7 @@ public class UserSQL extends BaseCache<String,User> {
         }finally {
             sql1.close();
         }
-        new SQL("insert into users values(?,md5(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        new SQL("insert into users values(?,md5(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 , u.getUsername()
                 , u.getPassword()
                 , HTML.HTMLtoString(u.getNick())
@@ -69,7 +69,7 @@ public class UserSQL extends BaseCache<String,User> {
                 , u.getType()
                 , HTML.HTMLtoString(u.getMark())
                 , -100000
-                , 0,0,"","","","","","",0,0,0,-1).update();
+                , 0,0,"","","","","","",0,0,0,-1,null).update();
         new SQL("UPDATE users SET rank=(select rank+1 FROM v_user WHERE username=?) WHERE username=?",u.getUsername(),u.getUsername()).update();
         MessageMain.addMessageWelcome(u);
         return 1;
@@ -323,6 +323,24 @@ public class UserSQL extends BaseCache<String,User> {
         //Tool.log(sql);
         removeCatch(u.getUsername());
         return (new SQL(sql, u.getUsername()).update()==1);
+    }
+    public int updateByVerify(UserVerifyInfo userVerifyInfo){
+        User u = Main.users.getUser(userVerifyInfo.username);
+        int status = 0;
+        if(userVerifyInfo.VerifyType == 0){
+            status = u.getInTeamStatus();
+        }else{
+            status = userVerifyInfo.VerifyType;
+        }
+        int ret = new SQL("UPDATE users SET " +
+                "name=?,school=?,gender=?,faculty=?,major=?,cla=?,no=?,phone=?,email=?,graduationTime=?,inTeamStatus=? " +
+                "WHERE username=?",
+                userVerifyInfo.name,userVerifyInfo.school,userVerifyInfo.gender,
+                userVerifyInfo.faculty,userVerifyInfo.major,userVerifyInfo.cla,userVerifyInfo.no,
+                userVerifyInfo.phone,userVerifyInfo.email,userVerifyInfo.graduationTime,status,userVerifyInfo.username
+        ).update();
+        removeCatch(userVerifyInfo.username);
+        return ret;
     }
     public TeamMemberAwardInfo getTeamMemberAwardInfo(int id){
         return new SQL("SELECT * FROM t_team_member_info WHERE id = ?",id).queryBean(TeamMemberAwardInfo.class);

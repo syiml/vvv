@@ -56,31 +56,6 @@ form:id=edit
         },
         nick: {
           maxlength: 20
-        },
-        email: {
-          required: false,
-          email: true
-        },
-        school: {
-          maxlength: 30
-        },
-        motto: {
-          maxlength: 50
-        },
-        phone:{
-          number:true,
-          minlength: 11,
-          maxlength: 11
-        },
-        no:{
-          number:true,
-          minlength: 10,
-          maxlength: 10
-        },
-        cla:{
-          number:true,
-          minlength:4,
-          maxlength:4
         }
       },
       messages: {
@@ -95,11 +70,7 @@ form:id=edit
           equalTo: "两次密码输入不一致",
           minlength: "密码至少要5个字符的长度",
           maxlength: "密码最多只能15个字符长度"
-        },
-        email: "请输入一个合法的email地址",
-        phone:"请输入一个合法的11位电话号码",
-        no:"请输入一个合法的学号(10位数字)",
-        cla:"请输入合法的班级号（4位数字）"
+        }
       }
     });
   });

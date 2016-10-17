@@ -172,7 +172,18 @@
                 <action name="computeOneUseranemPassword" class="action.RegisterContest" method="computeOneUseranemPassword">
                         <result name="success" type="redirect">User.jsp?cid=${cid}</result>
                 </action>
-
+                <action name="Verify" class="action.edit" method="gotoVerifyJsp">
+                        <result name="success">Verify.jsp</result>
+                        <result name="login">Login.jsp</result>
+                </action>
+                <action name="VerifyCommit" class="action.edit" method="verify">
+                        <result name="success">info.jsp?info="认证提交成功"&amp;next=return.jsp</result>
+                        <result name="error">Verify.jsp</result>
+                        <result name="login">Login.jsp</result>
+                </action>
+                <action name="adminVerify" class="action.edit" method="adminVerify">
+                        <result name="success">info.jsp?info=${prompt}&amp;next=return.jsp</result>
+                </action>
         </package>
         <package name="app" namespace="/app" extends="struts-default">
                 <action name="getSelfInfo" class="action.App.ActionNoPara" method="getSelfInfo"> </action>

@@ -14,6 +14,11 @@ import java.sql.Timestamp;
  * Created by Administrator on 2015/6/3.
  */
 public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
+    public static final int V_TEAM = 1; //集训队员
+    public static final int V_RETIRED = 2; //退役队员
+    public static final int V_ASSOCIATION = 3; //协会成员
+    public static final int V_SCHOOL = 4; //校内人员
+    public static final int V_NONE = 0; //未认证
     String username;
     String password;
     String nick;
@@ -30,10 +35,8 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     int ratingnum=0;
     int rank;//rating 的rank
     int acb;
-
     int inTeamLv;//队员等级
     int inTeamStatus;//队员状态 0非队员 1现役队员 2退役队员
-
     //详细信息：姓名，性别，学校，院系，专业班级，学号，手机
     String name;
     int    gender;//性别
@@ -42,8 +45,8 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     String cla;//班级
     String no;//学号
     String phone;//联系方式
+    Timestamp graduationTime;//毕业时间
     private Timestamp catch_time;
-
 
     public User(){}
 
@@ -64,6 +67,7 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
         acb=0;
         this.inTeamLv=0;
         this.inTeamStatus=0;
+        this.graduationTime = null;
     }
 
     public static int getShowRating(int ratingnum,int rating){
@@ -137,6 +141,7 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
         this.inTeamStatus=rs.getInt("inTeamStatus");
 
         this.acnum=rs.getInt("acnum");
+        this.graduationTime = rs.getTimestamp("graduationTime");
         try{
             this.rank=rs.getInt("rank");
         }catch(SQLException e){
@@ -155,10 +160,27 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     }
 
     public String getUsernameHTMLNoA(){
+        return HTML.textb(username, ratingColor(getShowRating())) + getIcon();
+    }
+    /////get set////
+
+    public String getIcon(){
         if(inTeamStatus==1){//集训队员标记
-            return HTML.textb(username, ratingColor(getShowRating()))+"<em class='inTeam inTeam-"+inTeamLv+"'></em>";
+            return "<em class='inTeam inTeam-"+inTeamLv+"'></em>";
         }else if(inTeamStatus==2){//退役队员
-            return HTML.textb(username, ratingColor(getShowRating()))+"<em class='levTeam levTeam-"+inTeamLv+"'></em>";
+            return "<em class='inTeam levTeam-"+inTeamLv+"'></em>";
+        }else if(inTeamStatus == User.V_ASSOCIATION){//协会成员
+            if(getGraduationTime()!=null && Tool.now().before(getGraduationTime())) {//未毕业
+                return "<em class='inTeam association'></em>";
+            }else{
+                return "<em class='inTeam graduated'></em>";
+            }
+        }else if(inTeamStatus == User.V_SCHOOL){//校内人员
+            if(getGraduationTime()!=null && Tool.now().before(getGraduationTime())) {//未毕业
+                return "<em class='inTeam school'></em>";
+            }else{
+                return "<em class='inTeam graduated'></em>";
+            }
         }
         return HTML.textb(username, ratingColor(getShowRating()));
     }
@@ -166,6 +188,7 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     public String getUsernameHTML(){
         return HTML.a("UserInfo.jsp?user="+username,getUsernameHTMLNoA());
     }
+
     public String getUsernameAndNickHTML(){
         return HTML.a("UserInfo.jsp?user="+username,getUsernameHTMLNoA())+"("+nick+")";
     }
@@ -180,7 +203,6 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     public boolean isInTeam(){
         return false;  // 你自己写一下
     }
-    /////get set////
 
     public int getRank(){return rank;}
 
@@ -377,6 +399,14 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
         this.inTeamStatus = inTeamStatus;
     }
 
+    public Timestamp getGraduationTime() {
+        return graduationTime;
+    }
+
+    public void setGraduationTime(Timestamp graduationTime) {
+        this.graduationTime = graduationTime;
+    }
+
     public Timestamp getCatch_time() {
 
         return catch_time;
@@ -396,4 +426,14 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
         setCatch_time(t);
     }
 
+    public String getVerifyText(){
+        switch (inTeamStatus){
+            case V_TEAM: return "集训队员";
+            case V_RETIRED: return "退役队员";
+            case V_ASSOCIATION: return "协会成员";
+            case V_SCHOOL: return "校内学生";
+            case V_NONE: return "未认证";
+            default: return "ERROR";
+        }
+    }
 }

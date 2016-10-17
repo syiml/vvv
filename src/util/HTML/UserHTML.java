@@ -35,6 +35,7 @@ public class UserHTML {
             m.setEnctype();
             headimg=m.toHTMLA();
         }
+//        String icon = HTML.div("userIcon",showuser.getIcon());
         String left=headimg + "<br>"+HTML.text(showuser.getNick(),10)+"<br>"+HTML.text(showuser.getMotto(), 4);
         String r="";
         r+=HTML.text(showuser.getNick(),7)+HTML.text("("+showuser.getUsername() + ")",5);

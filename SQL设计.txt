@@ -1,16 +1,27 @@
 
 //下次更新内容
-CREATE TABLE `t_replyreply` (
-  `did` int(11) NOT NULL,
-  `rid` int(11) NOT NULL,
-  `rrid` int(11) NOT NULL,
-  `replyRid` int(11) NOT NULL,
-  `username` varchar(30) collate utf8_unicode_ci NOT NULL,
-  `time` datetime NOT NULL,
-  `text` text collate utf8_unicode_ci NOT NULL,
-  `visible` tinyint(4) NOT NULL,
-  PRIMARY KEY  (`did`,`rid`,`rrid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE  `vjudge`.`t_verify` (
+`id` INT NOT NULL ,
+`VerifyType` INT NOT NULL ,
+`username` VARCHAR( 30 ) NOT NULL ,
+`name` VARCHAR( 30 ) NOT NULL ,
+`school` VARCHAR( 50 ) NOT NULL ,
+`gender` INT NOT NULL ,
+`faculty` VARCHAR( 30 ) NOT NULL ,
+`major` VARCHAR( 30 ) NOT NULL ,
+`cla` VARCHAR( 30 ) NOT NULL ,
+`no` VARCHAR( 30 ) NOT NULL ,
+`phone` VARCHAR( 30 ) NOT NULL ,
+`email` VARCHAR( 50 ) NOT NULL ,
+`time` DATETIME NOT NULL,
+`result` INT NOT NULL,
+PRIMARY KEY (  `id` )
+) ENGINE = INNODB;
+ALTER TABLE  `t_verify` CHANGE  `id`  `id` INT( 11 ) NOT NULL AUTO_INCREMENT;
+ALTER TABLE  `t_verify` ADD  `reason` VARCHAR( 100 ) NOT NULL ;
+ALTER TABLE  `users` ADD  `graduationTime` DATETIME NULL ;
+ALTER TABLE  `t_verify` ADD  `graduationTime` DATETIME NOT NULL ;
+
 
 ALTER TABLE  `users` ADD  `rank` INT NOT NULL DEFAULT  '0';
 UPDATE users SET rank=(select rank+1 FROM v_user WHERE v_user.username=users.username)
