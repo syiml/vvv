@@ -7,6 +7,7 @@ import util.Main;
 import util.MainResult;
 import util.Tool;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 
 /**
@@ -41,6 +42,11 @@ public class UserService {
         if(u.getInTeamStatus()==User.V_NONE && e.getVerifyType()==User.V_NONE){
             //未认证用户直接修改资料
             acceptedVerify(id);
+        }
+        try {
+            Main.uploadFile(e.getPic(), Main.getRealPath("/")+Main.config.verifyPicPath + id +".jpg");
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
         return MainResult.SUCCESS;
     }

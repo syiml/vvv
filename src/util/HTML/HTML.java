@@ -309,6 +309,9 @@ public class HTML {
     public static String headImg(String username,int size){
         return "<img src='pic/head/"+username+".jpg' class='head-"+size+"' onerror='this.src=\"pic/defaulthead.jpg\"' />";
     }
+    public static String Img(String path,String cla,String onerror){
+        return "<img src='"+path+"' class='"+cla+"' onerror='"+onerror+"' />";
+    }
     public static String replaceAt(String s){
         Pattern p = Pattern.compile("(@[_0-9a-zA-Z]+)");
         Matcher m = p.matcher(s);
@@ -1718,25 +1721,6 @@ public class HTML {
         }else{
             UserVerifyInfo userVerifyInfo = UserService.verifySQL.getUserVerifyInfo(id);
             if(userVerifyInfo == null) return "参数错误";
-            User u = Main.users.getUser(userVerifyInfo.username);
-            TableHTML tableHTML = new TableHTML();
-            tableHTML.setClass("table");
-            tableHTML.addColname("#","认证内容","原本值");
-            tableHTML.addRow("认证人",u.getUsernameAndNickHTML(),"");
-            tableHTML.addRow("认证类型",userVerifyInfo.getVerifyTypeText(),u.getVerifyText()+"");
-            tableHTML.addRow("真实姓名",userVerifyInfo.name,userVerifyInfo.name.equals(u.getName())?"":u.getName());
-            tableHTML.addRow("性别",userVerifyInfo.gender+"",userVerifyInfo.gender==u.getGender()?"":u.getGender()+"");
-            tableHTML.addRow("学校全称",userVerifyInfo.school,userVerifyInfo.school.equals(u.getSchool())?"":u.getSchool());
-            tableHTML.addRow("学院全称",userVerifyInfo.faculty,userVerifyInfo.faculty.equals(u.getFaculty())?"":u.getFaculty());
-            tableHTML.addRow("专业全称",userVerifyInfo.major,userVerifyInfo.major.equals(u.getMajor())?"":u.getMajor());
-            tableHTML.addRow("班级编号",userVerifyInfo.cla,userVerifyInfo.cla.equals(u.getCla())?"":u.getCla());
-            tableHTML.addRow("学号",userVerifyInfo.no,userVerifyInfo.no.equals(u.getNo())?"":u.getNo());
-            tableHTML.addRow("联系方式",userVerifyInfo.phone,userVerifyInfo.phone.equals(u.getPhone())?"":u.getPhone());
-            tableHTML.addRow("邮箱",userVerifyInfo.email,userVerifyInfo.email.equals(u.getEmail())?"":u.getEmail());
-            tableHTML.addRow("毕业时间",userVerifyInfo.graduationTime.toString().substring(0,4),
-                    userVerifyInfo.graduationTime.equals(u.getGraduationTime())||u.getGraduationTime()==null?"":u.getGraduationTime().toString().substring(0,4));
-            tableHTML.addRow("提交时间",userVerifyInfo.time.toString().substring(0,16),"");
-
             FormHTML formHTML = new FormHTML();
             formHTML.addForm(new hidden("id",id+""));
             formHTML.addForm(new hidden("result","-1"));
@@ -1745,8 +1729,43 @@ public class HTML {
             modal m = new modal("verify","输入拒绝理由",formHTML.toHTML(),"拒绝");
             m.setBtnCls("danger");
             m.setAction("adminVerify.action");
-            return tableHTML.HTML()+HTML.abtn("","adminVerify.action?result=1&id="+id,"通过","btn-primary")
-                    +"　"+m.toHTML();
+            if(userVerifyInfo.result==0){
+                return showVerifyInfo(userVerifyInfo)+HTML.abtn("","adminVerify.action?result=1&id="+id,"通过","btn-primary")
+                        +"　"+m.toHTML();
+            }else{
+                return showVerifyInfo(userVerifyInfo);
+            }
+
         }
+    }
+    public static String showVerifyInfo(UserVerifyInfo userVerifyInfo){
+        User u = Main.users.getUser(userVerifyInfo.username);
+        TableHTML tableHTML = new TableHTML();
+        tableHTML.setClass("table");
+        tableHTML.addColname("#","认证内容","当前值");
+        tableHTML.addRow("认证人",u.getUsernameAndNickHTML(),"");
+        tableHTML.addRow("认证类型",userVerifyInfo.getVerifyTypeText(),u.getVerifyText()+"");
+        tableHTML.addRow("真实姓名",userVerifyInfo.name,userVerifyInfo.name.equals(u.getName())?"":u.getName());
+        tableHTML.addRow("性别",userVerifyInfo.gender+"",userVerifyInfo.gender==u.getGender()?"":u.getGender()+"");
+        tableHTML.addRow("学校全称",userVerifyInfo.school,userVerifyInfo.school.equals(u.getSchool())?"":u.getSchool());
+        tableHTML.addRow("学院全称",userVerifyInfo.faculty,userVerifyInfo.faculty.equals(u.getFaculty())?"":u.getFaculty());
+        tableHTML.addRow("专业全称",userVerifyInfo.major,userVerifyInfo.major.equals(u.getMajor())?"":u.getMajor());
+        tableHTML.addRow("班级编号",userVerifyInfo.cla,userVerifyInfo.cla.equals(u.getCla())?"":u.getCla());
+        tableHTML.addRow("学号",userVerifyInfo.no,userVerifyInfo.no.equals(u.getNo())?"":u.getNo());
+        tableHTML.addRow("联系方式",userVerifyInfo.phone,userVerifyInfo.phone.equals(u.getPhone())?"":u.getPhone());
+        tableHTML.addRow("邮箱",userVerifyInfo.email,userVerifyInfo.email.equals(u.getEmail())?"":u.getEmail());
+        tableHTML.addRow("毕业时间",userVerifyInfo.graduationTime.toString().substring(0,4),
+                userVerifyInfo.graduationTime.equals(u.getGraduationTime())||u.getGraduationTime()==null?"":u.getGraduationTime().toString().substring(0,4));
+        tableHTML.addRow("提交时间",userVerifyInfo.time.toString().substring(0,16),"");
+        tableHTML.addRow("附加图片",HTML.Img(Main.config.verifyPicPath+userVerifyInfo.id+".jpg","","this.style=\"display:none\""),"");
+        if(userVerifyInfo.result == UserVerifyInfo.RESULT_PADDING)
+            tableHTML.addRow("审核状态",HTML.textb("正在审核","black"),"");
+        else if(userVerifyInfo.result == UserVerifyInfo.RESULT_ACCEPTED)
+            tableHTML.addRow("审核状态",HTML.textb("审核通过","green"),"");
+        else if(userVerifyInfo.result == UserVerifyInfo.RESULT_REFUSE){
+            tableHTML.addRow("审核状态",HTML.textb("审核未通过","red"),"");
+            tableHTML.addRow("拒绝说明",userVerifyInfo.reason,"");
+        }
+        return tableHTML.HTML();
     }
 }

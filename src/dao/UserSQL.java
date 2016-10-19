@@ -326,18 +326,28 @@ public class UserSQL extends BaseCache<String,User> {
     }
     public int updateByVerify(UserVerifyInfo userVerifyInfo){
         User u = Main.users.getUser(userVerifyInfo.username);
-        int status = 0;
-        if(userVerifyInfo.VerifyType == 0){
+        int inTeamLv = u.getInTeamLv();
+        int status = u.getInTeamStatus();
+        if(userVerifyInfo.VerifyType == User.V_NONE){//修改资料
             status = u.getInTeamStatus();
         }else{
             status = userVerifyInfo.VerifyType;
+            if(userVerifyInfo.VerifyType == User.V_TEAM){
+                inTeamLv = -1;
+            }else if(userVerifyInfo.VerifyType == User.V_RETIRED){
+                if(u.getInTeamLv() <= 0){
+                    status = User.V_ASSOCIATION;//集训队等级不足，退为协会成员
+                }else{
+                    status = User.V_RETIRED;
+                }
+            }
         }
         int ret = new SQL("UPDATE users SET " +
-                "name=?,school=?,gender=?,faculty=?,major=?,cla=?,no=?,phone=?,email=?,graduationTime=?,inTeamStatus=? " +
+                "name=?,school=?,gender=?,faculty=?,major=?,cla=?,no=?,phone=?,email=?,graduationTime=?,inTeamStatus=?,inTeamLv=? " +
                 "WHERE username=?",
                 userVerifyInfo.name,userVerifyInfo.school,userVerifyInfo.gender,
                 userVerifyInfo.faculty,userVerifyInfo.major,userVerifyInfo.cla,userVerifyInfo.no,
-                userVerifyInfo.phone,userVerifyInfo.email,userVerifyInfo.graduationTime,status,userVerifyInfo.username
+                userVerifyInfo.phone,userVerifyInfo.email,userVerifyInfo.graduationTime,status,inTeamLv,userVerifyInfo.username
         ).update();
         removeCatch(userVerifyInfo.username);
         return ret;

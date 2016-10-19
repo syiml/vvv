@@ -24,6 +24,10 @@ public class VerifySQL extends BaseCache<Integer, UserVerifyInfo> {
         return new SQL("SELECT * FROM t_verify WHERE username=? AND result=?",username,UserVerifyInfo.RESULT_PADDING).queryBean(UserVerifyInfo.class);
     }
 
+    public UserVerifyInfo getLastUserVerifyInfo(String username){
+        return new SQL("SELECT * FROM t_verify WHERE username=? ORDER BY id DESC LIMIT 0,1",username).queryBean(UserVerifyInfo.class);
+    }
+
     public int insert(UserVerifyInfo userVerifyInfo){
         return new SQL("INSERT INTO t_verify(VerifyType,username,name,school,gender,faculty,major,cla,no,phone,email,time,result,reason,graduationTime) " +
                 "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -47,6 +51,7 @@ public class VerifySQL extends BaseCache<Integer, UserVerifyInfo> {
 
     public void updateResult(int id,int result,String reason){
         new SQL("UPDATE t_verify SET result=?,reason=? WHERE id=?",result,reason,id).update();
+        removeCatch(id);
     }
 
     /**

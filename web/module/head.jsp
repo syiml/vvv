@@ -53,7 +53,7 @@
         <li><a href="Contests.jsp?kind=1"><span>积分</span></a></li>
         <li><a href="Contests.jsp?kind=2"><span>趣味</span></a></li>
         <li><a href="Contests.jsp?kind=3"><span>正式</span></a></li>
-        <li><a href="ExamList.jsp?kind=4"><span>考试</span></a></li>
+        <%--<li><a href="ExamList.jsp?kind=4"><span>考试</span></a></li>--%>
       </ul>
     </li>
     <li><a href="User.jsp"><span>RANK</span></a>

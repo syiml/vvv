@@ -8,6 +8,9 @@ import entity.User;
 import util.MainResult;
 import util.Tool;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Created by Syiml on 2015/6/27 0027.
  */
@@ -40,6 +43,8 @@ public class edit extends BaseAction{
     int result;
     String reason;
     int id;
+    int pre_id;
+    File pic;
 
     public String ed(){
 //      System.out.println(motto);
@@ -62,7 +67,7 @@ public class edit extends BaseAction{
             }
         }
     }
-    public String verify() {
+    public String verify() throws IOException {
         User u = Main.loginUser();
         if (u == null) return LOGIN;
         if(graduationTime<2000||graduationTime>2050){
@@ -91,8 +96,9 @@ public class edit extends BaseAction{
             }
         }
         MainResult mr = UserService.submitVerify(this);
-        if(mr == MainResult.SUCCESS)
+        if(mr == MainResult.SUCCESS) {
             return SUCCESS;
+        }
         else{
             setPrompt(mr.getPrompt());
             return ERROR;
@@ -123,15 +129,23 @@ public class edit extends BaseAction{
     public String gotoVerifyJsp(){
         User u = Main.loginUser();
         if(u==null) return LOGIN;
-        name = u.getName();
-        gender = u.getGender();
-        school = u.getSchool();
-        faculty_text = u.getFaculty();
-        major_text = u.getMajor();
-        cla = u.getCla();
-        no = u.getNo();
-        phone = u.getPhone();
-        email = u.getEmail();
+        UserVerifyInfo userVerifyInfo = UserService.verifySQL.getUserVerifyInfo(u.getUsername());
+        if(userVerifyInfo==null) {
+            name = u.getName();
+            gender = u.getGender();
+            school = u.getSchool();
+            faculty_text = u.getFaculty();
+            major_text = u.getMajor();
+            cla = u.getCla();
+            no = u.getNo();
+            phone = u.getPhone();
+            email = u.getEmail();
+            graduationTime = u.getGraduationTime()==null?0:u.getGraduationTime().getYear()+1900;
+            userVerifyInfo = UserService.verifySQL.getLastUserVerifyInfo(u.getUsername());
+            if(userVerifyInfo != null) setPre_id(userVerifyInfo.id);
+        }else{
+            this.setId(userVerifyInfo.id);
+        }
         return SUCCESS;
     }
     private User getEditUser(){
@@ -235,6 +249,22 @@ public class edit extends BaseAction{
 
     public void setFaculty_text(String faculty) {
         this.faculty_text = faculty;
+    }
+
+    public int getPre_id() {
+        return pre_id;
+    }
+
+    public void setPre_id(int pre_id) {
+        this.pre_id = pre_id;
+    }
+
+    public File getPic() {
+        return pic;
+    }
+
+    public void setPic(File pic) {
+        this.pic = pic;
     }
 
     public String getMajor_text() {

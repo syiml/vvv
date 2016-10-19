@@ -1,4 +1,7 @@
 <%@ page import="util.Main" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="entity.UserVerifyInfo" %>
+<%@ page import="servise.UserService" %>
 <%--
   Created by IntelliJ IDEA.
   User: QAQ
@@ -14,17 +17,35 @@
 <body>
 <div class="container-fluid">
 <jsp:include page="module/head.jsp"/>
+    <%
+        boolean flag = true;
+        UserVerifyInfo userVerifyInfo = UserService.verifySQL.getUserVerifyInfo(Main.loginUser().getUsername());
+        if(userVerifyInfo!=null){
+            out.print(HTML.col(8,2,HTML.panel("认证状态",HTML.showVerifyInfo(userVerifyInfo))));
+            flag = false;
+        }
+        try{
+            int id = Integer.parseInt(request.getParameter("id"));
+            userVerifyInfo = UserService.verifySQL.getUserVerifyInfo(id);
+            if(userVerifyInfo != null && userVerifyInfo.username.equals(Main.loginUser().getUsername())){
+                out.print(HTML.col(8,2,HTML.panel("认证状态",HTML.showVerifyInfo(userVerifyInfo))));
+                flag = false;
+            }
+        }catch (Exception e){}
+        if(flag){
+    %>
     <div class="col-xs-8 col-xs-offset-2">
         <div id="out">
         </div>
     </div>
     <script>
-        $div = HTML.$panel($("#out"),"实名认证","<font>${prompt}</font>").find(".panel-body");
+        $div = HTML.$panel($("#out"),"实名认证","<font color='red'>${prompt}</font>").find(".panel-body");
         $formToHTML($div,{
             col:[2,10],
             action:"VerifyCommit.action",
             method:"post",
             id:"edit",
+            enctype:true,
             onSubmit:"",
             list:[{
                     type:"select",
@@ -122,7 +143,16 @@
                     label:"毕业年份",
                     value:"${graduationTime}"
                 },{
+                    label:"附加图片",
+                    placeholder:"上传本人和一卡通/学生证的合照，帮助自助认证",
+                    title:"上传本人和一卡通/学生证的合照，帮助自助认证",
+                    type:"file",
+                    name:"pic",
+                    id:"upload_pic",
+                    accept:"image/jpeg,image/png"
+                },{
                     type:"submit",
+                    id:"submit",
                     label:"提交"
                 }
             ]
@@ -195,7 +225,12 @@
                 cla:"请输入合法的班级号（4位数字）"
             }
         });
+
+        if(${pre_id}){
+            $("#submit").after("　"+HTML.a("Verify.action?id="+${pre_id},"上次申请记录"));
+        }
     </script>
+    <%}%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

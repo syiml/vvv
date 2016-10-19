@@ -199,6 +199,7 @@ function formToHTML(json){
     if(json.action) ret+="action='"+json.action+"' ";
     if(json.onSubmit) ret+="onsubmit='"+json.onSubmit+"' ";
     if(!json.method) json.method="post";
+    if(json.enctype) ret += "enctype='multipart/form-data' ";
     if(json.id) ret+=" id='"+json.id+"' ";
     ret+="method='"+json.method+"'";
     ret+=">";
@@ -301,6 +302,18 @@ function _formToHTML(d,col){
         if(d.value) ret+="value='"+ d.value +"' " ;
         if(d.id) ret+="id='"+d.id+"' ";
         if(d.placeholder) ret+="placeholder='"+d.placeholder+"' ";
+        ret+=">";
+        ret+="</div>";
+    }else if(d.type == "file"){
+        if(d.label) ret+="<label for='"+d.id+"' class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
+        if(d.label) ret+="<div class='col-xs-"+col[1]+"'>";
+        ret+="<input ";
+        ret+="type='file' ";
+        ret+="name='"+d.name+"' class='form-control' ";
+        if(d.id) ret+="id='"+d.id+"' ";
+        if(d.placeholder) ret+="placeholder='"+d.placeholder+"' ";
+        if(d.accept) ret+= "accept='"+d.accept+"' ";
+        if(d.title) ret+="title='"+d.title+"' ";
         ret+=">";
         ret+="</div>";
     }

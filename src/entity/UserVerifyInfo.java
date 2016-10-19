@@ -47,6 +47,7 @@ public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBe
         email = rs.getString("email");
         time = rs.getTimestamp("time");
         reason = rs.getString("reason");
+        result = rs.getInt("result");
         graduationTime = rs.getTimestamp("graduationTime");
         return this;
     }
