@@ -176,8 +176,10 @@ public class UserSQL extends BaseCache<String,User> {
             return new SQL("select count(*) from users where (username like ? or nick like ?) and inTeamStatus=?", "%" + search + "%", "%" + search + "%",status).queryNum();
         }
     }
+    public List<User> getUserByStatus(int Status){
+          return new SQL("select *  from users where inTeamStatus=?",Status).queryBeanList(User.class);
 
-
+    }
     public List<User> getRichTop10(){
         return new SQL("select * from users order by acb desc,rating desc " +
                 "LIMIT 0,10").queryBeanList(User.class);
