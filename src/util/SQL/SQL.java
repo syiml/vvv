@@ -2,6 +2,7 @@ package util.SQL;
 
 import entity.IBeanResultSetCreate;
 import util.FileLog;
+import util.Main;
 import util.Pair;
 import util.Tool;
 
@@ -264,6 +265,7 @@ public class SQL {
             FileLog.updateSqlLog(Tool.now()+": "+sqlString);
             return ret;
         } catch (SQLException e) {
+            if(Main.config.isDebug) e.printStackTrace();
             if(log&&_log)Tool.log(e);
             return -1;
         } finally {
