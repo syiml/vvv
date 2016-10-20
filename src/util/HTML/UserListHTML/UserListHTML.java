@@ -29,7 +29,7 @@ public class UserListHTML extends pageBean {
         this.desc = desc;
         this.inTeamStatus=inTeamStatus;
         if(search!=null) this.search=search;
-        this.page=page;
+        if(page>0) this.page = page;
         num=Main.config.userShowNum;
         if(inTeamStatus!=-1){//取到了status的值
             list= Main.users.getUsersInTeam((page-1) * num, num, search,order, desc,inTeamStatus);
@@ -156,7 +156,12 @@ public class UserListHTML extends pageBean {
 
     @Override
     public String getLinkByPage(int page) {
-        return "User.jsp?page="+page+(search==null?"":"&search="+search)+(order==null?"":"&order="+order)+(desc ?"&desc=1":"");
+        if(inTeamStatus!=-1){
+            return "User.jsp?status=1&page="+page+(search==null?"":"&search="+search)+(order==null?"":"&order="+order)+(desc ?"&desc=1":"");
+        }
+        else{
+            return "User.jsp?page="+page+(search==null?"":"&search="+search)+(order==null?"":"&order="+order)+(desc ?"&desc=1":"");
+        }
     }
 
     @Override
