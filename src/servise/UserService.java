@@ -44,7 +44,8 @@ public class UserService {
             acceptedVerify(id);
         }
         try {
-            Main.uploadFile(e.getPic(), Main.getRealPath("/")+Main.config.verifyPicPath + id +".jpg");
+            if(e.getPic()!=null)
+                Main.uploadFile(e.getPic(), Main.getRealPath("/")+Main.config.verifyPicPath + id +".jpg");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
