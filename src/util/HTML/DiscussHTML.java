@@ -214,12 +214,7 @@ public class DiscussHTML {
         List<DiscussReply> list=DiscussSQL.getDiscussReplay(did, page * num, num );
         String s="";
         for (DiscussReply aList : list) {
-            if(!aList.isVisiable()){
-                s += EveryDiscussReply(aList);
-            }
-            else if(admin || (loginuser!=null&& aList.getUsername().equals(loginuser.getUsername()))){
-                s += EveryDiscussReply(aList);
-            }
+            s += EveryDiscussReply(aList);
         }
         int pagenum=(DiscussSQL.getDiscussReplayNum(did)+num-1)/num;
         s+=page(page,pagenum,d.getCid());
