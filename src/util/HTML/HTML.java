@@ -1586,7 +1586,9 @@ public class HTML {
         f.setAction("ResetPassword.action");
         f.setSubmitText("确定");
         text t1=new text("username","username");
-        f.addForm(t1);
+        text t2=new text("reason","确认");
+        t2.setPlaceholder("输入“重置密码”确定，否则无效");
+        f.addForm(t1,t2);
         f.setSubmitText("确定");
         f.setCol(2, 10);
         return f.toHTML();

@@ -115,8 +115,9 @@ public class edit extends BaseAction{
         return SUCCESS;
     }
     public String resetPassword(){
+        if(!reason.equals("重置密码")) return "fail";
         if(Main.loginUserPermission().getResetPassword()){
-            UserService.editUser(getUser());
+            UserService.resetPassword(username);
         }
         return "success";
     }

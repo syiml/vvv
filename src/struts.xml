@@ -157,6 +157,7 @@
                 </action>
                 <action name="ResetPassword" class="action.edit" method="resetPassword">
                         <result name="success">return.jsp</result>
+                        <result name="fail">info.jsp?info=确认失败&amp;next=return.jsp</result>
                 </action>
                 <action name="AdminEditUser" class="action.edit" method="adminEdit">
                         <result name="success">return.jsp</result>

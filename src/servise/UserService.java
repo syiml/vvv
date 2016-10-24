@@ -68,4 +68,10 @@ public class UserService {
         MessageMain.addMessageVerify(verifySQL.getUserVerifyInfo(id));
         return MainResult.SUCCESS;
     }
+    public static MainResult resetPassword(String username){
+        User u = Main.users.getUser(username);
+        u.setPassword("123456");
+        editUser(u);
+        return MainResult.SUCCESS;
+    }
 }
