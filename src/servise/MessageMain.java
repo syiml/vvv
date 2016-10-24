@@ -1,14 +1,11 @@
 package servise;
 
+import entity.*;
 import entity.Discuss.ReplyReply;
-import entity.User;
 import entity.Discuss.Discuss;
 import dao.Discuss.DiscussSQL;
-import entity.Contest;
-import entity.RegisterUser;
 import dao.MessageSQL;
 import entity.Discuss.DiscussReply;
-import entity.Message;
 import util.HTML.HTML;
 import util.Main;
 
@@ -184,6 +181,21 @@ public class MessageMain {
         else url="Contest.jsp?cid="+cid+"#D"+d.getId();
         User u = Main.users.getUser(rr.getUsername());
         m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")在帖子【" + d.getTitle() + "】中回复了你：</br>" + rr.getText() + "</br>" + HTML.a(url, "查看帖子"));
+        m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
+        return MessageSQL.save(m);
+    }
+    public static int addMessageVerify(UserVerifyInfo userVerifyInfo){
+        Message m = new Message();
+        m.setTitle("你提交的认证已经处理完毕");
+        m.setText("你提交的认证已经处理完毕<br>"+
+                "认证内容："+ userVerifyInfo.getVerifyTypeText()+"<br>"+
+                "处理结果："
+                +(userVerifyInfo.result==UserVerifyInfo.RESULT_ACCEPTED?HTML.text("通过","green"):(
+                        HTML.text("未通过","red")+"<br>备注信息："+userVerifyInfo.reason
+                ))+
+                "<br>"+HTML.a("Verify.action?id="+userVerifyInfo.id,"点击查看")
+        );
+        m.setUser(userVerifyInfo.username);
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }

@@ -55,7 +55,7 @@ public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBe
     public String getVerifyTypeText(){
         switch (VerifyType)
         {
-            case 0:return "未认证用户修改资料";
+            case 0:return "申请修改资料";
             case 1:return "申请为ACM集训队员";
             case 2:return "申请ACM退役";
             case 3:return "认证为中世竞创协会成员";

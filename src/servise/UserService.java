@@ -57,6 +57,7 @@ public class UserService {
         if(userVerifyInfo.result != UserVerifyInfo.RESULT_PADDING) return MainResult.ARR_ERROR;
         Main.users.updateByVerify(userVerifyInfo);
         verifySQL.updateResult(id, UserVerifyInfo.RESULT_ACCEPTED,"");
+        MessageMain.addMessageVerify(verifySQL.getUserVerifyInfo(id));
         return MainResult.SUCCESS;
     }
     public static MainResult refuseVerify(int id,String reason){
@@ -64,6 +65,7 @@ public class UserService {
         if(userVerifyInfo==null) return MainResult.ARR_ERROR;
         if(userVerifyInfo.result != UserVerifyInfo.RESULT_PADDING) return MainResult.ARR_ERROR;
         verifySQL.updateResult(id,UserVerifyInfo.RESULT_REFUSE,reason);
+        MessageMain.addMessageVerify(verifySQL.getUserVerifyInfo(id));
         return MainResult.SUCCESS;
     }
 }
