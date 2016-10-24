@@ -845,6 +845,106 @@ public class HTML {
 
         return f.toHTML();
     }
+    public static FormHTML editInfoFormAdmin(User user){
+
+        FormHTML f=new FormHTML();
+        f.setId("edit");
+
+        text f2=new text("pass","密码*");
+        f2.setId("pass");
+        f2.setPass();
+        f2.setPlaceholder("原密码，必填");
+        f.addForm(f2);
+
+        text p1=new text("newpass","新密码");
+        p1.setId("newpass");
+        p1.setPlaceholder("需要修改密码则输入");
+        p1.setPass();
+        f.addForm(p1);
+
+        text p2=new text("renewpass","重复新密码");
+        p2.setId("renewpass");
+        p2.setPass();
+        f.addForm(p2);
+
+        text f4=new text("nick","昵称");
+        f4.setId("nick");
+        f4.setValue(user.getNick());
+        f.addForm(f4);
+
+        text name=new text("name","姓名");
+        name.setValue(user.getName());
+        name.setPlaceholder("注册正式比赛时必填");
+        f.addForm(name);
+
+        select sex=new select("gender","性别");
+        sex.add(0,"请选择");
+        sex.add(1,"男");
+        sex.add(2,"女");
+        sex.setValue(user.getGender() + "");
+        f.addForm(sex);
+
+        text f5=new text("school","学校");
+        f5.setId("school");
+        f5.setValue(user.getSchool());
+        f5.setPlaceholder("注册正式比赛时必填");
+        f.addForm(f5);
+
+        text_select f8=new text_select("faculty","学院");
+        f8.add("信息科学与工程学院");
+        f8.add("数理学院");
+        f8.add("国脉信息学院");
+        f8.setId("faculty");
+        f8.setValue(user.getFaculty());
+        f.addForm(f8);
+
+        text_select f9=new text_select("major","专业");
+        f9.add("计算机科学与技术");
+        f9.add("软件工程");
+        f9.add("信息管理与信息系统");
+        f9.add("网络工程");
+        f9.add("物联网工程");
+        f9.add("通信工程");
+        f9.add("电子信息工程");
+        f9.add("电气工程及其自动化");
+        f9.add("电子科学与技术");
+        f9.add("建筑电气与智能化");
+
+        f9.setId("major");
+        f9.setValue(user.getMajor());
+        f.addForm(f9);
+
+        text cla=new text("cla","班级");
+        cla.setValue(user.getCla());
+        cla.setPlaceholder("注册正式比赛时必填");
+        f.addForm(cla);
+
+        text no=new text("no","学号");
+        no.setValue(user.getNo());
+        no.setPlaceholder("注册正式比赛时必填");
+        f.addForm(no);
+
+        text phone=new text("phone","电话");
+        phone.setValue(user.getPhone());
+        phone.setPlaceholder("注册正式比赛时必填");
+        f.addForm(phone);
+
+        text f6=new text("email","邮箱");
+        f6.setId("email");
+        f6.setValue(user.getEmail());
+        f.addForm(f6);
+
+        text f7=new text("motto","个性签名");
+        f7.setId("motto");
+        f7.setValue(user.getMotto());
+        f7.setPlaceholder("说一句话吧...");
+        f.addForm(f7);
+
+        f.setCol(2, 10);
+        f.setAction("edit.action");
+
+        return f;
+    }
     public static FormHTML editInfoForm(User user){
         FormHTML f=new FormHTML();
         f.setId("edit");
@@ -1519,7 +1619,7 @@ public class HTML {
                 if (u == null) {
                     return "用户不存在";
                 } else {
-                    FormHTML editInfo = editInfoForm(u);
+                    FormHTML editInfo = editInfoFormAdmin(u);
                     editInfo.setAction("AdminEditUser.action");
 
                     select inTeamStatus = new select("inTeamStatus", "队员状态");
@@ -1529,7 +1629,7 @@ public class HTML {
                     inTeamStatus.setValue(u.getInTeamStatus() + "");
 
                     text inTeamLv = new text("inTeamLv", "队员等级");
-                    inTeamLv.setPlaceholder("等级0~6，非队员无效");
+                    inTeamLv.setPlaceholder("等级-1~6，非队员无效 -1表示预备队员(0级灰色)，退役队员等级为1~6");
                     inTeamLv.setValue(u.getInTeamLv() + "");
                     text username = new text("username", "username");
                     username.setValue(user);
