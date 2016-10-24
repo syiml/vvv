@@ -1693,6 +1693,11 @@ public class HTML {
                 row.add(userVerifyInfo.getVerifyTypeText());
                 String href = "admin.jsp?page=Verify&id="+userVerifyInfo.id;
                 switch (userVerifyInfo.VerifyType){
+                    case User.V_NONE:
+                        if(p.havePermissions(PermissionType.verify_all)){
+                            row.add(HTML.a(href,"查看"));
+                        }else row.add("");
+                        break;
                     case User.V_TEAM:
                         if(p.havePermissions(PermissionType.verify_all)||p.havePermissions(PermissionType.verify_team)){
                             row.add(HTML.a(href,"查看"));
