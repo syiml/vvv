@@ -2,6 +2,7 @@ package util.HTML;
 
 import entity.*;
 import servise.*;
+import util.HTML.FromHTML.text_select.text_select;
 import util.HTML.UserListHTML.AdminUserListHTML;
 import entity.Mall.Goods;
 import dao.ChallengeSQL;
@@ -10,10 +11,8 @@ import ClockIn.ClockInSQL;
 import servise.WeekRankCount.WeekRankCountHTML;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
-import entity.OJ.OTHOJ;
 import util.HTML.FromHTML.hidden.hidden;
 import util.HTML.modal.modal;
-import util.SQL.SQL;
 import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
 import entity.rank.RankShortCode.RankShortCode;
@@ -28,7 +27,6 @@ import util.HTML.FromHTML.file.file;
 import util.HTML.FromHTML.select.select;
 import util.HTML.FromHTML.text.text;
 import util.HTML.FromHTML.text_in.text_in;
-import util.HTML.FromHTML.text_select.text_select;
 import util.HTML.FromHTML.textarea.textarea;
 import util.HTML.UserListHTML.UserListContest;
 import util.HTML.UserListHTML.UserListHTML;
@@ -39,8 +37,6 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -1172,7 +1168,7 @@ public class HTML {
             case "AddDiscuss":      return returnPage(p.getAddDiscuss(),panel("新增/编辑通知", adminAddDiscuss()));
             case "AddTag":          return returnPage(p.getAddTag(),panel("题目标签管理", adminAddTag()));
             case "SubmitterInfo":   return returnPage(Main.loginUser().getUsername().equals("admin"),panel("评测机",adminSubmitterInfo()));
-            case "PermissionAdmin": return returnPage(p.getPermissionAdmin(),panel("权限管理",adminPerimission()));
+            case "PermissionAdmin": return returnPage(p.getPermissionAdmin(),panel("权限管理", adminPermission()));
             case "AwardACBAdmin":   return returnPage(p.getAwardACB(),panel("奖励ACB",adminAwardACB())+panel("比赛奖励",adminAwardContestACB()));
             case "AddLocalProblem": return returnPage(p.getAddLocalProblem(),panel("添加本地题目",adminAddLocalProblem()));
             case "ChallengeAdmin":  return returnPage(p.getChallengeAdmin(),panel("挑战模式管理",adminChallengeAdmin()));
@@ -1403,7 +1399,7 @@ public class HTML {
         }
         return table.HTML();
     }
-    public static String adminPerimission(){
+    public static String adminPermission(){
         TableHTML table=new TableHTML();
         table.setClass("table");
         table.addColname("user","per","admin");

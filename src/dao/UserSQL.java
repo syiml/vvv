@@ -46,6 +46,14 @@ public class UserSQL extends BaseCache<String,User> {
         return new SQL("select count(*) from contestuser where cid=? and statu=?",cid,st).queryNum();
     }
 
+    public int getUsersNum(String search){
+        if(search==null||search.equals("")){
+            return new SQL("select count(*) from users").queryNum();
+        }else {
+            return new SQL("select count(*) from users where (username like ? or nick like ?)", "%" + search + "%", "%" + search + "%").queryNum();
+        }
+    }
+
     public int register(User u){
         SQL sql1=new SQL("select * from users where username=?",u.getUsername());
         try {
@@ -146,7 +154,6 @@ public class UserSQL extends BaseCache<String,User> {
         }
     }
 
-
     public List<User> getUsersInTeam(int from,int num,String search,String order,boolean desc,int Status){
         if(order==null||order.equals("")){
             order="rank";
@@ -160,15 +167,6 @@ public class UserSQL extends BaseCache<String,User> {
         }
     }
 
-
-    public int getUsersNum(String search){
-        if(search==null||search.equals("")){
-            return new SQL("select count(*) from users").queryNum();
-        }else {
-            return new SQL("select count(*) from users where (username like ? or nick like ?)", "%" + search + "%", "%" + search + "%").queryNum();
-        }
-    }
-
     public int getUsersNumInTeam(String search,int status){
         if(search==null||search.equals("")){
             return new SQL("select count(*) from users where inTeamStatus=?",status).queryNum();
@@ -178,7 +176,6 @@ public class UserSQL extends BaseCache<String,User> {
     }
     public List<User> getUserByStatus(int Status){
           return new SQL("select *  from users where inTeamStatus=?",Status).queryBeanList(User.class);
-
     }
     public List<User> getRichTop10(){
         return new SQL("select * from users order by acb desc,rating desc " +

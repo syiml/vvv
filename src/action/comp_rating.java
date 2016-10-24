@@ -6,6 +6,7 @@ import util.Tool;
 import util.rating.Computer;
 
 /**
+ * 计算rating
  * Created by Syiml on 2015/7/3 0003.
  */
 public class comp_rating extends BaseAction{

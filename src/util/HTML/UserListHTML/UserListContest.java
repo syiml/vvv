@@ -2,6 +2,7 @@ package util.HTML.UserListHTML;
 
 import entity.*;
 import servise.ContestMain;
+import util.HTML.TableHTML;
 import util.HTML.modal.modal;
 import util.Main;
 import dao.UserSQL;
@@ -12,6 +13,7 @@ import util.HTML.FromHTML.text.text;
 import util.HTML.FromHTML.text_in.text_in;
 import util.HTML.HTML;
 import util.HTML.pageBean;
+import util.MainResult;
 import util.Tool;
 
 import java.util.List;
@@ -101,7 +103,7 @@ public class UserListContest extends pageBean {
         return s;
     }
     @Override
-    public String getCellByHead(int i, String colname) {
+    public String getCellByHead(int i, String colname) {//就是第i行的每列的内容
         if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             RegisterTeam rt = list_register_team.get(i);
             //"用户名","队名","队员1","队员2","队员3","状态","时间"
@@ -218,31 +220,30 @@ public class UserListContest extends pageBean {
     @Override
     public String rightForm() {
         String r="";
-        if(admin){
-            FormHTML form=new FormHTML();
+        if(admin) {
+            FormHTML form = new FormHTML();
             form.setAction("setregistercontest.action");
             form.setType(1);
-            text_in t=new text_in(r+" ");
+            text_in t = new text_in(r + " ");
             form.addForm(t);
-            hidden t1=new hidden("cid",c.getCid()+"");
+            hidden t1 = new hidden("cid", c.getCid() + "");
             form.addForm(t1);
-            text t2=new text("username","添加用户");
+            text t2 = new text("username", "添加用户");
             form.addForm(t2);
-            select s1=new select("statu","状态");
+            select s1 = new select("statu", "状态");
             //0pending 1accepted -1no  2*
-            s1.add(0,"等待");
-            s1.add(4,"通过");
-            s1.add(-1,"拒绝");
-            s1.add(2,"非正式");
-            s1.add(1,"已签到");
-            s1.add(5,"管理员");
+            s1.add(0, "等待");
+            s1.add(4, "通过");
+            s1.add(-1, "拒绝");
+            s1.add(2, "非正式");
+            s1.add(1, "已签到");
+            s1.add(5, "管理员");
             s1.setValue("0");
             s1.setId("statu");
             s1.setType(1);
-
             form.addForm(s1);
             form.setSubmitText("提交");
-            r=form.toHTML();
+            r = form.toHTML();
         }
         return r;
     }
@@ -297,7 +298,35 @@ public class UserListContest extends pageBean {
             randomPass+="【"+mo.toHTMLA()+"】";
             //randomPass+="【"+HTML.a("computeUsernamePassword.action?cid="+c.getCid()+"&prefix=team","随机生成密码")+"】";
         }
-        return HTML.div("panel-body","style='padding:5px'",HTML.floatLeft("【"+ss+"】【"+count+"】【"+r+"】"+randomPass))+
+        String autoRegister = "";
+        if(Main.loginUserPermission().havePermissions(PermissionType.teamAutoRegister)) {
+            modal teamAutoRegister = new modal("teamAutoRegister", "集训队自动报名", getUserInTeam() + new hidden("cid", c.getCid() + "").toHTML(), "【集训队自动报名】");
+
+            teamAutoRegister.setAction("teamAutoRegister.action");
+            teamAutoRegister.setFormId("teamAutoRegisterForm");
+            autoRegister = teamAutoRegister.toHTMLA();
+        }
+
+
+        return HTML.div("panel-body","style='padding:5px'",HTML.floatLeft("【"+ss+"】【"+count+"】【"+r+"】"+
+                randomPass+autoRegister))+
                HTML.div("panel-body","style='padding:5px'",HTML.floatLeft(page())+HTML.floatRight(rightForm()));
+    }
+
+    public String getUserInTeam() {
+        TableHTML allUserInTeam = new TableHTML();
+        allUserInTeam.addColname("用户名", "当前ACB", "需扣除ACB");
+        allUserInTeam.setClass("table table-striped");
+        List<User> list = Main.users.getUserByStatus(User.V_TEAM);
+        for (int i = 0; i < list.size(); i++) {
+            User u = list.get(i);
+            if( u.getAcb() < u.getSubAcbInWeekContest()){
+                allUserInTeam.addRow(u.getUsernameHTML(), HTML.textb(u.getAcb() + "","red"), u.getSubAcbInWeekContest() + "");
+            } else {
+                allUserInTeam.addRow(u.getUsernameHTML(), u.getAcb() + "", u.getSubAcbInWeekContest() + "");
+            }
+        }
+        return   allUserInTeam.HTML();
+
     }
 }

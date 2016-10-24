@@ -48,6 +48,31 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     Timestamp graduationTime;//毕业时间
     private Timestamp catch_time;
 
+    public  int getSubAcbInWeekContest(){
+        if(inTeamStatus != User.V_TEAM) return 0;
+        switch (inTeamLv){
+            case -1:
+                return 100;
+            case 0:
+                return 125;
+            case 1:
+                return 150;
+            case 2:
+                return 175;
+            case 3:
+                return 200;
+            case 4:
+                return 200;
+            case 5:
+                return 200;
+            case 6:
+                return 200;
+            default:
+                return 0;
+        }
+
+    }
+
     public User(){}
 
     public User(register r){
@@ -201,7 +226,10 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
      * @return 返回是否是现役队员
      */
     public boolean isInTeam(){
-        return false;  // 你自己写一下
+        if(inTeamStatus==1)
+            return true;
+        else
+            return false;
     }
 
     public int getRank(){return rank;}

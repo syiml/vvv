@@ -124,7 +124,6 @@ public class Main {
     public static String getRealPath(String s){
         return getSession().getServletContext().getRealPath(s);
     }
-
     public static String uploadFile(File upload,String path) throws IOException {
         InputStream is=new FileInputStream(upload);
         OutputStream os=new FileOutputStream(path);
@@ -173,8 +172,6 @@ public class Main {
             return null;
         }
     }
-
-
     public static boolean canViewCode(Status s,User user) {
         return user != null && (user.getUsername().equals(s.getUser()) || user.getPermission().getViewCode() || Main.users.haveViewCode(user.getUsername(), s.getPid()) );
     }

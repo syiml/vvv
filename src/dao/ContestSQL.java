@@ -109,22 +109,22 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         removeCatch(cid);
         return "success";
     }
-    public String setUserContest(int cid,String username,int statu,String info){
+    public String setUserContest(int cid,String username,int status,String info){
         Contest c = ContestMain.getContest(cid);
         if(getRegisterStatu(username,cid)==null){
             if(c.getType()==Contest_Type.TEAM_OFFICIAL){
                 RegisterTeam rt = new RegisterTeam();
                 rt.setUsername(username);
                 rt.teamName = username;
-                rt.setStatu(statu);
+                rt.setStatu(status);
                 rt.setInfo(info==null?"":info);
                 rt.setTime(Tool.now());
                 addRegisterTeam(cid,rt);
             }else {
-                addUserContest(cid, username, statu);
+                addUserContest(cid, username, status);
             }
         }
-        if(statu==-2){//-2 -> 删除
+        if(status==-2){//-2 -> 删除
             if(c.getType() == Contest_Type.TEAM_OFFICIAL) {
                 return delTeamContest(cid,username);
             }else {
@@ -135,12 +135,12 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             table = "t_register_team";
         }
-        if(statu!=3){
-            new SQL("UPDATE "+table+" set statu=? WHERE cid=? AND username=?",statu,cid,username).update();
-            MessageMain.addMessageRegisterContest(username, cid, statu);
+        if(status!=3){
+            new SQL("UPDATE "+table+" set statu=? WHERE cid=? AND username=?",status,cid,username).update();
+            MessageMain.addMessageRegisterContest(username, cid, status);
         }else{//3 -> 需修改
-            new SQL("UPDATE "+table+" set statu=?,info=? WHERE cid=? AND username=?",statu,info,cid,username).update();
-            MessageMain.addMessageRegisterContest(username, cid, statu);
+            new SQL("UPDATE "+table+" set statu=?,info=? WHERE cid=? AND username=?",status,info,cid,username).update();
+            MessageMain.addMessageRegisterContest(username, cid, status);
         }
         removeCatch(cid);
         return "success";
@@ -347,6 +347,9 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         pros=sql2.query();
         try {
             return new Contest(c,pros);
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }finally {
             sql1.close();
             sql2.close();

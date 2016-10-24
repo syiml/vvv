@@ -31,7 +31,8 @@ public enum PermissionType {
     verify_school(22, "认证管理（校内人员）"),
     verify_association(23, "认证管理（协会成员）"),
     verify_retired(24, "认证管理（退役队员）"),
-    verify_team(25, "认证管理（集训队员）");
+    verify_team(25, "认证管理（集训队员）"),
+    teamAutoRegister(26, "集训队员自动报名");
 
     private static Map<Integer, PermissionType> allPermission = null;
     private int code;

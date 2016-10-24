@@ -44,7 +44,7 @@ public abstract class pageBean {
      * @param colname 列名
      * @return 单元格显示的内容
      */
-    public abstract String getCellByHead(int i,String colname);//第i行的每列的内容
+    public abstract String getCellByHead(int i,String colname);//就是第i行的每列的内容
 
     /**
      * 重写这个方法，指定当用户点击第page页的按钮时，应该跳转到哪个页面
@@ -77,7 +77,7 @@ public abstract class pageBean {
 
     /**
      * 当表头显示的内容和列名不同时，可以重写该方法。
-     * @param colname 当前列名
+     * @param colname 当前列名,      就是第一行上面的东西
      * @return 返回新的表头位置显示的内容
      */
     protected String getColname(String colname){

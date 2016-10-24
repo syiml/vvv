@@ -5,6 +5,7 @@ import dao.ContestSQL;
 import entity.*;
 import entity.rank.RankSQL;
 import util.Main;
+import util.MainResult;
 import util.Tool;
 
 import java.util.List;
@@ -146,5 +147,30 @@ public class ContestMain {
 
     public static void ResetContestProblmes(int cid,String pids){
         contests.ResetContestProblmes(cid,pids);
+    }
+    public static MainResult teamAutoRegister(int cid){
+        //1、判断权限
+        if(!Main.loginUserPermission().havePermissions(PermissionType.teamAutoRegister)){
+            return MainResult.NO_PERMISSION;
+        }
+        //2、判断比赛是否存在
+        Contest c = ContestMain.getContest(cid);
+        if(c==null){
+            return MainResult.ARR_ERROR;
+        }
+
+        //3、正常逻辑运行
+        List<User> list = Main.users.getUserByStatus(User.V_TEAM);
+        for (User u : list) {
+            if (c.isRegistered(u.getUsername())) continue;
+            if (u.getAcb() < u.getSubAcbInWeekContest()) continue;
+            //减acb
+            Main.users.subACB(u.getUsername(), u.getSubAcbInWeekContest());
+            //添加报名信息
+            contests.setUserContest(cid, u.getUsername(), RegisterUser.STATUS_TEAM_AUTO, "");
+        }
+
+        //contests.setUserContest(cid, username, statu, info);
+        return MainResult.SUCCESS;
     }
 }

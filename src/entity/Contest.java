@@ -65,7 +65,7 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
         }
     }
     public Contest(){}
-    public Contest(ResultSet re,ResultSet ps){
+    public Contest(ResultSet re,ResultSet ps) throws SQLException {
         //re:   id,name,beginTime,endTime,rankType,ctype,password,registerstarttime,registerendtime
         //ps:   pid,tpid
         //rs:   id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,code,codelen
@@ -207,6 +207,13 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
 
     public RegisterUser getUser(int i){return users.get(i);}
 
+    public boolean isRegistered(String username){
+        for(RegisterUser registerUser : users){
+            if(registerUser.getUsername().equals(username)) return true;
+        }
+        return false;
+    }
+
     public int getUserNum(){ return users.size();}
 
     public String getName(){
@@ -340,7 +347,9 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
             for (RegisterUser u : users) {
                 if (u.getUsername().equals(user.getUsername())) {
                     int statu = u.getStatu();
-                    if (statu == RegisterUser.STATUS_APPENDED || statu == RegisterUser.STATUS_UNOFFICIAL) {//是已经签到或者星号状态，可以进入
+                    if (statu == RegisterUser.STATUS_APPENDED
+                            || statu == RegisterUser.STATUS_UNOFFICIAL
+                            || statu == RegisterUser.STATUS_TEAM_AUTO) {//是已经签到或者星号或者是集训队员自动报名状态，可以进入
                         return 1;
                     }
                     if (statu == RegisterUser.STATUS_ACCEPTED){

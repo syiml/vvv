@@ -13,13 +13,14 @@ import java.sql.Timestamp;
  */
 public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
     //注册状态 0:等待 1:已参加 -1:拒绝  2:* 3:需修改  4:通过
-    public static int STATUS_FAILD=-1;
-    public static int STATUS_PADDING=0;
-    public static int STATUS_APPENDED=1;
-    public static int STATUS_UNOFFICIAL=2;
-    public static int STATUS_MUST_EDIT=3;
-    public static int STATUS_ACCEPTED=4;
-    public static int STATUS_ADMIN = 5; //管理员
+    public final static int STATUS_FAILD=-1;
+    public final static int STATUS_PADDING=0;
+    public final static int STATUS_APPENDED=1;
+    public final static int STATUS_UNOFFICIAL=2;
+    public final static int STATUS_MUST_EDIT=3;
+    public final static int STATUS_ACCEPTED=4;
+    public final static int STATUS_ADMIN = 5; //管理员
+    public final static int STATUS_TEAM_AUTO = 6;//集训队员自动报名，扣除了ACB，计算完rating后要返还ACB
 
     public String getInfo() {
         return info;
@@ -59,6 +60,7 @@ public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
             case 3: return HTML.textb("需修改","#ff00ff");
             case 4: return HTML.textb("通过","green");
             case 5: return HTML.textb("管理员","#00aaaa");
+            case STATUS_TEAM_AUTO: return HTML.textb("集训队员","#7E48B7");
         }
         return HTML.textb("ERROR","orange");
     }

@@ -4,21 +4,22 @@ import util.HTML.HTML;
 
 /**
  * Created by Syiml on 2015/7/5 0005.
+ * 这个类是回复用的类，带弹框的小回复
  */
 public class modal {
     String title;
     String body;
     String id;
-    String btncls="default";
-    String btnlabel;
-    String action="";
+    String btncls="default";//bootstrap提供的样式
+    String btnlabel;//初始字。。。
+    String action="";//提交地址
     String formId=null;
-    boolean havesubmit=true;
-    boolean enctype=false;
-    boolean islage=false;
+    boolean havesubmit=true;//提交按钮
+    boolean enctype=false;//有无文件提交
+    boolean islage=false;//是否为大回复框
 //    String btnsize="xs";
     public modal(String id,String title,String body,String btnlabel){
-        this.id=id;
+        this.id=id;//回复的编号
         this.title=title;
         this.body=body;
         this.btnlabel=btnlabel;
@@ -39,6 +40,7 @@ public class modal {
     public void setFormId(String id){
         formId=id;
     }
+    //纯文本返回
     public String toHTML(){
         return "<button type=\"button\" class=\"btn btn-"+btncls+"\" data-toggle=\"modal\" data-target=\"#"+id+"\">\n" +
                 btnlabel +
@@ -65,6 +67,7 @@ public class modal {
                 "</form>"+
                 "</div>";
     }
+    //带链接的返回
     public String toHTMLA(){
         return "<a href='' data-toggle=\"modal\" data-target=\"#"+id+"\">" +
             btnlabel +
