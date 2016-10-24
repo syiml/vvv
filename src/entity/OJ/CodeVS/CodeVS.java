@@ -13,6 +13,7 @@ import org.jsoup.select.Elements;
 import util.HTML.HTML;
 import util.HTML.problemHTML;
 import util.MyClient;
+import util.Pair;
 import util.Tool;
 import util.Vjudge.VjSubmitter;
 
@@ -102,17 +103,19 @@ public class CodeVS extends OTHOJ {
     }
 
     public String login(VjSubmitter s){
-        hc.get("http://login.codevs.com/auth/login");
+        hc.get("http://login.codevs.com/auth/login").text();
         List<NameValuePair> para = new ArrayList<>();
         para.add(new BasicNameValuePair("username",s.getUsername()));
         para.add(new BasicNameValuePair("password",s.getPassword()));
-        hc.Post(loginURL,para);
+        String json = hc.Post(loginURL,para);
+        JSONObject jsonObject = JSONObject.fromObject(json);
         hc.get("http://login.codevs.com/auth/redirect/?next=http://codevs.cn/accounts/token/login/&token");
+        hc.header.add(new Pair<>("Authorization","JWT "+jsonObject.get("jwt")));
         Document d = hc.get("http://login.codevs.com/api/auth/token");
+        hc.header.clear();
         Tool.debug("token = " + d.text());
         JSONObject token = JSONObject.fromObject(d.text());
         String tokenString = token.getString("token");
-
         hc.get("http://codevs.cn/accounts/token/login/?token="+tokenString);
         return null;
     }

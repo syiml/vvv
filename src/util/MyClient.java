@@ -33,6 +33,7 @@ import javax.security.cert.X509Certificate;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +43,8 @@ import java.util.List;
  * Created by Administrator on 2015/6/7.
  */
 public class MyClient extends DefaultHttpClient{
+    public List<Pair<String,String>> header = new ArrayList<>();
+
     public MyClient(){
         super();
         HttpClientParams.setCookiePolicy(getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
@@ -107,7 +110,7 @@ public class MyClient extends DefaultHttpClient{
                 String content;
                 try {
                     content = EntityUtils.toString(entity);
-                    Tool.log("Response content:" + content);
+                    Tool.debug("Response content:" + content);
 
                     return content;
                 } catch (IOException e) {
@@ -140,7 +143,11 @@ public class MyClient extends DefaultHttpClient{
         try {
             HttpGet httpget = new HttpGet(URL);
             httpget.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-            httpget.setHeader("Authorization","JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijk0Mzk4NjA4MEBxcS5jb20iLCJleHAiOjE0NzcyNDMxNzYsImVtYWlsIjoiOTQzOTg2MDgwQHFxLmNvbSIsInVzZXJfaWQiOjc5MDB9.ySRpEVJ-9Lud1cbWXAgf40YcSFYveBbtQiKTndqormU");
+            if(header!=null) {
+                for (Pair<String, String> pair : header) {
+                    httpget.setHeader(pair.getKey(), pair.getValue());
+                }
+            }
             HttpResponse hr = execute(httpget);
             entity = hr.getEntity();
             return Jsoup.parse(entity.getContent(), "utf-8", "");
