@@ -10,7 +10,7 @@ public class Config {
     public int statusShowNum;//statu每页显示数量
     public int contestShowNum;//contest每页显示数量
     public int userShowNum;//user每页显示数量
-    public int discussShowNum;//discuss的显示数量
+    public int discussShowNum;//discuss内每页回复的显示数量
 
     public int autoConnectionTimeMinute;//连接池自动清空的时间间隔
 

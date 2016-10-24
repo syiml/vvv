@@ -180,7 +180,7 @@ public class MessageMain {
         if(m.getUser().equals(rr.getUsername())) return 0;
         m.setTitle("你在【"+d.getTitle()+"】中有新回复");
         String url;
-        if(cid==-1) url="Discuss.jsp?id="+dr.getDid()+"&page="+(dr.getRid()-1)/DiscussMain.replyReplyShowNum;
+        if(cid==-1) url="Discuss.jsp?id="+dr.getDid()+"&page="+(dr.getRid()-1)/Main.config.discussShowNum;
         else url="Contest.jsp?cid="+cid+"#D"+d.getId();
         User u = Main.users.getUser(rr.getUsername());
         m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")在帖子【" + d.getTitle() + "】中回复了你：</br>" + rr.getText() + "</br>" + HTML.a(url, "查看帖子"));
