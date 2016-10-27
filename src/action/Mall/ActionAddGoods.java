@@ -21,6 +21,7 @@ public class ActionAddGoods extends BaseAction {
     private String des;//描述
     private String isHidden;
     private int buyLimit = -1;
+    private int buyVerifyLimit;
 
     private File upload;
     private String uploadFileName;
@@ -117,6 +118,14 @@ public class ActionAddGoods extends BaseAction {
 
     public String getUploadFileName() {
         return uploadFileName;
+    }
+
+    public int getBuyVerifyLimit() {
+        return buyVerifyLimit;
+    }
+
+    public void setBuyVerifyLimit(int buyVerifyLimit) {
+        this.buyVerifyLimit = buyVerifyLimit;
     }
 
     public void setUploadFileName(String uploadFileName) {

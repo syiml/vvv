@@ -17,7 +17,7 @@ public class GoodsSQL extends BaseCache<Integer, Goods> {
      * @return 插入的商品id
      */
     public int addGoods(Goods goods){
-        return new SQL("INSERT INTO t_mall(title,acb,stock,des,isHidden,user,time,buyLimit) VALUES (?,?,?,?,?,?,?,?)",
+        return new SQL("INSERT INTO t_mall(title,acb,stock,des,isHidden,user,time,buyLimit,buyVerifyLimit) VALUES (?,?,?,?,?,?,?,?,?)",
                 goods.getTitle(),
                 goods.getAcb(),
                 goods.getStock(),
@@ -25,21 +25,23 @@ public class GoodsSQL extends BaseCache<Integer, Goods> {
                 goods.isHidden(),
                 goods.getUser(),
                 goods.getTime(),
-                goods.getBuyLimit()
+                goods.getBuyLimit(),
+                goods.getBuyVerifyLimit()
             ).isnertGetLastInsertId();
     }
     public int editGoods(Goods goods){
-        int ret = new SQL("UPDATE t_mall SET title=?,acb=?,stock=?,des=?,isHidden=?,buyLimit=? WHERE id=?",
+        int ret = new SQL("UPDATE t_mall SET title=?,acb=?,stock=?,des=?,isHidden=?,buyLimit=?,BuyVerifyLimit=? WHERE id=?",
                 goods.getTitle(),
                 goods.getAcb(),
                 goods.getStock(),
                 goods.getDes(),
                 goods.isHidden(),
                 goods.getBuyLimit(),
+                goods.getBuyVerifyLimit(),
                 goods.getId()
         ).update();
-        this.set_catch(goods.getId(),goods);
-//        removeCatch(goods.getId());
+//        this.set_catch(goods.getId(),goods);
+        removeCatch(goods.getId());
         return ret;
     }
 

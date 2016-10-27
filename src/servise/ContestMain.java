@@ -148,6 +148,8 @@ public class ContestMain {
     public static void ResetContestProblmes(int cid,String pids){
         contests.ResetContestProblmes(cid,pids);
     }
+
+
     public static MainResult teamAutoRegister(int cid){
         //1、判断权限
         if(!Main.loginUserPermission().havePermissions(PermissionType.teamAutoRegister)){

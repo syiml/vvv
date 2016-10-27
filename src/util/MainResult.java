@@ -13,8 +13,8 @@ public enum MainResult {
     NO_STOCK(5, "库存不足"),//没有库存（acb商城购买）
     ACB_NOT_ENOUGH(6, "ACB不足"),//ACB不足
     BUY_NUM_LIMIT(7, "超出购买限制"),//超过限购数量
-    VERIFY_EXIST(8, "不能重复认证");
-
+    VERIFY_EXIST(8, "不能重复认证"),
+    BUY_OBJECT(9,"您的购买权限不足");
     int value;
     String prompt;
 

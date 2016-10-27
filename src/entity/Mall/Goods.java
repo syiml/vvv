@@ -2,8 +2,8 @@ package entity.Mall;
 
 import entity.IBeanCanCach;
 import entity.IBeanResultSetCreate;
+import entity.User;
 import util.Tool;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -23,8 +23,40 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
     private int buyLimit;//每人限购多少份（小于0表示没限制）
     private Timestamp t;//发布时间
 
+
+    private int buyVerifyLimit;//限制指定认证级别购买
+    
+    public static final int Buy_Verify_Limit_Team=4;//现役队员购买
+    public static final int Buy_Verify_Limit_Association=3;//退役，协会购买
+    public static final int Buy_Verify_Limit_School=2;//在校学生购买
+    public static final int Buy_Verify_Limit_All=1;//所有人购买
     public Goods(){}
 
+    public String showBuyLimit(){
+        switch (buyVerifyLimit){
+            case Buy_Verify_Limit_Team: return "集训队员";
+            case Buy_Verify_Limit_Association: return "退役队员   协会成员";
+            case Buy_Verify_Limit_School: return "校内学生";
+            case Buy_Verify_Limit_All: return "所有用户";
+            default: return "ERROR";
+        }
+    }
+    public int getBuyVerifyLimit() {
+        return buyVerifyLimit;
+    }
+    public boolean checkUserCanBuy(User u){
+        switch (buyVerifyLimit) {
+            case Buy_Verify_Limit_Team:
+                return u.getInTeamStatus()==User.V_TEAM;
+            case Buy_Verify_Limit_Association:
+                return u.getInTeamStatus()==User.V_TEAM||u.getInTeamStatus()==User.V_ASSOCIATION||u.getInTeamStatus()==User.V_RETIRED;
+            case Buy_Verify_Limit_School:
+                return u.getInTeamStatus()!=User.V_NONE;
+            case Buy_Verify_Limit_All:
+                return true;
+            default: return false;
+        }
+    }
     @Override
     public Goods init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
@@ -35,6 +67,7 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
         isHidden = rs.getBoolean("isHidden");
         user = rs.getString("user");
         buyLimit = rs.getInt("buyLimit");
+        buyVerifyLimit = rs.getInt("buyVerifyLimit");
         return this;
     }
 
@@ -110,6 +143,10 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
 
     public void setBuyLimit(int buyLimit) {
         this.buyLimit = buyLimit;
+    }
+
+    public void setBuyVerifyLimit(int buyVerifyLimit) {
+        this.buyVerifyLimit = buyVerifyLimit;
     }
 
     @Override

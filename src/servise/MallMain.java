@@ -18,17 +18,18 @@ import java.util.List;
 public class MallMain {
     private static GoodsSQL goodsSQL = new GoodsSQL();
     private static OrderSQL orderSQL = new OrderSQL();
-    public static synchronized MainResult buy(int goodsId){//买东西
+    public static synchronized MainResult buy(int goodsId) {//买东西
         Goods goods = goodsSQL.getBeanByKey(goodsId);
-        if(goods == null) return MainResult.ARR_ERROR;
+        if (goods == null) return MainResult.ARR_ERROR;
         User u = Main.loginUser();
-        if(u==null) return MainResult.NO_LOGIN;
-        if(goods.getStock()<=0) return MainResult.NO_STOCK;
-        if(goods.isHidden() ) return MainResult.NO_PERMISSION;
-        if(u.getAcb()<goods.getAcb()) return MainResult.ACB_NOT_ENOUGH;
-        if(goods.getBuyLimit()>=0) {
+        if (u == null) return MainResult.NO_LOGIN;
+        if (!goods.checkUserCanBuy(u)) return MainResult.BUY_OBJECT;
+        if (goods.getStock() <= 0) return MainResult.NO_STOCK;
+        if (goods.isHidden()) return MainResult.NO_PERMISSION;
+        if (u.getAcb() < goods.getAcb()) return MainResult.ACB_NOT_ENOUGH;
+        if (goods.getBuyLimit() >= 0) {
             int buyNum = MallMain.getBuyNum(goodsId, u.getUsername());
-            if(buyNum >= goods.getBuyLimit()){
+            if (buyNum >= goods.getBuyLimit()) {
                 return MainResult.BUY_NUM_LIMIT;
             }
         }
@@ -40,12 +41,12 @@ public class MallMain {
         order.setUsername(u.getUsername());
 
         //扣钱
-        if(Main.users.subACB(u.getUsername(),goods.getAcb())<=0) return MainResult.FAIL;
+        if (Main.users.subACB(u.getUsername(), goods.getAcb()) <= 0) return MainResult.FAIL;
         //减库存
-        goods.setStock(goods.getStock()-1);
-        if(goodsSQL.editGoods(goods)<=0) return MainResult.FAIL;
+        goods.setStock(goods.getStock() - 1);
+        if (goodsSQL.editGoods(goods) <= 0) return MainResult.FAIL;
         //加账单
-        if(orderSQL.addOrder(order)<=0) return MainResult.FAIL;
+        if (orderSQL.addOrder(order) <= 0) return MainResult.FAIL;
         return MainResult.SUCCESS;
     }
     public static synchronized MainResult cancelOrder(int id){
@@ -83,6 +84,7 @@ public class MallMain {
         goods.setStock(goodsAction.getStock());
         goods.setTitle(goodsAction.getTitle());
         goods.setBuyLimit(goodsAction.getBuyLimit());
+        goods.setBuyVerifyLimit(goodsAction.getBuyVerifyLimit());
         goods.setTime(Tool.now());
         goods.setUser(u.getUsername());
         return goodsSQL.addGoods(goods);
@@ -99,6 +101,7 @@ public class MallMain {
         goods.setStock(goodsAction.getStock());
         goods.setTitle(goodsAction.getTitle());
         goods.setBuyLimit(goodsAction.getBuyLimit());
+        goods.setBuyVerifyLimit(goodsAction.getBuyVerifyLimit());
         int ret =  goodsSQL.editGoods(goods);
         if(ret <=0) return -1;
         return 0;

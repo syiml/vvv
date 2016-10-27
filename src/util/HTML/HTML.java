@@ -1736,6 +1736,12 @@ public class HTML {
         text textBuyLimit = new text("buyLimit","限购数量");
             textBuyLimit.setPlaceholder("每个用户最多能购买的数量，负数表示不限");
             if(goods!=null) textBuyLimit.setValue(goods.getBuyLimit()+"");
+        select textBuyVerifyLimit = new select("buyVerifyLimit","认证限购");
+            textBuyVerifyLimit.add(Goods.Buy_Verify_Limit_All,"所有人均可购买");
+            textBuyVerifyLimit.add(Goods.Buy_Verify_Limit_School,"校内人员可购买");
+            textBuyVerifyLimit.add(Goods.Buy_Verify_Limit_Association,"协会成员可购买");
+            textBuyVerifyLimit.add(Goods.Buy_Verify_Limit_Team,"现役队员可购买");
+            if(goods!=null) textBuyVerifyLimit.setValue(goods.getBuyVerifyLimit()+"");
         check checkIsHidden = new check("isHidden","是否隐藏");
             if(goods!=null && goods.isHidden()) checkIsHidden.setValue("true");
         file fileCover = new file("upload","封面图片");
@@ -1746,7 +1752,7 @@ public class HTML {
         textareaDes.setUEditor(true);
 
         f.setEnctype();
-        f.addForm(textId,textTitle,textAcb,textStock,textBuyLimit,checkIsHidden,fileCover,textareaDes);
+        f.addForm(textId,textTitle,textAcb,textStock,textBuyLimit,textBuyVerifyLimit,checkIsHidden,fileCover,textareaDes);
         return f.toHTML();
     }
     public static String adminOrderList(){

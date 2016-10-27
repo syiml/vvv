@@ -154,17 +154,14 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
         this.rating=rs.getInt("rating");
         this.ratingnum=rs.getInt("ratingnum");
         this.acb=rs.getInt("acb");
-
         this.name=rs.getString("name");
         this.faculty=rs.getString("faculty");
         this.major=rs.getString("major");
         this.cla=rs.getString("cla");
         this.no=rs.getString("no");
         this.phone=rs.getString("phone");
-
         this.inTeamLv=rs.getInt("inTeamLv");
         this.inTeamStatus=rs.getInt("inTeamStatus");
-
         this.acnum=rs.getInt("acnum");
         this.graduationTime = rs.getTimestamp("graduationTime");
         try{

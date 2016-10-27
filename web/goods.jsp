@@ -54,6 +54,7 @@
                     <h1><%=goods.getTitle()%></h1>
                     <div>商品价格：<span style="color:red;font-size: 30px"><%=goods.getAcb()%></span>ACB</div>
                     <div>剩余数量：<%=goods.getStock()%></div>
+                    <div>限购对象：<span style="color:red;font-weight:bold"><%=goods.showBuyLimit()%></span></div>
                     <%
                       if(goods.getBuyLimit() >=0){
                     %>
