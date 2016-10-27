@@ -32,17 +32,21 @@ public class Exam implements IBeanCanCach, IBeanResultSetCreate<Exam>{
     private Timestamp endtime;
     private String info;
     private String createuser;//创建人。创建人和超级管理员可以修改其配置
+    private Timestamp catch_time;
 
     public boolean isPending(){
         return begintime.after(Tool.now());
     }
+
     public boolean isRunning(){
         Timestamp now = Tool.now();
         return endtime.before(now)&&endtime.after(Tool.now());
     }
+
     public boolean isEnd(){
         return endtime.before(Tool.now());
     }
+
     public String getStatuHTML(){
         Timestamp now=new Timestamp(System.currentTimeMillis());
         if(begintime.after(now)){
@@ -53,8 +57,6 @@ public class Exam implements IBeanCanCach, IBeanResultSetCreate<Exam>{
             return "<b style='color:red'>进行中</b>";//RUNNING
         }
     }
-
-    private Timestamp catch_time;
 
     public String toJSON(){
         JSONObject ret=new JSONObject();
@@ -81,9 +83,10 @@ public class Exam implements IBeanCanCach, IBeanResultSetCreate<Exam>{
     }
 
     @Override
-    public boolean isExpired() {
-        return catch_time.before(Tool.now());
+    public Timestamp getExpired() {
+        return catch_time;
     }
+
     @Override
     public void setExpired(Timestamp t) {
         catch_time = t;

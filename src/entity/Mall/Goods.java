@@ -12,6 +12,10 @@ import java.sql.Timestamp;
  * Created by QAQ on 2016/9/17.
  */
 public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
+    public static final int Buy_Verify_Limit_Team=4;//现役队员购买
+    public static final int Buy_Verify_Limit_Association=3;//退役，协会购买
+    public static final int Buy_Verify_Limit_School=2;//在校学生购买
+    public static final int Buy_Verify_Limit_All=1;//所有人购买
     private int id;
     private String title;
     private int acb;
@@ -22,14 +26,7 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
     private String user;//挂出商品的人
     private int buyLimit;//每人限购多少份（小于0表示没限制）
     private Timestamp t;//发布时间
-
-
     private int buyVerifyLimit;//限制指定认证级别购买
-    
-    public static final int Buy_Verify_Limit_Team=4;//现役队员购买
-    public static final int Buy_Verify_Limit_Association=3;//退役，协会购买
-    public static final int Buy_Verify_Limit_School=2;//在校学生购买
-    public static final int Buy_Verify_Limit_All=1;//所有人购买
     public Goods(){}
 
     public String showBuyLimit(){
@@ -44,6 +41,11 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
     public int getBuyVerifyLimit() {
         return buyVerifyLimit;
     }
+
+    public void setBuyVerifyLimit(int buyVerifyLimit) {
+        this.buyVerifyLimit = buyVerifyLimit;
+    }
+
     public boolean checkUserCanBuy(User u){
         switch (buyVerifyLimit) {
             case Buy_Verify_Limit_Team:
@@ -57,6 +59,7 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
             default: return false;
         }
     }
+
     @Override
     public Goods init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
@@ -145,13 +148,9 @@ public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
         this.buyLimit = buyLimit;
     }
 
-    public void setBuyVerifyLimit(int buyVerifyLimit) {
-        this.buyVerifyLimit = buyVerifyLimit;
-    }
-
     @Override
-    public boolean isExpired() {
-        return t.before(Tool.now());
+    public Timestamp getExpired() {
+        return t;
     }
 
     @Override

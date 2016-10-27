@@ -207,6 +207,13 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
 
     public RegisterUser getUser(int i){return users.get(i);}
 
+    public RegisterUser getRegisterUser(String username){
+        for (RegisterUser user : users) {
+            if (user.getUsername().equals(username)) return user;
+        }
+        return null;
+    }
+
     public boolean isRegistered(String username){
         for(RegisterUser registerUser : users){
             if(registerUser.getUsername().equals(username)) return true;
@@ -463,8 +470,8 @@ public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
     }
 
     @Override
-    public boolean isExpired() {
-        return t.before(Tool.now());
+    public Timestamp getExpired() {
+        return t;
     }
 
     @Override

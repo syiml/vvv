@@ -15,14 +15,14 @@ import java.sql.Timestamp;
  * Created by QAQ on 2016/5/25 0025.
  */
 public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem>, IBeanCanCach {
+    public JSONObject data;
     protected int id;
     protected String title;
     protected ExamProblemType type;
     protected int score;
     protected String createUser;
     protected int isPublic;
-
-    public JSONObject data;
+    private Timestamp catch_time;
 
     public Base_Exam_problem(){
 
@@ -42,6 +42,7 @@ public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem
     protected Base_Exam_problem initFromJson(JSONObject jo){
         return null;
     }
+
     protected String toJSON(){
         return null;
     }
@@ -59,28 +60,28 @@ public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem
         return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setType(ExamProblemType type) {
-        this.type = type;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public ExamProblemType getType() {
         return type;
     }
 
+    public void setType(ExamProblemType type) {
+        this.type = type;
+    }
+
     public int getScore() {
         return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getCreateUser() {
@@ -91,10 +92,9 @@ public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem
         return isPublic;
     }
 
-    private Timestamp catch_time;
     @Override
-    public boolean isExpired() {
-        return catch_time.before(Tool.now());
+    public Timestamp getExpired() {
+        return catch_time;
     }
 
     @Override

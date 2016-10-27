@@ -1,5 +1,6 @@
 package util.JSON;
 
+import entity.Enmu.AcbOrderType;
 import servise.ChallengeMain;
 import dao.ChallengeSQL;
 import entity.Condition;
@@ -45,7 +46,7 @@ public class ChallengeJSON {
                 else if(block.pBlockOpen(openBlocks)){//先决已经开启
                     if(block.isTrue(userScore)){//模块的先决已经开启，且满足条件，可开启 且不在编辑
                         ChallengeSQL.addOpenBlock(user,blockId);
-                        Main.users.addACB(user, 30);
+                        Main.users.addACB(user, 30, AcbOrderType.CHALLENGE_BLOCK_OPEN,"开启模块："+block.getName());
                         MessageMain.addMessageBlockOpen(user,block.getName(),30);
                         ok=false;
                         break;//返回重新计算

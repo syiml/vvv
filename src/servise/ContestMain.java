@@ -3,6 +3,7 @@ package servise;
 import action.addcontest;
 import dao.ContestSQL;
 import entity.*;
+import entity.Enmu.AcbOrderType;
 import entity.rank.RankSQL;
 import util.Main;
 import util.MainResult;
@@ -167,7 +168,7 @@ public class ContestMain {
             if (c.isRegistered(u.getUsername())) continue;
             if (u.getAcb() < u.getSubAcbInWeekContest()) continue;
             //减acb
-            Main.users.subACB(u.getUsername(), u.getSubAcbInWeekContest());
+            Main.users.subACB(u.getUsername(), u.getSubAcbInWeekContest(), AcbOrderType.CONTEST_AUTO_REGISTER,"比赛id="+cid);
             //添加报名信息
             contests.setUserContest(cid, u.getUsername(), RegisterUser.STATUS_TEAM_AUTO, "");
         }

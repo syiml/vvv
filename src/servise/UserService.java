@@ -1,7 +1,9 @@
 package servise;
 
+import dao.UserSolvedSQL;
 import dao.VerifySQL;
 import entity.User;
+import entity.UserSolvedListBean;
 import entity.UserVerifyInfo;
 import util.Main;
 import util.MainResult;
@@ -15,6 +17,7 @@ import java.sql.Timestamp;
  */
 public class UserService {
     public static VerifySQL verifySQL = new VerifySQL();
+    public static UserSolvedSQL userSolvedSQL = new UserSolvedSQL();
     public static boolean editUser(User u) {
         return u != null && Main.users.update(u);
     }
@@ -73,5 +76,8 @@ public class UserService {
         u.setPassword("123456");
         editUser(u);
         return MainResult.SUCCESS;
+    }
+    public static UserSolvedListBean getUserSolved(String username){
+        return userSolvedSQL.getBeanByKey(username);
     }
 }

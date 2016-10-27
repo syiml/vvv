@@ -77,10 +77,10 @@ public class Order implements IBeanResultSetCreate<Order>, IBeanCanCach {
         return id;
     }
 
-    @Override
 
-    public boolean isExpired() {
-        return Tool.now().after(t);
+    @Override
+    public Timestamp getExpired() {
+        return t;
     }
 
     @Override

@@ -132,11 +132,10 @@ public class ChallengeSQL {
         return problemList;
     }
     public static int getUserScore(String user, int id){
-        return new SQL("" +
-                "SELECT sum(score) as score " +
+        return new SQL("SELECT sum(score) as score " +
                 "FROM t_challenge_problem " +
-                "JOIN usersolve_view " +
-                "ON t_challenge_problem.tpid = usersolve_view.pid AND username = ? AND solved=1 " +
+                "JOIN t_usersolve " +
+                "ON t_challenge_problem.tpid = t_usersolve.pid AND username = ? AND status=1 " +
                 "AND id=? " +
                 "GROUP BY id",user,id).queryNum();
     }

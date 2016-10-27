@@ -16,7 +16,7 @@ public class Message implements IBeanResultSetCreate {
     long time;
     Timestamp deadline;
     public Message(){
-
+        deadline = new Timestamp(86400000L * 30 + System.currentTimeMillis());
     }
 
     @Override
@@ -35,52 +35,52 @@ public class Message implements IBeanResultSetCreate {
         return mid;
     }
 
-    public String getUser() {
-        return user;
-    }
-
-    public int getStatu() {
-        return statu;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
-    public Timestamp getDeadline() {
-        return deadline;
-    }
-
     public void setMid(int mid) {
         this.mid = mid;
+    }
+
+    public String getUser() {
+        return user;
     }
 
     public void setUser(String user) {
         this.user = user;
     }
 
+    public int getStatu() {
+        return statu;
+    }
+
     public void setStatu(int statu) {
         this.statu = statu;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public void setText(String text) {
         this.text = text;
     }
 
+    public long getTime() {
+        return time;
+    }
+
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public Timestamp getDeadline() {
+        return deadline;
     }
 
     public void setDeadline(Timestamp deadline) {

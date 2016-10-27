@@ -1,5 +1,6 @@
 package action;
 
+import entity.Enmu.AcbOrderType;
 import util.Main;
 import entity.User;
 
@@ -19,7 +20,7 @@ public class buyviewcode extends BaseAction{
 
     public String buy(){
         User u=Main.loginUser();
-        if(Main.users.subACB(u.getUsername(),100)==1){
+        if(Main.users.subACB(u.getUsername(),100, AcbOrderType.BUY_CODE,"题目"+pid)==1){
             if(Main.users.addViewCode(u.getUsername(),pid)==1){
                 return "success";
             }

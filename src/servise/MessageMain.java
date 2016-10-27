@@ -199,4 +199,14 @@ public class MessageMain {
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }
+    public static int addMessageReturnACB(Contest c,User u,RatingCase ratingCase,int addAcb){
+        Message message = new Message();
+        message.setUser(u.getUsername());
+        message.setTitle("比赛【"+c.getName()+"】结束，返还"+addAcb+"ACB");
+        message.setText("由于参加了比赛【" + c.getName() + "】,您的rating值由"
+                + User.ratingToHTML(ratingCase.getTruePRating()) + "变为"
+                + User.ratingToHTML(ratingCase.getTrueRating()) + "。返还了"+addAcb+"ACB。");
+        message.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
+        return MessageSQL.save(message);
+    }
 }

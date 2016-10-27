@@ -38,6 +38,7 @@ public class Main {
     public static UserSQL users = new UserSQL();
     public static LogDao logs = new LogDao();
     public static Submitter submitter=new SubmitterImp();
+    public static AcbOrderSQL acbOrderSQL = new AcbOrderSQL();
 
     public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<>();
 

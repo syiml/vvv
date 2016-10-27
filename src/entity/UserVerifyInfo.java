@@ -63,10 +63,9 @@ public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBe
             default:return "ERROR";
         }
     }
-
     @Override
-    public boolean isExpired() {
-        return t.before(Tool.now());
+    public Timestamp getExpired() {
+        return t;
     }
 
     @Override

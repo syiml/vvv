@@ -2,6 +2,7 @@ package dao;
 
 import action.TeamAward;
 import entity.*;
+import entity.Enmu.AcbOrderType;
 import util.Main;
 import servise.MessageMain;
 import util.HTML.HTML;
@@ -411,26 +412,40 @@ public class UserSQL extends BaseCache<String,User> {
     public int awardACB(String user,int num,String text){
         if(num<0){
             num=-num;
-            int ret=subACB(user,num);
+            int ret=subACB(user,num,AcbOrderType.ADMIN,text);
             if(ret>0){
                 MessageMain.addMessageSubACB(user,num,text);
                 Tool.log("管理员扣去"+user+" "+num+"ACB"+" 备注："+text);
             }
             return ret;
         }
-        addACB(user,num);
+        addACB(user,num,AcbOrderType.ADMIN,text);
         int x=MessageMain.addMessageAwardACB(user,num,text);
         Tool.log("管理员给"+user+" "+num+"ACB"+" 备注："+text);
         return x;
     }
-    public int addACB(String user,int num){
+    public int addACB(String user, int num, AcbOrderType orderType,String mark){
         int ret= new SQL("UPDATE users SET acb=acb+? WHERE username=?",num,user).update();
         removeCatch(user);
+        AcbOrder acbOrder = new AcbOrder();
+        acbOrder.username = user;
+        acbOrder.change = num;
+        acbOrder.reason = orderType;
+        acbOrder.mark = mark;
+        acbOrder.time = Tool.now();
+        Main.acbOrderSQL.addAcbOrder(acbOrder);
         return ret;
     }
-    public int subACB(String user,int num) {
+    public int subACB(String user,int num, AcbOrderType orderType,String mark) {
         int ret = new SQL("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?", num, user, num).update();
         removeCatch(user);
+        AcbOrder acbOrder = new AcbOrder();
+        acbOrder.username = user;
+        acbOrder.change = -num;
+        acbOrder.reason = orderType;
+        acbOrder.mark = mark;
+        acbOrder.time = Tool.now();
+        Main.acbOrderSQL.addAcbOrder(acbOrder);
         return ret;
     }
 

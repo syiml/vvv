@@ -1,4 +1,17 @@
 
+//ACB账单
+
+CREATE TABLE  `vjudge`.`t_acborder` (
+`id` INT NOT NULL AUTO_INCREMENT ,
+`username` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+`change` INT NOT NULL ,
+`reason` INT NOT NULL ,
+`mark` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+PRIMARY KEY (  `id` )
+) ENGINE = INNODB;
+ALTER TABLE  `t_acborder` CHANGE  `change`  `acbchange` INT( 11 ) NOT NULL;
+ALTER TABLE  `t_acborder` ADD  `time` DATETIME NOT NULL;
+
 //下次更新内容
 CREATE TABLE  `vjudge`.`t_verify` (
 `id` INT NOT NULL ,

@@ -48,31 +48,6 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     Timestamp graduationTime;//毕业时间
     private Timestamp catch_time;
 
-    public  int getSubAcbInWeekContest(){
-        if(inTeamStatus != User.V_TEAM) return 0;
-        switch (inTeamLv){
-            case -1:
-                return 100;
-            case 0:
-                return 125;
-            case 1:
-                return 150;
-            case 2:
-                return 175;
-            case 3:
-                return 200;
-            case 4:
-                return 200;
-            case 5:
-                return 200;
-            case 6:
-                return 200;
-            default:
-                return 0;
-        }
-
-    }
-
     public User(){}
 
     public User(register r){
@@ -123,6 +98,31 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
     public static String ratingToHTML(int rating){
         if(rating==-100000) return"-";
         return HTML.textb(rating+"",ratingColor(rating));
+    }
+
+    public  int getSubAcbInWeekContest(){
+        if(inTeamStatus != User.V_TEAM) return 0;
+        switch (inTeamLv){
+            case -1:
+                return 50;
+            case 0:
+                return 100;
+            case 1:
+                return 150;
+            case 2:
+                return 200;
+            case 3:
+                return 250;
+            case 4:
+                return 300;
+            case 5:
+                return 400;
+            case 6:
+                return 500;
+            default:
+                return 0;
+        }
+
     }
 
     @Override
@@ -441,9 +441,10 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
         this.catch_time = catch_time;
     }
 
+
     @Override
-    public boolean isExpired() {
-        return catch_time.before(Tool.now());
+    public Timestamp getExpired() {
+        return getCatch_time();
     }
 
     @Override

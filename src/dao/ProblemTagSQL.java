@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Enmu.AcbOrderType;
 import util.Main;
 import entity.ProblemTagRecord;
 import entity.ProblemTag;
@@ -48,7 +49,7 @@ public class ProblemTagSQL {
         new SQL("REPLACE INTO t_problem_tag_record VALUES(?,?,?,?)",pid,username,tagid,rating).update();
         try{
             if(Main.users.addViewCode(username,pid)==1) {
-                Main.users.addACB(username, 20);
+                Main.users.addACB(username, 20, AcbOrderType.ADD_PROBLEM_TAG,"题目："+pid);
             }
         }catch (Exception ignored) {}
     }

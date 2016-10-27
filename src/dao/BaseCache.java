@@ -49,7 +49,7 @@ public abstract class BaseCache<K,T extends IBeanCanCach> {
             clearExpired();
             T value = _catch.get(key);
             if (value == null) return null;
-            if (value.isExpired()) {
+            if (value.getExpired().before(Tool.now())) {
                 _catch.remove(key);
                 return null;
             }
@@ -66,7 +66,7 @@ public abstract class BaseCache<K,T extends IBeanCanCach> {
     private void clearExpired(){
         List<K> dels=new ArrayList<K>();
         for(Map.Entry<K,T> value:_catch.entrySet()){
-            if(value.getValue().isExpired() || _catch.size()-dels.size()>maxSize){
+            if(value.getValue().getExpired().before(Tool.now()) || _catch.size()-dels.size()>maxSize){
                 dels.add(value.getKey());
             }else{
                 break;

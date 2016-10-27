@@ -1,6 +1,7 @@
 package dao;
 
 import entity.*;
+import entity.Enmu.AcbOrderType;
 import servise.ContestMain;
 import util.Main;
 import servise.MessageMain;
@@ -111,7 +112,8 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
     }
     public String setUserContest(int cid,String username,int status,String info){
         Contest c = ContestMain.getContest(cid);
-        if(getRegisterStatu(username,cid)==null){
+        RegisterUser registerUser = getRegisterStatu(username,cid);
+        if(registerUser==null){
             if(c.getType()==Contest_Type.TEAM_OFFICIAL){
                 RegisterTeam rt = new RegisterTeam();
                 rt.setUsername(username);
@@ -123,8 +125,15 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
             }else {
                 addUserContest(cid, username, status);
             }
+            removeCatch(cid);
+            return "success";
         }
         if(status==-2){//-2 -> 删除
+            if(!c.isEnd() && registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO){
+                User u = Main.users.getUser(username);
+                //返回acb
+                Main.users.addACB(username,u.getSubAcbInWeekContest(), AcbOrderType.CONTEST_AUTO_LEAVE,"比赛id="+cid);
+            }
             if(c.getType() == Contest_Type.TEAM_OFFICIAL) {
                 return delTeamContest(cid,username);
             }else {

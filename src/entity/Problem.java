@@ -98,9 +98,10 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
         return this;
     }
 
+
     @Override
-    public boolean isExpired() {
-        return expiredTime.before(Tool.now());
+    public Timestamp getExpired() {
+        return expiredTime;
     }
 
     @Override
