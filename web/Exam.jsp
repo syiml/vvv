@@ -21,7 +21,7 @@
     <jsp:include page="module/head.jsp"/>
 <%
     Main.saveURL();
-    Object user=session.getAttribute("user");
+    User user=Main.loginUser();
     String id=request.getParameter("id");
     int qid=0;
     Exam exam = null;
@@ -40,7 +40,7 @@
             out.print("Wrong Parameter1");
             return ;
         }
-        int in = exam.canin(((User)user));
+        int in = exam.canin(user);
         if (in == 0) {
             out.print("没有权限");
         } else {

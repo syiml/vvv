@@ -32,7 +32,7 @@
     <jsp:include page="module/head.jsp"/>
 <%
   Main.saveURL();
-  Object user=session.getAttribute("user");
+  User user=Main.loginUser();
   String cid=request.getParameter("cid");
   String password=request.getParameter("password");
   String username=request.getParameter("username");
@@ -64,7 +64,7 @@
   }else{
       qcid = Integer.parseInt(cid);
       contest = ContestMain.getContest(qcid);
-      int in = contest.canin(((User)user));
+      int in = contest.canin(user);
       if (in == 0) {
         out.print("没有权限，请"+HTML.a("Login.jsp","登录")+"或报名比赛后再进入");
       } else if (in == -1 || in == -2) {//need password
@@ -129,7 +129,7 @@
             if(user == null)
                 p = new Permission();
             else {
-                p = Main.getPermission(((User) user).getUsername());
+                p = Main.getPermission(user.getUsername());
             }
             if(p.getAddContest()){
                 out.print(HTML.a("admin.jsp?page=AddContest&cid="+cid,"Edit")+" ");

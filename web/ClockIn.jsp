@@ -11,10 +11,6 @@
 
 <%
   Main.saveURL();
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   String user=request.getParameter("user");
   String day=request.getParameter("day");
   String times=request.getParameter("times");

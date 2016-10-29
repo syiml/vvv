@@ -168,7 +168,7 @@ public class Main {
     }
     public static User loginUser(){
         try{
-            return (User)getSession().getAttribute("user");
+            return Main.users.getUser((String)getSession().getAttribute("user"));
         }catch (Exception e){
             return null;
         }

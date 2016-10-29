@@ -97,7 +97,7 @@ public class Discuss implements IBeanResultSetCreate<Discuss>, ICanToJSON {
         id= Integer.parseInt(ad.getId());
         cid=ad.getCid();
         title=ad.getTitle();
-        User u=((User) Main.getSession().getAttribute("user"));
+        User u=Main.loginUser();
         if(u==null) username="";
         else  username=u.getUsername();
         time=new Timestamp(System.currentTimeMillis());

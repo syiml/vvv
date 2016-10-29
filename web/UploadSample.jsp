@@ -9,7 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%//未登录跳转
-  if(session.getAttribute("user")==null){
+  if(Main.loginUser()==null){
     Main.saveURL();
     response.sendRedirect("Login.jsp");
     return;

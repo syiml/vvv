@@ -2,7 +2,7 @@
 <%@ page import="util.Main" %>
 <%@ page import="util.HTML.HTML" %>
 <%
-  if(session.getAttribute("user")==null){
+  if(Main.loginUser()==null){
     response.sendRedirect("Login.jsp");
     return;
   }

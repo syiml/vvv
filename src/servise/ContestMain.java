@@ -65,7 +65,6 @@ public class ContestMain {
 
     public static boolean canInContest(int cid) {
         Contest c = contests.getContest(cid);
-        //User u=(User)getSession().getAttribute("user");
         User u = Main.loginUser();
         if (Main.loginUserPermission().getAddContest()) return true;
         //if (u == null) return false;

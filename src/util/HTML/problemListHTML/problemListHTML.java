@@ -24,16 +24,11 @@ public class problemListHTML {
     int page,num,cid;
     Permission p;
     User user;
-    public problemListHTML(int num,int page,Object user){
+    public problemListHTML(int num,int page,User user){
         this.page=page;
         this.num=num;
-        this.user=(User)user;
-        if(user==null){
-            p=new Permission();
-        }else{
-            p=Main.getPermission(((User) user).getUsername());
-            //p=this.user.getPermission();
-        }
+        this.user=user;
+        p=user.getPermission();
         list= Main.problems.getProblems((page-1)*num+1000,(page-1)*num+1000+num-1,p.getShowHideProblem());
         incontest=false;
     }

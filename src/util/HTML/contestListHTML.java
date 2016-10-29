@@ -20,6 +20,7 @@ import java.util.List;
 * 赛选条件：状态、名字、type
 * */
 public class contestListHTML extends pageBean{
+    List<Contest> list;//显示列表
     //筛选条件
     private int num;//每页个数
     private int page;//第几页
@@ -27,7 +28,6 @@ public class contestListHTML extends pageBean{
     private String name;//包含
     private int type;//类型
     private int kind;
-    List<Contest> list;//显示列表
     private int pageNum=0;
     public contestListHTML(int num, int page){
         this.num=num;
@@ -62,7 +62,7 @@ public class contestListHTML extends pageBean{
             head=HTML.textb("比赛列表 - 正式","orange");
         }
         Permission p;
-        User u=(User)Main.getSession().getAttribute("user");
+        User u=Main.loginUser();
         if(u==null){
             p=new Permission();
         }else{

@@ -1,6 +1,7 @@
 <%@ page import="util.Main" %>
 <%@ page import="util.HTML.HTML" %>
 <%@ page import="org.apache.struts2.ServletActionContext" %>
+<%@ page import="entity.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -13,12 +14,8 @@
 --%>
 <%
   Main.saveURL();
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   String pid = request.getParameter("pid");
-  Object user= session.getAttribute("user");
+  User user=Main.loginUser();
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>

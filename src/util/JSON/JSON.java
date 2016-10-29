@@ -24,7 +24,7 @@ public class JSON {
     private static Timestamp nextOtherOjsContestTime = new Timestamp(0);
 
     public static String Messages(String from,String num){
-        User user=((User)Main.getSession().getAttribute("user"));
+        User user=Main.loginUser();
         int fromInt=0,numInt=20;
         try{
             fromInt=Integer.parseInt(from);

@@ -15,7 +15,7 @@
     out.print(ProblemTagHTML.problemTagJson());
   }else{
     int pidint=Integer.parseInt(pid);
-    User u=(User)session.getAttribute("user");
+    User u=Main.loginUser();
     if(u!=null&& Main.status.submitResult(pidint, u.getUsername())==1){
       out.print(ProblemTagHTML.problemTagJson(pidint,u.getUsername()));
     }

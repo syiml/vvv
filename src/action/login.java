@@ -12,7 +12,7 @@ public class login extends BaseAction{
     public String login(){
         String ret= Main.users.login(user,pass);
         if(ret.equals("LoginSuccess")) {
-            session.setAttribute("user", Main.users.getUser(user));
+            session.setAttribute("user", user);
             Tool.log("Login:"+user+" IP:"+Main.getIP());
             out.println("{\"ret\":\"LoginSuccess\"}");
         }else {

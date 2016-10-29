@@ -60,7 +60,7 @@ public class DiscussHTML {
             paInt=Integer.parseInt(pa);
             DiscussHTML d=new DiscussHTML();
             d.d=DiscussSQL.getDiscuss(idInt);
-            d.loginuser=(User)Main.getSession().getAttribute("user");
+            d.loginuser=Main.loginUser();
             if(d.d.isVisiable() ||(d.loginuser!=null&&d.loginuser.getPermission().getAddDiscuss()))
                 return d.Discuss()+d.DiscussReply(paInt)+d.ReplyForm();
             else return HTML.panel("ERROR","没有权限",null,"danger");
@@ -346,7 +346,7 @@ public class DiscussHTML {
 
     public String ReplyForm(){
         int did= d.getId();
-        User u=(User)Main.getSession().getAttribute("user");
+        User u=Main.loginUser();
         if(!d.isReply()){
             return HTML.panel("回复","该帖子已经被设置为禁止回复",null,"primary");
         }

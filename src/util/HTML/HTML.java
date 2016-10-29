@@ -328,7 +328,7 @@ public class HTML {
         }else{
             HttpServletRequest request = ServletActionContext.getRequest();
             HttpSession s=request.getSession();
-            User user=(User)s.getAttribute("user");
+            User user=Main.loginUser();
             if(user==null) return panel("Error", "Please login first", null, "danger");
             int ridInt;
             try{
@@ -457,9 +457,8 @@ public class HTML {
     public static String problemRight(Problem p,int pid,boolean admin,int cid){
         return problemInfo(pid,cid)+problemTag(pid,admin)+problemContest(pid)+problemAuthor(p.getAuthor());
     }
-    public static String problem(Object user,String cid,String pid){
+    public static String problem(User user,String cid,String pid){
 //        Main.debug("in problem");
-        User _user=(User)user;
         boolean admin=false;
         if(cid==null) cid="-1";
         try{
@@ -481,15 +480,15 @@ public class HTML {
             if(p==null) return panel("EORROR","参数错误",null,"danger");//题目不存在
 
             Permission per=null;
-            if(_user!=null){
-                per=Main.getPermission(_user.getUsername());
+            if(user!=null){
+                per=Main.getPermission(user.getUsername());
                 //per=_user.getPermission();
             }else{
                 per=new Permission();
             }
             if(cidInt==-1&&p.visiable==0){//不可见
-                if(_user==null) return  panel("EORROR","没有权限",null,"danger");
-                else per=_user.getPermission();
+                if(user==null) return  panel("EORROR","没有权限",null,"danger");
+                else per=user.getPermission();
                 if(!per.getShowHideProblem()) return  panel("EORROR","没有权限",null,"danger");
             }
             if(p.getType()==1){
@@ -594,7 +593,7 @@ public class HTML {
             return panel("Error","无效的参数",null,"danger");
         }
     }
-    public static String problemList(int num,int page,Object user){
+    public static String problemList(int num,int page,User user){
         problemListHTML p=new problemListHTML(num,page,user);
         return p.HTML();
     }

@@ -1,5 +1,6 @@
 <%@ page import="util.Main" %>
 <%@ page import="util.HTML.HTML" %>
+<%@ page import="entity.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -13,13 +14,9 @@
 --%>
 <%
   Main.saveURL();
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   String cid=request.getParameter("cid");
   String pa=request.getParameter("page");
-  Object user=session.getAttribute("user");
+  User user=Main.loginUser();
   int paInt=1;
   if(pa!=null) paInt=Integer.parseInt(pa);
 %>

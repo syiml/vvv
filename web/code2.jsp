@@ -9,13 +9,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   String rid = request.getParameter("rid");
   String rid2 = request.getParameter("rid2");
-  Object user=session.getAttribute("user");
 %>
 <%--<link href="js/prism/css.css" rel="stylesheet" />--%>
 <%--<script src="js/prism/js.js"></script>--%>

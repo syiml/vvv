@@ -12,15 +12,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String pa=request.getParameter("page");
-    Object user=session.getAttribute("user");
-    if(session.getAttribute("user")==null){
+    User user = Main.loginUser();
+    if(user==null){
         response.sendRedirect("Login.jsp");
         return;
     }
-    Permission per=null;
-    if(user!=null) per=Main.getPermission(((User)user).getUsername());
-    else response.sendRedirect("Login.jsp");
-
+    Permission per=user.getPermission();
     if(pa!=null&&(pa.equals("AddTag")||pa.equals("PermissionAdmin")||pa.equals("ChallengeAdmin"))){
         Main.saveURL();
     }

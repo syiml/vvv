@@ -18,10 +18,6 @@ kind   int    -1
 --%>
 <%
   Main.saveURL();
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   String num = request.getParameter("num");
   String pa  = request.getParameter("page");
   String st  = request.getParameter("statu");

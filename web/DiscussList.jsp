@@ -10,10 +10,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   Main.saveURL();
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   int num= Main.config.statusShowNum;
   String pa=request.getParameter("page");
   if(pa==null||pa.equals("")) pa="1";

@@ -11,10 +11,6 @@
 
 <%
   Main.saveURL();
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   String id=request.getParameter("id");
   String pa=request.getParameter("page");
   if(pa==null||pa.equals("")) pa="0";

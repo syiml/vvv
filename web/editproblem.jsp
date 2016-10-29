@@ -11,14 +11,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-  if(session.getAttribute("user")==null){
+  if(Main.loginUser()==null){
     response.sendRedirect("Login.jsp");
     return;
   }
   String pid=request.getParameter("pid");
   String edit=request.getParameter("edit");
   String num=request.getParameter("num");
-  User user=(User)session.getAttribute("user");
+  User user=Main.loginUser();
   if(user==null) response.sendRedirect("Login.jsp");
   else{
     Permission p= Main.getPermission(user.getUsername());

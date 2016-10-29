@@ -3,7 +3,7 @@
 <%@ page import="util.Tool" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-  User u=(User)session.getAttribute("user");
+  User u=Main.loginUser();
     if (u != null) {
         Tool.log("logout:" +(u.getUsername()));
   }

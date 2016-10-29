@@ -23,7 +23,7 @@
     <h2> Submit</h2>
     <div class="form-group hidden" >
       <label for="cidinput">cid</label><input type="text" name ="cid" value=<%=cid%> class="form-control" id="cidinput" readonly/>
-      <%--<label for="userinput">user</label><input type="text" name ="user" value=<%=((User)session.getAttribute("user")).getUsername()%> class="form-control" id="userinput"/>--%>
+      <%--<label for="userinput">user</label><input type="text" name ="user" value=<%=Main.loginUser().getUsername()%> class="form-control" id="userinput"/>--%>
       <!--user must read-->
     </div>
   </div>

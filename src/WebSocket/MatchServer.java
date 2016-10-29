@@ -16,51 +16,6 @@ import java.util.*;
  * Created by Administrator on 2015/12/2 0002.
  */
 public class MatchServer extends WebSocketServlet {
-    @Override
-    protected StreamInbound createWebSocketInbound(String s, HttpServletRequest request) {
-        User u=(User)request.getSession().getAttribute("user");
-        int cid=Integer.parseInt(request.getParameter("cid"));
-        if(u!=null){
-            Tool.log(u.getUsername()+"观战连接"+" cid="+request.getParameter("cid"));
-            MatchWebSocket aSocket=new MatchWebSocket(u.getUsername(),cid,this);
-            put(cid,aSocket);
-            return aSocket;
-        }else{
-            Tool.log("游客连接");
-            MessageWebSocket mw=new MatchWebSocket(null,-1,this);
-            return mw;
-        }
-    }
-
-    /**
-     * 放入一个socket
-     * @param cid 比赛id
-     * @param aSocket socket
-     */
-    private void put(int cid,MatchWebSocket aSocket){
-        if(!Main.sockets.containsKey(cid)){
-            Main.sockets.put(cid,new HashSet<MatchWebSocket>());
-        }
-        sendLogin(cid,aSocket.username);
-        Main.sockets.get(cid).add(aSocket);
-        //sendOnlineUser(cid,aSocket);
-    }
-
-    /**
-     * 删除一个socket
-     * @param cid 比赛id
-     * @param mws socket
-     */
-    protected void close(int cid,MatchWebSocket mws){
-        if(mws.username!=null&&Main.sockets.get(cid)!=null){
-            Main.sockets.get(cid).remove(mws);
-            sendLogout(cid,mws.username);
-            if(Main.sockets.get(cid).size()==0){
-                Main.sockets.remove(cid);
-            }
-        }
-    }
-
     /**
      * 给cid的连接用户发送消息
      * @param cid 比赛id
@@ -134,23 +89,6 @@ public class MatchServer extends WebSocketServlet {
         jo.put("data",ja);
         mws.send(jo.toString());
     }
-    /**
-     * 给用户发送上线通知 {"type":"login","user":username}
-     * @param cid 比赛id
-     * @param user 上线用户的用户名
-     */
-    private void sendLogin(int cid,String user){
-        sendMessage(cid,"{\"type\":\"login\",\"user\":\""+user+"\"}");
-    }
-
-    /**
-     * 给用户发送下线通知 {"type":"logout","user":username}
-     * @param cid 比赛id
-     * @param user 下线用户用户名
-     */
-    private void sendLogout(int cid,String user){
-        sendMessage(cid,"{\"type\":\"logout\",\"user\":\""+user+"\"}");
-    }
 
     /**
      * 发送提交信息
@@ -183,5 +121,68 @@ public class MatchServer extends WebSocketServlet {
         jo.put("user",user);
         jo.put("text",text);
         sendMessage(cid,jo.toString());
+    }
+
+    @Override
+    protected StreamInbound createWebSocketInbound(String s, HttpServletRequest request) {
+        User u=Main.loginUser();
+        int cid=Integer.parseInt(request.getParameter("cid"));
+        if(u!=null){
+            Tool.log(u.getUsername()+"观战连接"+" cid="+request.getParameter("cid"));
+            MatchWebSocket aSocket=new MatchWebSocket(u.getUsername(),cid,this);
+            put(cid,aSocket);
+            return aSocket;
+        }else{
+            Tool.log("游客连接");
+            MessageWebSocket mw=new MatchWebSocket(null,-1,this);
+            return mw;
+        }
+    }
+
+    /**
+     * 放入一个socket
+     * @param cid 比赛id
+     * @param aSocket socket
+     */
+    private void put(int cid,MatchWebSocket aSocket){
+        if(!Main.sockets.containsKey(cid)){
+            Main.sockets.put(cid,new HashSet<MatchWebSocket>());
+        }
+        sendLogin(cid,aSocket.username);
+        Main.sockets.get(cid).add(aSocket);
+        //sendOnlineUser(cid,aSocket);
+    }
+
+    /**
+     * 删除一个socket
+     * @param cid 比赛id
+     * @param mws socket
+     */
+    protected void close(int cid,MatchWebSocket mws){
+        if(mws.username!=null&&Main.sockets.get(cid)!=null){
+            Main.sockets.get(cid).remove(mws);
+            sendLogout(cid,mws.username);
+            if(Main.sockets.get(cid).size()==0){
+                Main.sockets.remove(cid);
+            }
+        }
+    }
+
+    /**
+     * 给用户发送上线通知 {"type":"login","user":username}
+     * @param cid 比赛id
+     * @param user 上线用户的用户名
+     */
+    private void sendLogin(int cid,String user){
+        sendMessage(cid,"{\"type\":\"login\",\"user\":\""+user+"\"}");
+    }
+
+    /**
+     * 给用户发送下线通知 {"type":"logout","user":username}
+     * @param cid 比赛id
+     * @param user 下线用户用户名
+     */
+    private void sendLogout(int cid,String user){
+        sendMessage(cid,"{\"type\":\"logout\",\"user\":\""+user+"\"}");
     }
 }

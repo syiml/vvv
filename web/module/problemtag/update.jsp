@@ -1,5 +1,6 @@
 <%@ page import="dao.ProblemTagSQL" %>
 <%@ page import="entity.User" %>
+<%@ page import="util.Main" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -12,7 +13,7 @@
   String type=request.getParameter("type");
   int tagid=Integer.parseInt(request.getParameter("tagid"));
   int pid=Integer.parseInt(request.getParameter("pid"));
-  User u=(User)session.getAttribute("user");
+  User u= Main.loginUser();
   if(type.equals("add")){
     ProblemTagSQL.addTag(pid,u.getUsername(),tagid);
   }else{

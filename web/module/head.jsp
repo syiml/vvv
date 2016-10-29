@@ -3,6 +3,7 @@
 <%@ page import="dao.MessageSQL" %>
 <%@ page import="action.ClockIn" %>
 <%@ page import="ClockIn.*" %>
+<%@ page import="util.Main" %>
 <script>
 
   if(location.href.indexOf("acm.fjut.edu.cn/vj")!=-1){
@@ -73,8 +74,9 @@
     <%--%>>签到</span></a></li>--%>
     <%
       String ss="";
-      if(session.getAttribute("user")!=null){
-        String s=((User)session.getAttribute("user")).getUsername();
+      User u = Main.loginUser();
+      if(u!=null){
+        String s=u.getUsername();
         int messnoread=MessageSQL.getNoRead(s);
         ss+="<li  class=' mm-right' style='min-width:135px'>";//float:right; min-width: 115px;
         ss+=HTML.a("UserInfo.jsp?user="+s,"<span><i class='icon-user'></i> "+s+(messnoread==0?"":"<text class='badge'>"+messnoread+"</text>")+"</span>");

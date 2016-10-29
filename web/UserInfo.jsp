@@ -11,12 +11,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   Main.saveURL();
-//  if(session.getAttribute("user")==null){
-//    response.sendRedirect("Login.jsp");
-//    return;
-//  }
   String ShowUser=request.getParameter("user");
-  User user=(User)session.getAttribute("user");
+  User user=Main.loginUser();
   if(ShowUser==null&&user!=null){
     ShowUser=user.getUsername();
   }

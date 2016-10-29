@@ -12,7 +12,7 @@
 --%>
 <%
     //未登录跳转
-    if(session.getAttribute("user")==null){
+    if(Main.loginUser()==null){
         response.sendRedirect("Login.jsp");
     }else{
     String cid=request.getParameter("cid");

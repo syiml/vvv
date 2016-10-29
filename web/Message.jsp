@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 Main.saveURL();
-  if(session.getAttribute("user")==null){
+  if(Main.loginUser()==null){
     response.sendRedirect("Login.jsp");
     return;
   }

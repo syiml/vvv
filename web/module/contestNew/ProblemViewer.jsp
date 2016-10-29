@@ -1,6 +1,7 @@
 <%@ page import="util.HTML.HTML" %>
 <%@ page import="util.Main" %>
 <%@ page import="servise.ContestMain" %>
+<%@ page import="entity.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   Created by IntelliJ IDEA.
@@ -15,7 +16,7 @@
 <%
   String cid=request.getParameter("cid");
   String pid=request.getParameter("pid");
-  Object user=session.getAttribute("user");
+  User user=Main.loginUser();
   //System.out.println(user);
 %>
 <%=ContestMain.canShowProblem(Integer.parseInt(cid))?(HTML.problem(user,cid, pid)):""%>
