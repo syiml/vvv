@@ -2,8 +2,11 @@ package util.HTML;
 
 import entity.AcbOrder;
 import entity.User;
+import util.HTML.FromHTML.FormHTML;
+import util.HTML.FromHTML.text.text;
 import util.Main;
 
+import java.text.Normalizer;
 import java.util.List;
 
 /**
@@ -21,12 +24,7 @@ public class AcbOrderListHTML extends pageBean {
         this.username = username;
         list = Main.acbOrderSQL.getAcbOrderList(username,(page-1)*pageSize,pageSize);
         totalNum = Main.acbOrderSQL.getAcbOrderListNun(username);
-        if(username==null||username.equals("")){
-            addTableHead("id","用户名","数量变化","类型","备注","时间");
-
-        }else{
-            addTableHead("id","数量变化","类型","备注","时间");
-        }
+        addTableHead("id","用户名","数量变化","类型","备注","时间");
     }
 
     @Override
@@ -80,6 +78,12 @@ public class AcbOrderListHTML extends pageBean {
 
     @Override
     public String rightForm() {
-        return "";
+        FormHTML formHTML = new FormHTML();
+        formHTML.setAction("AcbOrderList.jsp");
+        formHTML.setType(1);
+        text text_username = new text("username","用户名");
+        text_username.setValue(username);
+        formHTML.addForm(text_username);
+        return formHTML.toHTML();
     }
 }

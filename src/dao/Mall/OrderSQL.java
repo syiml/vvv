@@ -34,6 +34,9 @@ public class OrderSQL extends BaseCache<Integer, Order> {
     public List<Order> getOrder(int from,int num){
         return new SQL("SELECT * FROM t_order ORDER BY id DESC LIMIT ?,?",from,num).queryBeanList(Order.class);
     }
+    public int getOrderNum(){
+        return new SQL("SELECT COUNT(*) FROM t_order").queryNum();
+    }
     public int getBuyNum(int goodsId,String username){
         return new SQL("SELECT COUNT(*) FROM t_order WHERE goodsId=? AND username=? AND isCancel=?",goodsId,username,false).queryNum();
     }

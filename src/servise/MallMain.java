@@ -119,7 +119,7 @@ public class MallMain {
         return orderSQL.getOrder(from,num);
     }
     public static int getOrderNum(){
-        return 0;
+        return orderSQL.getOrderNum();
     }
     public static int getBuyNum(int goodsID,String username){
         return orderSQL.getBuyNum(goodsID,username);
