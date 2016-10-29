@@ -21,14 +21,14 @@ public class ActionAddGoods extends BaseAction {
     private String des;//描述
     private String isHidden;
     private int buyLimit = -1;
-    private int buyVerifyLimit;
+    private int buyVerifyLimit = 1;
 
     private File upload;
     private String uploadFileName;
 
 
     public String addGoods() throws Exception{
-        Tool.debug(id+","+title+","+acb+","+stock+","+des+",isHidden="+isHidden+","+ upload +","+ uploadFileName);
+//        Tool.debug(id+","+title+","+acb+","+stock+","+des+",isHidden="+isHidden+","+ upload +","+ uploadFileName+","+buyVerifyLimit);
         //Tool.debug("上传封面文件大小：" + upload.length());
         if(upload !=null && upload.length()>=maxHeadImgSize){
             return ERROR;
@@ -120,15 +120,15 @@ public class ActionAddGoods extends BaseAction {
         return uploadFileName;
     }
 
+    public void setUploadFileName(String uploadFileName) {
+        this.uploadFileName = uploadFileName;
+    }
+
     public int getBuyVerifyLimit() {
         return buyVerifyLimit;
     }
 
     public void setBuyVerifyLimit(int buyVerifyLimit) {
         this.buyVerifyLimit = buyVerifyLimit;
-    }
-
-    public void setUploadFileName(String uploadFileName) {
-        this.uploadFileName = uploadFileName;
     }
 }

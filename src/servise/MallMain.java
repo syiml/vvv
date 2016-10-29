@@ -3,6 +3,7 @@ package servise;
 import action.Mall.ActionAddGoods;
 import dao.Mall.GoodsSQL;
 import dao.Mall.OrderSQL;
+import entity.Enmu.AcbOrderType;
 import entity.Mall.Goods;
 import entity.Mall.Order;
 import entity.User;
@@ -39,6 +40,7 @@ public class MallMain {
         order.setTime(Tool.now());
         order.setUsername(u.getUsername());
 
+        int orderId = orderSQL.addOrder(order);
         //扣钱
         if(Main.users.subACB(u.getUsername(),goods.getAcb(),AcbOrderType.MALL_BUY,"订单号："+orderId)<=0) return MainResult.FAIL;
         //减库存
@@ -62,7 +64,7 @@ public class MallMain {
         //恢复ACB
         User us = Main.users.getUser(order.getUsername());
         if(us == null) return MainResult.FAIL;
-        Main.users.addACB(order.getUsername(),order.getAcb());
+        Main.users.addACB(order.getUsername(),order.getAcb(),AcbOrderType.MALL_RETURN,"订单号："+order.getId());
 
         return MainResult.SUCCESS;
     }
@@ -81,6 +83,7 @@ public class MallMain {
         goods.setStock(goodsAction.getStock());
         goods.setTitle(goodsAction.getTitle());
         goods.setBuyLimit(goodsAction.getBuyLimit());
+        goods.setBuyVerifyLimit(goodsAction.getBuyVerifyLimit());
         goods.setTime(Tool.now());
         goods.setUser(u.getUsername());
         return goodsSQL.addGoods(goods);
@@ -97,6 +100,7 @@ public class MallMain {
         goods.setStock(goodsAction.getStock());
         goods.setTitle(goodsAction.getTitle());
         goods.setBuyLimit(goodsAction.getBuyLimit());
+        goods.setBuyVerifyLimit(goodsAction.getBuyVerifyLimit());
         int ret =  goodsSQL.editGoods(goods);
         if(ret <=0) return -1;
         return 0;

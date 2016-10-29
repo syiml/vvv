@@ -106,13 +106,13 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
             case -1:
                 return 50;
             case 0:
-                return 100;
+                return 50;
             case 1:
-                return 150;
+                return 100;
             case 2:
-                return 200;
+                return 150;
             case 3:
-                return 250;
+                return 200;
             case 4:
                 return 300;
             case 5:
