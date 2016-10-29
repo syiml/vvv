@@ -65,8 +65,8 @@ public class ChallengeSQL {
         SQL sql=new SQL("" +
                 "SELECT id,sum(score) as score " +
                 "FROM t_challenge_problem " +
-                "JOIN usersolve_view " +
-                "ON t_challenge_problem.tpid = usersolve_view.pid AND username = ? AND solved=1 " +
+                "JOIN t_usersolve " +
+                "ON t_challenge_problem.tpid = t_usersolve.pid AND username = ? AND status=1 " +
                 "GROUP BY id",user){
             protected Integer getObject(int i) throws SQLException {
                 return rs.getInt(i);
@@ -84,8 +84,8 @@ public class ChallengeSQL {
         return new SQL("SELECT * from t_challenge_openblock where username=? and block=?",user,block).queryObj();
     }
     public static JSONArray getProblems(String user, int id){
-        SQL sql=new SQL("select solved+1 as solved,t_challenge_problem.pid,tpid,(select title from problem where pid=t_challenge_problem.tpid) as title,score " +
-                "from t_challenge_problem left join usersolve_view on usersolve_view.pid=t_challenge_problem.tpid and username=? " +
+        SQL sql=new SQL("select status+1 as solved,t_challenge_problem.pid,tpid,(select title from problem where pid=t_challenge_problem.tpid) as title,score " +
+                "from t_challenge_problem left join t_usersolve on t_usersolve.pid=t_challenge_problem.tpid and username=? " +
                 "where t_challenge_problem.id=?",user,id);
         JSONArray problemList=new JSONArray();
         ResultSet ps= sql.query();

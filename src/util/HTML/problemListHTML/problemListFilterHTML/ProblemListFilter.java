@@ -40,17 +40,17 @@ public class ProblemListFilter extends ResultSetPageHtml {
         boolean vis;
         vis = ( u != null && u.getPermission().getShowHideProblem() );
         if(tag==-1){
-            sql+="SELECT problem.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, solved+1 as solved " +
-                    "FROM problem LEFT JOIN usersolve_view ON username=? AND usersolve_view.pid=problem.pid WHERE 1=1 ";
+            sql+="SELECT problem.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, status+1 as solved " +
+                    "FROM problem LEFT JOIN t_usersolve ON username=? AND t_usersolve.pid=problem.pid WHERE 1=1 ";
             if(!name.equals("")) sql+="AND (title like ? OR problem.pid=?)";
             if(!vis ) sql+=" AND visiable=1 ";
             sql+="ORDER BY problem.pid ";
         }else{
-            sql += "SELECT v_problem_tag.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, tagid, rating, solved+1 as solved " +
+            sql += "SELECT v_problem_tag.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, tagid, rating, status+1 as solved " +
                     "FROM v_problem_tag " +
                     "LEFT JOIN problem ON v_problem_tag.pid = problem.pid " +
-                    "LEFT JOIN usersolve_view ON username = ? " +
-                    "AND usersolve_view.pid = v_problem_tag.pid " +
+                    "LEFT JOIN t_usersolve ON username = ? " +
+                    "AND t_usersolve.pid = v_problem_tag.pid " +
                     "WHERE 1 " +
                     "AND tagid = ? " +
                     (vis ? "" : " AND visiable=1 ") +

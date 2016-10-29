@@ -20,8 +20,8 @@ public class UserSolvedSQL extends BaseCacheLRU<String, UserSolvedListBean> {
         Map<Integer,Integer> map = new SQL("" +
             "SELECT id,sum(score) as score " +
             "FROM t_challenge_problem " +
-            "JOIN usersolve_view " +
-            "ON t_challenge_problem.tpid = usersolve_view.pid AND username = ? AND solved=1 " +
+            "JOIN t_usersolve " +
+            "ON t_challenge_problem.tpid = t_usersolve.pid AND username = ? AND status=1 " +
             "GROUP BY id",key){
             protected Integer getObject(int i) throws SQLException {
                 return rs.getInt(i);

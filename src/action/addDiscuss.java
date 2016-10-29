@@ -153,7 +153,7 @@ public class addDiscuss extends BaseAction{
         showauthor="";
         showtime="";
         shownum="-1";
-        text = HTML.HTMLtoString(text);
+        //text = HTML.HTMLtoString(text);
         Discuss d=new Discuss(this);
         return d.goAddOrEdit();
     }

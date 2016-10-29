@@ -64,9 +64,9 @@ public class ProblemTagSQL {
         new SQL("UPDATE t_problem_tag SET name=? WHERE id=?",name,id).update();
     }
     public static String userTag(String user){
-        SQL sql1=new SQL("(select username,ttype,count(*) as num from (SELECT username,pid FROM usersolve_view where username=? and solved=1) a join (SELECT pid,(SELECT ttype FROM t_problem_tag WHERE id=tagid) as ttype,sum(rating-500) as ss  FROM t_problem_tag_record group by ttype,pid) b on a.pid=b.pid where b.ss>? group by ttype)",user,0);
+        SQL sql1=new SQL("(select username,ttype,count(*) as num from (SELECT username,pid FROM t_usersolve where username=? and status=1) a join (SELECT pid,(SELECT ttype FROM t_problem_tag WHERE id=tagid) as ttype,sum(rating-500) as ss  FROM t_problem_tag_record group by ttype,pid) b on a.pid=b.pid where b.ss>? group by ttype)",user,0);
         ResultSet rs=sql1.query();
-        SQL sql2=new SQL("(select ttype,count(*) as num from (SELECT username,pid FROM usersolve_view where  solved=1) a join (SELECT pid,(SELECT ttype FROM t_problem_tag WHERE id=tagid) as ttype,sum(rating-500) as ss  FROM t_problem_tag_record group by ttype,pid) b on a.pid=b.pid where b.ss>? group by ttype)",0);
+        SQL sql2=new SQL("(select ttype,count(*) as num from (SELECT username,pid FROM t_usersolve where  status=1) a join (SELECT pid,(SELECT ttype FROM t_problem_tag WHERE id=tagid) as ttype,sum(rating-500) as ss  FROM t_problem_tag_record group by ttype,pid) b on a.pid=b.pid where b.ss>? group by ttype)",0);
         ResultSet rs2=sql2.query();
         int[] a=new int[7];
         int[] b=new int[7];

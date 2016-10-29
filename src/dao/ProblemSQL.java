@@ -252,13 +252,13 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         User u = Main.loginUser();
         boolean vis;
         vis = ( u != null && u.getPermission().getShowHideProblem() );
-        sql += "SELECT v_problem_tag.pid, ptype, title, ojid, ojspid, visiable, acusernum, submitnum, tagid, rating, solved+1 as solved " +
+        sql += "SELECT v_problem_tag.pid, ptype, title, ojid, ojspid, visiable, acusernum, submitnum, tagid, rating, status+1 as solved " +
                 "FROM v_problem_tag " +
                 "LEFT JOIN v_problem ON v_problem_tag.pid = v_problem.pid " +
-                "LEFT JOIN usersolve_view ON username =  ? " +
-                "AND usersolve_view.pid = v_problem_tag.pid " +
+                "LEFT JOIN t_usersolve ON username =  ? " +
+                "AND    t_usersolve.pid = v_problem_tag.pid " +
                 "WHERE tagid = ? " +
-                (vis ? "" : " and visiable=1 ") +
+                (vis ? "" : " and status=1 ") +
                 "ORDER BY rating DESC " +
                 "LIMIT ?,?";
         String username;
