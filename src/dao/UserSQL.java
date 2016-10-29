@@ -439,13 +439,15 @@ public class UserSQL extends BaseCache<String,User> {
     public int subACB(String user,int num, AcbOrderType orderType,String mark) {
         int ret = new SQL("UPDATE users SET acb=acb-? WHERE username=? AND acb>=?", num, user, num).update();
         removeCatch(user);
-        AcbOrder acbOrder = new AcbOrder();
-        acbOrder.username = user;
-        acbOrder.change = -num;
-        acbOrder.reason = orderType;
-        acbOrder.mark = mark;
-        acbOrder.time = Tool.now();
-        Main.acbOrderSQL.addAcbOrder(acbOrder);
+        if(ret != 0) {
+            AcbOrder acbOrder = new AcbOrder();
+            acbOrder.username = user;
+            acbOrder.change = -num;
+            acbOrder.reason = orderType;
+            acbOrder.mark = mark;
+            acbOrder.time = Tool.now();
+            Main.acbOrderSQL.addAcbOrder(acbOrder);
+        }
         return ret;
     }
 
