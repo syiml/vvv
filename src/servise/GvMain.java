@@ -28,6 +28,13 @@ public class GvMain {
     public static void setOneProblemEveryDayCid(int cid){
         gvSQL.set("oneProblemEveryDayCid",cid+"");
     }
+    public static void setOneProblemEveryDayPid(int pid){
+        gvSQL.set("oneProblemEveryDayPid",pid+"");
+    }
+    public static int getOneProblemEveryDayPid(){
+        String ret = gvSQL.get("oneProblemEveryDayPid");
+        return ret==null?0:Integer.parseInt(ret);
+    }
     public static String getOneProblemEveryDayName(){
         return gvSQL.get("oneProblemEveryDayName");
     }

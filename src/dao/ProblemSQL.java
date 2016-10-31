@@ -274,6 +274,9 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         p.totalAcUser = totalAcUser;
         new SQL("UPDATE problem SET totalSubmit=?,totalSubmitUser=?,totalAc=?,totalAcUser=? WHERE pid=?", totalSubmit, totalSubmitUser, totalAc, totalAcUser, pid).update();
     }
+    public int getRandomPid(){
+        return new SQL("SELECT pid FROM problem WHERE visiable=1 ORDER BY RAND() LIMIT 0,1").queryNum();
+    }
     @Override
     protected Problem getByKeyFromSQL(Integer key) {
         return new SQL("SELECT * FROM problem WHERE pid=?",key).queryBean(Problem.class);

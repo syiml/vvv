@@ -10,7 +10,7 @@ public abstract class EventDeal<T extends BaseEvent> extends BaseEventDeal {
         if(isRemoved) return ;
         if(this.getEventClass() != event.getClass()) return ;
         T trueEvent = (T)event;
-        Tool.debug("EventDeal:"+this+"->"+trueEvent);
+//        Tool.debug("EventDeal:"+this+"->"+trueEvent);
         dealEvent(trueEvent);
     }
     public abstract void dealEvent(T event);

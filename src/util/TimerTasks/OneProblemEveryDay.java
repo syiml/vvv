@@ -3,10 +3,15 @@ package util.TimerTasks;
 import action.addcontest;
 import action.addproblem1;
 import entity.Contest;
+import entity.Enmu.AcbOrderType;
 import entity.OJ.CodeVS.CodeVS;
+import entity.Result;
+import entity.Status;
 import servise.ContestMain;
 import servise.GvMain;
+import servise.MessageMain;
 import util.Main;
+import util.SQL.SQL;
 import util.Submitter;
 import util.Tool;
 
@@ -14,11 +19,15 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 
+import static util.Main.GV;
+import static util.Main.status;
+
 /**
+ * 每日一题改成每日补一题
+ * 从题库随机抽取一题
  * Created by QAQ on 2016/9/22.
  */
 public class OneProblemEveryDay extends MyTimer{
-    private static int OJID = 6;
 
     @Override
     public void run() {
@@ -30,49 +39,19 @@ public class OneProblemEveryDay extends MyTimer{
             cid = addContest(contestName);
         }
         if(cid != -1){
-            int tryTimes = 0;
-            int randomPid = -1;
-            String title = null;
-            while(true){
-                tryTimes ++;
-                if(tryTimes >= 30){
-                    break;
-                }
-                randomPid = Tool.randNum(1000,5331);
-                if(Main.problems.getProblemsByOjPid(OJID,randomPid+"").size()==0){
-                    title = Submitter.ojs[OJID].getTitle(randomPid+"");
-                    if(title != null){
-                        break;
-                    }
-                }
-            }
-            if(tryTimes >= 30 || title == null || randomPid == -1){
-                Tool.log("每日一题任务：随机题目失败！！！");
+            int pid = Main.problems.getRandomPid();
+            Contest c = ContestMain.getContest(cid);
+            String pidstring = c.getProblems();
+            if(pidstring.length() == 0){
+                pidstring += pid;
             }else{
-                int pid = addProblem(title,randomPid);
-                Contest c = ContestMain.getContest(cid);
-                String pidstring = c.getProblems();
-                if(pidstring.length() == 0){
-                    pidstring += pid;
-                }else{
-                    pidstring += ","+pid;
-                }
-                ContestMain.ResetContestProblmes(cid,pidstring);
+                pidstring += ","+pid;
             }
+            ContestMain.ResetContestProblmes(cid,pidstring);
+            GvMain.setOneProblemEveryDayPid(pid);
         }
     }
 
-    private int addProblem(String title,int randomPid){
-        addproblem1 problem = new addproblem1();
-        problem.setTitle(title);
-        problem.setOjid(OJID+"");
-        problem.setOjspid(randomPid+"");
-        problem.setAuthor("");
-        Main.addProblem(problem);
-        List<Integer> pids = Main.problems.getProblemsByOjPid(OJID,randomPid+"");
-        if(pids.size()==0) return -1;
-        return pids.get(0);
-    }
     private int addContest(String name){
         Calendar time = Calendar.getInstance();
         //每个月的一号创建一场比赛
@@ -82,6 +61,7 @@ public class OneProblemEveryDay extends MyTimer{
         time.set(Calendar.DAY_OF_MONTH,1);
         String month = (time.get(Calendar.MONTH) + 1) +"";
         if(month.length()==1) month = "0"+month;
+        contest.setInfo("每日补一题！在当日内通过题目，可获得100ACB奖励噢！");
         contest.setBegintime_d(time.get(Calendar.YEAR)+"-"+month+"-01");
         contest.setBegintime_m("0");
         contest.setBegintime_s("0");
@@ -110,9 +90,22 @@ public class OneProblemEveryDay extends MyTimer{
         GvMain.setOneProblemEveryDayName(name);
         return cid;
     }
+    public static void onUserAcProblem(Status ps,Status s){
+        int pid = GvMain.getOneProblemEveryDayPid();
+        if(s.getPid() != pid) return ;
+        if(ps.getResult()!= Result.AC && s.getResult() == Result.AC) {
+            //之前没有AC过
+            int acNum = new SQL("SELECT COUNT(*) FROM statu WHERE pid=? AND ruser=? AND result=? AND id<?",pid,s.getUser(),Result.AC.getValue(),s.getRid()).queryNum();
+            if(acNum == 0){
+                //addacb
+                Main.users.addACB(s.getUser(),100, AcbOrderType.ONE_PROBLEM_EVERYDAY,"pid:"+pid);
+                MessageMain.addMessageOneProblemEveryDay(s.getUser(),pid,100);
+            }
+        }
+    }
     @Override
     public void getTimer() throws Exception {
-        setEveryDay(0,0,0);
+        setEveryDay(19,33,0);
         new Timer().scheduleAtFixedRate(this, date, period);
     }
 }

@@ -209,4 +209,12 @@ public class MessageMain {
         message.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(message);
     }
+    public static int addMessageOneProblemEveryDay(String username,int pid,int acb){
+        Message message = new Message();
+        message.setUser(username);
+        message.setTitle("由于通过了每日一题，获得"+acb+"ACB奖励");
+        message.setText("由于通过了每日一题【pid=" + pid + "】,您获得了"+acb+"ACB奖励");
+        message.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
+        return MessageSQL.save(message);
+    }
 }

@@ -28,7 +28,7 @@ public class problemListHTML {
         this.page=page;
         this.num=num;
         this.user=user;
-        p=user.getPermission();
+        p= (user==null?new Permission():user.getPermission());
         list= Main.problems.getProblems((page-1)*num+1000,(page-1)*num+1000+num-1,p.getShowHideProblem());
         incontest=false;
     }
