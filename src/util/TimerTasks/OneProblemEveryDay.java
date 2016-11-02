@@ -91,6 +91,9 @@ public class OneProblemEveryDay extends MyTimer{
         return cid;
     }
     public static void onUserAcProblem(Status ps,Status s){
+        if(awardsUser.contains(s.getUser())){
+            return ;
+        }
         int pid = GvMain.getOneProblemEveryDayPid();
         if(s.getPid() != pid) return ;
         if(ps.getResult()!= Result.AC && s.getResult() == Result.AC) {
@@ -98,12 +101,7 @@ public class OneProblemEveryDay extends MyTimer{
             int acNum = new SQL("SELECT COUNT(*) FROM statu WHERE pid=? AND ruser=? AND result=? AND id<?",pid,s.getUser(),Result.AC.getValue(),s.getRid()).queryNum();
             if(acNum == 0){
                 //addacb
-                synchronized (awardsUser){
-                    if(awardsUser.contains(s.getUser())){
-                        return ;
-                    }
-                    awardsUser.add(s.getUser());
-                }
+                awardsUser.add(s.getUser());
                 Main.users.addACB(s.getUser(),100, AcbOrderType.ONE_PROBLEM_EVERYDAY,"pid:"+pid);
                 MessageMain.addMessageOneProblemEveryDay(s.getUser(),pid,100);
             }
