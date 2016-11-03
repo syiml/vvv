@@ -198,7 +198,11 @@ public class CodeVS extends OTHOJ {
         if(res.canReturn()) {
             res.setTime(json.getInt("time_cost") + "MS");
             res.setMemory(json.getLong("memory_cost")/1024 + "KB");
-            if(json.containsKey("results")) res.setScore(getScoreFormResults(json.getString("results")));
+            if(json.containsKey("results")){
+                if(r != Result.CE ){
+                    res.setScore(getScoreFormResults(json.getString("results")));
+                }
+            }
             if(r == Result.CE)
                 res.setCEInfo(json.getString("results"));
             else
