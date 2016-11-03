@@ -95,7 +95,7 @@ public class HDU extends OTHOJ {
             Element e = d.select(statuSelect).first();
             return (e.select("td:nth-child(1)").first().text());
         } catch (Exception ignored) {
-            Tool.log(ignored);
+//            Tool.log(ignored);
         }
         return "error";
     }
