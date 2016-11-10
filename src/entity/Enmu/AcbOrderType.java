@@ -13,7 +13,8 @@ public enum AcbOrderType{
     MALL_RETURN(7,"商城订单取消"),
     CONTEST_AUTO_LEAVE(8,"集训队员周赛自动报名取消"),
     BUY_CODE(9,"购买代码查看权"),
-    ONE_PROBLEM_EVERYDAY(10,"每日一题奖励");
+    ONE_PROBLEM_EVERYDAY(10,"每日一题奖励"),
+    WEEK_RANK(11,"活跃奖励");
 
     String des;
     int id;

@@ -11,6 +11,7 @@ public class TaskWeekRankCount extends MyTimer{
     @Override
     public void run() {
         WeekRankCountHTML.compute();
+        WeekRankCountHTML.award();
     }
 
     @Override

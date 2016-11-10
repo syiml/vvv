@@ -1,6 +1,8 @@
 package servise.WeekRankCount;
 
+import entity.Enmu.AcbOrderType;
 import entity.Status;
+import servise.MessageMain;
 import util.HTML.HTML;
 import util.HTML.pageBean;
 import util.Main;
@@ -75,6 +77,20 @@ public class WeekRankCountHTML extends pageBean {
                     newRecord.rank = -1;
                     weekRank[0].resultsList.add(newRecord);
                 }
+            }
+        }
+    }
+
+    public static void award(){
+        WeekRankCount weekRankCount = weekRank[0];
+        if(weekRankCount == null) return ;
+        for(int i=0;i<weekRankCount.size();i++){
+            WeekRankRecord weekRankRecord = weekRankCount.get(i);
+            if(weekRankRecord.getScore() >= 1010){
+                Main.users.addACB(weekRankRecord.getUsername(),(weekRankRecord.getScore()-1000)/10, AcbOrderType.WEEK_RANK,"活跃值："+weekRankRecord.getScore());
+                MessageMain.addMessageAwardACB(weekRankRecord.getUsername(),(weekRankRecord.getScore()-1000)/10,"活跃值奖励");
+            }else{
+                return ;
             }
         }
     }
