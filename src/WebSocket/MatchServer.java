@@ -125,7 +125,7 @@ public class MatchServer extends WebSocketServlet {
 
     @Override
     protected StreamInbound createWebSocketInbound(String s, HttpServletRequest request) {
-        User u=Main.loginUser();
+        User u=Main.users.getUser((String)request.getSession().getAttribute("user"));
         int cid=Integer.parseInt(request.getParameter("cid"));
         if(u!=null){
             Tool.log(u.getUsername()+"观战连接"+" cid="+request.getParameter("cid"));

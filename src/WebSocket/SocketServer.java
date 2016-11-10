@@ -43,7 +43,7 @@ public class SocketServer extends WebSocketServlet {
     @Override
     protected MessageWebSocket createWebSocketInbound(String s, HttpServletRequest request) {
         try{
-            User u=Main.loginUser();
+            User u=Main.users.getUser((String)request.getSession().getAttribute("user"));
             if(u!=null){
                 Tool.log(u.getUsername()+"连接"+" cid="+request.getParameter("cid"));
                 MessageWebSocket aSocket=new MessageWebSocket(u.getUsername(),Integer.parseInt(request.getParameter("cid")));
