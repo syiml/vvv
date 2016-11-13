@@ -177,6 +177,11 @@ pre {
      white-space: pre-wrap;
      word-wrap: break-word;
  }
+.sample{
+    padding:0;
+    border-style:none;
+    background-color:transparent;
+}
 .userindex{
     background-image: url("../pic/userindex.jpg");
     background-repeat: round;

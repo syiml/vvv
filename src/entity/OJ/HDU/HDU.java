@@ -128,9 +128,9 @@ public class HDU extends OTHOJ {
         p.setInput(doc.select(DesSelect).get(1).html());
         p.setOutput(doc.select(DesSelect).get(2).html());
         Elements e2 = doc.select(SampleInputSelect);
-        p.addSample("<pre style='padding:0px;border-style:none;background-color:transparent'>"
+        p.addSample("<pre class='sample'>"
                         + e2.get(e2.size() - 2).text() + "</pre>",
-                "<pre style='padding:0px;border-style:none;background-color:transparent'>"
+                "<pre class='sample'>"
                         + e2.get(e2.size() - 1).text() + "</pre>");
         p.setInt64(Int64);
         String s=doc.select("span").get(0).text();

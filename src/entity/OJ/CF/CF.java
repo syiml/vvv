@@ -70,8 +70,8 @@ public class CF extends OTHOJ {
         Elements sample=e.select(".sample-test").get(0).children();
 
         for(int i=0;i<sample.size();i+=2){
-            String in="<pre style='padding:0px;border-style:none;background-color:transparent'>"+sample.get(i).select("pre").html()+"</pre>";
-            String out="<pre style='padding:0px;border-style:none;background-color:transparent'>"+sample.get(i+1).select("pre").html()+"</pre>";
+            String in="<pre class='sample'>"+sample.get(i).select("pre").html()+"</pre>";
+            String out="<pre class='sample'>"+sample.get(i+1).select("pre").html()+"</pre>";
             if(i==sample.size()-2){
                 Elements note=e.select(".note");
                 if(note!=null&&note.size()!=0){

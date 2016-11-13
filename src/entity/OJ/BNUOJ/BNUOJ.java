@@ -115,9 +115,9 @@ public class BNUOJ extends OTHOJ {
         if (ss.contains("<span class=\"badge badge-info\">CodeForces</span>")){
             Elements e3=e.select(".sample-test pre");
             for(int i=1;i<e3.size();i+=2){
-                p.addSample("<pre style='padding:0px;border-style:none;background-color:transparent'>"
+                p.addSample("<pre class='sample'>"
                         +e3.get(i-1).html()+"</pre>",
-                        "<pre style='padding:0px;border-style:none;background-color:transparent'>"
+                        "<pre class='sample'>"
                         +e3.get(i).html()+"</pre>");
             }
         }else{
@@ -128,10 +128,10 @@ public class BNUOJ extends OTHOJ {
                 if(e2.get(i).hasClass("content-wrapper")){
                     k++;
                     if(k%2==1){
-                        in="<pre style='padding:0px;border-style:none;background-color:transparent'>"
+                        in="<pre class='sample'>"
                                 + e2.get(i).html() + "</pre>";
                     }else{
-                        out="<pre style='padding:0px;border-style:none;background-color:transparent'>"
+                        out="<pre class='sample'>"
                                 + e2.get(i).html() + "</pre>";
                         p.addSample(in,out);
                     }
