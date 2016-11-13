@@ -282,21 +282,30 @@ function _formToHTML(d,col){
             ret+="<option value='"+d.option[i][0]+"' "+(d.value==d.option[i][0]?"selected=selected":"")+">"+d.option[i][1]+"</option>"
         }
         ret+="</select></div>";
-    }else if(d.type == "text_select"){ //可选择的text
+    }else if(d.type == "text_select2"){ //可选择的text
+        var flag = false;
+        for(var i=0;i<d.option.length;i++) {
+            if (d.value == d.option[i][0]) flag = true;
+        }
         if(d.label) ret+="<label class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
-
-        ret+="<div class='col-xs-"+col[1]+"' id='"+d.id+"_left_select'>";
+        if(flag){
+            ret+="<div class='col-xs-"+col[1]+"' id='"+d.id+"_left_select'>";
+        }else{
+            ret+="<div class='col-xs-"+col[1]/2+"' id='"+d.id+"_left_select'>";
+        }
         ret+="<select type='select' class='form-control text_select' id='"+d.id+"_select'";
         ret+=">";
         ret+="<option value='手动输入'>手动输入</option>";
-        var flag = false;
         for(var i=0;i<d.option.length;i++){
-            if(d.value==d.option[i][0]) flag = true;
             ret+="<option value='"+d.option[i][0]+"' "+(d.value==d.option[i][0]?"selected=selected":"")+">"+d.option[i][1]+"</option>"
         }
         ret+="</select>";
         ret+="</div>";
-        ret+="<div class='col-xs-"+parseInt((col[1]+1)/2)+"' id='"+d.id+"_right_text' style='display: none'>";
+        if(flag) {
+            ret += "<div class='col-xs-" + parseInt((col[1] + 1) / 2) + "' id='" + d.id + "_right_text' style='display: none'>";
+        }else{
+            ret += "<div class='col-xs-" + parseInt((col[1] + 1) / 2) + "' id='" + d.id + "_right_text'>";
+        }
         ret+="<input type='text' ";
         ret+="name='"+d.name+"' class='form-control' ";
         if(d.value) ret+="value='"+ d.value +"' " ;
@@ -316,6 +325,25 @@ function _formToHTML(d,col){
         if(d.title) ret+="title='"+d.title+"' ";
         ret+=">";
         ret+="</div>";
+    }else if(d.type == "text_select"){
+        var ret2="";
+        if(d.label) ret2="<label for='"+d.id+"' class='control-label col-xs-"+col[0]+"'>"+d.label+"</label>";
+        var $ret = $("<div>"+ret2+"</div>");
+        $ret = $ret.append("<div></div>");
+        var $ul=$ret.find("div").addClass("col-xs-"+col[1])
+            .append("<div></div>").find("div").addClass("input-group")
+            .append("<input type='text' class='form-control' id='"+d.id+"'>")
+            .append("<div></div>").find("div").addClass("input-group-btn").attr("style","vertical-align: top;")
+            .append("<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'>快速输入<span class='caret'></span></button>")
+            .append('<ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>').find("ul");
+        for(var i=0;i<d.option.length;i++) {
+            $ul.append('<li><a href="javascript:$(\'#'+d.id+'\').val(\''+d.option[i][1]+'\')">'+d.option[i][1]+'</a></li>');
+        }
+        console.log($ret.html());
+        if(d.value) $ret.find("input").attr("value",d.value);
+        if(d.placeholder) $ret.find("input").attr("placeholder",d.placeholder);
+        if(d.name) $ret.find("input").attr("name",d.name);
+        ret+=$ret.html();
     }
     ret+="</div>";
     return ret;

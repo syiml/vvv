@@ -78,11 +78,15 @@
                         ["2","女"]],
                     value:"${gender}"
                 },{
-                    type:"text",
+                    type:"text_select",
                     name:"school",
                     id:"school",
                     label:"学校全称",
-                    value:"${school}"
+                    value:"${school}",
+                    option:[
+                        ["福建工程学院","福建工程学院"],
+                        ["西南石油大学","西南石油大学"]
+                    ]
                 },{
                     type:"text_select",
                     name:"faculty_text",
@@ -92,7 +96,8 @@
                     option:[
                         ["信息科学与工程学院","信息科学与工程学院"],
                         ["数理学院","数理学院"],
-                        ["国脉信息学院","国脉信息学院"]
+                        ["国脉信息学院","国脉信息学院"],
+                        ["计算机科学学院","计算机科学学院"]
                     ]
                 },{
                     type:"text_select",
