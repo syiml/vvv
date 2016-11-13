@@ -1865,7 +1865,7 @@ public class HTML {
         tableHTML.addRow("毕业时间",userVerifyInfo.graduationTime.toString().substring(0,4),
                 userVerifyInfo.graduationTime.equals(u.getGraduationTime())||u.getGraduationTime()==null?"":u.getGraduationTime().toString().substring(0,4));
         tableHTML.addRow("提交时间",userVerifyInfo.time.toString().substring(0,16),"");
-        tableHTML.addRow("附加图片",HTML.Img("pic/verify/"+userVerifyInfo.id+".jpg","","this.style=\"display:none;max-width:500px\""),"");
+        tableHTML.addRow("附加图片",HTML.Img("pic/verify/"+userVerifyInfo.id+".jpg","max-width:500px","this.style=\"display:none;\""),"");
         if(userVerifyInfo.result == UserVerifyInfo.RESULT_PADDING)
             tableHTML.addRow("审核状态",HTML.textb("正在审核","black"),"");
         else if(userVerifyInfo.result == UserVerifyInfo.RESULT_ACCEPTED)
