@@ -13,6 +13,7 @@ public class TaskProblemSubmitCount extends MyTimer {
     @Override
     public void run() {
         Tool.debug("TaskProblemSubmitCount run");
+        new SQL("REPLACE INTO t_usersolve SELECT * FROM usersolve_view").update();
         new SQL("UPDATE problem SET " +
                 "totalSubmit=(SELECT COUNT(*) FROM statu WHERE statu.pid=problem.pid)," +
                 "totalSubmitUser=(SELECT COUNT(*) FROM t_usersolve WHERE t_usersolve.pid=problem.pid)," +
