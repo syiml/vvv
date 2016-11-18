@@ -240,6 +240,7 @@ public class statusSQL {
                 s.getPid(),
                 s.getUser(),
                 s.getPid()).update();
+        Main.users.updateUserAcnum(s.getUser());
         //此时标记下次要更新用户排名
         TaskUpdateAllUserRank.updateNextTime = true;
     }

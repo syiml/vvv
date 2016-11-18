@@ -38,7 +38,7 @@ public class SubmitterImp implements Submitter{
             m.addSubmit(ss);
         }
 
-//        EventMain.triggerEvent(new EventStatusAdd(s));
+        EventMain.triggerEvent(new EventStatusAdd(s));
         if(cid!=-1) {//提交发送到观战模式
             try{
                 Contest c=ContestMain.getContest(s.getCid());

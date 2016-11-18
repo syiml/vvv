@@ -10,7 +10,7 @@ import java.io.InputStream;
 /**
  * Created by Syiml on 2015/10/21 0021.
  */
-public class sampleFile  extends BaseAction{
+public class sampleFile {
 
     String pid;
     String filename;
@@ -122,8 +122,10 @@ public class sampleFile  extends BaseAction{
         return FILE.download(Integer.parseInt(pid),filename);
     }
     public String download() throws Exception {
-        if(Main.loginUserPermission().getAddLocalProblem())
+        if(Main.loginUserPermission().getAddLocalProblem()) {
+            setFileName(filename);
             return "success";
+        }
         else return "error";
     }
 }

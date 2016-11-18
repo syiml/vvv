@@ -14,6 +14,7 @@ public class TaskUpdateAllUserRank extends MyTimer {
     @Override
     public void run() {
         if(updateNextTime) {
+            Main.users.updateAllUserAcnum();
             Main.users.updateAllUserRank();
             updateNextTime = false;
         }
@@ -21,7 +22,7 @@ public class TaskUpdateAllUserRank extends MyTimer {
 
     @Override
     public void getTimer() throws Exception {
-        //每小时更新一次
-        new Timer().scheduleAtFixedRate(this, 5 * MyTime.MINUTE, MyTime.HOUR);
+        //每5分钟更新一次
+        new Timer().scheduleAtFixedRate(this, 5 * MyTime.MINUTE, 5 * MyTime.MINUTE);
     }
 }

@@ -12,8 +12,9 @@ public class TaskProblemSubmitCount extends MyTimer {
 
     @Override
     public void run() {
-        Tool.debug("TaskProblemSubmitCount run");
-        new SQL("REPLACE INTO t_usersolve SELECT * FROM usersolve_view").update();
+        Tool.log("TaskProblemSubmitCount run");
+        new SQL("REPLACE INTO t_usersolve SELECT * FROM usersolve_view").update(true);
+
         new SQL("UPDATE problem SET " +
                 "totalSubmit=(SELECT COUNT(*) FROM statu WHERE statu.pid=problem.pid)," +
                 "totalSubmitUser=(SELECT COUNT(*) FROM t_usersolve WHERE t_usersolve.pid=problem.pid)," +
@@ -23,7 +24,7 @@ public class TaskProblemSubmitCount extends MyTimer {
 
     @Override
     public void getTimer() throws Exception {
-        setEveryDay(3,0,0);
+        setEveryDay(4,10,0);
         new Timer().scheduleAtFixedRate(this, date, period);
     }
 }

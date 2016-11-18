@@ -450,7 +450,13 @@ public class UserSQL extends BaseCache<String,User> {
         }
         return ret;
     }
-
+    public void updateUserAcnum(String username){
+        new SQL("UPDATE users SET acnum = (select sum(t_usersolve.status) from t_usersolve where t_usersolve.username=?) where username=?",username,username).update();
+        removeCatch(username);
+    }
+    public void updateAllUserAcnum(){
+        new SQL("UPDATE users SET acnum = (select sum(t_usersolve.status) from t_usersolve where t_usersolve.username=users.username)").update();
+    }
     @Override
     protected User getByKeyFromSQL(String username) {
         User ret = new SQL("SELECT * from users where username=?",username).queryBean(User.class);
