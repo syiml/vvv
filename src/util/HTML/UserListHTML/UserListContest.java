@@ -46,7 +46,7 @@ public class UserListContest extends pageBean {
             PageNum=1;
         }else {
             if (c.getKind() == 3) {
-                super.addTableHead("用户名", "姓名", "性别", "学院", "专业", "班级", "学号", "昵称", "Rating", "状态", "时间");
+                super.addTableHead("用户名", "姓名", "性别", "学校","学院", "专业", "班级", "学号", "昵称", "Rating", "状态", "时间");
             } else {
                 super.addTableHead("用户名", "昵称", "Rating", "状态", "时间");
             }
@@ -190,22 +190,24 @@ public class UserListContest extends pageBean {
                 } else {
                     return "";
                 }
-            } else if (colname.equals("学院")) {
+            }else if(colname.equals("学校")){
                 return aList.get(3);
-            } else if (colname.equals("专业")) {
+            } else if (colname.equals("学院")) {
                 return aList.get(4);
-            } else if (colname.equals("班级")) {
+            } else if (colname.equals("专业")) {
                 return aList.get(5);
-            } else if (colname.equals("学号")) {
+            } else if (colname.equals("班级")) {
                 return aList.get(6);
+            } else if (colname.equals("学号")) {
+                return aList.get(7);
             } else if (colname.equals("admin")) {
                 String info;
                 if (c.getKind() == 3) {
-                    info = aList.get(11);
-                    aList.remove(11);
+                    info = aList.get(12);
+                    aList.remove(12);
                 } else {
-                    info = aList.get(5);
-                    aList.remove(5);
+                    info = aList.get(6);
+                    aList.remove(6);
                 }
                 return adminButtons(aList.get(0), info);
             }

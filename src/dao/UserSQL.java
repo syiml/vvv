@@ -187,10 +187,24 @@ public class UserSQL extends BaseCache<String,User> {
         return new SQL("select * from users order by acnum desc,rating desc LIMIT 0,10").queryBeanList(User.class);
     }
 
-    public List<List<String>> getUsers(int cid,int from,int num,String serach,boolean is3){
+    public List<List<String>> getUsers(int cid,int from,int num,String search,boolean is3){
         List<List<String>> list=new ArrayList<List<String>>();
-        SQL sql=new SQL("select * from v_contestuser where cid=? and (username like ? or nick like ?) ORDER BY time desc" +
-                " LIMIT "+from+","+num,cid,"%"+serach+"%","%"+serach+"%");
+        SQL sql;
+        if(search == null || search.equals("")) {
+            sql = new SQL("select users.username,users.name,users.gender,users.school,users.faculty," +
+                    "users.major,users.cla,users.no,users.nick,users.rating,users.ratingnum," +
+                    "contestuser.statu,contestuser.time,contestuser.info " +
+                    "from users left join contestuser on(users.username=contestuser.username) " +
+                    "where cid=? ORDER BY time desc " +
+                    "LIMIT ?,?", cid, from, num);
+        }else {
+            sql = new SQL("select users.username,users.name,users.gender,users.school,users.faculty," +
+                    "users.major,users.cla,users.no,users.nick,users.rating,users.ratingnum," +
+                    "contestuser.statu,contestuser.time,contestuser.info " +
+                    "from users left join contestuser on(users.username=contestuser.username) " +
+                    "where cid=? and (users.username like ? or users.nick like ?) ORDER BY time desc " +
+                    "LIMIT ?,?", cid, "%" + search + "%", "%" + search + "%", from, num);
+        }
         try {
             ResultSet rs=sql.query();
             while(rs.next()){
@@ -199,6 +213,7 @@ public class UserSQL extends BaseCache<String,User> {
                 if(nick==null){
                     s.add(rs.getString("username"));
                     if(is3){
+                        s.add("");
                         s.add("");
                         s.add("");
                         s.add("");
@@ -214,6 +229,7 @@ public class UserSQL extends BaseCache<String,User> {
                     if(is3){
                         s.add(rs.getString("name"));
                         s.add(rs.getInt("gender")+"");
+                        s.add(rs.getString("school"));
                         s.add(rs.getString("faculty"));
                         s.add(rs.getString("major"));
                         s.add(rs.getString("cla"));
