@@ -35,6 +35,7 @@
     <input type="checkbox" id="setting-nick"/> 昵称<br>
     <input type="checkbox" id="setting-name"/> 姓名<br>
     <input type="checkbox" id="setting-gender"/> 性别<br>
+    <input type="checkbox" id="setting-school"/> 学校<br>
     <input type="checkbox" id="setting-faculty"/> 学院<br>
     <input type="checkbox" id="setting-major"/> 专业<br>
     <input type="checkbox" id="setting-cla"/> 班级<br>

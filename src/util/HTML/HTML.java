@@ -1854,7 +1854,7 @@ public class HTML {
         tableHTML.addRow("认证人",u.getUsernameAndNickHTML(),"");
         tableHTML.addRow("认证类型",userVerifyInfo.getVerifyTypeText(),u.getVerifyText()+"");
         tableHTML.addRow("真实姓名",userVerifyInfo.name,userVerifyInfo.name.equals(u.getName())?"":u.getName());
-        tableHTML.addRow("性别",userVerifyInfo.gender+"",userVerifyInfo.gender==u.getGender()?"":u.getGender()+"");
+        tableHTML.addRow("性别",User.getGenderText(userVerifyInfo.gender),userVerifyInfo.gender==u.getGender()?"":User.getGenderText(u.getGender())+"");
         tableHTML.addRow("学校全称",userVerifyInfo.school,userVerifyInfo.school.equals(u.getSchool())?"":u.getSchool());
         tableHTML.addRow("学院全称",userVerifyInfo.faculty,userVerifyInfo.faculty.equals(u.getFaculty())?"":u.getFaculty());
         tableHTML.addRow("专业全称",userVerifyInfo.major,userVerifyInfo.major.equals(u.getMajor())?"":u.getMajor());

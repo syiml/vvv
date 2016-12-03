@@ -462,4 +462,10 @@ public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
             default: return "ERROR";
         }
     }
+
+    public static String getGenderText(int gender){
+        if(gender == 1) return "男";
+        else if(gender == 2) return "女";
+        else return "未选择";
+    }
 }

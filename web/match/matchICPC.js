@@ -237,6 +237,7 @@ var matchICPC=function(cid){
         if($("#setting-nick").is(':checked'))head.push("nick");
         if($("#setting-name").is(':checked'))head.push("name");
         if($("#setting-gender").is(':checked'))head.push("gender");
+        if($("#setting-school").is(':checked'))head.push("school");
         if($("#setting-faculty").is(':checked'))head.push("faculty");
         if($("#setting-major").is(':checked'))head.push("major");
         if($("#setting-cla").is(':checked'))head.push("cla");

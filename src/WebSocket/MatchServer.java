@@ -80,6 +80,7 @@ public class MatchServer extends WebSocketServlet {
             user.put("nick", u.getNick());
             user.put("name", u.getName());
             user.put("gender", u.getGender());
+            user.put("school", u.getSchool());
             user.put("faculty", u.getFaculty());
             user.put("major", u.getMajor());
             user.put("cla", u.getCla());

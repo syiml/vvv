@@ -43,6 +43,11 @@ UPDATE users SET rank=(select rank+1 FROM v_user WHERE v_user.username=users.use
 drop view v_solved;
 CREATE ALGORITHM=TEMPTABLE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_solved` AS select `t_usersolve`.`username` AS `username`,sum(`t_usersolve`.`status`) AS `acnum` from `t_usersolve` group by `t_usersolve`.`username`;
 
+replace into  t_usersolve select * from usersolve_view
+
+
+ALTER TABLE  `statu` ADD  `score` INT NOT NULL DEFAULT  '0' AFTER result;
+
 表结构：
     statu：
         id	        int(11)

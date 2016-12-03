@@ -73,6 +73,8 @@ var rankDynameick=function(){
                 $row.append("<div class='col name'>姓名</div>");
             }else if(head[i]=="gender"){
                 $row.append("<div class='col gender'>性别</div>");
+            }else if(head[i]=="school"){
+                $row.append("<div class='col faculty'>学校</div>");
             }else if(head[i]=="faculty"){
                 $row.append("<div class='col faculty'>学院</div>");
             }else if(head[i]=="major"){
@@ -129,6 +131,8 @@ var rankDynameick=function(){
                     text="女";
                 }
                 $row.append("<div class='col gender'>"+text+"</div>");
+            }else if(head[i]=="school"){
+                $row.append("<div class='col faculty'>"+user.school+"</div>");
             }else if(head[i]=="faculty"){
                 $row.append("<div class='col faculty'>"+user.faculty+"</div>");
             }else if(head[i]=="major"){

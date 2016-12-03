@@ -159,7 +159,7 @@ public class UserListContest extends pageBean {
         }else {
             List<String> aList=list2.get(i);
             int z = 0;
-            if (c.getKind() == 3) z = 6;
+            if (c.getKind() == 3) z = 7;
             if (colname.equals("用户名")) {
                 User u = Main.users.getUser(aList.get(0));
                 if (u == null) {
@@ -206,8 +206,8 @@ public class UserListContest extends pageBean {
                     info = aList.get(12);
                     aList.remove(12);
                 } else {
-                    info = aList.get(6);
-                    aList.remove(6);
+                    info = aList.get(5);
+                    aList.remove(5);
                 }
                 return adminButtons(aList.get(0), info);
             }

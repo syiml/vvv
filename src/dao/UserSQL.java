@@ -270,7 +270,8 @@ public class UserSQL extends BaseCache<String,User> {
     }
 
     public List<User> getRegisterUsers(int cid){
-        SQL sql=new SQL("select * from v_contestuser where cid=?",cid);
+        return new SQL("SELECT * FROM users WHERE username in (SELECT username FROM contestuser WHERE cid = ?)",cid).queryBeanList(User.class);
+        /*SQL sql=new SQL("select * from v_contestuser where cid=?",cid);
         List<User> list=new ArrayList<User>();
         ResultSet rs=sql.query();
         try {
@@ -280,6 +281,7 @@ public class UserSQL extends BaseCache<String,User> {
                 u.setUsername(rs.getString("username"));
                 u.setName(rs.getString("name"));
                 u.setGender(rs.getInt("gender"));
+                u.setSchool(rs.getString("school"));
                 u.setFaculty(rs.getString("faculty"));
                 u.setMajor(rs.getString("major"));
                 u.setCla(rs.getString("cla"));
@@ -291,7 +293,7 @@ public class UserSQL extends BaseCache<String,User> {
         }finally {
             sql.close();
         }
-        return list;
+        return list;*/
     }
 
     public String login(String user,String pass){
