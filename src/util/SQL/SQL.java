@@ -272,6 +272,9 @@ public class SQL {
             close();
         }
     }
+    public void updateOneThread(){
+        Main.sqlUpdateThread.putSql(this);
+    }
     public void close(){
         pClose();
         cClose();

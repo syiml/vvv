@@ -17,6 +17,7 @@ import action.addLocalProblem;
 import action.addproblem1;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import util.SQL.SQLUpdateThread;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,7 @@ public class Main {
     public static AcbOrderSQL acbOrderSQL = new AcbOrderSQL();
 
     public static Map<Integer,Set<MatchWebSocket>> sockets=new HashMap<>();
+    public static SQLUpdateThread sqlUpdateThread = new SQLUpdateThread();
 
     public static void Init(){
         config = (new Config()).readConfig(GV);
@@ -50,6 +52,7 @@ public class Main {
             e.printStackTrace();
         }
         status.init();
+        new Thread(sqlUpdateThread).start();
     }
     public static void readConfig(){
         GV = GlobalVariables.read();

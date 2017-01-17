@@ -18,7 +18,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Main.saveURL();
-    if(Main.loginUser()==null) response.sendRedirect("../Login.jsp");
+    //if(Main.loginUser()==null) response.sendRedirect("../Login.jsp");
     Contest c= ContestMain.getContest(Integer.parseInt(request.getParameter("cid")));
 %>
 <html>

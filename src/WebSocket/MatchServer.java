@@ -41,8 +41,10 @@ public class MatchServer extends WebSocketServlet {
     private static Set<String> getOnlineUser(int cid){
         Set<String> ret=new TreeSet<String>();
         Set<MatchWebSocket> s=Main.sockets.get(cid);
-        for(MessageWebSocket mw:s){
-            ret.add(mw.username);
+        if(s!=null) {
+            for (MessageWebSocket mw : s) {
+                ret.add(mw.username);
+            }
         }
         return ret;
     }
@@ -147,7 +149,7 @@ public class MatchServer extends WebSocketServlet {
      */
     private void put(int cid,MatchWebSocket aSocket){
         if(!Main.sockets.containsKey(cid)){
-            Main.sockets.put(cid,new HashSet<MatchWebSocket>());
+            Main.sockets.put(cid,Collections.synchronizedSet(new HashSet<MatchWebSocket>()));
         }
         sendLogin(cid,aSocket.username);
         Main.sockets.get(cid).add(aSocket);
