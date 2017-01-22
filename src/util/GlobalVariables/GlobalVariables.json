@@ -74,5 +74,11 @@
     "Submitter":[
       ["spsmoj","spsmoj123"]
     ]
+  },
+  "judge_system":{
+    "URL":"http://192.168.3.225:8100",
+    "Submitter":[
+      ["http://192.168.3.225:8100",""]
+    ]
   }
 }

@@ -473,7 +473,7 @@ public class UserSQL extends BaseCache<String,User> {
         removeCatch(username);
     }
     public void updateAllUserAcnum(){
-        new SQL("UPDATE users SET acnum = (select sum(t_usersolve.status) from t_usersolve where t_usersolve.username=users.username)").update();
+        new SQL("UPDATE users SET acnum = IFNULL((select sum(t_usersolve.status) from t_usersolve where t_usersolve.username=users.username),0)").update();
     }
     @Override
     protected User getByKeyFromSQL(String username) {

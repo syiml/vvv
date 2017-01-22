@@ -50,4 +50,10 @@ public enum Result{
                         this == Result.ERROR||
                         this == Result.JUDGING;
         }
+        public static Result getResultById(int value){
+                for(Result r: Result.values()){
+                        if(r.value == value) return r;
+                }
+                return null;
+        }
 }

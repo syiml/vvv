@@ -1,5 +1,6 @@
 package util.Vjudge;
 
+import entity.Status;
 import util.Main;
 import entity.OJ.OTHOJ;
 import entity.RES;
@@ -26,6 +27,8 @@ public class VjSubmitter implements Runnable{
     int ojid;
     int submitterID;
     VJudge vj;
+
+    private Thread selfThread = null;
     private String username;
     private String password;
     private String ojsrid;
@@ -138,24 +141,11 @@ public class VjSubmitter implements Runnable{
                 Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:提交失败。提交时错误，检查64位整数格式是否正确");
                 setShowstatus("提交失败");
             }else{
-                boolean flag = false;
                 ojsrid = nrid;
-                int wait[] = {3,2,1,2,3,5,7,8,9,10};
-                int i=0;
-                do{
-                    Tool.sleep(wait[i<wait.length?i:wait.length-1]*1000);
-                    i++;
-                    r=oj.getResult(this);
-                    //System.out.println(submitterID+":get res="+r.getR());
-                    setShowstatus("评测结果="+r.getR());
-                    if(i>=300){
-                        Main.status.setStatusResult(info.rid, Result.ERROR, "-", "-", "ERROR:评测超时。可能是原oj繁忙");
-                        flag = true;
-                        break;
-                    }
-                }while(!r.canReturn());
-                if(!flag)
-                    Main.submitter.onSubmitDone(Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo(),r.getScore()));
+                r = oj.getResultReturn(this);
+                Status s = Main.status.setStatusResult(info.rid, r.getR(),r.getTime(),r.getMemory(),r.getCEInfo(),r.getScore());
+                if(r.getR() != Result.ERROR)
+                    Main.submitter.onSubmitDone(s);
             }
             this.status=IDLE;
         }catch(Exception e){
@@ -170,7 +160,9 @@ public class VjSubmitter implements Runnable{
         //submitterID,ojid,status,username,info.rid,info.pid,ojsrid,show
         List<String> row=new ArrayList<String>();
         row.add(submitterID+"");
-        row.add(ojid+"");
+        if(submitterID == -1) row.add("local");
+        else row.add(Submitter.ojs[ojid].getName());
+        row.add(selfThread.getId()+"");
         row.add(status==1?"正在评测":"空闲");
         row.add(username);
         row.add(info==null?"":info.rid+"");
@@ -178,5 +170,8 @@ public class VjSubmitter implements Runnable{
         row.add(ojsrid+"");
         row.add(showstatus);
         return row;
+    }
+    void setSelfThread(Thread selfThread) {
+        this.selfThread = selfThread;
     }
 }

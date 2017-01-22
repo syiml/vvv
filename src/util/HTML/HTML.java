@@ -1392,7 +1392,7 @@ public class HTML {
         TableHTML table=new TableHTML();
         table.setClass("table");
         //submitterID,ojid,status,username,info.rid,info.pid,ojsrid,show
-        table.addColname("id","oj","s","username","rid","pid","ojsrid","show");
+        table.addColname("id","oj","thd","s","username","rid","pid","ojsrid","show");
         for(VjSubmitter s:Main.submitter.m.getSubmitters()){
             table.addRow(s.row());
         }

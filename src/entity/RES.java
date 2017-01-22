@@ -63,4 +63,8 @@ public class RES {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public int getUseTime(){
+        return Integer.parseInt(Time.substring(0, getTime().length()-2));
+    }
 }

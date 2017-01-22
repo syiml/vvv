@@ -22,7 +22,7 @@ public class VJudge {
             s.add(new SubmitterLocal(0,"","",-1,this));
         }
 
-        String ss[]={"hdu","bnuoj","nbut","pku","hust","cf","codevs"};
+        String ss[]={"hdu","bnuoj","nbut","pku","hust","cf","codevs","judge_system"};
         for(int j=0;j<ss.length;j++){
             String sss=ss[j];
             JSONArray GA=Main.GV.getJSONObject(sss).getJSONArray("Submitter");
@@ -56,6 +56,7 @@ public class VJudge {
     private void DO(){
         for (VjSubmitter ss : s) {
             Thread t1 = new Thread(ss);
+            ss.setSelfThread(t1);
             t1.start();
         }
     }
