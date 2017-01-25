@@ -86,7 +86,7 @@ public class statusSQL {
                 " ON contestproblems.cid=? AND tpid=statu.pid" +
                 " WHERE contestproblems.cid=? ";
         if(pid!=-1){
-            sql+=" AND pid="+ ContestMain.getContest(cid).getGlobalPid(pid);
+            sql+=" AND statu.pid="+ ContestMain.getContest(cid).getGlobalPid(pid);
         }
         if(result!=-1) sql+=" AND result="+result;
         if(Language!=-1) sql+=" AND lang="+Language;
