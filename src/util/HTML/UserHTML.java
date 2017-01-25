@@ -21,6 +21,7 @@ public class UserHTML {
     User showuser;//要显示的user信息
     User user;//正在查看该信息的user
     Set<Integer> l1;
+    Set<Integer> l_self = null;
     public UserHTML(User showuser,User user){
         this.showuser=showuser;
         this.user=user;
@@ -145,8 +146,14 @@ public class UserHTML {
     public String SolvedProblems(){
         String s="";
         l1= Main.status.getAcProblems(showuser.getUsername());
+        if(user!=null) l_self= Main.status.getAcProblems(user.getUsername());
         for(Integer i:l1){
-            s+=HTML.a("Status.jsp?all=1&user="+showuser.getUsername()+"&pid="+i+"&result=1",i+"")+" ";
+            if(l_self==null||l_self.contains(i)){
+                s+=HTML.a("Status.jsp?all=1&user="+showuser.getUsername()+"&pid="+i+"&result=1",i+"")+" ";
+            }
+            else{
+                s+=HTML.a("Status.jsp?all=1&user="+showuser.getUsername()+"&pid="+i+"&result=1",HTML.text(i+"","red"))+" ";
+            }
         }
         return HTML.panel("已经解决题目列表："+l1.size(),s,null,"success");
     }
