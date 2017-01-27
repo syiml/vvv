@@ -405,7 +405,7 @@ public class HTML {
     }
     private static String problemInfo(int pid,int cid){
         Problem p = Main.problems.getProblem(pid);
-        int acNum=p.totalAcUser;
+        int acNum=p.totalAc;
         int submitUserNum=p.totalSubmitUser;
         int submitNum=p.totalSubmit;
         TableHTML table=new TableHTML();
@@ -413,12 +413,13 @@ public class HTML {
         table.addColname("");
         table.addColname("");
         table.addCl(0, -1, "hide");
-        table.addRow("Solved", HTML.a("Status.jsp?all=1&pid=" + pid + "&result=1", acNum + ""));
-        table.addRow("SubmitUser",HTML.a("Status.jsp?all=1&pid=" + pid ,submitUserNum+""));
-        table.addRow("Submit",HTML.a("Status.jsp?all=1&pid="+pid,submitNum+""));
+        table.addRow("总AC数", HTML.a("Status.jsp?all=1&pid=" + pid + "&result=1", acNum + ""));
+        table.addRow("通过人数",HTML.a("Status.jsp?all=1&pid=" + pid ,p.totalAcUser+""));
+        table.addRow("尝试人数",HTML.a("Status.jsp?all=1&pid=" + pid ,submitUserNum+""));
+        table.addRow("总提交量",HTML.a("Status.jsp?all=1&pid="+pid,submitNum+""));
 
-        table.addRow("Ratio",(submitUserNum==0?"0.00%":(String.format("%.2f",(1.0*acNum/submitNum*100))+"%")));
-        return panelnobody("Information"+HTML.floatRight(HTML.a("ProblemInfo.jsp?pid="+pid+(cid==-1?"":"&cid="+cid),"详细")),"info",table.HTML());
+        table.addRow("AC率",(submitUserNum==0?"0.00%":(String.format("%.2f",(1.0*p.totalAcUser/submitNum*100))+"%")));
+        return panelnobody("题目统计信息"+HTML.floatRight(HTML.a("ProblemInfo.jsp?pid="+pid+(cid==-1?"":"&cid="+cid),"详细")),"info",table.HTML());
     }
     private static String problemTagJavaScript(){
         return "";
@@ -434,7 +435,7 @@ public class HTML {
 //        tagslist+="<div id='problemtaglist'></div>";
 //        tagslist+="<script>$('#problemtaglist').load('js/ECharts/zifuyun.jsp?pid="+pid+"')</script>";
         return panelToggle(
-                "Tags_"+pid,
+                "标签——"+pid,
                 "info",
                 (canedit?"<div style='margin:5px'>您通过了该题，点击"+HTML.a("javascript:tagadmin("+pid+")","<span class='badge'>此处</span>")+"添加标签</div>":"")+tagslist+"<div id='tagadminmodal'></div>"+problemTagJavaScript(),
                 "AC该题后可以添加标签<br>" +
