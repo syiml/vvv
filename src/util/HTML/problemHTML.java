@@ -157,12 +157,12 @@ public class problemHTML {
         s+=getSpjHTML();
         if(admin){
             String adminstring="";
-            if(p.getType()==1){
+            if(p.getType()==Problem.OTHEROJ && p.getOjid()!=7){
                 adminstring += "[" + HTML.a("delProblemDis.action?pid=" + pid, "重新获取") + "]";
                 adminstring+="<br>"+"["+HTML.a("admin.jsp?page=AddProblem&pid="+pid,"编辑")+"]";
             }else{
                 adminstring+="["+HTML.a("UploadSample.jsp?pid="+pid,"测试数据")+"]";
-                adminstring+="<br>"+"["+HTML.a("admin.jsp?page=AddLocalProblem&pid="+pid,"编辑")+"]";
+                adminstring+="<br>"+"["+HTML.a("admin.jsp?page=AddProblem&pid="+pid,"编辑")+"]";
             }
             modal mo=new modal("problem_admin","题目管理",adminstring,"admin");
             mo.setBtnCls("link btn-sm");
@@ -231,8 +231,17 @@ public class problemHTML {
     }
 
     public int getTime(){
-        return Integer.parseInt(TimeLimit.substring(0,TimeLimit.length()-2));
-    }public int getMemory(){
-        return Integer.parseInt(MenoryLimit.substring(0,MenoryLimit.length()-2));
+        try {
+            return Integer.parseInt(TimeLimit.substring(0, TimeLimit.length() - 2));
+        }catch (Exception e){
+            return 1000;
+        }
+    }
+    public int getMemory(){
+        try {
+            return Integer.parseInt(MenoryLimit.substring(0,MenoryLimit.length()-2));
+        }catch (Exception e){
+            return 128;
+        }
     }
 }

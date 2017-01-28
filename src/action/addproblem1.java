@@ -6,20 +6,22 @@ import util.Main;
  * Created by Syiml on 2015/6/14 0014.
  */
 public class addproblem1 extends BaseAction{
-    String pid;
+    int pid;
     String ojid;
     String ojspid;
     String title;
+    int time;
+    int memory;
+    boolean isSpj;
     String author;
-    String isSpj;
 
     public int getPid() {
-        if(pid==null||pid.equals("")) return -1;
-        return Integer.parseInt(pid);
+        return pid;
     }
 
     public void setPid(String pid) {
-        this.pid = pid;
+        if(pid==null||pid.equals("")) this.pid = -1;
+        else this.pid = Integer.parseInt(pid);
     }
 
     public int getOjid() {
@@ -55,12 +57,35 @@ public class addproblem1 extends BaseAction{
     }
 
     public String getIsSpj() {
-
-        return isSpj;
+        return isSpj?"true":null;
     }
 
     public void setIsSpj(String isSpj) {
-        this.isSpj = isSpj;
+        this.isSpj = isSpj!=null;
+    }
+
+    public boolean isSpj() {
+        return isSpj;
+    }
+
+    public void setSpj(boolean spj) {
+        isSpj = spj;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getMemory() {
+        return memory;
+    }
+
+    public void setMemory(int memory) {
+        this.memory = memory;
     }
 
     public String addproblem1(){

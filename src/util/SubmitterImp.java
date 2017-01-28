@@ -2,6 +2,7 @@ package util;
 
 import WebSocket.MatchServer;
 import entity.Contest;
+import entity.Problem;
 import entity.Result;
 import entity.Status;
 import servise.ContestMain;
@@ -30,8 +31,9 @@ public class SubmitterImp implements Submitter{
         Status s=new Status(0,user,pid,cid,language,code,submittime);
         rid = Main.status.addStatu(s);//插入数据库，并获取rid
         s.setRid(rid);
-        if(!Main.problems.isProblemLocal(pid)){//is vj
-            SubmitInfo ss=new SubmitInfo(rid,Main.problems.getOjspid(pid),language,code,false);
+        Problem p = Main.problems.getProblem(pid);
+        if(p.getType()!=Problem.LOCAL){//is vj
+            SubmitInfo ss=new SubmitInfo(rid,p.getOjspid(),language,code,false);
             submitVJ(ss, Main.problems.getOJid(pid));
         }else{//is local
             SubmitInfo ss=new SubmitInfo(rid,pid+"",language,code,false);

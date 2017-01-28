@@ -65,7 +65,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         return (maxpid-1000)/num+1;//没有任何题目默认有一页为空
     }
     public void editProblem(int pid,Problem pro){
-        new SQL("UPDATE problem SET title=?,ojid=?,ojspid=?,author=?,spj=? WHERE pid=?", pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pro.isSpj(),pid).update();
+        new SQL("UPDATE problem SET ptype=?,title=?,ojid=?,ojspid=?,author=?,spj=? WHERE pid=?",pro.getType(), pro.getTitle(),pro.getOjid(),pro.getOjspid(),pro.getAuthor(),pro.isSpj(),pid).update();
         removeCatch(pid);
     }
     public int addProblem(int pid,Problem pro){
