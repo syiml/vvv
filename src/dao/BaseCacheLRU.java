@@ -32,7 +32,7 @@ public abstract class BaseCacheLRU<K,V> {
         return bean;
     }
     protected abstract V getByKeyFromSQL(K key);
-    private V getBeanFromCatch(K key){
+    protected V getBeanFromCatch(K key){
         return _catch.get(key);
     }
     protected void set_catch(K key, V value){

@@ -42,6 +42,7 @@ public class Exam_Program extends Base_Exam_problem {
         p.setOutput(output);
         p.addSample(sampleInput,sampleOutput);
         JSONObject jo=new JSONObject();
+        p.setInContest(true);
         jo.put("description",p.getHTML());
         return jo.toString();
     }

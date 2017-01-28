@@ -190,6 +190,12 @@
                         <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>
                 <action name="judgeSystemReturn" class="action.JudgeSystemReturn" method="judgeDone"> </action>
+                <action name="starProblem" class="action.Action_Star" method="StarProblem">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="starStatus" class="action.Action_Star" method="StarStatus">
+                        <result name="success">return.jsp</result>
+                </action>
         </package>
         <package name="app" namespace="/app" extends="struts-default">
                 <action name="getSelfInfo" class="action.App.ActionNoPara" method="getSelfInfo"> </action>

@@ -503,6 +503,7 @@ public class HTML {
             else {
                 ph.setPid(tpid);
                 ph.setAdmin(admin);
+                ph.setInContest(cidInt!=-1);
                 ret=ph.getHTML();
             }
             if(cidInt==-1){

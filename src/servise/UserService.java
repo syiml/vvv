@@ -1,6 +1,7 @@
 package servise;
 
 import dao.UserSolvedSQL;
+import dao.UserStarSQL;
 import dao.VerifySQL;
 import entity.User;
 import entity.UserSolvedListBean;
@@ -21,6 +22,7 @@ public class UserService {
     public static boolean editUser(User u) {
         return u != null && Main.users.update(u);
     }
+    public static UserStarSQL userStarSQL = new UserStarSQL();
     public static MainResult submitVerify(action.edit e){
         User u = Main.loginUser();
         if(u==null) return MainResult.NO_LOGIN;
@@ -79,5 +81,27 @@ public class UserService {
     }
     public static UserSolvedListBean getUserSolved(String username){
         return userSolvedSQL.getBeanByKey(username);
+    }
+
+    public static boolean isStarProblem(String username,int pid){
+        return userStarSQL.getBeanByKey(username).isProblemStar(pid) != null;
+    }
+    public static boolean isStatusProblem(String username,int rid){
+        return userStarSQL.getBeanByKey(username).isStatusStar(rid) != null;
+    }
+
+    public static MainResult addProblemStar(int pid,String text){
+        User user = Main.loginUser();
+        if(user==null) return MainResult.NO_LOGIN;
+        if(Main.problems.getProblem(pid) == null) return MainResult.ARR_ERROR;
+        userStarSQL.addProblemStart(user.getUsername(),pid,text);
+        return MainResult.SUCCESS;
+    }
+    public static MainResult addStatusStar(int rid,String text){
+        User user = Main.loginUser();
+        if(user==null) return MainResult.NO_LOGIN;
+        if(Main.status.getStatu(rid) == null) return MainResult.ARR_ERROR;
+        userStarSQL.addStatusStart(user.getUsername(),rid,text);
+        return MainResult.SUCCESS;
     }
 }

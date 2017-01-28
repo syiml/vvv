@@ -32,7 +32,11 @@ public class JudgeSystem extends OTHOJ {
 
     @Override
     public problemHTML getProblemHTML(String pid) {
-        return null;
+        problemHTML problemHTML = new problemHTML();
+        problemHTML.setTimeLimit("1000MS");
+        problemHTML.setMenoryLimit("128M");
+        problemHTML.setInt64("%lld");
+        return problemHTML;
     }
 
     @Override

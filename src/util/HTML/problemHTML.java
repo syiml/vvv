@@ -1,5 +1,10 @@
 package util.HTML;
 
+import entity.User;
+import servise.UserService;
+import util.HTML.FromHTML.FormHTML;
+import util.HTML.FromHTML.hidden.hidden;
+import util.HTML.FromHTML.text.text;
 import util.Main;
 import entity.Problem;
 import util.HTML.modal.modal;
@@ -55,6 +60,8 @@ public class problemHTML {
     private boolean spj;
     private boolean admin=false;
     private int pid;
+    private boolean isInContest = false;
+    private User user = Main.loginUser();
     public void setPid(int pid){this.pid=pid;}
     public void setSpj(int i){spj=(i!=0);}
     public problemHTML(){
@@ -148,6 +155,46 @@ public class problemHTML {
     public void setAdmin(boolean a){
         admin=a;
     }
+    private String problemMisStar(){
+        if(user == null){
+            return HTML.text(HTML.glyphicon("star-empty")+"登录后收藏","green");
+        }
+        if(UserService.isStarProblem(user.getUsername(),pid)){
+            return HTML.text(HTML.glyphicon("star")+"已收藏","green");
+        }else {
+            FormHTML formHTML = new FormHTML();
+            formHTML.addForm(new hidden("starID", pid + ""));
+            formHTML.addForm(new text("text", "备注"));
+            formHTML.setPartFrom();
+            modal m = new modal("problemStar", "收藏题目", formHTML.toHTML(), HTML.glyphicon("star-empty") + "点击收藏");
+            m.setAction("starProblem.action");
+            return m.toHTMLA();
+        }
+    }
+    private String problemMisSolved(){
+        if(user != null){
+            int z = Main.status.submitResult(pid,user.getUsername());
+            //1->AC
+            //0->submit but no AC
+            //-1->no submit
+            if(z == 1){
+                return HTML.text(HTML.glyphicon("ok")+"已解决","green");
+            }else if(z == 0){
+                return HTML.text(HTML.glyphicon("remove")+"未解决","red");
+            }else{
+                return HTML.text(HTML.glyphicon("minus")+"未提交","black");
+            }
+        }else{
+            return HTML.text(HTML.glyphicon("minus")+"未提交","black");
+        }
+    }
+    private String getProblemMis(){
+        if(!isInContest){
+            return problemMisSolved()+" | "+problemMisStar();
+        }else{
+            return "";
+        }
+    }
     public String getHTML(){
         Problem p= Main.problems.getProblem(pid);
         String s="";
@@ -155,6 +202,8 @@ public class problemHTML {
         s+=getLimitHTML();
         s+=getInt64HTML();
         s+=getSpjHTML();
+
+        String admin_s = "";
         if(admin){
             String adminstring="";
             if(p.getType()==1){
@@ -166,8 +215,9 @@ public class problemHTML {
             }
             modal mo=new modal("problem_admin","题目管理",adminstring,"admin");
             mo.setBtnCls("link btn-sm");
-            s+=HTML.div("row", HTML.col(12, HTML.floatRight(mo.toHTML())));
+            admin_s = HTML.floatRight(mo.toHTMLA());
         }
+        s+=HTML.div("row", HTML.col(12,0,"'style='padding-top:8px;padding-bottom:8px", getProblemMis() + admin_s));
         //s+="<br><br>";
         s+=HTML.panel("Problem Description", (admin?edit("editproblem.jsp?pid="+pid+"&edit=dis","编辑"):"")+Dis);
         s+=HTML.panel("Input", (admin?edit("editproblem.jsp?pid="+pid+"&edit=input","编辑"):"")+Input);
@@ -234,5 +284,9 @@ public class problemHTML {
         return Integer.parseInt(TimeLimit.substring(0,TimeLimit.length()-2));
     }public int getMemory(){
         return Integer.parseInt(MenoryLimit.substring(0,MenoryLimit.length()-2));
+    }
+
+    public void setInContest(boolean inContest) {
+        isInContest = inContest;
     }
 }
