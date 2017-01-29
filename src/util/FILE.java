@@ -51,6 +51,8 @@ public class FILE {
             if(!file.delete()) {
                 Tool.log("Can not delete file:" + file.getAbsolutePath());
                 return false;
+            }else{
+                Main.svnDelFileComimt(pid+"\\"+filename);
             }
             return true;
         }
@@ -69,7 +71,10 @@ public class FILE {
             if(f.length()>Main.config.maxSampleFileSize){
                 return false;
             }
-            return Main.uploadFile(f,rootPath+"data\\"+pid+"\\"+filename).equals("success");
+            Main.uploadFile(f,rootPath+"data\\"+pid+"\\"+filename);
+            //svn commit
+            Main.svnAddFileComimt();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;

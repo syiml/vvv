@@ -12,6 +12,7 @@
   "autoConnectionTimeMinute":"360",
   "delRun":false,
 
+  "svnPath":"E:\\Program Files\\VisualSVN Server\bin\\svn.exe",
   "localJudgeWorkPath":"C:\\T_TOJ\\",
   "LocalJudgeNumber":1,
   "maxHeadImgSize":524288,
@@ -76,9 +77,9 @@
     ]
   },
   "judge_system":{
-    "URL":"http://192.168.111.130:8100",
+    "URL":"http://192.168.111.131:8100",
     "Submitter":[
-      ["http://192.168.111.130:8100",""]
+      ["http://192.168.111.131:8100",""]
     ]
   }
 }

@@ -36,6 +36,11 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
         this.Author=author;
         this.spj=spj;
     }
+
+    /**
+     * 新增一个本地题
+     * @param title
+     */
     public Problem(String title){
         this.ojid=0;
         this.ojspid="0";
@@ -67,7 +72,7 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
         return Title;
     }
 
-    public String getOjspid() { return ojspid; }
+    public String getOjspid() { return ojid==7?pid+"":ojspid; }
 
     public String getAuthor(){return Author;}
 
@@ -107,5 +112,85 @@ public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
     @Override
     public void setExpired(Timestamp t) {
         expiredTime = t;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public void setTitle(String title) {
+        Title = title;
+    }
+
+    public void setAuthor(String author) {
+        Author = author;
+    }
+
+    public int getVisiable() {
+        return visiable;
+    }
+
+    public void setVisiable(int visiable) {
+        this.visiable = visiable;
+    }
+
+    public void setSpj(boolean spj) {
+        this.spj = spj;
+    }
+
+    public int getTotalSubmit() {
+        return totalSubmit;
+    }
+
+    public void setTotalSubmit(int totalSubmit) {
+        this.totalSubmit = totalSubmit;
+    }
+
+    public int getTotalSubmitUser() {
+        return totalSubmitUser;
+    }
+
+    public void setTotalSubmitUser(int totalSubmitUser) {
+        this.totalSubmitUser = totalSubmitUser;
+    }
+
+    public int getTotalAc() {
+        return totalAc;
+    }
+
+    public void setTotalAc(int totalAc) {
+        this.totalAc = totalAc;
+    }
+
+    public int getTotalAcUser() {
+        return totalAcUser;
+    }
+
+    public void setTotalAcUser(int totalAcUser) {
+        this.totalAcUser = totalAcUser;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    public void setOjid(int ojid) {
+        this.ojid = ojid;
+    }
+
+    public void setOjspid(String ojspid) {
+        this.ojspid = ojspid;
+    }
+
+    public Timestamp getExpiredTime() {
+        return expiredTime;
+    }
+
+    public void setExpiredTime(Timestamp expiredTime) {
+        this.expiredTime = expiredTime;
     }
 }

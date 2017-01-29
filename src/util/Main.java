@@ -59,8 +59,93 @@ public class Main {
         config.readConfig(GV);
     }
     public static String addProblem(addproblem1 action){
-        Problem p=new Problem(action.getOjid(),action.getOjspid(),action.getTitle(),action.getAuthor(),action.getIsSpj()!=null);
-        problems.addProblem(action.getPid(), p);
+        Problem p = new Problem();
+        p.setType(action.getOjid()==-1?0:1);
+        p.setTitle(action.getTitle());
+        p.setAuthor(action.getAuthor());
+        p.setOjid(action.getOjid());
+        p.setOjspid(action.getOjspid());
+        p.setSpj(action.getIsSpj()!=null);
+        p.setPid(action.getPid());
+
+        if(action.getPid() == -1) {//new
+            int newpid = problems.addProblem(-1, p);
+            p.setPid(newpid);
+
+        }else{//edit
+            Main.problems.editProblem(action.getPid(),p);
+        }
+
+        problemHTML ph = Main.problems.getProblemHTML(p.getPid());
+        if(action.getPid() == -1&&(action.getOjid() != -1  && action.getOjid()!=7)) return "success";
+        if(ph == null){
+            ph = new problemHTML();
+        }
+
+        ph.setInt64(p.getType() == 0?"%I64d":"%lld");
+        ph.setMenoryLimit(action.getMemory()+"MB");
+        ph.setTimeLimit(action.getTime()+"MS");
+        if(p.getPid()!=-1) problems.delProblemDis(p.getPid());
+        problems.saveProblemHTML(p.getPid(), ph);
+        FILE.createDirectory(p.getPid());
+
+        /*
+        if(action.getOjid() == -1 || action.getOjid() == 7){//本地题或者judge_system的题
+            if(action.getPid() == -1){
+                Problem p;
+                if(action.getOjid() == -1)  p = new Problem(action.getTitle());
+                else{
+                    p = new Problem(action.getOjid(), action.getOjspid(), action.getTitle(), action.getAuthor(),action.getIsSpj() != null);
+                }
+                p.Author=action.getAuthor();
+                p.spj = action.isSpj();
+                int newpid=problems.addProblem(-1,p);
+                problemHTML ph=new problemHTML();
+                if(action.getOjid() == -1 ){
+                    ph.setInt64("%I64d");
+                }else{
+                    ph.setInt64("%lld");
+                }
+                ph.setTimeLimit(action.getTime() + "MS");
+                ph.setMenoryLimit(action.getMemory() + "MB");
+                problems.saveProblemHTML(newpid, ph);
+                FILE.createDirectory(newpid);
+                return "success";
+            }
+            else{
+                int pid=action.getPid();
+                Problem p = new Problem(action.getOjid(), action.getOjspid(), action.getTitle(), action.getAuthor(), action.getIsSpj() != null);
+                if(action.getOjid() == -1) p.setType(0);
+                else{
+                    p.setType(1);
+                }
+                p.Title=action.getTitle();
+                p.Author=action.getAuthor();
+                p.spj = action.isSpj();
+                Main.problems.editProblem(pid,p);
+                problemHTML ph=Main.problems.getProblemHTML(pid);
+                ph.setTimeLimit(action.getTime()+"MS");
+                ph.setMenoryLimit(action.getMemory()+"MB");
+                if(action.getOjid() == -1) ph.setInt64("%I64d");//本地题
+                else if(action.getOjid() == 7) ph.setInt64("%lld");//judge_system的题
+                problems.delProblemDis(pid);
+                problems.saveProblemHTML(pid,ph);
+                return "success";
+            }
+        }else {
+            Problem p = new Problem(action.getOjid(), action.getOjspid(), action.getTitle(), action.getAuthor(), action.getIsSpj() != null);
+            problems.addProblem(action.getPid(), p);
+
+            problemHTML ph=Main.problems.getProblemHTML(action.getPid());
+            if(ph!=null) {
+                ph.setTimeLimit(action.getTime() + "MS");
+                ph.setMenoryLimit(action.getMemory() + "MB");
+                if (action.getOjid() == -1) ph.setInt64("%I64d");//本地题
+                else if (action.getOjid() == 7) ph.setInt64("%lld");//judge_system的题
+                problems.delProblemDis(action.getPid());
+                problems.saveProblemHTML(action.getPid(), ph);
+            }
+        }*/
         return "success";
     }
     public static String addLocalProblem(addLocalProblem action){
@@ -138,6 +223,68 @@ public class Main {
         }
         os.close();
         is.close();
+        return "success";
+    }
+
+    public static String svnAddFileComimt(){
+        /*
+        * svn add . --no-ignore --force
+        * svn commit -m
+        * */
+        Runtime rt = Runtime.getRuntime();
+        File dir = new File(Main.config.localJudgeWorkPath+"\\data");
+        try {
+            Process pro = rt.exec(config.svnPath+" add . --no-ignore --force",new String[]{},dir);
+            try {
+
+                pro.waitFor();
+
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            pro = rt.exec(config.svnPath+" commit -m \"\"",new String[]{},dir);
+            try {
+                pro.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "success";
+    }
+    public static String svnDelFileComimt(String fileName){
+        /*
+        * svn delete fileName
+        * svn commit -m
+        * */
+        Runtime rt = Runtime.getRuntime();
+        try {
+            File dir = new File(Main.config.localJudgeWorkPath+"\\data");
+            Process pro = rt.exec(config.svnPath+" rm "+fileName,new String[]{},dir);
+            try {
+                String errorInfo = "";
+                long time = System.currentTimeMillis();
+                pro.waitFor();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(pro.getInputStream()));
+                while (time + 10000L > System.currentTimeMillis() && (errorInfo = br.readLine()) != null) {
+                    errorInfo = errorInfo + "\n";
+                }
+                Tool.debug(errorInfo);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            pro = rt.exec(config.svnPath+" commit -m \"\"",new String[]{},dir);
+            try {
+                pro.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "success";
     }
     public static HttpSession getSession(){

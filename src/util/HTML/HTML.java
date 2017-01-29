@@ -1193,8 +1193,10 @@ public class HTML {
     public static String adminAddProblemForm(){
         int pid;
         Problem p=null;
+        problemHTML ph=null;
         try{
             pid=Integer.parseInt(Main.getRequest().getParameter("pid"));
+            ph=Main.problems.getProblemHTML(pid);
             p=Main.problems.getProblem(pid);
         }catch(NumberFormatException e){
             pid=-1;
@@ -1212,11 +1214,18 @@ public class HTML {
         f.addForm(f1);
 
         select f2=new select("ojid","oj");
+        f2.add(-1,"本地OJ");
         for(int i=0;i<Submitter.ojs.length;i++){
             f2.add(i,Submitter.ojs[i].getName());
         }
         f2.setId("ojid");
-        if(p!=null) f2.setValue(p.getOjid()+"");
+        if(p!=null){
+            if(p.getType() == Problem.OTHEROJ){
+                f2.setValue(p.getOjid()+"");
+            }else{
+                f2.setValue("-1");
+            }
+        }
         f.addForm(f2);
 
         text f3=new text("ojspid","对应OJ的Pid");
@@ -1236,6 +1245,14 @@ public class HTML {
         if(p!=null) f4.setValue(p.getTitle());
         f.addForm(f4);
 
+        text t2=new text("time","时限(MS)");
+        if(ph!=null) t2.setValue(ph.getTime()+"");
+        text t3=new text("memory","空间限制(MB)");
+        if(ph!=null) t3.setValue(ph.getMemory()+"");
+        check isSpj = new check("isSpj","特判 (特判必须在上传数据时上传spj.cpp文件)");
+        if(p!=null)isSpj.setValue(p.isSpj()?"true":"false");
+
+        f.addForm(t2,t3,isSpj);
         f.addForm(new text_in("<div id='buff'></div>"));
         f.setCol(2,10);
         return f.toHTML()+script("js/addProblem.js");
