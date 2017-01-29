@@ -82,7 +82,7 @@ public class Main {
             ph = new problemHTML();
         }
 
-        ph.setInt64(p.getType() == 0?"%I64D":"%lld");
+        ph.setInt64(p.getType() == 0?"%I64d":"%lld");
         ph.setMenoryLimit(action.getMemory()+"MB");
         ph.setTimeLimit(action.getTime()+"MS");
         if(p.getPid()!=-1) problems.delProblemDis(p.getPid());
@@ -234,7 +234,7 @@ public class Main {
         Runtime rt = Runtime.getRuntime();
         File dir = new File(Main.config.localJudgeWorkPath+"\\data");
         try {
-            Process pro = rt.exec("E:\\Program Files\\VisualSVN Server\\bin\\svn.exe add . --no-ignore --force",new String[]{},dir);
+            Process pro = rt.exec(config.svnPath+" add . --no-ignore --force",new String[]{},dir);
             try {
 
                 pro.waitFor();
@@ -243,7 +243,7 @@ public class Main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            pro = rt.exec("E:\\Program Files\\VisualSVN Server\\bin\\svn.exe commit -m \"\"",new String[]{},dir);
+            pro = rt.exec(config.svnPath+" commit -m \"\"",new String[]{},dir);
             try {
                 pro.waitFor();
             } catch (InterruptedException e) {
@@ -262,8 +262,7 @@ public class Main {
         Runtime rt = Runtime.getRuntime();
         try {
             File dir = new File(Main.config.localJudgeWorkPath+"\\data");
-            Tool.debug("E:\\Program Files\\VisualSVN Server\\bin\\svn.exe rm "+fileName);
-            Process pro = rt.exec("E:\\Program Files\\VisualSVN Server\\bin\\svn.exe rm "+fileName,new String[]{},dir);
+            Process pro = rt.exec(config.svnPath+" rm "+fileName,new String[]{},dir);
             try {
                 String errorInfo = "";
                 long time = System.currentTimeMillis();
@@ -277,7 +276,7 @@ public class Main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            pro = rt.exec("E:\\Program Files\\VisualSVN Server\\bin\\svn.exe commit -m \"\"",new String[]{},dir);
+            pro = rt.exec(config.svnPath+" commit -m \"\"",new String[]{},dir);
             try {
                 pro.waitFor();
             } catch (InterruptedException e) {

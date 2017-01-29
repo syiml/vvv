@@ -22,6 +22,7 @@ public class Config {
 
     public long maxSampleFileSize;
 
+    public String svnPath;
     public String localJudgeWorkPath;
     public int LocalJudgeNumber;
     public String appPath = "/file/FJUTACM.apk";
@@ -43,6 +44,7 @@ public class Config {
         isDebug=GV.getBoolean("debug");
         version=GV.getString("version");
         sqlclass=GV.getString("sqlclass");
+        svnPath = GV.getString("svnPath");
         localJudgeWorkPath = GV.getString("localJudgeWorkPath");
         LocalJudgeNumber = GV.getInt("LocalJudgeNumber");
         maxSampleFileSize = GV.getLong("maxSampleFileSize");

@@ -12,6 +12,7 @@
   "autoConnectionTimeMinute":"360",
   "delRun":false,
 
+  "svnPath":"E:\\Program Files\\VisualSVN Server\bin\\svn.exe",
   "localJudgeWorkPath":"C:\\T_TOJ\\",
   "LocalJudgeNumber":1,
   "maxHeadImgSize":524288,
