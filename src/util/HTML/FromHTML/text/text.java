@@ -14,6 +14,7 @@ public class text extends form {
     String allid;
     String value;
     String validate;
+    String css;
     boolean disabled=false;
     boolean pass=false;
     int type;//0,1;
@@ -69,6 +70,7 @@ public class text extends form {
             s+=" id='"+id+"'";
         //}
         s+=" name='"+name+"'";
+        if(css!=null) s+= "style='"+css+"'";
         if(placeholder!=null){
             s+=" placeholder='"+placeholder+"'";
         }
@@ -116,5 +118,9 @@ public class text extends form {
     }
     public void setDisabled(){
         disabled=true;
+    }
+
+    public void setCss(String css) {
+        this.css = css;
     }
 }
