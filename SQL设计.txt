@@ -9,7 +9,7 @@ CREATE TABLE  `vjudge`.`t_star` (
 `id` INT NOT NULL AUTO_INCREMENT ,
 `username` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 `type` INT( 11 ) NOT NULL ,
-`start_id` INT( 11 ) NOT NULL ,
+`star_id` INT( 11 ) NOT NULL ,
 `text` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 PRIMARY KEY (  `id` )
 ) ENGINE = INNODB;
