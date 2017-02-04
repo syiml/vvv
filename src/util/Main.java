@@ -226,7 +226,7 @@ public class Main {
         return "success";
     }
 
-    public static String svnAddFileComimt(){
+    public static String svnAddFileCommit(){
         /*
         * svn add . --no-ignore --force
         * svn commit -m
@@ -254,7 +254,7 @@ public class Main {
         }
         return "success";
     }
-    public static String svnDelFileComimt(String fileName){
+    public static String svnDelFileCommit(String fileName){
         /*
         * svn delete fileName
         * svn commit -m

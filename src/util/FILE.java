@@ -52,7 +52,7 @@ public class FILE {
                 Tool.log("Can not delete file:" + file.getAbsolutePath());
                 return false;
             }else{
-                Main.svnDelFileComimt(pid+"\\"+filename);
+                Main.svnDelFileCommit(pid+"\\"+filename);
             }
             return true;
         }
@@ -73,7 +73,7 @@ public class FILE {
             }
             Main.uploadFile(f,rootPath+"data\\"+pid+"\\"+filename);
             //svn commit
-            Main.svnAddFileComimt();
+            Main.svnAddFileCommit();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
