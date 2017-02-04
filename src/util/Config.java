@@ -10,7 +10,8 @@ public class Config {
     public int statusShowNum;//statu每页显示数量
     public int contestShowNum;//contest每页显示数量
     public int userShowNum;//user每页显示数量
-    public int discussShowNum;//discuss内每页回复的显示数量
+    public int discussListShowNum;//discuss列表显示数量
+    public int discussReplyShowNum;//discuss内每页回复的显示数量
 
     public int autoConnectionTimeMinute;//连接池自动清空的时间间隔
 
@@ -39,7 +40,8 @@ public class Config {
         statusShowNum =GV.getInt("statusShowNum");
         contestShowNum=GV.getInt("contestShowNum");
         userShowNum=GV.getInt("userShowNum");
-        discussShowNum=GV.getInt("discussShowNum");
+        discussListShowNum=GV.getInt("discussListShowNum");
+        discussReplyShowNum=GV.getInt("discussReplyShowNum");
         autoConnectionTimeMinute=GV.getInt("autoConnectionTimeMinute");
         isDebug=GV.getBoolean("debug");
         version=GV.getString("version");

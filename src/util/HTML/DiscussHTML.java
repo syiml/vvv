@@ -204,7 +204,7 @@ public class DiscussHTML {
     }
 
     public String DiscussReply(int page){
-        int num=Main.config.discussShowNum;
+        int num=Main.config.discussReplyShowNum;
         int did= d.getId();
         boolean admin=false;
         if(loginuser!=null){

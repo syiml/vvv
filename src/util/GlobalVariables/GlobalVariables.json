@@ -8,7 +8,8 @@
   "statusShowNum":"20",
   "contestShowNum":"20",
   "userShowNum":"50",
-  "discussShowNum":"10",
+  "discussListShowNum":"20",
+  "discussReplyShowNum":"10",
   "autoConnectionTimeMinute":"360",
   "delRun":false,
 
