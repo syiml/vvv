@@ -8,27 +8,7 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-enum ANSI{
-    RESET("\u001B[0m"),
-    BLACK("\u001B[30m"),
-    RED("\u001B[31m"),
-    GREEN("\u001B[32m"),
-    YELLOW("\u001B[33m"),
-    BLUE("\u001B[34m"),
-    PURPLE("\u001B[35m"),
-    CYAN("\u001B[36m"),
-    WHITE("\u001B[37m");
-    String color;
-    ANSI(String color) {
-        this.color = color;
-    }
-
-    @Override
-    public String toString() {
-        return color;
-    }
-}
+import java.util.Random;
 
 /**
  * 杂项功能
@@ -116,8 +96,26 @@ public class Tool {
         //System.out.println(d + " " + s + ":" + m + ":00");
         return Timestamp.valueOf(d + " " + s + ":" + m + ":00");
     }
+
+    /**
+     * 产生一个随机整数 范围在[l,r]内，是均匀分布
+     * @param l 随机数下限
+     * @param r 随机数上限
+     * @return 随机整数
+     */
     public static int randNum(int l,int r){
         if(l>r) return 0;
         return (int)(Math.random()*(r-l+1)+l);
+    }
+
+    private static final Random r = new Random();
+    /**
+     * 产生一个随机数，符合正态分布
+     * @param miu 数学期望
+     * @param sigma 方差
+     * @return 随机double
+     */
+    public static double randomGaussian(double miu,double sigma){
+        return r.nextGaussian() * sigma + miu;
     }
 }
