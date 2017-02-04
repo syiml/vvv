@@ -212,7 +212,7 @@ public class statusSQL {
             Contest c=ContestMain.getContest(s.getCid());
             c.getRank().add(s , c);
         }
-        if(CEinfo!=null){
+        if(CEinfo!=null && !CEinfo.equals("")){
             addCEInfo(rid, CEinfo);
         }
         return s;
