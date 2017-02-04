@@ -57,7 +57,7 @@ public class JudgeSystem extends OTHOJ {
         formparams.add(new BasicNameValuePair("language","0"));
         synchronized (lock) {
             String ret = hc.Post(url+"/",formparams);
-            s.rid += 1;
+            s.rid = Math.random()+"";
             Tool.debug("wait begin");
             try {
                 lock.wait();
@@ -80,7 +80,7 @@ public class JudgeSystem extends OTHOJ {
                 res.setR(Result.TLE);
             }
         }
-        if(res.getR() == Result.MLE){
+        if(res.getR() == Result.MLE || res.getR() == Result.OLE){
             res.setTime("-");
         }
         return res;
