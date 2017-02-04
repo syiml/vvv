@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * 一个直接显示Bean列表的pageBean
  * 继承它，然后重写指定的方法即可
+ * 如果需要显示额外的内容，可以在子类中新增其他变量内容。
  * Created by QAQ on 2017/1/29.
  */
 public abstract class SimplePageBean<T> extends pageBean {
@@ -35,7 +36,7 @@ public abstract class SimplePageBean<T> extends pageBean {
      * 重写这个方法返回每个单元格的内容
      * @param i 当前行
      * @param cla 当前行要展示的对象
-     * @param colname 当前列的列名
+     * @param colname 当前列的列名，是通过getColNames指定的列名
      * @return 单元格内容 HTML格式
      */
     public abstract String getCellByClass(int i,T cla,String colname);
