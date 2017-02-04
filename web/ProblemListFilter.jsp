@@ -17,6 +17,7 @@
   }
   String tag=request.getParameter("tag");
   String pa=request.getParameter("pa");
+  String star=request.getParameter("star");
 %>
 
 <html>
@@ -26,7 +27,7 @@
 <body>
 <div class="container-fluid">
   <jsp:include page="module/head.jsp?page=problemset"/>
-  <%=HTML.problemListFilter(name,tag,pa)%>
+  <%=HTML.problemListFilter(name,tag,star!=null,pa)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

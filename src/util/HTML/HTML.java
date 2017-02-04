@@ -607,7 +607,7 @@ public class HTML {
             return panel("error","参数错误",null,"danger");
         }
     }
-    public static String problemListFilter(String name,String tag,String page){
+    public static String problemListFilter(String name,String tag,boolean star,String page){
         int pa,ta;
         try{
             pa=Integer.parseInt(page);
@@ -619,7 +619,7 @@ public class HTML {
         }catch (NumberFormatException e){
             ta=-1;
         }
-        ProblemListFilter ret=new ProblemListFilter(name,ta,pa);
+        ProblemListFilter ret=new ProblemListFilter(name,ta,pa,star);
         return ret.HTML();
     }
     public static String userList(String cid,String pa,String search,String order,boolean desc,String status){

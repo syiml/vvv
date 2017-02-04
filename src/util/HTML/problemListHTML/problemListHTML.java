@@ -1,6 +1,7 @@
 package util.HTML.problemListHTML;
 
 import servise.ContestMain;
+import util.HTML.FromHTML.check.check;
 import util.Main;
 import entity.Permission;
 import entity.User;
@@ -176,6 +177,9 @@ public class problemListHTML {
         FormHTML form=new FormHTML();
         form.setAction("ProblemListFilter.jsp");
         form.setType(1);
+        check ch = new check("star","我的收藏 ");
+        form.addForm(ch);
+
         text t=new text("name","标题");
         form.addForm(t);
 

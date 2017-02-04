@@ -20,7 +20,7 @@ public class check extends form {
         if(checked)s+=" checked='checked'";
         s+=" id="+name;
         s+=" name='"+name+"'>"+label+"</label></div>";
-        return s;
+        return  HTML.div("form-group",s);
     }
     public String toHTML(int col1,int col2){
         return HTML.div("form-group row",HTML.col(col2,col1,toHTML()));

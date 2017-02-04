@@ -186,16 +186,18 @@ public class statuListHTML extends pageBean {
         }
         f.setType(1);
         text f1=new text("user","用户");
+        f1.setCss("width:120px");
         f1.setType(1);
         if(ssuser!=null) f1.setValue(ssuser);
         f1.setId("user");
         f.addForm(f1);
         //////////////////////////
         if(cid==-1){
-            text f2=new text("pid","题目");
+            text f2=new text("pid","题号");
             f2.setType(1);
             if(pid!=-1)f2.setValue(pid+"");
             f2.setId("pid");
+            f2.setCss("width:70px");
             f.addForm(f2);
         }else{
             select f2=new select("pid","pid");

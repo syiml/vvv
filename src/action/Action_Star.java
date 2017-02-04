@@ -34,4 +34,12 @@ public class Action_Star extends BaseAction {
     public void setStarID(int starID) {
         this.starID = starID;
     }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }
