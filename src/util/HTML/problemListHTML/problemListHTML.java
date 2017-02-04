@@ -33,13 +33,13 @@ public class problemListHTML {
         incontest=false;
     }
     public problemListHTML(int cid){
+        this.user=Main.loginUser();
         if(user==null){
             this.user=null;
             return ;
         }
         list=Main.problems.getProblems(cid);
         incontest=true;
-        this.user=Main.loginUser();
         p=this.user.getPermission();
         this.cid=cid;
     }
