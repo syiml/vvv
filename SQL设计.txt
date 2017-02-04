@@ -12,8 +12,8 @@ CREATE TABLE  `vjudge`.`t_star` (
 `start_id` INT( 11 ) NOT NULL ,
 `text` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 PRIMARY KEY (  `id` )
-) ENGINE = INNODB
-ALTER TABLE  `t_star` ADD INDEX  `username` (  `username` )
+) ENGINE = INNODB;
+ALTER TABLE  `t_star` ADD INDEX  `username` (  `username` );
 
 //ACB账单
 
