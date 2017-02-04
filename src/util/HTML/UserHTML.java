@@ -225,7 +225,7 @@ public class UserHTML {
                 "submitcount_go('"+showuser.getUsername()+"',$('#SubmitCount-num').val(),$('#SubmitCount-sec').val());" +
                 "}";
         script+="</script>";
-        return HTML.panelnobody("提交统计", "primary",script);//+rr
+        return HTML.panelnobody("提交统计 "+HTML.a("Status.jsp?user="+showuser.getUsername(),HTML.text("【点击查看最近提交记录】","white")), "primary",script);//+rr
     }
     public String HTML(){
 //        String left=userInfo()+Permissions()+Mark();
