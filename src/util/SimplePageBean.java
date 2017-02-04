@@ -5,6 +5,8 @@ import util.HTML.pageBean;
 import java.util.List;
 
 /**
+ * 一个直接显示Bean列表的pageBean
+ * 继承它，然后重写指定的方法即可
  * Created by QAQ on 2017/1/29.
  */
 public abstract class SimplePageBean<T> extends pageBean {
@@ -14,10 +16,10 @@ public abstract class SimplePageBean<T> extends pageBean {
 
     protected SimplePageBean(int page) {
         this.page = page;
-        this.list = getElement(page);
+        this.list = getElement( getEveryPageNumber() * (page-1) ,getEveryPageNumber());
     }
 
-    public abstract List<T> getElement(int page);
+    public abstract List<T> getElement(int from,int num);
 
     /**
      * @return 总数量
@@ -27,7 +29,7 @@ public abstract class SimplePageBean<T> extends pageBean {
     /**
      * @return 每页的大小
      */
-    public abstract int getEveryPageNumer();
+    public abstract int getEveryPageNumber();
 
     /**
      * 重写这个方法返回每个单元格的内容
@@ -52,7 +54,7 @@ public abstract class SimplePageBean<T> extends pageBean {
 
     @Override
     public int getTotalPageNum() {
-        return pageBean.getTotalPageNum(getTotalNumber(),getEveryPageNumer());
+        return pageBean.getTotalPageNum(getTotalNumber(), getEveryPageNumber());
     }
 
     @Override
