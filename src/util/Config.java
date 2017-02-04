@@ -3,6 +3,7 @@ package util;
 import net.sf.json.JSONObject;
 
 /**
+ * 从src/util/GlobalVariables/GlobalVariables.json读取的配置内容
  * Created by QAQ on 2016/9/27.
  */
 public class Config {
@@ -23,7 +24,7 @@ public class Config {
 
     public long maxSampleFileSize;
 
-    public String svnPath;
+    public String svnPath;//用于同步oj和judge_system的数据
     public String localJudgeWorkPath;
     public int LocalJudgeNumber;
     public String appPath = "/file/FJUTACM.apk";
