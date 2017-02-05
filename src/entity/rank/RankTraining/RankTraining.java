@@ -67,7 +67,7 @@ public class RankTraining extends Rank<user> {
     @Override
     public String getCellByHead(int row, user u, String colName) {
         if(colName.equals("S")){
-            return u.getAcNum()+"";
+            return HTML.a("#S"+u.username,u.getAcNum()+"");
         }else if(colName.equals("W")){
             return u.getWrongNum()+"";
         }
