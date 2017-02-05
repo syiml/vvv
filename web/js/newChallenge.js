@@ -433,7 +433,7 @@ var challenge=function(){
                     if(data.blockList[j].id == id) break;
                 }
                 var name=data.blockList[j].name;
-                var jd=data.blockList[j].score==0?0:data.blockList[i].userScore/data.blockList[j].score;
+                var jd=data.blockList[j].score==0?0:data.blockList[j].userScore/data.blockList[j].score;
                 //isopen = 0、关闭  1、先决已经开启 2、可开启 3、已开启
                 var isOpen=data.blockList[j].isOpen;
                 var div="<div class='block'><div class='title'>"+name+"</div></div>";
