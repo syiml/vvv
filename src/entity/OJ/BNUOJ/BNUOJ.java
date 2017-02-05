@@ -71,6 +71,11 @@ public class BNUOJ extends OTHOJ {
         return "BNUOJ";
     }
 
+    @Override
+    public String get64IO(String pid) {
+        return getProblemHTML(pid).getInt64();
+    }
+
     public String getProblemURL(String pid){ return URL+problemURL+"?pid="+pid; }
     private Result getResultMap(String v){
         return resultMap.get(v);

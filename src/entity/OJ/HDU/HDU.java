@@ -84,6 +84,11 @@ public class HDU extends OTHOJ {
         return "HDU";
     }
 
+    @Override
+    public String get64IO(String pid) {
+        return Int64;
+    }
+
     public String getProblemURL(String pid){ return URL+problemURL+"?pid="+pid; }
     private Result getResultMap(String v){
         return resultMap.get(v);

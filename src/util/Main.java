@@ -81,8 +81,10 @@ public class Main {
         if(ph == null){
             ph = new problemHTML();
         }
+        try {
+            ph.setInt64(p.getType() == 0 ? "%I64d" : Submitter.ojs[p.getOjid()].get64IO(p.getOjspid()));
+        }catch (Exception ignore){ }
 
-        ph.setInt64(p.getType() == 0?"%I64d":"%lld");
         ph.setMenoryLimit(action.getMemory()+"MB");
         ph.setTimeLimit(action.getTime()+"MS");
         if(p.getPid()!=-1) problems.delProblemDis(p.getPid());

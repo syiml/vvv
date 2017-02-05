@@ -220,4 +220,9 @@ public class CodeVS extends OTHOJ {
     public String getName() {
         return "CodeVS";
     }
+
+    @Override
+    public String get64IO(String pid) {
+        return "%lld";
+    }
 }

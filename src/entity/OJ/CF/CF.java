@@ -199,4 +199,9 @@ public class CF extends OTHOJ {
     public String getName() {
         return "CF";
     }
+
+    @Override
+    public String get64IO(String pid) {
+        return "%I64d";
+    }
 }

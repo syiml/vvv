@@ -49,6 +49,12 @@ public class PKU extends OTHOJ {
     public String getName(){
         return "POJ";
     }
+
+    @Override
+    public String get64IO(String pid) {
+        return "%lld";
+    }
+
     public String getRid(String user,VjSubmitter ve){
         Element e;
         Document d;

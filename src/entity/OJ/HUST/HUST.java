@@ -47,6 +47,12 @@ public class HUST extends OTHOJ {
     public String getName(){
         return "FJUTOJ";
     }
+
+    @Override
+    public String get64IO(String pid) {
+        return "%lld";
+    }
+
     public String getRid(String user,VjSubmitter s){
         Element e;
         Document d;

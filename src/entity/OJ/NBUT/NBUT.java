@@ -50,6 +50,11 @@ public class NBUT extends OTHOJ {
         return "NBUT";
     }
 
+    @Override
+    public String get64IO(String pid) {
+        return "%I64d";
+    }
+
     public String getRid(String user,VjSubmitter s){
         Element e;
         Document d;

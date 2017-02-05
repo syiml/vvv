@@ -100,4 +100,9 @@ public class JudgeSystem extends OTHOJ {
     public String getName() {
         return "JudgeSystem";
     }
+
+    @Override
+    public String get64IO(String pid) {
+        return "%lld";
+    }
 }

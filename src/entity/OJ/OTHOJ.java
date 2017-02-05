@@ -21,6 +21,7 @@ public abstract class OTHOJ {
     public abstract RES getResult(VjSubmitter s);
     public abstract String getProblemURL(String pid);
     public abstract String getName();
+    public abstract String get64IO(String pid);
 
     public RES getResultReturn(VjSubmitter s){
         int wait[] = {3,2,1,2,3,5,7,8,9,10};
