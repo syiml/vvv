@@ -190,10 +190,16 @@
                         <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>
                 <action name="judgeSystemReturn" class="action.JudgeSystemReturn" method="judgeDone"> </action>
-                <action name="starProblem" class="action.Action_Star" method="StarProblem">
+                <action name="starProblem" class="action.Action_Star" method="starProblem">
                         <result name="success">return.jsp</result>
                 </action>
-                <action name="starStatus" class="action.Action_Star" method="StarStatus">
+                <action name="starStatus" class="action.Action_Star" method="starStatus">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="cancelStarProblem" class="action.Action_Star" method="cancelStarProblem">
+                        <result name="success">return.jsp</result>
+                </action>
+                <action name="cancelStarStatus" class="action.Action_Star" method="cancelStarStatus">
                         <result name="success">return.jsp</result>
                 </action>
         </package>

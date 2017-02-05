@@ -16,6 +16,7 @@ import java.util.List;
  * Created by Administrator on 2015/6/6.
  */
 public class problemHTML {
+
     public String getTitle() {
         return Title;
     }
@@ -160,7 +161,7 @@ public class problemHTML {
             return HTML.text(HTML.glyphicon("star-empty")+"登录后收藏","green");
         }
         if(UserService.isStarProblem(user.getUsername(),pid)){
-            return HTML.text(HTML.glyphicon("star")+"已收藏","green");
+            return HTML.a("cancelStarProblem.action?starID="+pid,"title='点击取消收藏'",HTML.text(HTML.glyphicon("star")+"已收藏","green"));
         }else {
             FormHTML formHTML = new FormHTML();
             formHTML.addForm(new hidden("starID", pid + ""));

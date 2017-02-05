@@ -3,6 +3,7 @@ package servise;
 import dao.UserSolvedSQL;
 import dao.UserStarSQL;
 import dao.VerifySQL;
+import entity.Enmu.UserStarType;
 import entity.User;
 import entity.UserSolvedListBean;
 import entity.UserVerifyInfo;
@@ -11,7 +12,6 @@ import util.MainResult;
 import util.Tool;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 
 /**
  * Created by Administrator on 2015/12/11 0011.
@@ -94,14 +94,28 @@ public class UserService {
         User user = Main.loginUser();
         if(user==null) return MainResult.NO_LOGIN;
         if(Main.problems.getProblem(pid) == null) return MainResult.ARR_ERROR;
-        userStarSQL.addProblemStart(user.getUsername(),pid,text);
+        userStarSQL.addProblemStar(user.getUsername(),pid,text);
         return MainResult.SUCCESS;
     }
     public static MainResult addStatusStar(int rid,String text){
         User user = Main.loginUser();
         if(user==null) return MainResult.NO_LOGIN;
         if(Main.status.getStatu(rid) == null) return MainResult.ARR_ERROR;
-        userStarSQL.addStatusStart(user.getUsername(),rid,text);
+        userStarSQL.addStatusStar(user.getUsername(),rid,text);
+        return MainResult.SUCCESS;
+    }
+    public static MainResult cancelStarProblem(int pid){
+        User user = Main.loginUser();
+        if(user == null) return MainResult.NO_LOGIN;
+        if(Main.problems.getProblem(pid) == null) return MainResult.ARR_ERROR;
+        userStarSQL.removeStar(user.getUsername(),pid, UserStarType.PROBLEM);
+        return MainResult.SUCCESS;
+    }
+    public static MainResult cancelStarStatus(int rid){
+        User user = Main.loginUser();
+        if(user == null) return MainResult.NO_LOGIN;
+        if(Main.status.getStatu(rid) == null) return MainResult.ARR_ERROR;
+        userStarSQL.removeStar(user.getUsername(),rid, UserStarType.STATUS);
         return MainResult.SUCCESS;
     }
 }

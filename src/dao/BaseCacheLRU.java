@@ -38,4 +38,7 @@ public abstract class BaseCacheLRU<K,V> {
     protected void set_catch(K key, V value){
         _catch.put(key, value);
     }
+    protected void remove_catch(K key){
+        _catch.remove(key);
+    }
 }

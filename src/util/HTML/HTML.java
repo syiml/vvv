@@ -170,6 +170,9 @@ public class HTML {
     public static String a(String href,String s){
         return "<a href="+href+">"+s+"</a>";
     }
+    public static String a(String href,String other,String s){
+        return "<a href="+href+" "+other+">"+s+"</a>";
+    }
     public static String aNew(String href,String s){
         return "<a href="+href+" target='view_window'>"+s+"</a>";
     }

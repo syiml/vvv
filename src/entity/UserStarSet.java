@@ -59,4 +59,11 @@ public class UserStarSet implements IBeanResultSetCreate{
         userStar.setUsername(username);
         statusStar.put(rid,userStar);
     }
+
+    public void removeStarProblem(int pid){
+        problemStar.remove(pid);
+    }
+    public void removeStarStatus(int rid){
+        statusStar.remove(rid);
+    }
 }

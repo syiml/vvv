@@ -25,7 +25,7 @@ public class UserStarSQL extends BaseCacheLRU<String, UserStarSet> {
         return userStarSet;
     }
 
-    public boolean addProblemStart(String username,int pid,String text){
+    public boolean addProblemStar(String username, int pid, String text){
         new SQL("REPLACE INTO t_star(username,`type`,star_id,text) VALUES(?,?,?,?)",username, UserStarType.PROBLEM.getValue(),pid,text).update();
         UserStarSet userStarSet = getBeanFromCatch(username);
         if(userStarSet!=null){
@@ -33,12 +33,25 @@ public class UserStarSQL extends BaseCacheLRU<String, UserStarSet> {
         }
         return true;
     }
-    public boolean addStatusStart(String username,int rid,String text){
+    public boolean addStatusStar(String username, int rid, String text){
         new SQL("REPLACE INTO t_star(username,`type`,star_id,text) VALUES(?,?,?,?)",username, UserStarType.STATUS.getValue(),rid,text).update();
         UserStarSet userStarSet = getBeanFromCatch(username);
         if(userStarSet!=null){
             userStarSet.setStatusStar(username,rid,text);
         }
         return true;
+    }
+    public boolean removeStar(String username, int starID, UserStarType type){
+        UserStarSet userStarSet = getBeanFromCatch(username);
+        if(userStarSet!=null) {
+            if(UserStarType.PROBLEM == type){
+                userStarSet.removeStarProblem(starID);
+            }
+            else{
+                userStarSet.removeStarStatus(starID);
+            }
+        }
+        return 1==new SQL("DELETE FROM t_star WHERE username=? AND `type`=? AND star_id=?",username,type.getValue(),starID).update();
+
     }
 }
