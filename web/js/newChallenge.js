@@ -139,12 +139,6 @@ var gv={
                     y:-400,
                     to:7,//动态规划
                     text:"动态规划"
-                },{//11
-                    type:"block",
-                    x:265,
-                    y:-100,
-                    to:10,//高级排序
-                    size:"small"
                 }
             ],
             line_list:[//表示第几个block和第几个block相连
@@ -157,7 +151,7 @@ var gv={
                     type:"set",
                     x:0,
                     y:0,
-                    to:9,//基础进阶
+                    to:8,//基础进阶
                     text:"基础进阶"
                 },{//1
                     type:"block",
@@ -234,7 +228,7 @@ var gv={
                 }
             ],
             line_list:[
-                [0,1],[1,2],[1,3],[2,4],[2,5],[3,6],[5,6],[3,7],[3,8],[3,9],[3,10],[3,11],[3,12]
+                [0,1],[1,2],[1,3],[2,4],[2,5],[3,6],[5,6],[3,7],[3,8],[3,9],[3,10],[3,12]
             ]
         },{
             name:"数学",
@@ -372,6 +366,192 @@ var gv={
                 }
             ],
             line_list:[//表示第几个block和第几个block相连
+            ]
+        },{
+            name:"搜索",
+            block_list:[
+                {//0
+                    type:"set",
+                    x:0,
+                    y:0,
+                    to:8,//数据结构
+                    text:"基础进阶"
+                },{//1
+                    type:"block",
+                    x:80,
+                    y:-100,
+                    to:502,//DFS
+                    size:"middle"
+                },{//2
+                    type:"block",
+                    x:80,
+                    y:100,
+                    to:503,//BFS
+                    size:"middle"
+                },{//3
+                    type:"block",
+                    x:160,
+                    y:0,
+                    to:504,//搜索剪枝
+                    size:"middle"
+                },{//4
+                    type:"block",
+                    x:320,
+                    y:0,
+                    to:505,//搜索合集
+                    size:"large"
+                }
+            ],
+            line_list:[//表示第几个block和第几个block相连
+                [0,1],[0,2],[1,3],[2,3],[3,4]
+            ]
+        },{
+            name:"动态规划",
+            block_list:[
+                {//0
+                    type:"set",
+                    x:0,
+                    y:0,
+                    to:1,//数据结构
+                    text:"基础"
+                },{//1
+                    type:"block",
+                    x:120,
+                    y:0,
+                    to:601,//DP入门
+                    size:"small"
+                },{//2
+                    type:"block",
+                    x:200,
+                    y:0,
+                    to:602,//线性DP
+                    size:"small"
+                },{//3
+                    type:"block",
+                    x:300,
+                    y:40,
+                    to:603,//背包
+                    size:"small"
+                },{//4
+                    type:"block",
+                    x:300,
+                    y:-40,
+                    to:604,//树状DP
+                    size:"small"
+                },{//5
+                    type:"block",
+                    x:300,
+                    y:-120,
+                    to:605,//区间DP
+                    size:"small"
+                },{//6
+                    type:"block",
+                    x:300,
+                    y:120,
+                    to:606,//概率DP
+                    size:"small"
+                },{//7
+                    type:"block",
+                    x:450,
+                    y:0,
+                    to:607,//DP合集
+                    size:"middle"
+                }
+            ],
+            line_list:[//表示第几个block和第几个block相连
+                [0,1],[1,2],[2,3],[2,4],[2,5],[2,6],[7,3],[7,4],[7,5],[7,6]
+            ]
+        },{
+            name:"基础进阶",
+            block_list:[
+                {//0
+                    type:"set",
+                    x:0,
+                    y:0,
+                    to:1,//数据结构
+                    text:"基础"
+                },{//1
+                    type:"block",
+                    x:100,
+                    y:220,
+                    to:11,//二分
+                    size:"small"
+                },{//2
+                    type:"block",
+                    x:150,
+                    y:-320,
+                    to:8,//递归
+                    size:"middle"
+                },{//3
+                    type:"block",
+                    x:200,
+                    y:0,
+                    to:50,//字符串
+                    size:"small"
+                },{//4
+                    type:"block",
+                    x:160,
+                    y:320,
+                    to:9,//优化
+                    size:"middle"
+                },{//5
+                    type:"block",
+                    x:210,
+                    y:220,
+                    to:12,//三分
+                    size:"small"
+                },{//6
+                    type:"set",
+                    x:160,
+                    y:450,
+                    to:2,//数据结构
+                    text:"数据结构"
+                },{//7
+                    type:"set",
+                    x:150,
+                    y:-450,
+                    to:6,//搜索
+                    text:"搜索"
+                },{//8
+                    type:"block",
+                    x:200,
+                    y:-220,
+                    to:13,//分治
+                    size:"small"
+                },{//9
+                    type:"block",
+                    x:300,
+                    y:-220,
+                    to:10,//高级排序
+                    size:"small"
+                },{//10
+                    type:"block",
+                    x:200,
+                    y:-120,
+                    to:15,//位运算
+                    size:"small"
+                },{//11
+                    type:"block",
+                    x:200,
+                    y:120,
+                    to:14,//模拟
+                    size:"middle"
+                },{//12
+                    type:"block",
+                    x:300,
+                    y:-40,
+                    to:51,//KMP
+                    size:"small"
+                },{//13
+                    type:"block",
+                    x:300,
+                    y:40,
+                    to:52,//马拉车
+                    size:"small"
+                }
+            ],
+            line_list:[//表示第几个block和第几个block相连
+                [0,1],[0,2],[0,3],[1,4],[1,5],[4,6],[2,7],[0,8],[8,9],[0,10],[0,11],[3,12],[3,13]
             ]
         }
     ]
