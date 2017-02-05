@@ -47,7 +47,7 @@ public class ProblemListFilter extends ResultSetPageHtml {
             sql+="SELECT problem.pid, ptype, title, ojid, ojspid, visiable, totalAcUser, totalSubmit, status+1 as solved " +
                     (star?",t_star.text ":" ")+
                     "FROM problem LEFT JOIN t_usersolve ON username=? AND t_usersolve.pid=problem.pid "+
-                    (star?" RIGHT JOIN t_star ON star_id=problem.pid AND t_star.type=1 AND t_star.username='"+u.getUsername()+"' ":" ")
+                    (star?" JOIN t_star ON star_id=problem.pid AND t_star.type=1 AND t_star.username='"+u.getUsername()+"' ":" ")
                     +" WHERE 1=1 ";
             if(!name.equals("")) sql+="AND (title like ? OR problem.pid=?)";
             if(!vis ) sql+=" AND visiable=1 ";
@@ -59,7 +59,7 @@ public class ProblemListFilter extends ResultSetPageHtml {
                     "LEFT JOIN problem ON v_problem_tag.pid = problem.pid " +
                     "LEFT JOIN t_usersolve ON username = ? " +
                     "AND t_usersolve.pid = v_problem_tag.pid " +
-                    (star?" RIGHT JOIN t_star ON star_id=problem.pid AND t_star.type=1 AND t_star.username='"+u.getUsername()+"' ":" ")+
+                    (star?" JOIN t_star ON star_id=problem.pid AND t_star.type=1 AND t_star.username='"+u.getUsername()+"' ":" ")+
                     "WHERE 1 " +
                     "AND tagid = ? " +
                     (vis ? "" : " AND visiable=1 ") +
