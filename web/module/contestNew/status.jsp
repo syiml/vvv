@@ -29,6 +29,6 @@
   if(cid!=null)
   {
     long t= Tool.now().getTime();
-    out.println(HTML.StatusHTML(cidInt, paInt, pidInt, resultInt, langInt, ssuser,false));
+    out.println(HTML.StatusHTML(cidInt, paInt, pidInt, resultInt, langInt, ssuser,false,false));
   }
 %>

@@ -1,6 +1,7 @@
 package entity;
 
 import entity.Enmu.UserStarType;
+import servise.UserService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class UserStarSet implements IBeanResultSetCreate{
             if(us.getType() == UserStarType.PROBLEM){
                 problemStar.put(us.getStart_id(),us);
             }else if(us.getType() == UserStarType.STATUS){
-                problemStar.put(us.getStart_id(),us);
+                statusStar.put(us.getStart_id(),us);
             }
         }while(rs.next());
         return this;
@@ -65,5 +66,11 @@ public class UserStarSet implements IBeanResultSetCreate{
     }
     public void removeStarStatus(int rid){
         statusStar.remove(rid);
+    }
+
+    public UserStar getStar(UserStarType type,int starID){
+        if(type==UserStarType.PROBLEM) return problemStar.get(starID);
+        else if(type == UserStarType.STATUS) return statusStar.get(starID);
+        else return null;
     }
 }

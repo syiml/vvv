@@ -34,6 +34,7 @@
   String result=request.getParameter("result");
   String lang=request.getParameter("lang");
   String all=request.getParameter("all");
+  String star=request.getParameter("star");
   int pidInt=-1,resultInt=-1,langInt=-1;
   if(pid!=null&&!pid.equals("")) pidInt=Integer.parseInt(pid);
   if(result!=null&&!result.equals("")) resultInt=Integer.parseInt(result);
@@ -46,7 +47,7 @@
 <body>
 <div class="container-fluid">
   <jsp:include page="module/head.jsp?page=status"/>
-  <%=HTML.StatusHTML(-1,paInt,pidInt,resultInt,langInt,ssuser,all!=null)%>
+  <%=HTML.StatusHTML(-1,paInt,pidInt,resultInt,langInt,ssuser,all!=null,star!=null)%>
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>

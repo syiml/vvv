@@ -1,7 +1,10 @@
 package util.HTML;
 
 import entity.*;
+import entity.Enmu.UserStarType;
 import servise.ContestMain;
+import servise.UserService;
+import util.HTML.FromHTML.hidden.hidden;
 import util.Main;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.select.select;
@@ -27,11 +30,14 @@ public class statuListHTML extends pageBean {
     String ssuser;//筛选的用户
     boolean incontest;
     boolean all;
+    boolean star;
     List<Status> status;
     int PageNum;
     Contest contest = null;
     public statuListHTML(int cid,int num,int page,
-                         int pid,int result,int Language,String ssuser,boolean all){
+                         int pid,int result,int Language,String ssuser,boolean all,boolean star){
+        if(cid != -1) star = false;
+        this.star = star;
         this.cid=cid;
         this.num=num;
         this.page=page;
@@ -53,6 +59,14 @@ public class statuListHTML extends pageBean {
         }else {
             this.user = Main.loginUser();
         }
+        setCl("table table-striped table-hover table-condensed");
+        if(this.user == null) this.star = false;
+        if(this.star){
+            status = UserService.userStarSQL.getStarStatus(user.getUsername(),this.num * (this.page - 1), this.num);
+            this.PageNum = getTotalPageNum(UserService.userStarSQL.getStarStatusNum(user.getUsername()),num);
+            addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间","收藏备注");
+            return;
+        }
         if(contest!=null&&contest.getType()==Contest_Type.TEAM_OFFICIAL) {
             status = Main.status.getTeamStatus(cid,this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
             this.PageNum= getTotalPageNum(Main.status.getTeamStatusNum(cid, this.pid, this.result, this.Language, this.ssuser),num);
@@ -64,14 +78,13 @@ public class statuListHTML extends pageBean {
             this.PageNum= getTotalPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all), num);
         }
 
-        setCl("table table-striped table-hover table-condensed");
         addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
 
     }
 
     @Override
     public String getTitle() {
-        return "评测列表";
+        return "评测列表"+(cid==-1?(star?HTML.a("Status.jsp","【全部评测】"):HTML.a("Status.jsp?star=on","【我收藏的评测】")):"");
     }
 
     @Override
@@ -162,12 +175,18 @@ public class statuListHTML extends pageBean {
             return s.getCodelen()+"";
         }else if(colname.equals("提交时间")){
             return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(s.getSbmitTime());
+        }else if(colname.equals("收藏备注")){
+            if(user == null) return "";
+            UserStar userStar = UserService.userStarSQL.getBeanByKey(user.getUsername()).getStar(UserStarType.STATUS,s.getRid());
+            if(userStar == null) return "";
+            return userStar.getText();
         }
         return "error";
     }
 
     @Override
     public String getLinkByPage(int page) {
+        if(star) return "Status.jsp?page="+page+"&star=on";
         if(cid==-1){
             return "Status.jsp?page="+(page)+"&pid="+pid+"&result="+result+"&lang="+Language+"&user="+ssuser+(all?"&all=1":"");
         }else{
@@ -178,6 +197,7 @@ public class statuListHTML extends pageBean {
 
     @Override
     public String rightForm(){
+        if(star) return "";
         FormHTML f=new FormHTML();
         if(cid==-1) f.setAction("Status.jsp");
         else{
@@ -230,6 +250,9 @@ public class statuListHTML extends pageBean {
         f3.add(6,"MLE");
         f3.add(7,"OLE");
         f3.add(8,"PE");
+        f3.add(0, "PD");
+        f3.add(11,"SE");
+        f3.add(13,"JDG");
         f3.setValue(result+"");
         f.addForm(f3);
         ///////////////////

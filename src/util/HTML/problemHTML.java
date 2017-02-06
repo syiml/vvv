@@ -1,6 +1,8 @@
 package util.HTML;
 
+import entity.Enmu.UserStarType;
 import entity.User;
+import entity.UserStar;
 import servise.UserService;
 import util.HTML.FromHTML.FormHTML;
 import util.HTML.FromHTML.hidden.hidden;
@@ -160,8 +162,9 @@ public class problemHTML {
         if(user == null){
             return HTML.text(HTML.glyphicon("star-empty")+"登录后收藏","green");
         }
-        if(UserService.isStarProblem(user.getUsername(),pid)){
-            return HTML.a("cancelStarProblem.action?starID="+pid,"title='点击取消收藏'",HTML.text(HTML.glyphicon("star")+"已收藏","green"));
+        UserStar userStar = UserService.userStarSQL.getBeanByKey(user.getUsername()).getStar(UserStarType.PROBLEM,pid);
+        if(userStar != null){
+            return HTML.a("cancelStarProblem.action?starID="+pid,"title='点击取消收藏'",HTML.text(HTML.glyphicon("star")+"已收藏(备注:"+userStar.getText()+")","green"));
         }else {
             FormHTML formHTML = new FormHTML();
             formHTML.addForm(new hidden("starID", pid + ""));

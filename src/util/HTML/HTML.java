@@ -1,6 +1,7 @@
 package util.HTML;
 
 import entity.*;
+import entity.Enmu.UserStarType;
 import servise.*;
 import util.HTML.FromHTML.text_select.text_select;
 import util.HTML.UserListHTML.AdminUserListHTML;
@@ -357,6 +358,24 @@ public class HTML {
         //s+="["+HTML.a("javascript:copycode()","复制")+"]";
         return "";
     }
+    private static String statusMisStar(int rid){
+        User user = Main.loginUser();
+        if(user == null){
+            return HTML.text(HTML.glyphicon("star-empty")+"登录后收藏","green");
+        }
+        UserStar userStar = UserService.userStarSQL.getBeanByKey(user.getUsername()).getStar(UserStarType.STATUS,rid);
+        if(userStar != null){
+            return HTML.a("cancelStarStatus.action?starID="+rid,"title='点击取消收藏'",HTML.text(HTML.glyphicon("star")+"已收藏(备注:"+userStar.getText()+")","green"));
+        }else {
+            FormHTML formHTML = new FormHTML();
+            formHTML.addForm(new hidden("starID", rid + ""));
+            formHTML.addForm(new text("text", "备注"));
+            formHTML.setPartFrom();
+            modal m = new modal("problemStar", "收藏评测", formHTML.toHTML(), HTML.glyphicon("star-empty") + "点击收藏");
+            m.setAction("starStatus.action");
+            return m.toHTMLA();
+        }
+    }
     public static String viewCode(String rid,boolean havepanel){
         Status s;
         int ridInt;
@@ -372,36 +391,23 @@ public class HTML {
         Permission p=user.getPermission();
         if(Main.canViewCode(s, user)){
             String code=Main.getCode(ridInt);
-            if(p.getReJudge()){
-                return havepanel?
-                        panel("View Code"+copyCode()+reJudgeForm(s.getRid())+HTML.floatRight(u.getUsernameHTML()+"("+u.getNick()+")"),HTML.pre("/**" +
-                                "<br>rid: "+s.getRid()+
-                                "<br>user: "+u.getUsername()+
-                                "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
-                                "<br>result: "+s.getResultString()+
-                                "<br>*/")+code(code, true, s.getLanguage()))
-                        :copyCode()+reJudgeForm(s.getRid())+HTML.pre("/**" +
-                        "<br>rid: "+s.getRid()+
-                        "<br>user: "+u.getUsername()+
-                        "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
-                        "<br>result: "+s.getResultString()+
-                        "<br>*/")+code(code, true, s.getLanguage());
-            }else{
-                return havepanel?
-                        panel("View Code"+copyCode()+HTML.floatRight(u.getUsernameHTML()+"("+u.getNick()+")"),HTML.pre("/**" +
-                                "<br>rid: "+s.getRid()+
-                                "<br>user: "+u.getUsername()+
-                                "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
-                                "<br>result: "+s.getResultString()+
-                                "<br>*/")+code(code,true,s.getLanguage()))
-                        :copyCode()+HTML.pre("/**" +
-                        "<br>rid: "+s.getRid()+
-                        "<br>user: "+u.getUsername()+
-                        "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
-                        "<br>result: "+s.getResultString()+
-                        "<br>*/")+
-                        code(code, true,s.getLanguage());
-            }
+            return havepanel?
+                    panel("View Code"+copyCode()
+                            +statusMisStar(ridInt)
+                            +(p.getReJudge()?reJudgeForm(s.getRid()):"")
+                            +HTML.floatRight(u.getUsernameHTML()+"("+u.getNick()+")"),HTML.pre("/**" +
+                            "<br>rid: "+s.getRid()+
+                            "<br>user: "+u.getUsername()+
+                            "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
+                            "<br>result: "+s.getResultString()+
+                            "<br>*/")+code(code, true, s.getLanguage()))
+                    :copyCode()+(p.getReJudge()?reJudgeForm(s.getRid()):"")
+                    +statusMisStar(ridInt)+HTML.pre("/**" +
+                    "<br>rid: "+s.getRid()+
+                    "<br>user: "+u.getUsername()+
+                    "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
+                    "<br>result: "+s.getResultString()+
+                    "<br>*/")+code(code, true, s.getLanguage());
         }else{
             return havepanel?panel("Error","没有权限",null,"danger"):"没有权限";
         }
@@ -567,12 +573,12 @@ public class HTML {
         //return ProblemTagHTML.problemTag(pid,page);
     }
     public static String StatusHTML(int cid,int page,
-                            int pid,int Language,int result,String ssuser,boolean all){
+                            int pid,int Language,int result,String ssuser,boolean all,boolean star){
 //        if(Main.loginUser()==null){
 //            return "会话超时，请重新登录";
 //        }
         statuListHTML s=new statuListHTML(cid,Main.config.statusShowNum,page,
-                                            pid,Language,result,ssuser,all);
+                                            pid,Language,result,ssuser,all,star);
         return s.HTML();
     }
     public static String contestList(String num,String page,String statu,String name,String type,String kind){

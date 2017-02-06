@@ -11,6 +11,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    Main.saveURL();
   String rid = request.getParameter("rid");
 %>
 <link href="js/prism/css.css" rel="stylesheet" />

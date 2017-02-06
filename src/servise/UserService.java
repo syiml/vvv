@@ -4,6 +4,7 @@ import dao.UserSolvedSQL;
 import dao.UserStarSQL;
 import dao.VerifySQL;
 import entity.Enmu.UserStarType;
+import entity.Status;
 import entity.User;
 import entity.UserSolvedListBean;
 import entity.UserVerifyInfo;
@@ -100,7 +101,9 @@ public class UserService {
     public static MainResult addStatusStar(int rid,String text){
         User user = Main.loginUser();
         if(user==null) return MainResult.NO_LOGIN;
-        if(Main.status.getStatu(rid) == null) return MainResult.ARR_ERROR;
+        Status s = Main.status.getStatu(rid);
+        if(s == null) return MainResult.ARR_ERROR;
+        if(!Main.canViewCode(s,user)) return MainResult.NO_PERMISSION;
         userStarSQL.addStatusStar(user.getUsername(),rid,text);
         return MainResult.SUCCESS;
     }
