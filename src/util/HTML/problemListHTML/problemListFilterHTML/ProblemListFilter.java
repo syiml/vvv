@@ -130,15 +130,15 @@ public class ProblemListFilter extends ResultSetPageHtml {
     }
     @Override
     public String getTopPageLink() {
-        return "ProblemListFilter.jsp?name="+name+"&tag="+tag+"&pa="+1;
+        return "ProblemListFilter.jsp?name="+name+"&tag="+tag+"&pa="+1+(star?"&star=on":"");
     }
     @Override
     public String getNextPageLink() {
-        return "ProblemListFilter.jsp?name="+name+"&tag="+tag+"&pa="+(getNowpage()+1);
+        return "ProblemListFilter.jsp?name="+name+"&tag="+tag+"&pa="+(getNowpage()+1)+(star?"&star=on":"");
     }
     @Override
     public String getPriPageLink() {
-        return "ProblemListFilter.jsp?name="+name+"&tag="+tag+"&pa="+(getNowpage()-1);
+        return "ProblemListFilter.jsp?name="+name+"&tag="+tag+"&pa="+(getNowpage()-1)+(star?"s&tar=on":"");
     }
     @Override
     public String rightForm() {
