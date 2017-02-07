@@ -227,10 +227,22 @@ public class UserHTML {
         script+="</script>";
         return HTML.panelnobody("提交统计 "+HTML.a("Status.jsp?user="+showuser.getUsername(),HTML.text("【点击查看最近提交记录】","white")), "primary",script);//+rr
     }
+    public String AcHistory(){
+//        String rr=HTML.UserRating(showuser.getUsername());
+        String script="<div id='acHistory'>"+HTML.loader("400px")+"</div>"+
+                "<script>" +
+                "$('#acHistory').load('module/acHistory.jsp?user="+showuser.getUsername();
+//        if(loginUser!=null&&!loginUser.getUsername().equals(showuser.getUsername())){
+//            script+="&user2="+loginUser.getUsername();
+//        }
+        script+="');</script>";
+        return HTML.panelnobody("AC题数变化曲线", "primary",script);//+rr
+        //return "";
+    }
     public String HTML(){
 //        String left=userInfo()+Permissions()+Mark();
 //        String right=Rating()+SolvedProblems()+NotSolvedProblems();
-        return UserInfo2()+Rating()+SubmitCount()+ SolvedProblems()+NotSolvedProblems()+AcNotTag();
+        return UserInfo2()+Rating()+SubmitCount()+AcHistory()+ SolvedProblems()+NotSolvedProblems()+AcNotTag();
         //return HTML.row(HTML.col(3,"md",left)+HTML.col(9,"md",right));
     }
 }

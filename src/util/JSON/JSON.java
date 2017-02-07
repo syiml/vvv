@@ -1,5 +1,6 @@
 package util.JSON;
 
+import com.opensymphony.xwork2.ActionContext;
 import entity.*;
 import entity.OJ.OTHOJ;
 import dao.ratingSQL;
@@ -12,9 +13,14 @@ import util.HTML.problemListHTML.problemView;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import util.SQL.SQL;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Syiml on 2015/7/10 0010.
@@ -180,6 +186,28 @@ public class JSON {
         jo.put("ac",ac_ja);
         jo.put("submit",sb_ja);
         return jo.toString();
+    }
+
+
+
+    public static String getAcHistory(String user){
+        Set<Integer> acProblems = new HashSet<>(200);
+        List<AcHistoryStruct> list = new SQL("SELECT pid,submitTime FROM statu WHERE ruser=? AND result=1",user).queryBeanList(AcHistoryStruct.class);
+        JSONArray acHistoryData = new JSONArray();
+        int k = 0;
+        for(int i=0;i<list.size();i++){
+            AcHistoryStruct data =  list.get(i);
+            if(!acProblems.contains(data.pid)){
+                k++;
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("x",data.time);
+                jsonObject.put("y",k);
+                jsonObject.put("pid",data.pid);
+                acHistoryData.add(jsonObject);
+                acProblems.add(list.get(i).pid);
+            }
+        }
+        return acHistoryData.toString();
     }
 
     public static String getOtherOjsContest(){
