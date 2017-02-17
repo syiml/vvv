@@ -2,7 +2,7 @@
   "sqlclass":"com.mysql.jdbc.Driver",
   "sqlconnstring":"jdbc:mysql://localhost:3306/vjudge?useUnicode=true&characterEncoding=utf8",
   "sqlusername":"root",
-  "sqlpassword":"123456",
+  "sqlpassword":"",
 
   "problemShowNum":"100",
   "statusShowNum":"20",
@@ -81,6 +81,12 @@
     "URL":"http://192.168.111.131:8100",
     "Submitter":[
       ["http://192.168.111.131:8100",""]
+    ]
+  },
+  "acdream":{
+    "URL":"http://acdream.info",
+    "Submitter":[
+      ["spsmoj","spsmoj123"]
     ]
   }
 }

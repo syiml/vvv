@@ -6,7 +6,7 @@ import util.Tool;
 import util.Vjudge.VjSubmitter;
 import entity.RES;
 import util.HTML.problemHTML;
-
+import util.Submitter;
 /**
  * 外网OJ基类
  * 新增OJ时要在Submitter.ojs类中添加列表

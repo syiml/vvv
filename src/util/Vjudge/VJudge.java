@@ -22,7 +22,7 @@ public class VJudge {
             s.add(new SubmitterLocal(0,"","",-1,this));
         }
 
-        String ss[]={"hdu","bnuoj","nbut","pku","hust","cf","codevs","judge_system"};
+        String ss[]={"hdu","bnuoj","nbut","pku","hust","cf","codevs","judge_system","acdream"};
         for(int j=0;j<ss.length;j++){
             String sss=ss[j];
             JSONArray GA=Main.GV.getJSONObject(sss).getJSONArray("Submitter");

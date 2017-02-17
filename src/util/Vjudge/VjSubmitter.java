@@ -5,6 +5,7 @@ import util.Main;
 import entity.OJ.OTHOJ;
 import entity.RES;
 import entity.Result;
+import util.MyClient;
 import util.Submitter;
 import util.Tool;
 
@@ -22,6 +23,7 @@ public class VjSubmitter implements Runnable{
     public static final int IDLE=0;
     public String showstatus="";
     public String rid = "";
+    public MyClient client = new MyClient();
     SubmitInfo info;//正在处理的info
     int status;//忙碌状态与否
     int ojid;
