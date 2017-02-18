@@ -477,6 +477,7 @@ public class UserSQL extends BaseCache<String,User> {
     }
     @Override
     protected User getByKeyFromSQL(String username) {
+        if(username == null) return null;
         User ret = new SQL("SELECT * from users where username=?",username).queryBean(User.class);
         if(ret!=null)ret.setPermission(Main.getPermission(username));
         return ret;

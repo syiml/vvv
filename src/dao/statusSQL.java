@@ -353,7 +353,7 @@ public class statusSQL {
         }
         return havepanle?HTML.panel("Compilation Error Info", HTML.code(ret,false,-1),null,"warning"):HTML.code(ret,false,-1);
     }
-    public Map<Integer,Integer> sbumitResult(String username,int pid1,int pid2){
+    public Map<Integer,Integer> submitResult(String username, int pid1, int pid2){
         return new SQL("select pid,status from t_usersolve where username=? AND pid>=? AND pid<=?",username,pid1,pid2){
             protected Integer getObject(int i) throws SQLException {
                 return rs.getInt(i);

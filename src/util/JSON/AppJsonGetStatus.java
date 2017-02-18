@@ -3,7 +3,6 @@ package util.JSON;
 import entity.Status;
 import entity.User;
 import net.sf.json.JSONObject;
-import util.JSON.BaseJsonPageBean;
 import util.Main;
 
 import java.util.List;

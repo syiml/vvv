@@ -104,7 +104,7 @@ public class problemListHTML {
             table.addColname("Visiable");
         }
         Map<Integer,Integer> submitResult;
-        if(user!=null&&list.size()>=1) submitResult=Main.status.sbumitResult(user.getUsername(),list.get(0).pid, list.get(list.size()-1).pid);
+        if(user!=null&&list.size()>=1) submitResult=Main.status.submitResult(user.getUsername(),list.get(0).pid, list.get(list.size()-1).pid);
         else submitResult=new HashMap<Integer, Integer>();
 
         for(int i=0;i<list.size();i++){

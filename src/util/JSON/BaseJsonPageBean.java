@@ -1,10 +1,8 @@
 package util.JSON;
 
 import entity.ICanToJSON;
-import entity.User;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import util.Main;
 
 import java.util.List;
 
