@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/5/22.
  */
-public class Contest implements IBeanResultSetCreate<Contest>,IBeanCanCach {
+public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
     public static String TRUE_USERNAME = "trueusername";
     public static int typenum=6;
     private int cid;

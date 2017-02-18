@@ -1,6 +1,6 @@
 package entity.exam;
 
-import entity.IBeanCanCach;
+import entity.IBeanCanCatch;
 import entity.IBeanResultSetCreate;
 import entity.RegisterUser;
 import entity.User;
@@ -22,7 +22,7 @@ import java.util.List;
  * {problems:[[pid,score],[pid,score]]}
  * Created by QAQ on 2016/5/25 0025.
  */
-public class Exam implements IBeanCanCach, IBeanResultSetCreate<Exam>{
+public class Exam implements IBeanCanCatch, IBeanResultSetCreate<Exam>{
     List<Base_Exam_problem> problems = new ArrayList<>();
     List<RegisterUser> users = new ArrayList<>();
 

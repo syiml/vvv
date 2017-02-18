@@ -1,7 +1,5 @@
 package entity;
 
-import util.Tool;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -9,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by QAQ on 2016/10/15.
  */
-public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBeanCanCach {
+public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBeanCanCatch {
     public static final int RESULT_PADDING = 0;
     public static final int RESULT_ACCEPTED = 1;
     public static final int RESULT_REFUSE = -1;

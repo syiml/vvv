@@ -1,8 +1,7 @@
 package entity.Mall;
 
-import entity.IBeanCanCach;
+import entity.IBeanCanCatch;
 import entity.IBeanResultSetCreate;
-import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.sql.Timestamp;
 /**
  * Created by QAQ on 2016/9/26.
  */
-public class Order implements IBeanResultSetCreate<Order>, IBeanCanCach {
+public class Order implements IBeanResultSetCreate<Order>, IBeanCanCatch {
     int id = -1;
     int goodsId;
     String username;

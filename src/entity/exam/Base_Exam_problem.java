@@ -1,10 +1,8 @@
 package entity.exam;
 
-import entity.IBeanCanCach;
+import entity.IBeanCanCatch;
 import entity.IBeanResultSetCreate;
 import net.sf.json.JSONObject;
-import org.jsoup.Connection;
-import util.Tool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +12,7 @@ import java.sql.Timestamp;
  * 试题基类
  * Created by QAQ on 2016/5/25 0025.
  */
-public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem>, IBeanCanCach {
+public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem>, IBeanCanCatch {
     public JSONObject data;
     protected int id;
     protected String title;

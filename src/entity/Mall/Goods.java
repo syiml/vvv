@@ -1,9 +1,9 @@
 package entity.Mall;
 
-import entity.IBeanCanCach;
+import entity.IBeanCanCatch;
 import entity.IBeanResultSetCreate;
 import entity.User;
-import util.Tool;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 /**
  * Created by QAQ on 2016/9/17.
  */
-public class Goods implements IBeanResultSetCreate<Goods>,IBeanCanCach {
+public class Goods implements IBeanResultSetCreate<Goods>, IBeanCanCatch {
     public static final int Buy_Verify_Limit_Team=4;//现役队员购买
     public static final int Buy_Verify_Limit_Association=3;//退役，协会购买
     public static final int Buy_Verify_Limit_School=2;//在校学生购买

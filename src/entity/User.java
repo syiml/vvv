@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/6/3.
  */
-public class User implements IBeanResultSetCreate,IBeanCanCach,ICanToJSON{
+public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
     public static final int V_TEAM = 1; //集训队员
     public static final int V_RETIRED = 2; //退役队员
     public static final int V_ASSOCIATION = 3; //协会成员

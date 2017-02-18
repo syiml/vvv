@@ -1,7 +1,5 @@
 package entity;
 
-import util.Tool;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -9,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/5/22.
  */
-public class Problem implements IBeanResultSetCreate<Problem>,IBeanCanCach{
+public class Problem implements IBeanResultSetCreate<Problem>, IBeanCanCatch {
     static public int LOCAL=0;
     static public int OTHEROJ=1;
     static public int ONLYDES=2;
