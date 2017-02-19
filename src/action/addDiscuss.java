@@ -154,6 +154,9 @@ public class addDiscuss extends BaseAction{
         showtime="";
         shownum="-1";
         //text = HTML.HTMLtoString(text);
+        if(cid!=-1){
+            text = "<pre class='sample'>"+HTML.HTMLtoString(text)+"</pre>";
+        }
         Discuss d=new Discuss(this);
         return d.goAddOrEdit();
     }

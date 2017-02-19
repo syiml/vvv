@@ -88,12 +88,9 @@ public class DiscussSQL {
     }
     public static void append(Discuss d){
         String text= getDiscuss(d.getId()).getText();
-        text+="<hr/>以下内容于["+HTML.textb(Tool.now().toString().substring(0,19),"blue")+"]补充";
-        text+=HTML.pre(HTML.HTMLtoString(d.getText()));
-        String sql="UPDATE t_discuss SET";
-        sql+=" text=?";
-        sql+="WHERE id=?";
-        new SQL(sql,text, d.getId()).update();
+        text+="<hr/><p>以下内容于["+HTML.textb(Tool.now().toString().substring(0,19),"blue")+"]补充</p>";
+        text+=d.getText();
+        new SQL("UPDATE t_discuss SET text=? WHERE id=?",text, d.getId()).update();
     }
     public static void editDiscuss(Discuss d){
         String sql="UPDATE t_discuss SET "+
