@@ -45,12 +45,12 @@ public class UserListContest extends pageBean {
             RegisterUserNum = list_register_team.size();
             PageNum=1;
         }else {
-            if (c.getKind() == 3) {
+            if (c.isRegisterShowComplete()) {
                 super.addTableHead("用户名", "姓名", "性别", "学校","学院", "专业", "班级", "学号", "昵称", "Rating", "状态", "时间");
             } else {
                 super.addTableHead("用户名", "昵称", "Rating", "状态", "时间");
             }
-            list2=Main.users.getUsers(cid, (NowPage - 1) * num, num, "", c.getKind() == 3);
+            list2=Main.users.getUsers(cid, (NowPage - 1) * num, num, "", c.isRegisterShowComplete());
             RegisterUserNum=UserSQL.getUsersNum(c.getCid(),"");
             PageNum= getTotalPageNum(RegisterUserNum,Main.config.userShowNum);
         }
@@ -60,7 +60,7 @@ public class UserListContest extends pageBean {
     }
 
     public String getTableClass(){
-        return "table table-striped table-hover table-condensed"+(c.getKind()==3?" table-bordered table-small":"");
+        return "table table-striped table-hover table-condensed"+(c.isRegisterShowComplete()?" table-bordered table-small":"");
     }
 
     @Override
@@ -159,7 +159,7 @@ public class UserListContest extends pageBean {
         }else {
             List<String> aList=list2.get(i);
             int z = 0;
-            if (c.getKind() == 3) z = 7;
+            if (c.isRegisterShowComplete()) z = 7;
             if (colname.equals("用户名")) {
                 User u = Main.users.getUser(aList.get(0));
                 if (u == null) {
@@ -202,7 +202,7 @@ public class UserListContest extends pageBean {
                 return aList.get(7);
             } else if (colname.equals("admin")) {
                 String info;
-                if (c.getKind() == 3) {
+                if (c.isRegisterShowComplete()) {
                     info = aList.get(12);
                     aList.remove(12);
                 } else {

@@ -52,7 +52,7 @@ public class ContestMain {
         if (c.getType() == Contest_Type.REGISTER2) {
             status = RegisterUser.STATUS_PADDING;
         }
-        if (c.getKind() == 3 && !u.canRegisterOfficalContest()) {
+        if (c.isRegisterShowComplete() && !u.canRegisterOfficalContest()) {
             return "info";
         }
         return contests.addUserContest(cid, u.getUsername(), status);

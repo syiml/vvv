@@ -79,7 +79,7 @@ public class MessageMain {
             m.setTitle("你在比赛【"+c.getName()+"】中的提问【"+d.getTitle()+"】有新回复");
         }
         String url;
-        if(d.getCid()==-1) url="Discuss.jsp?id="+dr.getDid()+"&page="+(dr.getRid()-1)/DiscussMain.replyReplyShowNum;
+        if(d.getCid()==-1) url="Discuss.jsp?id="+dr.getDid()+"&page="+(dr.getRid()-1)/Main.config.discussReplyShowNum;
         else url="Contest.jsp?cid="+d.getCid()+"#D"+dr.getDid();
         m.setText(u.getUsernameHTML() + "(" + u.getNick() + ")回复了你的帖子【" + d.getTitle() + "】：</br>"
                 + HTML.HTMLtoString(dr.getText()) + "</br>" + HTML.a(url, "查看帖子"));
@@ -127,7 +127,7 @@ public class MessageMain {
         m.setUser(u.getUsername());
         m.setStatu(0);
         m.setTitle("欢迎新用户");
-        m.setText(u.getNick() + "，欢迎您入驻T^T Online Judge，当前OJ是测试版，如有发现BUG，可以提交到【" + HTML.a("Discuss.jsp?id=6", "BUG和建议收集") + "】贴<br>"+"更多新用户帮助，可以查看【"+HTML.a("Discuss.jsp?id=4","FAQ")+"】也可以直接在底下回复提问。");
+        m.setText(u.getNick() + "，欢迎您入驻T^T Online Judge，如有发现BUG，可以提交到【" + HTML.a("Discuss.jsp?id=6", "BUG和建议收集") + "】贴<br>"+"更多新用户帮助，可以查看【"+HTML.a("Discuss.jsp?id=4","FAQ")+"】也可以直接在底下回复提问。");
         m.setDeadline(new Timestamp(86400000L * 30 + System.currentTimeMillis()));//保留30天
         return MessageSQL.save(m);
     }

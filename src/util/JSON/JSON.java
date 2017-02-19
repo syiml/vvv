@@ -83,7 +83,7 @@ public class JSON {
                     result = Main.status.submitResult(cid, pv.getPid(), (String) Main.getSession().getAttribute("trueusername" + cid));
                 }else{
                     assert u != null;
-                    if(ContestMain.getContest(cid).getKind() == 0){
+                    if(ContestMain.getContest(cid).isStatusReadOut()){
                         result = Main.status.submitResult(pv.getPid(),u.getUsername());
                     }else {
                         result = Main.status.submitResult(cid, pv.getPid(), u.getUsername());

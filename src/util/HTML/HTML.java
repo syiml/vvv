@@ -525,7 +525,7 @@ public class HTML {
                 return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(p,pidInt,admin,-1)));
             }else{
                 Contest c=ContestMain.getContest(cidInt);
-                if(c.getKind()==0){//练习场
+                if(c.isProblemCanPutTag()){
                     return HTML.row(HTML.col(9,ret)+HTML.col(3,problemRight(p,tpid,admin,cidInt)));
                 }
             }
@@ -559,7 +559,7 @@ public class HTML {
             }else{
                 if(cid!=-1){
                     Contest c=ContestMain.getContest(cid);
-                    if(c.getKind()==0&&c.getcpid(pid)!=-1&&c.isBegin()){//练习场 且 比赛内存在该题目 且 比赛开始了
+                    if(c.isProblemCanPutTag()&&c.getcpid(pid)!=-1&&c.isBegin()){//练习场 且 比赛内存在该题目 且 比赛开始了
                         if(ContestMain.canInContest(cid)){//可以进入比赛
                             return new ProblemInfo(pid,page).HTML();
                         }
@@ -1324,7 +1324,7 @@ public class HTML {
 
         select f4=new select("type","类型");
         //0public 1password 2private 3register 4register2 5team
-        for(int i=0;i<Contest.typenum;i++){
+        for(int i = 0; i<Contest.typeNum; i++){
             f4.add(i, Contest.getTypeText(i),Contest.getTypeStyle(i));
         }
         f4.setId("type");
@@ -1375,6 +1375,18 @@ public class HTML {
         check ch=new check("computerating","是否计算rating");
         if(c!=null&&c.isComputerating())ch.setChecked();
         form.addForm(ch);
+
+        check ch_1=new check("problemCanPutTag","内部题目是否可以直接贴标签");
+        if(c!=null&&c.isProblemCanPutTag())ch_1.setChecked();
+        form.addForm(ch_1);
+
+        check ch_2=new check("statusReadOut","计算排名时，是否把全局的提交也计算入内");
+        if(c!=null&&c.isStatusReadOut())ch_2.setChecked();
+        form.addForm(ch_2);
+
+        check ch_3=new check("registerShowComplete","注册是否需要完整的个人信息");
+        if(c!=null&&c.isRegisterShowComplete()) ch_3.setChecked();
+        form.addForm(ch_3);
 
         select f8=new select("rank","Rank模式");
         f8.setId("rank");

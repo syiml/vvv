@@ -82,7 +82,7 @@
                 <action name="registercontest" class="action.RegisterContest" method="regCon">
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>
-                        <result name="info">info.jsp?info=需要补充完整信息才能注册！</result>
+                        <result name="info">info.jsp?info=需要补充完整信息才能注册！（在认证界面完整填写学校、专业、班级、学号等信息）</result>
                 </action>
                 <action name="setregistercontest" class="action.setRegisterContest" method="set">
                         <result name="success">return.jsp</result>

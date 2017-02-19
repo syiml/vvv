@@ -70,7 +70,7 @@ public class statuListHTML extends pageBean {
         if(contest!=null&&contest.getType()==Contest_Type.TEAM_OFFICIAL) {
             status = Main.status.getTeamStatus(cid,this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
             this.PageNum= getTotalPageNum(Main.status.getTeamStatusNum(cid, this.pid, this.result, this.Language, this.ssuser),num);
-        }else if(contest!=null && contest.getKind()==0){//练习场
+        }else if(contest!=null && contest.isStatusReadOut()){//读取比赛外的status
             status = Main.status.getStatusKind0(this.cid, this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
             this.PageNum = getTotalPageNum(Main.status.getStatusKind0Num(this.cid, this.pid, this.result, this.Language, this.ssuser),num);
         }else{

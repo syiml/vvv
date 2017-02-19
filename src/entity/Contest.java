@@ -21,16 +21,13 @@ import java.util.List;
  */
 public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
     public static String TRUE_USERNAME = "trueusername";
-    public static int typenum=6;
+    public static int typeNum=Contest_Type.SIZE.getCode();
     private int cid;
     private String name;
     private Timestamp begintime;
     private Timestamp endtime;
-    //private ProblemSQL problems;
     private List<Integer> problems;
-    //private statusSQL status;
-    //private List<Integer> status;
-    private Contest_Type type;// 0public 1password 2private 3register 4register2(要审核)//修改时要改addcontest
+    private Contest_Type type;//修改时要改addcontest
     private String password;//if type is 1
     private List<RegisterUser> users;//if type is 2
     private Timestamp registerstarttime;//if type is 3 or 4
@@ -38,14 +35,16 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
     private int rankType;
     private Rank rank;
     private String info;
-    private boolean computerating;
-    private int kind;//练习、积分、趣味、正式
-//    public ContestCodeCompare comparer=null;//代码重复率计算器
+    private boolean computerating;//是否计算rating只影响save链接的显示
+    private int kind;//练习、积分、趣味、正式、隐藏
     private int group;//分类  //专题、积分、趣味、正式  -1隐藏
                              //练习:里面可以编辑题目标签
-
-
     private String createuser;//创建人。创建人和超级管理员可以修改其配置
+
+    private boolean problemCanPutTag = false;//内部题目是否可以直接贴标签
+    private boolean statusReadOut = false;   //计算排名时，是否把全局的提交也计算入内
+    private boolean registerShowComplete = false;//注册是否需要完整的个人信息
+
     private Timestamp t;
 
     public Contest(ResultSet re){
@@ -60,6 +59,7 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
             rankType=re.getInt(5);
             type=Contest_Type.getByCode(re.getInt(6));
             kind=re.getInt("kind");
+            createuser = re.getString("createuser");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,6 +85,10 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
             info=re.getString("info");
             computerating=re.getBoolean("computerating");
             kind=re.getInt("kind");
+            createuser = re.getString("createuser");
+            problemCanPutTag=re.getBoolean("problemCanPutTag");
+            statusReadOut=re.getBoolean("statusReadOut");
+            registerShowComplete=re.getBoolean("registerShowComplete");
             //获取题目列表
             problems=new ArrayList<Integer>();
             while(ps.next()){
@@ -103,7 +107,7 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
             setUsers(ru);
 
             ResultSet rs;
-            if(getKind() != 0) {
+            if(!isStatusReadOut()) {
                 rs=new SQL("select id,ruser,pid,cid,lang,submittime,result,score,timeused,memoryUsed,codelen from statu where cid=?",cid).query();
             }else{
                 rs=new SQL("SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,score,timeused,memoryUsed,codelen" +
@@ -121,19 +125,19 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
 
     public static String getTypeText(int type){
         if(type==0){
-            return "public";
+            return "公开";
         }else if(type==1){
-            return "password";
+            return "密码";
         }else if(type==2){
-            return "private";
+            return "私有";
         }else if(type==3){
-            return "register";
+            return "注册";
         }else if(type==4){
-            return "official";
+            return "正式";
         }else if(type==5){
-            return "team";
+            return "组队";
         }else{
-            return "";
+            return "ERROR";
         }
     }
 
@@ -155,7 +159,7 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
         }
     }
 
-    public static String randomPassword(int len){
+    private static String randomPassword(int len){
         String rad = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
         String ret="";
         for(int i=0;i<len;i++){
@@ -173,6 +177,10 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
         rankType=rs.getInt(5);
         type=Contest_Type.getByCode(rs.getInt(6));
         kind=rs.getInt("kind");
+        createuser = rs.getString("createuser");
+        problemCanPutTag=rs.getBoolean("problemCanPutTag");
+        statusReadOut=rs.getBoolean("statusReadOut");
+        registerShowComplete=rs.getBoolean("registerShowComplete");
         return this;
     }
 
@@ -467,6 +475,30 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
             number = Integer.parseInt(maxusername.substring(maxusername.length()-3))+1;
         }
         ContestMain.updateRegisterTeamPassword(cid,username,String.format("%s%03d", prefix, number),randomPassword(6));
+    }
+
+    public boolean isProblemCanPutTag() {
+        return problemCanPutTag;
+    }
+
+    public void setProblemCanPutTag(boolean problemCanPutTag) {
+        this.problemCanPutTag = problemCanPutTag;
+    }
+
+    public boolean isStatusReadOut() {
+        return statusReadOut;
+    }
+
+    public void setStatusReadOut(boolean statusReadOut) {
+        this.statusReadOut = statusReadOut;
+    }
+
+    public boolean isRegisterShowComplete() {
+        return registerShowComplete;
+    }
+
+    public void setRegisterShowComplete(boolean registerShowComplete) {
+        this.registerShowComplete = registerShowComplete;
     }
 
     @Override

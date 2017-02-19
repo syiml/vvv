@@ -1,3 +1,14 @@
+//比赛kind属性分离
+ALTER TABLE `contest`
+ADD COLUMN `problemCanPutTag`  bit NOT NULL AFTER `kind`,
+ADD COLUMN `statusReadOut`  bit NOT NULL AFTER `problemCanPutTag`,
+ADD COLUMN `registerShowComplete`  bit NOT NULL AFTER `statusReadOut`;
+
+update contest set problemCanPutTag=1 where kind = 0;
+update contest set statusReadOut=1 where kind = 0;
+update contest set registerShowComplete=1 where kind = 3;
+
+
 //收藏
 id
 username

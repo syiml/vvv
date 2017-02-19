@@ -6,7 +6,6 @@ import entity.Permission;
 
 /**
  * Created by Syiml on 2015/6/23 0023.
- * 试试试试试试试试试试试试试试试试试试试试试试试试试试
  */
 public class addcontest extends BaseAction{
     public String name;
@@ -37,6 +36,10 @@ public class addcontest extends BaseAction{
     public String icpc_m3_s;
     public String info;
     public String computerating;
+    public String problemCanPutTag;//内部题目是否可以直接贴标签
+    public String statusReadOut;   //计算排名时，是否把全局的提交也计算入内
+    public String registerShowComplete;//注册是否需要完整的个人信息
+
     public String shortcode_m1_t;
     public String shortcode_m1_s;
     public String shortcode_m2_t;
@@ -50,6 +53,25 @@ public class addcontest extends BaseAction{
     public String training_m2_s;
     public String training_m3_t;
     public String training_m3_s;
+
+
+    public String add(){
+        if(!Main.loginUserPermission().getAddContest()) return ERROR;
+        ContestMain.addContest(this);
+        return SUCCESS;
+    }
+    public String edit(){
+        if(!Main.loginUserPermission().getAddContest()) return ERROR;
+        ContestMain.editContest(this);
+        return SUCCESS;
+    }
+    public String problemPublic(){
+        Permission p=Main.loginUserPermission();
+        if(p.getAddContest()&&p.getAddProblem()){
+            ContestMain.contestPorblemPublc(Integer.parseInt(cid));
+        }
+        return SUCCESS;
+    }
 
     public String getKind() {
         return kind;
@@ -73,6 +95,30 @@ public class addcontest extends BaseAction{
 
     public void setComputerating(String computerating) {
         this.computerating = computerating;
+    }
+
+    public String getProblemCanPutTag() {
+        return problemCanPutTag;
+    }
+
+    public void setProblemCanPutTag(String problemCanPutTag) {
+        this.problemCanPutTag = problemCanPutTag;
+    }
+
+    public String getStatusReadOut() {
+        return statusReadOut;
+    }
+
+    public void setStatusReadOut(String statusReadOut) {
+        this.statusReadOut = statusReadOut;
+    }
+
+    public String getRegisterShowComplete() {
+        return registerShowComplete;
+    }
+
+    public void setRegisterShowComplete(String registerShowComplete) {
+        this.registerShowComplete = registerShowComplete;
     }
 
     public String getCid() {
@@ -379,21 +425,4 @@ public class addcontest extends BaseAction{
         this.icpc_m3_s = icpc_m3_s;
     }
 
-    public String add(){
-        if(!Main.loginUserPermission().getAddContest()) return ERROR;
-        ContestMain.addContest(this);
-        return SUCCESS;
-    }
-    public String edit(){
-        if(!Main.loginUserPermission().getAddContest()) return ERROR;
-        ContestMain.editContest(this);
-        return SUCCESS;
-    }
-    public String problemPublic(){
-        Permission p=Main.loginUserPermission();
-        if(p.getAddContest()&&p.getAddProblem()){
-            ContestMain.contestPorblemPublc(Integer.parseInt(cid));
-        }
-        return SUCCESS;
-    }
 }

@@ -53,7 +53,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         int type=Integer.parseInt(a.getType());
         User u = Main.loginUser();
         String user = u==null?"":u.getUsername();
-        new SQL("INSERT INTO contest values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        new SQL("INSERT INTO contest values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 ,id
                 ,a.getName()
                 , Tool.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
@@ -66,7 +66,10 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
                 ,a.getInfo()
                 ,a.getComputerating()!=null
                 ,user
-                ,Integer.parseInt(a.getKind())).update();
+                ,Integer.parseInt(a.getKind())
+                ,a.getProblemCanPutTag()!=null
+                ,a.getStatusReadOut()!=null
+                ,a.getRegisterShowComplete()!=null).update();
         if(addProblems(id,a.getProblems()).equals("error")) return "error";
         return "success";
         //return ret;
@@ -75,7 +78,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         int type=Integer.parseInt(a.getType());
         new SQL("update contest set name=?,begintime=?,endtime=?," +
                 "rankType=?,ctype=?,password=?,registerstarttime=?,registerendtime=?,info=?,computerating=?," +
-                "kind=? where id=?"
+                "kind=?,problemCanPutTag=?,statusReadOut=?,registerShowComplete=? where id=?"
                 ,a.getName()
                 , Tool.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
                 , Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
@@ -87,6 +90,9 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
                 ,a.getInfo()
                 ,a.getComputerating()!=null
                 ,Integer.parseInt(a.getKind())
+                ,a.getProblemCanPutTag()!=null
+                ,a.getStatusReadOut()!=null
+                ,a.getRegisterShowComplete()!=null
                 ,id).update();
         PreparedStatement p= null;
         deleteproblems(id);
