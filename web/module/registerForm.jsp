@@ -55,8 +55,9 @@
           maxlength: 15,
           equalTo: "#password"
         },
-        nick: {
-          maxlength: 20
+        nick:{
+          required: true,
+          maxlength: 12
         },
         email: {
           required: false,
@@ -70,6 +71,10 @@
         }
       },
       messages: {
+        nick: {
+          required: "昵称不能为空",
+          maxlength: "昵称最多只能有12个字符长度"
+        },
         username: {
           required: "用户名不能为空",
           minlength: "用户名长度为5~15个字符",
