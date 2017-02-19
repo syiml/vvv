@@ -15,6 +15,11 @@ import java.util.Random;
  * Created by Administrator on 2015/11/24 0024.
  */
 public class Tool {
+    /**
+     * 让线程等待t毫秒
+     * @param t 等待时间 单位毫秒
+     * @return 1
+     */
     public static int sleep(int t){
         try {
             Thread.sleep(t);

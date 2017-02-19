@@ -42,6 +42,10 @@ form:id=edit
 
     $("#edit").validate({
       rules: {
+        nick:{
+          required: true,
+          maxlength: 12
+        },
         pass: {
           required: true
         },
@@ -53,12 +57,13 @@ form:id=edit
           minlength: 5,
           maxlength: 15,
           equalTo: "#newpass"
-        },
-        nick: {
-          maxlength: 20
         }
       },
       messages: {
+        nick: {
+          required: "昵称不能为空",
+          maxlength: "昵称最多只能有12个字符长度"
+        },
         pass: {
           required: "密码不能为空"
         },
