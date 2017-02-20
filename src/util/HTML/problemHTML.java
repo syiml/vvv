@@ -158,6 +158,11 @@ public class problemHTML {
     public void setAdmin(boolean a){
         admin=a;
     }
+    private String problemHasStar(){
+        int num = UserService.userStarSQL.getProblemStarNum(pid);
+        if(num == 0) return "";
+        else return " | 已有"+num+"人收藏了本题";
+    }
     private String problemMisStar(){
         if(user == null){
             return HTML.text(HTML.glyphicon("star-empty")+"登录后收藏","green");
@@ -194,7 +199,7 @@ public class problemHTML {
     }
     private String getProblemMis(){
         if(!isInContest){
-            return problemMisSolved()+" | "+problemMisStar();
+            return problemMisSolved()+" | "+problemMisStar()+problemHasStar();
         }else{
             return "";
         }
