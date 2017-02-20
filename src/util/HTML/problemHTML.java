@@ -160,7 +160,7 @@ public class problemHTML {
     }
     private String problemHasStar(){
         int num = UserService.userStarSQL.getProblemStarNum(pid);
-        if(num == 0) return "";
+        if(num <= 2) return "";
         else return " | 已有"+num+"人收藏了本题";
     }
     private String problemMisStar(){
