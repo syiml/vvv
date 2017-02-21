@@ -22,9 +22,8 @@ public class AcHistoryStruct implements IBeanResultSetCreate, ICanToJSON {
     }
 
     @Override
-    public Object init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         pid = rs.getInt("pid");
         time=rs.getTimestamp("submitTime").getTime();
-        return null;
     }
 }

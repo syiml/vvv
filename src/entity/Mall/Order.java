@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 /**
  * Created by QAQ on 2016/9/26.
  */
-public class Order implements IBeanResultSetCreate<Order>, IBeanCanCatch {
+public class Order implements IBeanResultSetCreate, IBeanCanCatch {
     int id = -1;
     int goodsId;
     String username;
@@ -21,14 +21,13 @@ public class Order implements IBeanResultSetCreate<Order>, IBeanCanCatch {
     public Order(){}
 
     @Override
-    public Order init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         username = rs.getString("username");
         goodsId = rs.getInt("goodsId");
         acb = rs.getInt("acb");
         time = rs.getTimestamp("time");
         isCancel = rs.getBoolean("isCancel");
-        return this;
     }
 
     public int getGoodsId() {

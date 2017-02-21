@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  ) ENGINE = INNODB
  * Created by QAQ on 2016-2-27.
  */
-public class Log implements IBeanResultSetCreate<Log>{
+public class Log implements IBeanResultSetCreate{
     private int id;
     private Timestamp time;
     private String text;
@@ -29,12 +29,11 @@ public class Log implements IBeanResultSetCreate<Log>{
         this.sessionUser=sessionUser;
     }
     @Override
-    public Log init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         time = rs.getTimestamp("time");
         text = rs.getString("text");
         sessionUser = rs.getString("sessionUser");
-        return this;
     }
 
     public int getId() {

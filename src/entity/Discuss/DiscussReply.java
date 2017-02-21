@@ -25,7 +25,7 @@ public class DiscussReply implements IBeanResultSetCreate {
     }
 
     @Override
-    public DiscussReply init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         rid=rs.getInt("rid");
         did=rs.getInt("did");
         username=rs.getString("username");
@@ -34,7 +34,6 @@ public class DiscussReply implements IBeanResultSetCreate {
         visiable=rs.getBoolean("visiable");
         panelclass=rs.getInt("panelclass");
         adminreplay=rs.getString("adminreplay");
-        return this;
     }
 
     public int getRid() {

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Created by QAQ on 2016/5/2 0002.
  */
-public class TeamMember implements IBeanResultSetCreate<TeamMember> {
+public class TeamMember implements IBeanResultSetCreate {
 
     //详细信息：姓名，性别，学校，院系，专业班级，学号，手机
     public String username;
@@ -22,7 +22,7 @@ public class TeamMember implements IBeanResultSetCreate<TeamMember> {
     public TeamMember(){}
 
     @Override
-    public TeamMember init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         this.username = rs.getString("username");
         this.name=rs.getString("name");
         this.gender=rs.getInt("gender");
@@ -32,7 +32,6 @@ public class TeamMember implements IBeanResultSetCreate<TeamMember> {
         this.cla=rs.getString("cla");
         this.no=rs.getString("no");
         this.phone=rs.getString("phone");
-        return this;
     }
 
     public int getGender() {

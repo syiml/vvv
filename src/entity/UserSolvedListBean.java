@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by QAQ on 2016/10/27.
  */
-public class UserSolvedListBean implements IBeanResultSetCreate<UserSolvedListBean> {
+public class UserSolvedListBean implements IBeanResultSetCreate {
 
     public Map<Integer,Integer> solved;
 
@@ -16,7 +16,7 @@ public class UserSolvedListBean implements IBeanResultSetCreate<UserSolvedListBe
     }
 
     @Override
-    public UserSolvedListBean init(ResultSet rs) throws SQLException {
-        return this;
+    public void init(ResultSet rs) throws SQLException {
+
     }
 }

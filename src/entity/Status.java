@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-public class Status implements IBeanResultSetCreate<Status> , ICanToJSON{
+public class Status implements IBeanResultSetCreate , ICanToJSON{
     private static Result[] r={
             Result.PENDING, Result.AC,      Result.WA,
             Result.CE,      Result.RE,      Result.TLE,
@@ -86,7 +86,7 @@ public class Status implements IBeanResultSetCreate<Status> , ICanToJSON{
     public String getCode() {  return Code; }
 
     @Override
-    public Status init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         rid = rs.getInt("id");
         user = rs.getString("ruser");
         pid = rs.getInt("pid");
@@ -98,7 +98,6 @@ public class Status implements IBeanResultSetCreate<Status> , ICanToJSON{
         TimeUsed = rs.getString("timeused");
         MemoryUsed = rs.getString("memoryUsed");
         codelen = rs.getInt("codelen");
-        return this;
     }
 
     public int getCodelen(){return codelen;}

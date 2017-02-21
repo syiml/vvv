@@ -17,14 +17,13 @@ public class ClockInRecord implements IBeanResultSetCreate{
     public String ip;
     public int todytimes;
     @Override
-    public ClockInRecord init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id=rs.getInt("id");
         username=rs.getString("username");
         time=rs.getTimestamp("time");
         sign=rs.getString("sign");
         ip=rs.getString("ip");
         todytimes=rs.getShort("todytimes");
-        return this;
     }
     public ClockInRecord(){
 

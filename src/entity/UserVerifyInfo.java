@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by QAQ on 2016/10/15.
  */
-public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBeanCanCatch {
+public class UserVerifyInfo implements IBeanResultSetCreate, IBeanCanCatch {
     public static final int RESULT_PADDING = 0;
     public static final int RESULT_ACCEPTED = 1;
     public static final int RESULT_REFUSE = -1;
@@ -30,7 +30,7 @@ public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBe
     private Timestamp t;
 
     @Override
-    public UserVerifyInfo init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         VerifyType = rs.getInt("VerifyType");
         username = rs.getString("username");
@@ -47,7 +47,6 @@ public class UserVerifyInfo implements IBeanResultSetCreate<UserVerifyInfo>, IBe
         reason = rs.getString("reason");
         result = rs.getInt("result");
         graduationTime = rs.getTimestamp("graduationTime");
-        return this;
     }
 
     public String getVerifyTypeText(){

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/6/5.
  */
-public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
+public class RegisterUser implements IBeanResultSetCreate {
     //注册状态 0:等待 1:已参加 -1:拒绝  2:* 3:需修改  4:通过
     public final static int STATUS_FAILD=-1;
     public final static int STATUS_PADDING=0;
@@ -66,12 +66,11 @@ public class RegisterUser implements IBeanResultSetCreate<RegisterUser> {
     }
 
     @Override
-    public RegisterUser init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         username=rs.getString("username");
         statu=rs.getInt("statu");
         info=rs.getString("info");
         time=rs.getTimestamp("time");
-        return this;
     }
     public String getShowUserName(){
         User user = Main.users.getUser(username);

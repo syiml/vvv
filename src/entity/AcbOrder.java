@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * Created by QAQ on 2016/10/26.
  */
 
-public class AcbOrder implements IBeanResultSetCreate<AcbOrder> {
+public class AcbOrder implements IBeanResultSetCreate {
     public int id;
     public String username;
     public int change;
@@ -19,13 +19,12 @@ public class AcbOrder implements IBeanResultSetCreate<AcbOrder> {
     public String mark;
     public Timestamp time;
     @Override
-    public AcbOrder init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         username = rs.getString("username");
         change = rs.getInt("acbchange");
         reason = AcbOrderType.getById(rs.getInt("reason"));
         mark = rs.getString("mark");
         time = rs.getTimestamp("time");
-        return this;
     }
 }

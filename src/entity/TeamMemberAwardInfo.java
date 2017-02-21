@@ -21,7 +21,7 @@ public class TeamMemberAwardInfo implements IBeanResultSetCreate{
     String text;
 
     @Override
-    public Object init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         time = rs.getDate("time");
         username1 = rs.getString("username1");
@@ -33,7 +33,6 @@ public class TeamMemberAwardInfo implements IBeanResultSetCreate{
         contestLevel = TeamMemberAwardInfo_ContestLevel.getByCode(rs.getInt("contest_level"));
         awardLevel = TeamMemberAwardInfo_AwardLevel.getByCode(rs.getInt("awards_level"));
         text = rs.getString("text");
-        return this;
     }
 
     public String getUsername1() {

@@ -140,7 +140,7 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
         return jsonObject;
     }
 
-    public User init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         //username,nick,gender,school,Email,motto,registertime,type,Mark,rating,rank,ratingnum,acnum,acb
         this.username=rs.getString("username");
         this.nick=rs.getString("nick");
@@ -170,7 +170,6 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
             this.rank=-1;
         }
         //permission=Main.getPermission(username);
-        return this;
     }
 
     public int getShowRating(){

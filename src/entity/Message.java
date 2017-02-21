@@ -20,7 +20,7 @@ public class Message implements IBeanResultSetCreate {
     }
 
     @Override
-    public Message init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         mid=rs.getInt("mid");
         title=rs.getString("title");
         user=rs.getString("user");
@@ -28,7 +28,6 @@ public class Message implements IBeanResultSetCreate {
         text=rs.getString("text");
         time=rs.getTimestamp("time").getTime();
         deadline=rs.getTimestamp("deadline");
-        return this;
     }
 
     public int getMid() {

@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  * 试题基类
  * Created by QAQ on 2016/5/25 0025.
  */
-public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem>, IBeanCanCatch {
+public class Base_Exam_problem implements IBeanResultSetCreate, IBeanCanCatch {
     public JSONObject data;
     protected int id;
     protected String title;
@@ -26,7 +26,7 @@ public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem
 
     }
 
-    public Base_Exam_problem init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         type = ExamProblemType.getByCode(rs.getInt("type"));
         data = JSONObject.fromObject(rs.getString("data"));
@@ -34,7 +34,6 @@ public class Base_Exam_problem implements IBeanResultSetCreate<Base_Exam_problem
         createUser = rs.getString("user");
         isPublic = rs.getInt("public");
         score = 0;
-        return this;
     }
 
     protected Base_Exam_problem initFromJson(JSONObject jo){

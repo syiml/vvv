@@ -16,13 +16,12 @@ public class UserStar implements IBeanResultSetCreate{
     private String text;
 
     @Override
-    public Object init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         this.id = rs.getInt("id");
         this.username = rs.getString("username");
         this.type = UserStarType.getUserStartTypeByID(rs.getInt("type"));
         this.start_id = rs.getInt("star_id");
         this.text = rs.getString("text");
-        return this;
     }
 
     public int getId() {

@@ -41,14 +41,13 @@ public class problemView implements IBeanResultSetCreate, ICanToJSON {
         return submit;
     }
 
-    public problemView init(ResultSet r) throws SQLException {
+    public void init(ResultSet r) throws SQLException {
         //pid,title,visiable,ac,submit
         pid=r.getInt(1);
         title=r.getString(2);
         hide=r.getInt(3);
         ac=r.getInt(4);
         submit=r.getInt(5);
-        return this;
     }
 
     @Override

@@ -46,12 +46,11 @@ public class ProblemTagRecord implements Comparable<ProblemTagRecord>,IBeanResul
 
     public ProblemTagRecord(){}
     @Override
-    public ProblemTagRecord init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         pid=rs.getInt("pid");
         username=rs.getString("username");
         tagid=rs.getInt("tagid");
         rating=rs.getInt("rating");
-        return this;
     }
     public ProblemTagRecord(int pid,String username,int tagid,int rating){
         this.pid=pid;

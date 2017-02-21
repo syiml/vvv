@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by Administrator on 2015/5/22.
  */
-public class Problem implements IBeanResultSetCreate<Problem>, IBeanCanCatch {
+public class Problem implements IBeanResultSetCreate, IBeanCanCatch {
     static public int LOCAL=0;
     static public int OTHEROJ=1;
     static public int ONLYDES=2;
@@ -85,7 +85,7 @@ public class Problem implements IBeanResultSetCreate<Problem>, IBeanCanCatch {
     public boolean isSpj(){return spj;}
 
     @Override
-    public Problem init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         pid=rs.getInt("pid");
         type=rs.getInt("ptype");
         Title=rs.getString("title");
@@ -98,7 +98,6 @@ public class Problem implements IBeanResultSetCreate<Problem>, IBeanCanCatch {
         totalSubmitUser = rs.getInt("totalSubmitUser");
         totalAc = rs.getInt("totalAc");
         totalAcUser = rs.getInt("totalAcUser");
-        return this;
     }
 
 

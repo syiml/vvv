@@ -24,12 +24,11 @@ public class RegisterTeam  extends  RegisterUser{
     }
 
     @Override
-    public RegisterTeam init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         super.init(rs);
         teamUserName = rs.getString("teamusername");
         teamPassword = rs.getString("teampassword");
         teamName = rs.getString("teamname");
-        return this;
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 /**
  * Created by QAQ on 2016/9/17.
  */
-public class Goods implements IBeanResultSetCreate<Goods>, IBeanCanCatch {
+public class Goods implements IBeanResultSetCreate, IBeanCanCatch {
     public static final int Buy_Verify_Limit_Team=4;//现役队员购买
     public static final int Buy_Verify_Limit_Association=3;//退役，协会购买
     public static final int Buy_Verify_Limit_School=2;//在校学生购买
@@ -61,7 +61,7 @@ public class Goods implements IBeanResultSetCreate<Goods>, IBeanCanCatch {
     }
 
     @Override
-    public Goods init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         title = rs.getString("title");
         acb = rs.getInt("acb");
@@ -71,7 +71,6 @@ public class Goods implements IBeanResultSetCreate<Goods>, IBeanCanCatch {
         user = rs.getString("user");
         buyLimit = rs.getInt("buyLimit");
         buyVerifyLimit = rs.getInt("buyVerifyLimit");
-        return this;
     }
 
     public int getId() {

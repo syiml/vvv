@@ -24,10 +24,9 @@ public class ProblemTag implements IBeanResultSetCreate{
     private String name;
 
     @Override
-    public ProblemTag init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id=rs.getInt("id");
         name=rs.getString("name");
-        return this;
     }
 
     public ProblemTag(int id,String name){

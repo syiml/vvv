@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/5/22.
  */
-public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
+public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
     public static String TRUE_USERNAME = "trueusername";
     public static int typeNum=Contest_Type.SIZE.getCode();
     private int cid;
@@ -169,7 +169,7 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
     }
 
     @Override
-    public Contest init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         cid=rs.getInt(1);
         name=rs.getString(2);
         begintime=rs.getTimestamp(3);
@@ -181,7 +181,6 @@ public class Contest implements IBeanResultSetCreate<Contest>, IBeanCanCatch {
         problemCanPutTag=rs.getBoolean("problemCanPutTag");
         statusReadOut=rs.getBoolean("statusReadOut");
         registerShowComplete=rs.getBoolean("registerShowComplete");
-        return this;
     }
 
     public void setUsers(ResultSet us) throws SQLException {

@@ -22,7 +22,7 @@ public class UserStarSet implements IBeanResultSetCreate{
     }
 
     @Override
-    public Object init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         do{
             UserStar us = new UserStar();
             us.init(rs);
@@ -32,7 +32,6 @@ public class UserStarSet implements IBeanResultSetCreate{
                 statusStar.put(us.getStart_id(),us);
             }
         }while(rs.next());
-        return this;
     }
 
     public UserStar isProblemStar(int pid){

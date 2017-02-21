@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 /**
  * Created by Syiml on 2015/7/3 0003.
  */
-public class Discuss implements IBeanResultSetCreate<Discuss>, ICanToJSON {
+public class Discuss implements IBeanResultSetCreate, ICanToJSON {
     static String[] PanelClass={"default","primary","success","info","warning","danger"};
     /**
      * id 主键
@@ -128,7 +128,7 @@ public class Discuss implements IBeanResultSetCreate<Discuss>, ICanToJSON {
     }
 
     @Override
-    public Discuss init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id=rs.getInt("id");
         cid=rs.getInt("cid");
         title=rs.getString("title");
@@ -146,7 +146,6 @@ public class Discuss implements IBeanResultSetCreate<Discuss>, ICanToJSON {
         showtime=rs.getBoolean("showtime");
         replyHidden=rs.getBoolean("replyhidden");
         replyNum=rs.getInt("replynum");
-        return this;
     }
 
     public boolean isReplyHidden() {

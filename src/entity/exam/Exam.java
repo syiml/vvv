@@ -22,7 +22,7 @@ import java.util.List;
  * {problems:[[pid,score],[pid,score]]}
  * Created by QAQ on 2016/5/25 0025.
  */
-public class Exam implements IBeanCanCatch, IBeanResultSetCreate<Exam>{
+public class Exam implements IBeanCanCatch, IBeanResultSetCreate{
     List<Base_Exam_problem> problems = new ArrayList<>();
     List<RegisterUser> users = new ArrayList<>();
 
@@ -92,7 +92,7 @@ public class Exam implements IBeanCanCatch, IBeanResultSetCreate<Exam>{
         catch_time = t;
     }
     @Override
-    public Exam init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         id=rs.getInt("id");
         name=rs.getString("name");
         begintime=rs.getTimestamp("begintime");
@@ -109,7 +109,6 @@ public class Exam implements IBeanCanCatch, IBeanResultSetCreate<Exam>{
                 problems.add(problem);
             }
         }
-        return this;
     }
 
     public int canin(User user){

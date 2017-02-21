@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Created by Administrator on 2015/11/24 0024.
  */
-public interface IBeanResultSetCreate<T> {
-    T init(ResultSet rs) throws SQLException;
+public interface IBeanResultSetCreate {
+    void init(ResultSet rs) throws SQLException;
 }
  

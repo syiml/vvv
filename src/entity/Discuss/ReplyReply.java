@@ -31,7 +31,7 @@ public class ReplyReply implements IBeanResultSetCreate {
 
 
     @Override
-    public Object init(ResultSet rs) throws SQLException {
+    public void init(ResultSet rs) throws SQLException {
         did = rs.getInt("did");
         rid = rs.getInt("rid");
         rrid = rs.getInt("rrid");
@@ -40,7 +40,6 @@ public class ReplyReply implements IBeanResultSetCreate {
         time = rs.getTimestamp("time");
         text = rs.getString("text");
         visible = rs.getBoolean("visible");
-        return this;
     }
 
 
