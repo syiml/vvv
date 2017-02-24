@@ -19,6 +19,7 @@ public class AppJson {
         }else{
             return JSON.getJSONObject(
                     "ret","success",
+                    "rank",u.getRank()+"",
                     "username",u.getUsername(),
                     "nick",u.getNick(),
                     "motto",u.getMotto(),

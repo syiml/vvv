@@ -47,11 +47,11 @@ public class ActionUserList extends BaseAction {
         this.order = order;
     }
 
-    public boolean isDesc() {
+    public boolean getDesc() {
         return desc;
     }
 
-    public void setDesc(boolean desc) {
-        this.desc = desc;
+    public void setDesc(String desc) {
+        this.desc = desc!=null;
     }
 }
