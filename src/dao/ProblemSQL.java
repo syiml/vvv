@@ -29,10 +29,15 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
     public Problem getProblem(int pid){
         return getBeanByKey(pid);
     }
-    public List<problemView> getProblems(int pid1,int pid2,boolean showhide){
+    public List<problemView> getProblems(int pid1,int pid2,boolean showhide,String owner){
         String sql="select pid,title,visiable,totalAcUser,totalSubmit from problem where pid>=? and pid<=?";
         if(!showhide){
-            sql+=" and visiable=1";
+            if(owner!=null && !owner.equals("")){
+                sql+= " and (visiable=1 or owner=?)";
+                return new SQL(sql,pid1,pid2,owner).queryBeanList(problemView.class);
+            }else {
+                sql += " and visiable=1";
+            }
         }
         return new SQL(sql,pid1,pid2).queryBeanList(problemView.class);
     }
@@ -77,7 +82,10 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
             editProblem(pid,pro);
             return pid;
         }
-        new SQL("Insert into problem values(?,?,?,?,?,?,?,?,0,0,0,0)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid(),0,pro.getAuthor(),pro.isSpj()).update();
+        User u = Main.loginUser();
+        assert u!=null;
+        new SQL("Insert into problem values(?,?,?,?,?,?,?,?,0,0,0,0,?)",newpid,pro.getType(),pro.getTitle(),pro.getOjid(),pro.getOjspid()
+                ,0,pro.getAuthor(),pro.isSpj(),u.getUsername()).update();
         return newpid;
     }
     public String setProblemVisiable(int pid){

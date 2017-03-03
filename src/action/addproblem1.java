@@ -1,5 +1,8 @@
 package action;
 
+import entity.Permission;
+import entity.PermissionType;
+import entity.User;
 import util.Main;
 
 /**
@@ -89,7 +92,8 @@ public class addproblem1 extends BaseAction{
     }
 
     public String addproblem1(){
-        if(!Main.loginUserPermission().getAddProblem()) return "error";
+        Permission p = Main.loginUserPermission();
+        if(!p.getAddProblem()&& !p.havePermissions(PermissionType.partAddProblem)) return "error";
         //System.out.println(pid+" "+ojid+" "+ojspid);
         return Main.addProblem(this);
     }

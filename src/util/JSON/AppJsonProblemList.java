@@ -43,7 +43,7 @@ public class AppJsonProblemList extends BaseJsonPageBean<problemView> {
         }else{
             status_map = new HashMap<>();
         }
-        return Main.problems.getProblems(from,to,false);
+        return Main.problems.getProblems(from,to,false,null);
     }
 
     @Override

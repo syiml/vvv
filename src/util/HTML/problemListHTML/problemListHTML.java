@@ -1,5 +1,6 @@
 package util.HTML.problemListHTML;
 
+import entity.PermissionType;
 import servise.ContestMain;
 import util.HTML.FromHTML.check.check;
 import util.Main;
@@ -30,7 +31,8 @@ public class problemListHTML {
         this.num=num;
         this.user=user;
         p= (user==null?new Permission():user.getPermission());
-        list= Main.problems.getProblems((page-1)*num+1000,(page-1)*num+1000+num-1,p.getShowHideProblem());
+        list= Main.problems.getProblems((page-1)*num+1000,(page-1)*num+1000+num-1,p.getShowHideProblem()
+                ,(user!=null&&p.havePermissions(PermissionType.partAddProblem))?user.getUsername():null);
         incontest=false;
     }
     public problemListHTML(int cid){
@@ -149,7 +151,7 @@ public class problemListHTML {
             table.addRow(row);
         }
         String head="题目列表";
-        if(p.getAddProblem()){
+        if(p.getAddProblem()||p.havePermissions(PermissionType.partAddProblem)){
             head+=HTML.floatRight(HTML.a("admin.jsp?page=AddProblem","New"));
         }
         return HTML.panelnobody(

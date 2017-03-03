@@ -499,12 +499,19 @@ public class HTML {
             if(cidInt==-1&&p.visiable==0){//不可见
                 if(user==null) return  panel("EORROR","没有权限",null,"danger");
                 else per=user.getPermission();
-                if(!per.getShowHideProblem()) return  panel("EORROR","没有权限",null,"danger");
+                if(!per.getShowHideProblem()){
+                    if(!(per.havePermissions(PermissionType.partAddProblem) && p.getOwner().equals(user.getUsername()))){
+                        return  panel("EORROR","没有权限",null,"danger");
+                    }
+                }
             }
             if(p.getType()==1){
                 admin=per.getAddProblem();
             }else{
                 admin=per.getAddLocalProblem();
+            }
+            if(user!=null && !admin) {
+                admin = per.havePermissions(PermissionType.partAddProblem) && p.getOwner().equals(user.getUsername());
             }
             String ret;
             problemHTML ph=Main.getProblemHTML(tpid);
@@ -1121,7 +1128,7 @@ public class HTML {
         if(p==null) return "";
         if(nowpage==null) nowpage="";
         String s="<ul class='nav nav-pills nav-stacked'>";
-        if(p.getAddProblem())
+        if(p.getAddProblem()||p.havePermissions(PermissionType.partAddProblem))
             s+=li("新增题目","AddProblem",nowpage);
         if(p.getAddLocalProblem())
             s+=li("本地题目","AddLocalProblem",nowpage);
@@ -1172,7 +1179,22 @@ public class HTML {
         if(nowpage==null) nowpage="";
         if(p==null) return panel("ERROR","NO PERMISSION",null,"danger");
         switch (nowpage){
-            case "AddProblem":      return returnPage(p.getAddProblem(),panel("新增/编辑题目", adminAddProblemForm()));
+            case "AddProblem":{
+                int pid;
+                Problem pro = null;
+                User u = Main.loginUser();
+                try{
+                    pid=Integer.parseInt(Main.getRequest().getParameter("pid"));
+                    pro=Main.problems.getProblem(pid);
+                }catch(NumberFormatException e){
+                    pid=-1;
+                }
+                boolean per = false;
+                if(p.getAddProblem()) per = true;
+                if(pid == -1 && p.havePermissions(PermissionType.partAddProblem)) per = true;
+                if(pid != -1 && u!=null && pro!=null && p.havePermissions(PermissionType.partAddProblem) && pro.getOwner().equals(u.getUsername())) per = true;
+                return returnPage(per,panel("新增/编辑题目", adminAddProblemForm()));
+            }
             case "ReJudge":         return returnPage(p.getReJudge(),panel("重判题目", adminReJudgeForm()));
             case "AddContest":      return returnPage(p.getAddContest(),panel("新增比赛", adminAddContestForm()));
             case "AddDiscuss":      return returnPage(p.getAddDiscuss(),panel("新增/编辑通知", adminAddDiscuss()));

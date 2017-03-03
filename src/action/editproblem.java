@@ -1,6 +1,12 @@
 package action;
 
+import entity.Permission;
+import entity.PermissionType;
+import entity.Problem;
+import entity.User;
 import util.Main;
+
+import java.beans.PersistenceDelegate;
 
 /**
  * Created by Syiml on 2015/6/27 0027.
@@ -44,14 +50,23 @@ public class editproblem  extends BaseAction{
     }
 
     public String edit(){
-        if(!Main.loginUserPermission().getAddProblem()) return "error";
-        //System.out.print(s);
-        return Main.problems.editProlem(this);
+        User u = Main.loginUser();
+        if(u==null) return "error";
+        Permission per = u.getPermission();
+        if(per.getAddProblem()) return Main.problems.editProlem(this);
+        Problem p = Main.problems.getProblem(Integer.parseInt(pid));
+        if(p == null) return "error";
+        if(per.havePermissions(PermissionType.partAddProblem) && p.getOwner().equals(u.getUsername())) return Main.problems.editProlem(this);
+        return "error";
     }
     public String delProblemDis(){
-        if(!Main.loginUserPermission().getAddProblem()) return "error";
-        //System.out.print(s);
-        Main.problems.delProblemDis(Integer.parseInt(pid));
-        return "success";
+        User u = Main.loginUser();
+        if(u==null) return "error";
+        Permission per = u.getPermission();
+        if(per.getAddProblem()) {Main.problems.delProblemDis(Integer.parseInt(pid));return "success";}
+        Problem p = Main.problems.getProblem(Integer.parseInt(pid));
+        if(p == null) return "error";
+        if(per.havePermissions(PermissionType.partAddProblem) && p.getOwner().equals(u.getUsername())) {Main.problems.delProblemDis(Integer.parseInt(pid));return "success";}
+        return "error";
     }
 }

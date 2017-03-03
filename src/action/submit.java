@@ -1,11 +1,8 @@
 package action;
 
-import entity.Contest;
-import entity.Contest_Type;
+import entity.*;
 import servise.ContestMain;
 import util.Main;
-import entity.Permission;
-import entity.User;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -49,7 +46,9 @@ public class submit  extends BaseAction{
             if(cid == -1){
                 if(Main.problems.getProblem(pid).visiable==0){
                     Permission p=Main.getPermission(u.getUsername());
-                    if(!p.getShowHideProblem()){
+                    Problem problem = Main.problems.getProblem(pid);
+
+                    if(problem==null || (!p.getShowHideProblem() && !(p.havePermissions(PermissionType.partAddProblem)&&problem.getOwner().equals(u.getUsername())))){
                         if(noRedirect == 1){
                             out.print("{\"ret\":\"fail\",\"info\":\"没有权限\"}");
                             return NONE;

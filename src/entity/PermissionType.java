@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by syimlzhu on 2016/10/11.
  */
 public enum PermissionType {
-    addProblem(1, "添加题目"),
+    addProblem(1, "题目总管"),
     addLocalProblem(12, "增加比赛题目"),
     viewCode(2, "查看代码", false),
     reJudge(3, "重判"),
@@ -32,7 +32,8 @@ public enum PermissionType {
     verify_association(23, "认证管理（协会成员）"),
     verify_retired(24, "认证管理（退役队员）"),
     verify_team(25, "认证管理（集训队员）"),
-    teamAutoRegister(26, "集训队员自动报名");
+    teamAutoRegister(26, "集训队员自动报名"),
+    partAddProblem(27,"添加题目");
 
     private static Map<Integer, PermissionType> allPermission = null;
     private int code;

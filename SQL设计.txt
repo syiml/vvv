@@ -1,3 +1,8 @@
+部分题目创建权限
+ALTER TABLE `problem`
+ADD COLUMN `owner`  varchar(30) NOT NULL AFTER `totalAcUser`;
+
+
 //比赛kind属性分离
 ALTER TABLE `contest`
 ADD COLUMN `problemCanPutTag`  bit NOT NULL AFTER `kind`,

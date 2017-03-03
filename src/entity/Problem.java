@@ -24,6 +24,8 @@ public class Problem implements IBeanResultSetCreate, IBeanCanCatch {
     //otheroj
     int ojid;
     String ojspid;
+
+    String owner;
     private Timestamp expiredTime;
     public Problem(){}
     public Problem(int ojid,String ojspid,String title,String author,boolean spj){
@@ -98,6 +100,7 @@ public class Problem implements IBeanResultSetCreate, IBeanCanCatch {
         totalSubmitUser = rs.getInt("totalSubmitUser");
         totalAc = rs.getInt("totalAc");
         totalAcUser = rs.getInt("totalAcUser");
+        owner = rs.getString("owner");
     }
 
 
@@ -185,6 +188,10 @@ public class Problem implements IBeanResultSetCreate, IBeanCanCatch {
 
     public Timestamp getExpiredTime() {
         return expiredTime;
+    }
+
+    public String getOwner() {
+        return owner;
     }
 
     public void setExpiredTime(Timestamp expiredTime) {
