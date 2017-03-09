@@ -135,7 +135,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
             return "success";
         }
         if(status==-2){//-2 -> 删除
-            if(!c.isEnd() && registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO){
+            if(!c.isEnd() && (registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO||registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO_APPENDED)){
                 User u = Main.users.getUser(username);
                 //返回acb
                 Main.users.addACB(username,u.getSubAcbInWeekContest(), AcbOrderType.CONTEST_AUTO_LEAVE,"比赛id="+cid);

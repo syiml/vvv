@@ -99,7 +99,7 @@ public class Computer {
             } else {
                 row.add(HTML.textb("" + ratingChange, "red"));
             }
-            if (registerUser != null && registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO) {
+            if (registerUser != null && registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO_APPENDED) {
                 int totalSubAcb = u.getSubAcbInWeekContest();
                 int realSubAcb = ratingChange >= 0 ? 0 : Math.min(-ratingChange, totalSubAcb);
                 row.add(totalSubAcb - realSubAcb + "/" + totalSubAcb);
@@ -120,7 +120,7 @@ public class Computer {
                     ratingSQL.save(ratingCase);
                     //返还acb
                     RegisterUser registerUser = c.getRegisterUser(ratingCase.getUsername());
-                    if(registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO){
+                    if(registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO_APPENDED){
                         User u = Main.users.getUser(ratingCase.getUsername());
                         int totalSubAcb = u.getSubAcbInWeekContest();
                         int ratingChange = ratingCase.getTrueRating() - ratingCase.getTruePRating();

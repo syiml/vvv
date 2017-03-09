@@ -179,7 +179,7 @@ public abstract class Rank<user extends RankBaseUser> {
     public void add(RegisterUser u, Contest c,Class<user> cls){
         user _user = null;
         try {
-            if(u.getStatu()==1||u.getStatu() == 6){//1是正式，2是星号
+            if(u.getStatu()==1||u.getStatu() == RegisterUser.STATUS_TEAM_AUTO_APPENDED){//1是正式，2是星号
                 _user = cls.newInstance();
                 _user.init(u.getUsername(),1,c.getProblemNum());
             }else if(u.getStatu()==2){

@@ -363,12 +363,18 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
                     int statu = u.getStatu();
                     if (statu == RegisterUser.STATUS_APPENDED
                             || statu == RegisterUser.STATUS_UNOFFICIAL
-                            || statu == RegisterUser.STATUS_TEAM_AUTO) {//是已经签到或者星号或者是集训队员自动报名状态，可以进入
+                            || statu == RegisterUser.STATUS_TEAM_AUTO_APPENDED) {//是已经签到或者星号或者是集训队员自动报名状态，可以进入
                         return 1;
                     }
                     if (statu == RegisterUser.STATUS_ACCEPTED){
                         if(isBegin()&&!isEnd()){//是第一次进入，改成已经签到
                             ContestMain.setUserContest(cid,u.getUsername(),RegisterUser.STATUS_APPENDED,"");
+                        }
+                        return 1;
+                    }
+                    if (statu == RegisterUser.STATUS_TEAM_AUTO){
+                        if(isBegin()&&!isEnd()){//是第一次进入，改成已经签到
+                            ContestMain.setUserContest(cid,u.getUsername(),RegisterUser.STATUS_TEAM_AUTO_APPENDED,"");
                         }
                         return 1;
                     }

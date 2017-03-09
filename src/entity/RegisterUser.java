@@ -21,6 +21,7 @@ public class RegisterUser implements IBeanResultSetCreate {
     public final static int STATUS_ACCEPTED=4;
     public final static int STATUS_ADMIN = 5; //管理员
     public final static int STATUS_TEAM_AUTO = 6;//集训队员自动报名，扣除了ACB，计算完rating后要返还ACB
+    public final static int STATUS_TEAM_AUTO_APPENDED = 7;//集训队员参赛
 
     public String getInfo() {
         return info;
@@ -60,7 +61,8 @@ public class RegisterUser implements IBeanResultSetCreate {
             case 3: return HTML.textb("需修改","#ff00ff");
             case 4: return HTML.textb("通过","green");
             case 5: return HTML.textb("管理员","#00aaaa");
-            case STATUS_TEAM_AUTO: return HTML.textb("集训队员","#7E48B7");
+            case STATUS_TEAM_AUTO: return HTML.textb("报名队员","#7E48B7");
+            case STATUS_TEAM_AUTO_APPENDED: return HTML.textb("参赛队员","#FF00FF");
         }
         return HTML.textb("ERROR","orange");
     }
