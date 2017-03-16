@@ -110,7 +110,7 @@ public class MyClient extends DefaultHttpClient{
                 String content;
                 try {
                     content = EntityUtils.toString(entity);
-                    Tool.debug("Response content:" + content);
+                    //Tool.debug("Response content:" + content);
 
                     return content;
                 } catch (IOException e) {

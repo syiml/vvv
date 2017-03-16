@@ -4,14 +4,14 @@
 <%@ page import="action.ClockIn" %>
 <%@ page import="ClockIn.*" %>
 <%@ page import="util.Main" %>
-<script>
+<%--<script>
 
   if(location.href.indexOf("acm.fjut.edu.cn/vj")!=-1){
     location.href=location.href.replace("acm.fjut.edu.cn","210.34.193.66:8080");
   }else if(location.href.indexOf("acm.fjut.edu.cn")!=-1){
     location.href=location.href.replace("acm.fjut.edu.cn","210.34.193.66:8080/vj");
   }
-</script>
+</script>--%>
 <%@page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.css">
 <link href="js/bootstrap-datepicker-master/datepicker.css" rel="stylesheet">

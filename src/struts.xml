@@ -202,6 +202,9 @@
                 <action name="cancelStarStatus" class="action.Action_Star" method="cancelStarStatus">
                         <result name="success">return.jsp</result>
                 </action>
+                <action name="newClockIn" class="action.ClockIn" method="userNewClockIn">
+                        <result name="success">info.jsp?info=${prompt}&amp;next=return.jsp</result>
+                </action>
         </package>
         <package name="app" namespace="/app" extends="struts-default">
                 <action name="getSelfInfo" class="action.App.ActionNoPara" method="getSelfInfo"> </action>

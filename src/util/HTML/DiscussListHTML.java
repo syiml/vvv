@@ -51,7 +51,7 @@ public class DiscussListHTML extends pageBean {
         FormHTML f=new FormHTML();
         f.setType(1);
         f.setAction("DiscussList.jsp");
-        text t1=new text("seach","名称");
+        text t1=new text("search","名称");
         t1.setValue(seach);
         text t2=new text("user","作者");
         t2.setValue(user);
@@ -135,7 +135,7 @@ public class DiscussListHTML extends pageBean {
     @Override
     public String getLinkByPage(int page) {
         if(cid==-1){
-            return "DiscussList.jsp?page="+page+"&seach="+seach+"&user="+user;
+            return "DiscussList.jsp?page="+page+"&search="+seach+"&user="+user;
         }else{
             return "#DP"+page;
         }

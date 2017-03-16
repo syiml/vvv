@@ -174,6 +174,9 @@ public class ClockInSQL {
     public static List<ClockInRecord> getWithUser(String user){
         return new SQL("SELECT * FROM t_clock_in WHERE username=? ORDER BY time desc", user).queryBeanList(ClockInRecord.class);
     }
+    public static List<ClockInRecord> getWithUser(String user,int year,int month){
+        return new SQL("SELECT * FROM t_clock_in WHERE username=? AND YEAR(time)=? AND MONTH(time)=?", user,year,month).queryBeanList(ClockInRecord.class);
+    }
     public static boolean ipCan(String ip){
         int len=ClockInSQL.ip.length();
         return ip.substring(0, len).equals(ClockInSQL.ip);

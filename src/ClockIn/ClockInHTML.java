@@ -1,5 +1,9 @@
 package ClockIn;
 
+import dao.SomeOptRecordSQL;
+import entity.SomeOptRecord.ESomeOptRecordType;
+import entity.SomeOptRecord.SomeOptRecord;
+import javafx.scene.input.DataFormat;
 import util.Main;
 import entity.Permission;
 import entity.User;
@@ -10,10 +14,13 @@ import util.HTML.FromHTML.text.text;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
 import util.HTML.modal.modal;
+import util.MyTime;
 import util.Tool;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -314,5 +321,92 @@ public class ClockInHTML {
         }
 
         return table.HTML();
+    }
+
+    private static String record(int r_year,int r_month,int r_day){
+        Timestamp from = MyTime.getFistTimeOfDay(r_year,r_month,r_day);
+        Timestamp to = MyTime.getLastTimeOfDay(r_year,r_month,r_day);
+        List<SomeOptRecord> records = SomeOptRecordSQL.getInstance().getRecord(ESomeOptRecordType.ClockIn,from,to);
+
+        TableHTML tableHTML = new TableHTML();
+        tableHTML.setClass("table table-striped table-hover table-condensed");
+        tableHTML.addColname("用户","时间","ip");
+        for(SomeOptRecord record : records){
+            User u = Main.users.getUser(record.getUsername());
+            tableHTML.addRow(u.getUsernameHTML(),new SimpleDateFormat("yyyy-MM-dd HH:mm").format(record.getTime()),record.getData());
+        }
+        return HTML.panelnobody(r_year+"-"+r_month+"-"+r_day+"签到记录",tableHTML.HTML());
+    }
+
+    private static String Head(int l_year,int l_month,int r_year,int r_month,int r_day){
+        StringBuilder s =new StringBuilder("<div class='btn-toolbar' role='toolbar'>");
+
+        s.append(HTML.btngroup(
+            HTML.abtn("sm","dmc.jsp?l_year="+(l_month==1?l_year-1:l_year)+"&l_month="+(l_month==1?12:l_month-1)+"&r_year="+r_year+"&r_month="+r_month+"&r_day="+r_day," ＜上一月","")+
+            HTML.abtn("sm","",(l_year+"年"+l_month+"月"),"#")+
+            HTML.abtn("sm","dmc.jsp?l_year="+(l_month==12?l_year+1:l_year)+"&l_month="+(l_month==12?1:l_month+1)+"&r_year="+r_year+"&r_month="+r_month+"&r_day="+r_day,"下一月＞","")
+        ));
+        User u = Main.loginUser();
+        if(u!=null && ClockInMain.canClockIn(u.getUsername())) {
+            s.append(HTML.btngroup(
+                    HTML.abtn("sm", "newClockIn.action", "立即签到", "")
+            ));
+        }else{
+            s.append(HTML.btngroup(
+                    HTML.abtn("sm", "newClockIn.action", "立即签到", "disabled")
+            ));
+        }
+
+        s.append("</div>");
+        return s.toString();
+    }
+    public static String HTMLCalendar(int l_year,int l_month,int r_year,int r_month,int r_day){
+        User user = Main.loginUser();
+        List<SomeOptRecord> records;
+
+        Timestamp fistTimeOfMonth = MyTime.getFistTimeOfMonth(l_year,l_month);
+        Timestamp lastTimeOfMonth = MyTime.getLastTimeOfMonth(l_year,l_month);
+
+        if(user == null) records = new ArrayList<>();
+        else records = SomeOptRecordSQL.getInstance().getRecord(ESomeOptRecordType.ClockIn,user.getUsername(),fistTimeOfMonth,lastTimeOfMonth);
+        boolean[] flag = new boolean[32];
+        for(SomeOptRecord record:records){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(record.getTime().getTime());
+            flag[calendar.get(Calendar.DAY_OF_MONTH)] = true;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(fistTimeOfMonth.getTime());
+        int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+
+        TableHTML tableHTML = new TableHTML();
+        tableHTML.addColname("周日","周一","周二","周三","周四","周五","周六");
+        tableHTML.setClass("table table-bordered");
+        int day = calendar.getActualMaximum(Calendar.DATE);
+        List<String> rows = new ArrayList<>();
+        for(int i=0;i<week;i++){
+            rows.add("");
+        }
+        int rownum = 1;
+        for(int i = 1 ;i<=day; i ++){
+            rows.add(HTML.a("dmc.jsp?l_year="+l_year+"&l_month="+l_month+"&r_year="+l_year+"&r_month="+l_month+"&r_day="+i,i+""));
+            if(flag[i]) tableHTML.addCl(rownum,rows.size()-1,"success");
+            if(rows.size() == 7){
+                tableHTML.addRow(rows);
+                rownum++;
+                rows = new ArrayList<>();
+            }
+        }
+        if(rows.size() !=0){
+            for(int i=rows.size();i<=7;i++){
+                rows.add("");
+            }
+            tableHTML.addRow(rows);
+        }
+        return HTML.row(
+                HTML.col(6,HTML.panelnobody("我的签到记录",HTML.div("panel-body","style='padding:5px'",Head(l_year,l_month,r_year,r_month,r_day))+tableHTML.HTML()))+
+                HTML.col(6,record(r_year,r_month,r_day))
+        );
     }
 }

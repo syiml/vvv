@@ -1,7 +1,10 @@
 package action;
 
 import ClockIn.*;
+import util.MainResult;
 import util.Tool;
+
+import java.util.Calendar;
 
 /**
  * Created by Syiml on 2015/7/27 0027.
@@ -80,5 +83,12 @@ public class ClockIn extends BaseAction{
     public String del(){
         ClockInSQL.del(id);
         return "success";
+    }
+
+
+    public String userNewClockIn(){
+        MainResult mr = ClockInMain.clockIn();
+        this.setPrompt(mr.getPrompt());
+        return SUCCESS;
     }
 }

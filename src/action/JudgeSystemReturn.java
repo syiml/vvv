@@ -20,43 +20,9 @@ public class JudgeSystemReturn extends BaseAction{
     public int rid;
     public String result;
 
-    private static Map<String,Result> resultmap = new HashMap<>();
-    static{
-        resultmap.put("AC",Result.AC);
-        resultmap.put("TLE",Result.TLE);
-        resultmap.put("MLE",Result.MLE);
-        resultmap.put("RE",Result.RE);
-        resultmap.put("OLE",Result.OLE);
-        resultmap.put("WA",Result.WA);
-        resultmap.put("PE",Result.PE);
-    }
     public String judgeDone(){
         Tool.debug("judge done ->pid="+pid+"&rid="+rid+"&result: "+result);
-        RES res = ((JudgeSystem)Submitter.ojs[7]).res;
-        JSONObject resultJson = JSONObject.fromObject(result);
-        if(resultJson.getString("type").equals("CE")){
-            res.setR(Result.CE);
-            res.setCEInfo(resultJson.getString("info"));
-            res.setTime("-");
-            res.setMemory("-");
-        }else {
-            int time = 0;
-            int memory = 0;
-            Result result;
-            JSONArray retJson = resultJson.getJSONArray("ret");
-            result = Result.ERROR;
-            for (int i = 0; i < retJson.size(); i++) {
-                result = resultmap.get(retJson.getJSONArray(i).getString(1));
-                time += retJson.getJSONArray(i).getInt(2);
-                memory = Math.max(memory, retJson.getJSONArray(i).getInt(3));
-                if (result != Result.AC) {
-                    break;
-                }
-            }
-            res.setR(result);
-            res.setTime(time + "MS");
-            res.setMemory(memory + "KB");
-        }
+        ((JudgeSystem)Submitter.ojs[7]).setResult(result);
         synchronized (((JudgeSystem)Submitter.ojs[7]).lock) {
             ((JudgeSystem) Submitter.ojs[7]).lock.notify();
         }

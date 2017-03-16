@@ -18,7 +18,7 @@ public class FILE {
      * @return true成功、false失败
      */
     public static boolean createDirectory(int pid){
-        File f=new File(rootPath+"data\\"+pid);
+        File f=new File(rootPath+"data/"+pid);
         return (f.exists() && f.isDirectory()) || f.mkdirs();
     }
 
@@ -28,7 +28,7 @@ public class FILE {
      * @return 文件列表的文件名
      */
     public static List<File> getFiles(int pid){
-        File f=new File(rootPath+"data\\"+pid);
+        File f=new File(rootPath+"data/"+pid);
         List<File> files=new ArrayList<File>();
         if(f.exists()&&f.isDirectory()){
             File[] pathFiles = f.listFiles();
@@ -46,13 +46,13 @@ public class FILE {
      * @return true成功、false失败
      */
     public static boolean delFile(int pid,String filename){
-        File file = new File(rootPath+"data\\"+pid+"\\"+filename);
+        File file = new File(rootPath+"data/"+pid+"/"+filename);
         if(file.isFile()) {
             if(!file.delete()) {
                 Tool.log("Can not delete file:" + file.getAbsolutePath());
                 return false;
             }else{
-                Main.svnDelFileCommit(pid+"\\"+filename);
+                Main.svnDelFileCommit(pid+"/"+filename);
             }
             return true;
         }
@@ -71,7 +71,7 @@ public class FILE {
             if(f.length()>Main.config.maxSampleFileSize){
                 return false;
             }
-            Main.uploadFile(f,rootPath+"data\\"+pid+"\\"+filename);
+            Main.uploadFile(f,rootPath+"data/"+pid+"/"+filename);
             //svn commit
             Main.svnAddFileCommit();
             return true;
@@ -82,10 +82,10 @@ public class FILE {
     }
     public static InputStream download(int pid,String filename){
         try {
-            return new FileInputStream(rootPath+"data\\"+pid+"\\"+filename);
+            return new FileInputStream(rootPath+"data/"+pid+"/"+filename);
         } catch (FileNotFoundException e) {
             //e.printStackTrace();
-            Tool.debug(rootPath+"data\\"+pid+"\\"+filename+"文件未找到");
+            Tool.debug(rootPath+"data/"+pid+"/"+filename+"文件未找到");
         }
         return null;
     }

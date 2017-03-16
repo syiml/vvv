@@ -14,7 +14,8 @@ public enum AcbOrderType{
     CONTEST_AUTO_LEAVE(8,"集训队员周赛自动报名取消"),
     BUY_CODE(9,"购买代码查看权"),
     ONE_PROBLEM_EVERYDAY(10,"每日一题奖励"),
-    WEEK_RANK(11,"活跃奖励");
+    WEEK_RANK(11,"活跃奖励"),
+    CLOCK_IN(12,"每日签到");
 
     String des;
     int id;

@@ -1,3 +1,13 @@
+CREATE TABLE `t_some_opt_record` (
+`username`  varchar(30) NOT NULL ,
+`time`  timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP ,
+`type`  int(11) NOT NULL ,
+`id`  int(11) NOT NULL ,
+PRIMARY KEY (`username`, `time`)
+);
+ALTER TABLE `t_some_opt_record`
+ADD COLUMN `data`  varchar(100) NOT NULL AFTER `id`;
+
 部分题目创建权限
 ALTER TABLE `problem`
 ADD COLUMN `owner`  varchar(30) NOT NULL AFTER `totalAcUser`;
