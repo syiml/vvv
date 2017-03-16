@@ -85,6 +85,7 @@
         else ss+="<li>"+HTML.a("Message.jsp","<span><i class='icon-envelope-alt'></i> MESSAGE</span>")+"</li>";
         ss+="<li>"+HTML.a("EditInfo.jsp","<span><i class='icon-edit'></i> EDIT")+"<span></li>";
         ss+="<li>"+HTML.a("Verify.action","<span><i class='icon-edit'></i> VERIFY")+"<span></li>";
+        ss+="<li>"+HTML.a("dmc.jsp","<span><i class='icon-edit'></i> CLOCKIN")+"<span></li>";
         ss+="<li>"+" <a href='Logout.jsp'><span><i class='icon-signout'></i> LOGOUT</span></a>"+"</li>";
         ss+="</ul></li>";
       }else{
@@ -110,7 +111,8 @@
     EDIT:"编辑",
     LOGOUT:"退出",
     MALL:"商城",
-    VERIFY:"认证"
+    VERIFY:"认证",
+    CLOCKIN:"签到"
   };
   $(".mm-over,.mm-hdrop-over").each(function () {
     var $th=$(this);
