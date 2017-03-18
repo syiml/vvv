@@ -219,6 +219,8 @@
                 </action>
                 <action name="appVersion" class="action.App.ActionAppUpdate" method="getVersionInfo"> </action>
                 <action name="getIndexDiscuss" class="action.App.ActionNoPara" method="getIndexDiscuss"> </action>
+                <action name="getUserTag" class="action.App.ActionGetUserInfo" method="getUserTag"> </action>
+
         </package>
         <package name="mall" extends="struts-default">
                 <action name="addGoods" class="action.Mall.ActionAddGoods" method="addGoods">

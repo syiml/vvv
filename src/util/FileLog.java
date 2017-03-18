@@ -12,7 +12,7 @@ import java.io.IOException;
 public class FileLog{
     private static FileWriter updateSqlLogFile = null;
     private static void openUpdateSqlLogFile(){
-        String filePath = Main.config.localJudgeWorkPath+"log\\updateSQL\\";
+        String filePath = Main.config.localJudgeWorkPath+"log/updateSQL/";
         String fileName = Tool.nowDate()+".txt";
         try {
             updateSqlLogFile = new FileWriter(filePath+fileName, true);

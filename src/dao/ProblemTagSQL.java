@@ -90,7 +90,7 @@ public class ProblemTagSQL {
         String ret="[";
         for(int i=0;i<=6;i++){
             if(i!=0) ret+=",";
-            ret+=(b[i]!=0?a[i]*100+"/"+b[i]:"0");
+            ret+=(b[i]!=0?a[i]*100.0/b[i]:"0");
         }
         //System.out.println(ret+"]");
         return ret+ "]";
