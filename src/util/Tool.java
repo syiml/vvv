@@ -43,6 +43,7 @@ public class Tool {
         StackTraceElement[] stacks = new Throwable().getStackTrace();
         User u = Main.loginUser();
         Thread current = Thread.currentThread();
+        FileLog.RunLog("["+now()+"|"+current.getId()+"]["+(u==null?"null":u.getUsername())+"]"+s+"["+stacks[stackDepth]+"]");
         System.out.println("["+now()+"|"+current.getId()+"]["+(u==null?"null":u.getUsername())+"]"+s+"["+stacks[stackDepth]+"]");
     }
 

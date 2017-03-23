@@ -11,11 +11,11 @@ import java.io.IOException;
  */
 public class FileLog{
     private static FileWriter updateSqlLogFile = null;
-    private static void openUpdateSqlLogFile(){
-        String filePath = Main.config.localJudgeWorkPath+"log/updateSQL/";
-        String fileName = Tool.nowDate()+".txt";
+    private static FileWriter LogFile = null;
+    private static FileWriter openFile(String filePath,String fileName){
+        FileWriter fw = null;
         try {
-            updateSqlLogFile = new FileWriter(filePath+fileName, true);
+            fw = new FileWriter(filePath+fileName, true);
         }catch (FileNotFoundException e){
             File f = new File(filePath);
             if(!f.exists()){
@@ -31,17 +31,28 @@ public class FileLog{
                 }
             }
             try {
-                updateSqlLogFile = new FileWriter(filePath+fileName, true);
+                fw = new FileWriter(filePath+fileName, true);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         }catch (Exception ignored){}
+        return fw;
     }
     public static synchronized void updateSqlLog(String content) {
         try {
-            openUpdateSqlLogFile();
-            updateSqlLogFile.write(content+"\r\n");
+            updateSqlLogFile = openFile(Main.config.localJudgeWorkPath+"log/updateSQL/",Tool.nowDate()+".txt");
+            updateSqlLogFile.write(content+"\n");
             updateSqlLogFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static synchronized void RunLog(String content) {
+        try {
+            LogFile = openFile(Main.config.localJudgeWorkPath+"log/runLog/",Tool.nowDate()+".txt");
+            LogFile.write(content+"\n");
+            LogFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
