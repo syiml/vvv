@@ -180,8 +180,8 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
     }
     public boolean addSample(int pid){
         SQL sql=new SQL("insert into t_problem_sample " +
-                "values(?,0,'<pre style=\"padding:0px;border-style:none;background-color:transparent\"></pre>'" +
-                ",'<pre style=\"padding:0px;border-style:none;background-color:transparent\"></pre>')",pid);
+                "values(?,0,'<pre class=\"sample\"></pre>'" +
+                ",'<pre class=\"sample\"></pre>')",pid);
         boolean ret=(sql.update()==1);
         sql.close();
         return ret;
@@ -197,7 +197,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
                 ph.setTimeLimit(s.getString(2));
                 ph.setMenoryLimit(s.getString(3));
                 ph.setInt64(s.getString(4));
-                if(p.isLocal()){
+                if(p.isLocal() || p.getOjid() == 7){
                     ph.setSpj(p.isSpj()?1:0);
                 }else{
                     ph.setSpj(s.getInt(5));
