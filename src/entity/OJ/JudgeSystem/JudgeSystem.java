@@ -105,8 +105,19 @@ public class JudgeSystem extends OTHOJ {
             Result result_1;
             JSONArray retJson = resultJson.getJSONArray("ret");
             result_1 = Result.ERROR;
+            StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < retJson.size(); i++) {
                 result_1 = resultmap.get(retJson.getJSONArray(i).getString(1));
+
+                stringBuilder.append("测试文件：").append(retJson.getJSONArray(i).getString(0));
+                stringBuilder.append(" 测试结果：").append(retJson.getJSONArray(i).getString(1));
+                if(result_1 == Result.MLE || result_1 == Result.OLE) {
+                    stringBuilder.append(" 用时：").append(retJson.getJSONArray(i).getInt(4)).append("MS");
+                }else{
+                    stringBuilder.append(" 用时：").append(retJson.getJSONArray(i).getInt(2)).append("MS");
+                }
+                stringBuilder.append(" 内存：").append(retJson.getJSONArray(i).getInt(3)).append("KB\n");
+
                 time += retJson.getJSONArray(i).getInt(2);
                 memory = Math.max(memory, retJson.getJSONArray(i).getInt(3));
                 if (result_1 != Result.AC) {
@@ -116,6 +127,7 @@ public class JudgeSystem extends OTHOJ {
             res.setR(result_1);
             res.setTime(time + "MS");
             res.setMemory(memory + "KB");
+            res.setCEInfo(stringBuilder.toString());
         }
     }
 
@@ -168,7 +180,7 @@ public class JudgeSystem extends OTHOJ {
 
     @Override
     public String getProblemURL(String pid) {
-        return "";
+        return "Problem.jsp?pid="+pid;
     }
 
     @Override
