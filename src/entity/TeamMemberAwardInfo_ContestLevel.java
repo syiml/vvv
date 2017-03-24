@@ -30,7 +30,7 @@ public enum TeamMemberAwardInfo_ContestLevel {
     }
 
     public String toString(){
-        if(this == TeamMemberAwardInfo_ContestLevel.PROVINCE) return "ACM省赛";
+        if(this == TeamMemberAwardInfo_ContestLevel.PROVINCE) return "ACM福建省省赛";
         if(this == TeamMemberAwardInfo_ContestLevel.REGIONAL) return "ACM/ICPC亚洲区域赛";
         if(this == TeamMemberAwardInfo_ContestLevel.EC_FINAL) return "ACM/ICPC东亚赛区总决赛(EC-Final)";
         if(this == TeamMemberAwardInfo_ContestLevel.LANQIAOBEI) return "全国蓝桥杯软件设计大赛";
