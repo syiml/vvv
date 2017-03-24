@@ -133,11 +133,11 @@ public class JudgeSystem extends OTHOJ {
 
     @Override
     public RES getResultReturn(VjSubmitter s){
-        int wait[] = {1,1,1,2,3,5,7,8,9,10};
+        int wait[] = {300};
         int i=0;
         RES r = res;
         do{
-            Tool.sleep(wait[i<wait.length?i:wait.length-1]*1000);
+            Tool.sleep(wait[i<wait.length?i:wait.length-1]);
             i++;
 
             List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -165,8 +165,13 @@ public class JudgeSystem extends OTHOJ {
 
             //System.out.println(submitterID+":get res="+r.getR());
             s.setShowstatus("评测结果="+r.getR());
-            if(i>=30){
-                Main.status.setStatusResult(s.getSubmitInfo().rid, Result.ERROR, "-", "-", "ERROR:评测超时。可能是原oj繁忙");
+            if(i>=1000){
+                r.setR(Result.ERROR);
+                r.setTime("-");
+                r.setMemory("-");
+                r.setCEInfo("获取评测结果超时");
+                s.setShowstatus("获取评测结果超时 i="+i+"次");
+                //Main.status.setStatusResult(s.getSubmitInfo().rid, Result.ERROR, "-", "-", "ERROR:评测超时。可能是原oj繁忙");
                 break;
             }
         }while(!r.canReturn());
