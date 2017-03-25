@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public enum PermissionType {
     addProblem(1, "题目总管"),
-    addLocalProblem(12, "增加比赛题目"),
+    addLocalProblem(12, "增加本地题目"),
     viewCode(2, "查看代码", false),
     reJudge(3, "重判"),
     addContest(4, "新增比赛"),
