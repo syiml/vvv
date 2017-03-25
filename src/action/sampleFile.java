@@ -105,10 +105,11 @@ public class sampleFile {
         }
     }
     public String upload(){
-        if(Main.loginUserPermission().getAddLocalProblem()){
-            if(samplein!=null)FILE.uploadFile(Integer.parseInt(pid),sampleinFileName,samplein);
-            if(sampleout!=null)FILE.uploadFile(Integer.parseInt(pid),sampleoutFileName,sampleout);
-            if(spj!=null)FILE.uploadFile(Integer.parseInt(pid),"spj.cpp",spj);
+        int pidInt = Integer.parseInt(pid);
+        if(Main.canUploadTestData(Main.loginUser(),pidInt)){
+            if(samplein!=null)FILE.uploadFile(pidInt,sampleinFileName,samplein);
+            if(sampleout!=null)FILE.uploadFile(pidInt,sampleoutFileName,sampleout);
+            if(spj!=null)FILE.uploadFile(pidInt,"spj.cpp",spj);
             return "success";
         }else{
             return "error";
@@ -122,7 +123,8 @@ public class sampleFile {
         return FILE.download(Integer.parseInt(pid),filename);
     }
     public String download() throws Exception {
-        if(Main.loginUserPermission().getAddLocalProblem()) {
+        int pidInt = Integer.parseInt(pid);
+        if(Main.canDownloadData(Main.loginUser(),pidInt)) {
             setFileName(filename);
             return "success";
         }

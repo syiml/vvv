@@ -330,26 +330,19 @@ public class HTML {
         if(rid==null){
             return panel("Error","缺少参数",null,"danger");
         }else{
-            HttpServletRequest request = ServletActionContext.getRequest();
-            HttpSession s=request.getSession();
             User user=Main.loginUser();
-            if(user==null) return panel("Error", "Please login first", null, "danger");
+            if(user==null) return panel("Error", "未登录", null, "danger");
             int ridInt;
             try{
                 ridInt=Integer.parseInt(rid);
             }catch (NumberFormatException e){
                 return havepanel?panel("Error","无效的参数",null,"danger"):"无效的参数";
             }
-            Permission p = user.getPermission();
-            if(p.getViewCode()){
-                return Main.status.getCEInfoHTML(Integer.parseInt(rid),havepanel);
+            Status status = Main.status.getStatu(ridInt);
+            if(statuListHTML.canViewCEInfo(status,user)){
+                return Main.status.getCEInfoHTML(ridInt,havepanel);
             }else{
-                Status st=Main.status.getStatu(ridInt);
-                if(st.getUser().equals(user.getUsername())){
-                    return Main.status.getCEInfoHTML(Integer.parseInt(rid),havepanel);
-                }else{
-                    return havepanel?panel("Error","没有权限",null,"danger"):"没有权限";
-                }
+                return havepanel?panel("Error","没有权限",null,"danger"):"没有权限";
             }
         }
     }
@@ -1697,6 +1690,8 @@ public class HTML {
                     inTeamStatus.add(0, "非队员");
                     inTeamStatus.add(1, "现役队员");
                     inTeamStatus.add(2, "退役队员");
+                    inTeamStatus.add(User.V_ASSOCIATION, "协会成员");
+                    inTeamStatus.add(User.V_SCHOOL, "校内人员");
                     inTeamStatus.setValue(u.getInTeamStatus() + "");
 
                     text inTeamLv = new text("inTeamLv", "队员等级");

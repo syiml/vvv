@@ -103,9 +103,21 @@ public class statuListHTML extends pageBean {
     }
 
     private String scoreHTML(int score){
-        if(score==100) return HTML.text(score+"","#27c24c");
-        else if(score>=60) return HTML.text(score+"","#fad733");
-        else return HTML.text(score+"","#f05050");
+        if(score == -1) return "";
+        if(score==100) return HTML.text(" "+score,"#27c24c");
+        else if(score>=60) return HTML.text(" "+score,"#fad733");
+        else return HTML.text(" "+score,"#f05050");
+    }
+    public static boolean canViewCEInfo(Status s,User loginUser){
+        if(loginUser == null) return false;
+        if(loginUser.getPermission().getViewCode()) return true;
+        if(s.getUser().equals(loginUser.getUsername())){
+            if(s.getResult() == Result.CE || s.getResult() == Result.ERROR || s.getScore()!=-1) return true;
+            if(Main.users.haveDownloadData(s.getUser(),s.getPid())) return true;
+        }else{
+            if(s.getResult() == Result.CE && Main.users.haveViewCode(loginUser.getUsername(),s.getPid())) return true;
+        }
+        return false;
     }
     @Override
     public String getCellByHead(int i, String colname) {
@@ -126,26 +138,14 @@ public class statuListHTML extends pageBean {
         }else if(colname.equals("题目")){
             return ""+pidToHtml(s,incontest);
         }else if(colname.equals("评测结果")){
-            if(s.getResult()== Result.CE){
+            if(canViewCEInfo(s,user)){
                 if(incontest){
-                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", HTML.span("warning", "Compilation Error"));
+                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", s.resultToHTML(s.getResult())) + scoreHTML(s.getScore());
                 }else{
-                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("warning", "Compilation Error"));
-                }
-            }else if(s.getResult() == Result.ERROR) {
-                if (incontest) {
-                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", HTML.span("info", "Submit Error"));
-                } else {
-                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), HTML.span("info", "Submit Error"));
-                }
-            }else if(s.getScore()!=-1){
-                if(incontest){
-                    return HTML.a("javascript:ceinfo(" + s.getRid() + ");", s.resultToHTML(s.getResult()))+" "+scoreHTML(s.getScore());
-                }else{
-                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), s.resultToHTML(s.getResult()))+" "+scoreHTML(s.getScore());
+                    return HTML.a("CEinfo.jsp?rid=" + s.getRid(), s.resultToHTML(s.getResult())) + scoreHTML(s.getScore());
                 }
             }else{
-                return ""+s.resultToHTML(s.getResult());
+                return ""+s.resultToHTML(s.getResult())+ scoreHTML(s.getScore());
             }
         }else if(colname.equals("语言")){
             return LanguageToHtml(s);

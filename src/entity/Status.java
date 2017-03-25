@@ -164,7 +164,7 @@ public class Status implements IBeanResultSetCreate , ICanToJSON{
 
     public String resultToHTML(Result s){
         if(s==Result.AC) return HTML.span("success", "Accepted");
-        if(s==Result.CE) return HTML.a("CEinfo.jsp?rid=" + rid, HTML.span("warning", "Compilation Error"));
+        if(s==Result.CE) return HTML.span("warning", "Compilation Error");
         if(s==Result.DANGER) return HTML.span("info", "System Error");
         if(s==Result.MLE) return HTML.span("danger","Memory Limit Exceeded");
         if(s==Result.OLE) return HTML.span("danger","Output Limit Exceeded");

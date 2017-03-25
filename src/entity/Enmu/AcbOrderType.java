@@ -15,7 +15,8 @@ public enum AcbOrderType{
     BUY_CODE(9,"购买代码查看权"),
     ONE_PROBLEM_EVERYDAY(10,"每日一题奖励"),
     WEEK_RANK(11,"活跃奖励"),
-    CLOCK_IN(12,"每日签到");
+    CLOCK_IN(12,"每日签到"),
+    BUY_DATA(13,"购买数据下载权");
 
     String des;
     int id;

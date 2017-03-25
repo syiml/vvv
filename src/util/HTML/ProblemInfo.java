@@ -81,9 +81,9 @@ public class ProblemInfo {
                 m.setAction("buyviewcode.action?pid="+pid);
                 l+=HTML.text(m.toHTMLA(),4)+"<br>";
             }
-            int costACB = buyviewcode.getBuyDataCostACB();
+            int costACB = buyviewcode.getBuyDataCostACB(pid);
 
-            if(p.isLocal() || p.getOjid() == 7 ){ //本地题 可以下载数据
+            if(costACB !=-1 && p.isLocal() || p.getOjid() == 7 ){ //本地题 可以下载数据
                 if(Main.users.haveDownloadData(u.getUsername(),pid)){
                     l+=HTML.text("您已经可以下载本题的所有测试数据了 "+HTML.a("UploadSample.jsp?pid="+pid,"马上去下载"),4)+"<br>";
                 }else{
@@ -94,7 +94,7 @@ public class ProblemInfo {
                     if(acb >= costACB) stringBuilder.append("将花费").append(costACB).append("购买本题测试数据，是否确定？");
                     else stringBuilder.append("ACB不足").append(costACB).append("，无法购买");
 
-                    modal m=new modal("buy","确认购买",stringBuilder.toString(),"购买数据");
+                    modal m=new modal("buy_data","确认购买",stringBuilder.toString(),"购买数据");
                     if(acb>=500)m.setHavesubmit(true);
                     else m.setHavesubmit(false);
                     m.setAction("buydata.action?pid="+pid);

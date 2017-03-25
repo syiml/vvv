@@ -222,7 +222,7 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
      * @return 返回是否是现役队员
      */
     public boolean isInTeam(){
-        if(inTeamStatus==1)
+        if(inTeamStatus==V_TEAM)
             return true;
         else
             return false;

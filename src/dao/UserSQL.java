@@ -417,14 +417,25 @@ public class UserSQL extends BaseCache<String,User> {
     public int getTeamMemberAwardInfoListNum(){
         return new SQL("SELECT COUNT(*) FROM t_team_member_info").queryNum();
     }
+
+    private static int ViewCodeType_ViewCode = 0;
+    private static int ViewCodeType_DownloadData = 1;
+
     public boolean haveViewCode(String user,int pid){
-        return new SQL("SELECT COUNT(*) FROM t_viewcode WHERE username=? AND pid=?", user, pid).queryNum() != 0;
+        return new SQL("SELECT COUNT(*) FROM t_viewcode WHERE username=? AND pid=? AND `type`=?", user, pid,ViewCodeType_ViewCode).queryNum() != 0;
     }
     public Set<Integer> canViewCode(String user){
-        return new SQL("SELECT pid FROM t_viewcode WHERE username=?",user).querySet();
+        return new SQL("SELECT pid FROM t_viewcode WHERE username=? AND `type`=?",user,ViewCodeType_ViewCode).querySet();
     }
     public int addViewCode(String user,int pid){
-        return new SQL("INSERT INTO t_viewcode VALUES(?,?)",user,pid).update();
+        return new SQL("INSERT INTO t_viewcode VALUES(?,?,?)",user,pid,ViewCodeType_ViewCode).update();
+    }
+
+    public boolean haveDownloadData(String user,int pid){
+        return new SQL("SELECT COUNT(*) FROM t_viewcode WHERE username=? AND pid=? AND `type`=?", user, pid,ViewCodeType_DownloadData).queryNum() != 0;
+    }
+    public int addDownloadData(String user,int pid){
+        return new SQL("INSERT INTO t_viewcode VALUES(?,?,?)",user,pid,ViewCodeType_DownloadData).update();
     }
 
     public int awardACB(String user,int num,String text){
