@@ -118,6 +118,10 @@
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>
                 </action>
+                <action name="buydata" class="action.buyviewcode" method="buyData">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
                 <action name="delper" class="action.userper" method="del">
                         <result name="success">return.jsp</result>
                 </action>

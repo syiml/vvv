@@ -1,5 +1,6 @@
 package util.HTML;
 
+import action.buyviewcode;
 import util.Main;
 import entity.User;
 import entity.Problem;
@@ -68,16 +69,37 @@ public class ProblemInfo {
         }else{
             l+=HTML.text("通过率：　",3)+HTML.text(String.format("%.2f",p.totalAcUser*100.0/p.totalSubmit)+"%",8)+"<br><br>";
         }
-        if(Main.loginUser()!=null){
-            if(Main.users.haveViewCode(Main.loginUser().getUsername(),pid)){
+        User u = Main.loginUser();
+        if(u!=null){
+            if(Main.users.haveViewCode(u.getUsername(),pid)){
                 l+=HTML.text("您已经可以查看该题目的所有代码了 "+HTML.a("Status.jsp?all=1&pid="+pid+"&result=1","点击查看"),4)+"<br>";
             }else{
-                int acb=Main.loginUser().getAcb();
+                int acb=u.getAcb();
                 modal m=new modal("buy","确认购买","您当前ACB为："+acb+"<br>"+(acb>=100?"购买将花费100ACB购买本题的代码查看权，是否确定？":"ACB不足100不能购买"),"花100ACB购买查看代码权限");
                 if(acb>=100)m.setHavesubmit(true);
                 else m.setHavesubmit(false);
                 m.setAction("buyviewcode.action?pid="+pid);
                 l+=HTML.text(m.toHTMLA(),4)+"<br>";
+            }
+            int costACB = buyviewcode.getBuyDataCostACB();
+
+            if(p.isLocal() || p.getOjid() == 7 ){ //本地题 可以下载数据
+                if(Main.users.haveDownloadData(u.getUsername(),pid)){
+                    l+=HTML.text("您已经可以下载本题的所有测试数据了 "+HTML.a("UploadSample.jsp?pid="+pid,"马上去下载"),4)+"<br>";
+                }else{
+
+                    int acb=u.getAcb();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("您当前ACB为：").append(acb).append("<br>");
+                    if(acb >= costACB) stringBuilder.append("将花费").append(costACB).append("购买本题测试数据，是否确定？");
+                    else stringBuilder.append("ACB不足").append(costACB).append("，无法购买");
+
+                    modal m=new modal("buy","确认购买",stringBuilder.toString(),"购买数据");
+                    if(acb>=500)m.setHavesubmit(true);
+                    else m.setHavesubmit(false);
+                    m.setAction("buydata.action?pid="+pid);
+                    l+=HTML.text(m.toHTMLA(),4)+"<br>";
+                }
             }
         }
         String r="<div id='status_info'></div><script>$('#status_info').load('module/problemInfo.jsp?pid="+pid+"');</script>";

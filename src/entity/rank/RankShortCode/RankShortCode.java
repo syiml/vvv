@@ -145,7 +145,7 @@ public class RankShortCode extends Rank<user> {
         }
         if(j==this.list.size()){
             user u = new user();
-            u.init(s.getUser(),pnum,1,chengfa);
+            u.init(s.getUser(),pnum,1);
             User us = Main.users.getUser(s.getUser());
             u.showUsername = us.getUsernameHTML();
             u.showNick = us.getNick();

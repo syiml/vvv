@@ -9,15 +9,15 @@ import java.util.List;
  * Created by Syiml on 2015/7/23 0023.
  */
 public class user extends RankBaseUser{
-    String username;
-    boolean valid;
+    //String username;
+    //boolean valid;
     int pnum;
     int chengfa;
     List<Integer> codelen;//0表示未过  >0表示通过的最短代码长度
     List<Integer> wrongtime;
     public user(){}
 
-    public void init(String username,int pnum,int valid,int chengfa){
+    public void init(String username,int pnum,int valid){
         super.init(username,valid,pnum);
         this.pnum=pnum;
         codelen=new ArrayList<Integer>();

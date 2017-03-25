@@ -790,34 +790,46 @@ public class HTML {
         }catch(NumberFormatException e){
             return "参数错误";
         }
+        boolean haveUpload = false;
+        if(Main.canUploadTestData(Main.loginUser(),pidInt)){
+            haveUpload = true;
+        }else if(!Main.canDownloadData(Main.loginUser(),pidInt)){
+            return "没有权限";
+        }
         Problem p=Main.problems.getProblem(pidInt);
         List<File> files= FILE.getFiles(pidInt);
         TableHTML showFiles=new TableHTML();
         showFiles.setClass("table table-striped table-hover table-condensed");
-        showFiles.addColname("文件名","大小","下载","删除");
+        showFiles.addColname("文件名","大小","下载");
+        if(haveUpload) showFiles.addColname("删除");
         for(File f:files){
-            showFiles.addRow(f.getName(),fileSize(f.length()),HTML.a("downloadFile.action?pid="+pidInt+"&filename="+f.getName(),"下载"),HTML.a("delFile.action?pid="+pidInt+"&filename="+f.getName(),"删除"));
+            showFiles.addRow(f.getName(),fileSize(f.length()),HTML.a("downloadFile.action?pid="+pidInt+"&filename="+f.getName(),"下载"));
+            if(haveUpload) showFiles.addRow(HTML.a("delFile.action?pid="+pidInt+"&filename="+f.getName(),"删除"));
         }
 
-        FormHTML uploadForm=new FormHTML();
-        uploadForm.setAction("uploadFile");
-        uploadForm.setCol(2, 10);
-        file inf=new file("samplein","输入");
-        inf.setAccept(".in");
-        uploadForm.addForm(inf);
-        file outf=new file("sampleout", "输出");
-        outf.setAccept(".out");
-        uploadForm.addForm(outf);
+        if(haveUpload) {
+            FormHTML uploadForm = new FormHTML();
+            uploadForm.setAction("uploadFile");
+            uploadForm.setCol(2, 10);
+            file inf = new file("samplein", "输入");
+            inf.setAccept(".in");
+            uploadForm.addForm(inf);
+            file outf = new file("sampleout", "输出");
+            outf.setAccept(".out");
+            uploadForm.addForm(outf);
 
-        if(p.isSpj()){
-            file spj=new file("spj","特判程序");
-            inf.setAccept("spj.cpp");
-            uploadForm.addForm(spj);
+            if (p.isSpj()) {
+                file spj = new file("spj", "特判程序");
+                inf.setAccept("spj.cpp");
+                uploadForm.addForm(spj);
+            }
+
+            uploadForm.addForm(new hidden("pid", pid + ""));
+            uploadForm.setEnctype();
+            return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML()) + panel("上传",uploadForm.toHTML());
+        }else{
+            return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML());
         }
-
-        uploadForm.addForm(new hidden("pid",pid+""));
-        uploadForm.setEnctype();
-        return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML())+panel("上传",uploadForm.toHTML());
     }
 ///////////////////////form///////////////////////////////////////
     public static String registerForm(){

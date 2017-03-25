@@ -4,14 +4,11 @@ import WebSocket.MatchWebSocket;
 import action.App.ActionAppUpdate;
 import dao.*;
 import dao.Mall.GoodsSQL;
+import entity.*;
 import entity.OJ.OTHOJ;
-import entity.Status;
 import servise.GvMain;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
 import util.GlobalVariables.GlobalVariables;
-import entity.Permission;
-import entity.User;
-import entity.Problem;
 import util.HTML.problemHTML;
 import action.addLocalProblem;
 import action.addproblem1;
@@ -327,6 +324,24 @@ public class Main {
     }
     public static boolean canViewCode(Status s,User user) {
         return user != null && (user.getUsername().equals(s.getUser()) || user.getPermission().getViewCode() || Main.users.haveViewCode(user.getUsername(), s.getPid()) );
+    }
+    public static boolean canDownloadData(User u,int pid){
+        if(u == null) return false;
+        if(u.getPermission().havePermissions(PermissionType.addProblem)) return true;
+        if(u.getPermission().havePermissions(PermissionType.partAddProblem)){
+            Problem p = Main.problems.getProblem(pid);
+            if(p != null && p.getOwner().equals(u.getUsername())) return true;
+        }
+        return Main.users.haveDownloadData(u.getUsername(), pid);
+    }
+    public static boolean canUploadTestData(User u,int pid){
+        if(u == null) return false;
+        if(u.getPermission().havePermissions(PermissionType.addProblem)) return true;
+        if(u.getPermission().havePermissions(PermissionType.partAddProblem)){
+            Problem p = Main.problems.getProblem(pid);
+            if(p != null && p.getOwner().equals(u.getUsername())) return true;
+        }
+        return false;
     }
     public static String getIP(){
         return getRequest().getRemoteAddr();

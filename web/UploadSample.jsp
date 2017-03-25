@@ -14,9 +14,6 @@
     response.sendRedirect("Login.jsp");
     return;
   }
-  if(!Main.loginUserPermission().getAddLocalProblem()){
-    response.sendRedirect("info.jsp?info=没有权限");
-  }
   Main.saveURL();
   String pid=request.getParameter("pid");
 %>
