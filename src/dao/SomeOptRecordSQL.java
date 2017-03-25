@@ -36,5 +36,7 @@ public class SomeOptRecordSQL {
     public int addRecord(ESomeOptRecordType type,String username,Timestamp time,int id,String data){
         return new SQL("INSERT INTO t_some_opt_record VALUES(?,?,?,?,?)",username, time,type.getValue(),id,data).update();
     }
-
+    public List<SomeOptRecord> getRecord(ESomeOptRecordType type,int id){
+        return new SQL("SELECT * FROM t_some_opt_record WHERE `type`=? AND id=?",type.getValue(),id).queryBeanList(SomeOptRecord.class);
+    }
 }

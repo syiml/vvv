@@ -297,6 +297,12 @@ public class HTML {
                 "setInterval( \""+id+"_progress()\" , 5000 );" +
                 "</script>";
     }
+    public static String progress(double jd,String text){
+        return "<div class='progress' style='margin-botton:0px;'>"+
+                "  <div class='progress-bar progress-bar-info' role='progressbar' style='width: "+jd+"%; min-width:25px'>"+
+                text+
+                "</div></div>";
+    }
     public static String loader(String height){
         //<img src='pic/loading.jpg'>
         return loader(height,"100%");

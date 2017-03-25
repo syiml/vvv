@@ -1,3 +1,18 @@
+
+
+CREATE TABLE `t_vote` (
+`did`  int(11) NOT NULL ,
+`id`  int(11) NOT NULL ,
+`isHide`  int(11) NOT NULL ,
+`isDisable`  int(11) NOT NULL ,
+`des`  varchar(300) NOT NULL ,
+PRIMARY KEY (`did`, `id`)
+);
+
+
+
+
+
 CREATE TABLE `t_some_opt_record` (
 `username`  varchar(30) NOT NULL ,
 `time`  timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP ,

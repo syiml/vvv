@@ -6,7 +6,8 @@ package entity.SomeOptRecord;
  */
 public enum ESomeOptRecordType {
 
-    ClockIn(1);
+    ClockIn(1),
+    Vote(2);
 
 
 
