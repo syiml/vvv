@@ -45,16 +45,21 @@ public class Vote implements IBeanResultSetCreate {
         return false;
     }
 
+    public static int maxVoteEveryDay = 2;
     public String toHTML(){
         User u = Main.loginUser();
         boolean canVote = false;
         boolean isVoteToday = false;
+        int voteNum = 0;
         if(u == null){
             canVote = false;
-        }else if(VoteDao.getInstance().isVoteToday(did, u.getUsername())){
+        }else{
+            voteNum = VoteDao.getInstance().getVoteToday(did, u.getUsername()).size();
+        }
+        if(voteNum >= maxVoteEveryDay){
             canVote = false;
             isVoteToday = true;
-        }else{
+        }else if (u != null){
             canVote = true;
         }
         StringBuilder sb = new StringBuilder();
@@ -62,7 +67,13 @@ public class Vote implements IBeanResultSetCreate {
         for(Vote_record record : records){
             maxNumber = Math.max(record.number,maxNumber);
         }
-        if(isVoteToday) sb.append("今天已经投过票了，请明天再来吧！<br><br>");
+        if(isVoteToday) sb.append("今天的票已经投完了了，请明天再来吧！<br><br>");
+        else{
+            if(u!=null) sb.append("今天你还有").append(maxVoteEveryDay - voteNum).append("次投票机会<br><br>");
+            else{
+                sb.append("登录后可以投票<br><br>");
+            }
+        }
         for(Vote_record record : records) {
             if(record.isHide) continue;
             sb.append(record.des);

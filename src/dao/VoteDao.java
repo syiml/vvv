@@ -42,8 +42,8 @@ public class VoteDao extends BaseCacheLRU<Integer,Vote> {
         getBeanByKey(did).addNumber(id);
     }
 
-    public boolean isVoteToday(int did,String user){
+    public List<SomeOptRecord> getVoteToday(int did,String user){
         Timestamp now = Tool.now();
-        return (SomeOptRecordSQL.getInstance().getRecord(ESomeOptRecordType.Vote,user, MyTime.getFistTimeOfDay(now),MyTime.getLastTimeOfDay(now)).size() != 0);
+        return SomeOptRecordSQL.getInstance().getRecord(ESomeOptRecordType.Vote,user, MyTime.getFistTimeOfDay(now),MyTime.getLastTimeOfDay(now));
     }
 }

@@ -14,7 +14,10 @@ public enum MainResult {
     ACB_NOT_ENOUGH(6, "ACB不足"),//ACB不足
     BUY_NUM_LIMIT(7, "超出购买限制"),//超过限购数量
     VERIFY_EXIST(8, "不能重复认证"),
-    BUY_OBJECT(9,"您的购买权限不足");
+    BUY_OBJECT(9,"您的购买权限不足"),
+    VOTE_NUM_LIMIT(10,"今日投票次数已经用完"),
+    VOTE_REP(11,"同一天的两票不能投给同一个选项");
+
     int value;
     String prompt;
 

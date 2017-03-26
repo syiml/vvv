@@ -211,7 +211,7 @@
                 </action>
                 <action name="vote" class="action.vote" method="do_vote">
                         <result name="success">return.jsp</result>
-                        <result name="error">return.jsp</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>
         </package>
         <package name="app" namespace="/app" extends="struts-default">
