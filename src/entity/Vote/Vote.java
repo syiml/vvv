@@ -67,7 +67,7 @@ public class Vote implements IBeanResultSetCreate {
         for(Vote_record record : records){
             maxNumber = Math.max(record.number,maxNumber);
         }
-        if(isVoteToday) sb.append("今天的票已经投完了了，请明天再来吧！<br><br>");
+        if(isVoteToday) sb.append("今天的票已经投完了，请明天再来吧！<br><br>");
         else{
             if(u!=null) sb.append("今天你还有").append(maxVoteEveryDay - voteNum).append("次投票机会<br><br>");
             else{
