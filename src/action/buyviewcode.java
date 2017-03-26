@@ -30,17 +30,18 @@ public class buyviewcode extends BaseAction{
         else if(u.getInTeamStatus() == User.V_ASSOCIATION) cost = 900;//协会成员
         else if(u.getInTeamStatus() == User.V_RETIRED){//退役队员
             switch (u.getInTeamLv()){
-                case 0:
+                case 0:cost = 900;break;
                 case 1:cost = 800;break;
                 case 2:cost = 700;break;
                 case 3:cost = 600;break;
                 case 4:cost = 500;break;
                 case 5:cost = 400;break;
                 case 6:cost = 300;break;
-                default: cost = -1;break;
+                default: return -1;
             }
         }else if(u.getInTeamStatus() == User.V_TEAM){//现役队员
             switch (u.getInTeamLv()){
+                case -1:
                 case 0:cost = 800;break;
                 case 1:cost = 700;break;
                 case 2:cost = 600;break;
@@ -48,10 +49,11 @@ public class buyviewcode extends BaseAction{
                 case 4:cost = 400;break;
                 case 5:cost = 300;break;
                 case 6:cost = 200;break;
-                default: cost = -1;break;
+                default: return -1;
             }
         }
         if(Main.users.haveViewCode(u.getUsername(),pid)) cost -= 100;//贴过标签或者买过代码
+        if(cost < 100) cost = 100;
         return cost;
     }
     public String buy(){
@@ -71,7 +73,7 @@ public class buyviewcode extends BaseAction{
         if(!p.isLocal() && p.getOjid() != 7 ) return ERROR;
         if(p.visiable==0) return ERROR;
         int cost = getBuyDataCostACB(pid);
-        if(cost == -1) return ERROR;
+        if(cost < 0) return ERROR;
         if(Main.users.subACB(u.getUsername(), cost, AcbOrderType.BUY_DATA,"题目"+pid)==1){
             if(Main.users.addDownloadData(u.getUsername(),pid)==1){
                 return SUCCESS;

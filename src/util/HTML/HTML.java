@@ -802,8 +802,15 @@ public class HTML {
         showFiles.addColname("文件名","大小","下载");
         if(haveUpload) showFiles.addColname("删除");
         for(File f:files){
-            showFiles.addRow(f.getName(),fileSize(f.length()),HTML.a("downloadFile.action?pid="+pidInt+"&filename="+f.getName(),"下载"));
-            if(haveUpload) showFiles.addRow(HTML.a("delFile.action?pid="+pidInt+"&filename="+f.getName(),"删除"));
+            if(haveUpload){
+                showFiles.addRow(
+                        f.getName(),
+                        fileSize(f.length()),
+                        HTML.a("downloadFile.action?pid="+pidInt+"&filename="+f.getName(),"下载"),
+                        HTML.a("delFile.action?pid="+pidInt+"&filename="+f.getName(),"删除"));
+            }else{
+                showFiles.addRow(f.getName(),fileSize(f.length()),HTML.a("downloadFile.action?pid="+pidInt+"&filename="+f.getName(),"下载"));
+            }
         }
 
         if(haveUpload) {

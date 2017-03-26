@@ -9,7 +9,10 @@ CREATE TABLE `t_vote` (
 PRIMARY KEY (`did`, `id`)
 );
 
+ALTER TABLE `t_viewcode`
+ADD COLUMN `type` int(11) NOT NULL DEFAULT 0 AFTER `pid`;
 
+PRIMARY KEY (`did`, `id`, `type`)
 
 
 

@@ -83,19 +83,28 @@ public class ProblemInfo {
             }
             int costACB = buyviewcode.getBuyDataCostACB(pid);
 
-            if(costACB !=-1 && p.isLocal() || p.getOjid() == 7 ){ //本地题 可以下载数据
+            if(p.isLocal() || p.getOjid() == 7){ //本地题 可以下载数据
                 if(Main.users.haveDownloadData(u.getUsername(),pid)){
                     l+=HTML.text("您已经可以下载本题的所有测试数据了 "+HTML.a("UploadSample.jsp?pid="+pid,"马上去下载"),4)+"<br>";
                 }else{
-
                     int acb=u.getAcb();
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("您当前ACB为：").append(acb).append("<br>");
-                    if(acb >= costACB) stringBuilder.append("将花费").append(costACB).append("购买本题测试数据，是否确定？");
-                    else stringBuilder.append("ACB不足").append(costACB).append("，无法购买");
+                    if(costACB < 0){
+                        stringBuilder.append("您没有购买本题数据的权限<br>");
+                    }else if(acb >= costACB) stringBuilder.append("将花费").append(costACB).append("购买本题测试数据，是否确定？<br>");
+                    else stringBuilder.append("ACB不足").append(costACB).append("，无法购买<br>");
+
+                    stringBuilder.append("<br>购买规则：<br>");
+                    stringBuilder.append("未认证用户不能购买<br>");
+                    stringBuilder.append("校内人员 1000ACB<br>");
+                    stringBuilder.append("协会成员  900ACB<br>");
+                    stringBuilder.append("退役队员1级用户  800ACB，每多一级减100ACB<br>");
+                    stringBuilder.append("现役队员0级用户  800ACB，每多一级减100ACB<br>");
+                    stringBuilder.append("另外，如果已经购买过代码，或者贴过本题标签，减100ACB<br>");
 
                     modal m=new modal("buy_data","确认购买",stringBuilder.toString(),"购买数据");
-                    if(acb>=500)m.setHavesubmit(true);
+                    if(costACB>0 && acb>=costACB)m.setHavesubmit(true);
                     else m.setHavesubmit(false);
                     m.setAction("buydata.action?pid="+pid);
                     l+=HTML.text(m.toHTMLA(),4)+"<br>";
