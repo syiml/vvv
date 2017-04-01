@@ -43,7 +43,7 @@ public class ActionAddGoods extends BaseAction {
         }
         if(upload !=null){
             String path=Main.getRealPath("/");
-            return Main.uploadFile(upload,path+"\\pic\\goods\\"+id+".jpg");
+            return Main.uploadFile(upload,path+"/pic/goods/"+id+".jpg");
         }else{
             return SUCCESS;
         }

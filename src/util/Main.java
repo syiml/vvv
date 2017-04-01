@@ -231,7 +231,7 @@ public class Main {
         * svn commit -m
         * */
         Runtime rt = Runtime.getRuntime();
-        File dir = new File(Main.config.localJudgeWorkPath+"\\data");
+        File dir = new File(Main.config.localJudgeWorkPath+"/data");
         try {
             Process pro = rt.exec(config.svnPath+" add . --no-ignore --force",new String[]{},dir);
             try {
@@ -260,7 +260,7 @@ public class Main {
         * */
         Runtime rt = Runtime.getRuntime();
         try {
-            File dir = new File(Main.config.localJudgeWorkPath+"\\data");
+            File dir = new File(Main.config.localJudgeWorkPath+"/data");
             Process pro = rt.exec(config.svnPath+" rm "+fileName,new String[]{},dir);
             try {
                 String errorInfo = "";

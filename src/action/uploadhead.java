@@ -34,6 +34,6 @@ public class uploadhead  extends BaseAction{
             return "toobig";
         }
         String path=Main.getRealPath("/");
-        return Main.uploadFile(upload,path+"\\pic\\head\\"+Main.loginUser().getUsername()+".jpg");
+        return Main.uploadFile(upload,path+"/pic/head/"+Main.loginUser().getUsername()+".jpg");
     }
 }
