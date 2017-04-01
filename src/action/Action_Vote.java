@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by QAQ on 2017/3/26.
  */
-public class vote extends BaseAction {
+public class Action_Vote extends BaseAction {
     private int did;
     private int id;
 

@@ -26,6 +26,11 @@ public class SQL {
         this.args=args;
         conn= conns.getConn();
     }
+    public SQL(String sql, List<Object> args){
+        this.sql = sql;
+        this.args = args.toArray();
+        conn = conns.getConn();
+    }
     public SQL setLog(boolean log){
         this.log=log;
         return this;

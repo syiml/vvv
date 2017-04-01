@@ -209,7 +209,7 @@
                 <action name="newClockIn" class="action.ClockIn" method="userNewClockIn">
                         <result name="success">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>
-                <action name="vote" class="action.vote" method="do_vote">
+                <action name="vote" class="action.Action_Vote" method="do_vote">
                         <result name="success">return.jsp</result>
                         <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>

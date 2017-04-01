@@ -6,6 +6,7 @@ import util.SQL.SQL;
 import util.Tool;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,8 +21,51 @@ public class SomeOptRecordSQL {
     public static SomeOptRecordSQL getInstance(){
         return sql;
     }
-    private SomeOptRecordSQL(){
 
+    /**
+     * 为private不允许直接new，必须通过getInstance()返回单例
+     */
+    private SomeOptRecordSQL(){
+    }
+
+    /**
+     * 获取操作信息列表，对应参数筛选。如果为null则该项筛选无效
+     * @param type 记录类型
+     * @param user 记录用户名
+     * @param from 开始时间
+     * @param to   截止时间
+     * @param id   对应id
+     * @return 操作列表
+     */
+    public List<SomeOptRecord> getRecord(ESomeOptRecordType type,String user,Timestamp from,Timestamp to,Integer id){
+        String unionString = "WHERE";
+        List<Object> args = new ArrayList<>();
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM t_some_opt_record ");
+        if(type != null){
+            sqlBuilder.append(unionString).append(" `type`=? ");
+            args.add(type.getValue());
+            unionString = "AND";
+        }
+        if(user != null){
+            sqlBuilder.append(unionString).append(" `username`=? ");
+            args.add(user);
+            unionString = "AND";
+        }
+        if(from != null){
+            sqlBuilder.append(unionString).append(" `time`>=? ");
+            args.add(from);
+            unionString = "AND";
+        }
+        if(to != null){
+            sqlBuilder.append(unionString).append(" `time`<? ");
+            args.add(to);
+            unionString = "AND";
+        }
+        if(id != null){
+            sqlBuilder.append(unionString).append(" `id`=? ");
+            args.add(id);
+        }
+        return new SQL(sqlBuilder.toString(),args).queryBeanList(SomeOptRecord.class);
     }
     public List<SomeOptRecord> getRecord(ESomeOptRecordType type,String user, Timestamp from,Timestamp to){
         return new SQL("SELECT * FROM t_some_opt_record WHERE `type`=? AND `username`=? AND `time`>=? AND `time`<? ORDER BY `time`",
