@@ -832,10 +832,14 @@ public class HTML {
 
             uploadForm.addForm(new hidden("pid", pid + ""));
             uploadForm.setEnctype();
-            return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML()) + panel("上传",uploadForm.toHTML());
+            return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML()) + panel("上传",uploadForm.toHTML())
+                    + panel("上传说明",getUploadDes());
         }else{
             return panelnobody("样例文件列表 - "+HTML.a("Problem.jsp?pid="+pid,pidInt+" - "+p.getTitle()),showFiles.HTML());
         }
+    }
+    private static String getUploadDes(){
+        return "<div id='UploadDes'></div><script>$(function(){$('#UploadDes').load('module/UploadDes.jsp')})</script>";
     }
 ///////////////////////form///////////////////////////////////////
     public static String registerForm(){
