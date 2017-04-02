@@ -96,7 +96,8 @@ public class sampleFile {
     }
 
     public String del(){
-        if(Main.loginUserPermission().getAddLocalProblem()){
+        int pidInt = Integer.parseInt(pid);
+        if(Main.canUploadTestData(Main.loginUser(),pidInt)){
             if(FILE.delFile(Integer.parseInt(pid),filename)){
                 return "success";
             }else  return "error";
