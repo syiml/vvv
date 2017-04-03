@@ -99,7 +99,17 @@ public class JudgeSystem extends OTHOJ {
             res.setCEInfo(resultJson.getString("info"));
             res.setTime("-");
             res.setMemory("-");
-        }else {
+        }else if(resultJson.has("game") && resultJson.getBoolean("game")){
+            res.setCEInfo(resultJson.toString());
+            if(resultJson.getInt("score")>=100){
+                res.setR(Result.AC);
+            }else{
+                res.setR(Result.WA);
+            }
+            res.setScore(resultJson.getInt("score"));
+            res.setTime("-");
+            res.setMemory("-");
+        }else{
             int time = 0;
             int memory = 0;
             Result result_1;
