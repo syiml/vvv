@@ -1,6 +1,7 @@
 package dao;
 
 import entity.*;
+import net.sf.json.JSONObject;
 import servise.ContestMain;
 import util.Event.EventMain;
 import util.Event.Events.EventStatusChange;
@@ -352,6 +353,21 @@ public class statusSQL {
             ret="none";
         }
         return havepanle?HTML.panel("Compilation Error Info", HTML.code(ret,false,-1),null,"warning"):HTML.code(ret,false,-1);
+    }
+    public String getCEInfo(int rid){
+        return new SQL("select info from ceinfo where rid=?",rid).queryString();
+    }
+    public String getCEInfo_game_type(int rid){
+        String ret = new SQL("select info from ceinfo where rid=?",rid).queryString();
+        if(ret != null) {
+            try {
+                JSONObject jsonObject = JSONObject.fromObject(ret);
+                if(jsonObject.getString("game_type").equals("GoBang")) return "GoBang";
+            }catch (Exception e){
+                return null;
+            }
+        }
+        return null;
     }
     public Map<Integer,Integer> submitResult(String username, int pid1, int pid2){
         return new SQL("select pid,status from t_usersolve where username=? AND pid>=? AND pid<=?",username,pid1,pid2){

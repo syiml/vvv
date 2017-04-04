@@ -1,0 +1,80 @@
+.wzq{
+    position: absolute;
+    top:100px;
+    left:100px;
+}
+.wzq_row{
+    float:left;
+    width: 100%
+}
+.block{
+    float:left;
+    width: 30px;
+    height: 30px;
+    /*background-color: #ff0;*/
+
+    margin: 1px;
+    /*border: solid 1px;*/
+    /*cursor:pointer;*/
+    cursor: default;
+
+}
+.wzq table{
+    border-collapse:collapse;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    z-index: -1;
+}
+.wzq table td{
+    border: solid 1px;
+
+}
+.wzq table td div{
+    width: 31px;
+    height: 31px;
+}
+.white{
+    float:left;
+    width: 30px;
+    height: 30px;
+    /*background-color: #ff0;*/
+
+    margin: 1px;
+    /*border: solid 1px;*/
+    /*cursor:pointer;*/
+    border-radius: 100%;
+    background-color: #fff;
+//border: solid 1px;
+    background: -webkit-radial-gradient(30% 25%,circle closest-corner,#eee,#bbb);
+    color:#000;
+    text-align:center;
+}
+.black{
+    float:left;
+    width: 30px;
+    height: 30px;
+    /*background-color: #ff0;*/
+
+    margin: 1px;
+    /*border: solid 1px;*/
+    /*cursor:pointer;*/
+    border-radius: 100%;
+    background-color: #000;
+/*border: solid 1px;*/
+    background: -webkit-radial-gradient(30% 25%,circle closest-corner,#777,#222);
+    color:#fff;
+    text-align:center;
+}
+.number{
+    height: 28px;
+    width: 28px;
+    display: table-cell;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: default;
+    user-select:none;
+    -webkit-user-select:none;/*webkit浏览器*/
+    -moz-user-select:none;/*火狐*/
+}

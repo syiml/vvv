@@ -16,6 +16,7 @@ import util.Pair;
 import util.Tool;
 import util.Vjudge.VjSubmitter;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,8 +108,8 @@ public class JudgeSystem extends OTHOJ {
                 res.setR(Result.WA);
             }
             res.setScore(resultJson.getInt("score"));
-            res.setTime("-");
-            res.setMemory("-");
+            res.setTime("0MS");
+            res.setMemory("0MB");
         }else{
             int time = 0;
             int memory = 0;
@@ -130,6 +131,7 @@ public class JudgeSystem extends OTHOJ {
 
                 time += retJson.getJSONArray(i).getInt(2);
                 memory = Math.max(memory, retJson.getJSONArray(i).getInt(3));
+                res.setScore(-1);
                 if (result_1 != Result.AC) {
                     break;
                 }
@@ -155,6 +157,15 @@ public class JudgeSystem extends OTHOJ {
             formparams.add(new BasicNameValuePair("rid",s.getSubmitInfo().rid+""));
             String judge_system_ret = hc.Post(url+"/",formparams);
             Tool.debug(judge_system_ret);
+            if(judge_system_ret!=null){//处理中文乱码
+                byte source [] = new byte[0];
+                try {
+                    source = judge_system_ret.getBytes("iso8859-1");
+                    judge_system_ret = new String (source,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
             JSONObject jo = JSONObject.fromObject(judge_system_ret);
             if(jo.getString("ret").equals("success")){
                 setResult(jo.getString("result"));
