@@ -7,6 +7,8 @@ import util.Main;
 import org.apache.struts2.ServletActionContext;
 import util.Tool;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by Syiml on 2015/10/10 0010.
  */
@@ -164,6 +166,13 @@ public class ChallengeAction extends BaseAction{
     }
     public String addBlock(){
         if(Main.loginUserPermission().getChallengeAdmin()){
+            if(text!=null){//处理中文乱码
+                byte source [] = new byte[0];
+                try {
+                    source = text.getBytes("iso8859-1");
+                    text = new String (source,"UTF-8");
+                } catch (UnsupportedEncodingException ignored) { }
+            }
             ChallengeSQL.addBlock(Integer.parseInt(id),text);
         }
         return "success";
