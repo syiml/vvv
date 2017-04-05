@@ -87,6 +87,7 @@ public class JudgeSystem extends OTHOJ {
     }
     public void setResult(String result){
         JSONObject resultJson = JSONObject.fromObject(result);
+        res.setScore(-1);
         if(resultJson.getString("type").equals("padding")){
             res.setR(Result.PENDING);
             res.setTime("-");

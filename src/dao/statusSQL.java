@@ -362,7 +362,8 @@ public class statusSQL {
         if(ret != null) {
             try {
                 JSONObject jsonObject = JSONObject.fromObject(ret);
-                if(jsonObject.getString("game_type").equals("GoBang")) return "GoBang";
+                //if(jsonObject.getString("game_type").equals("GoBang")) return "GoBang";
+                return jsonObject.getString("game_type");
             }catch (Exception e){
                 return null;
             }

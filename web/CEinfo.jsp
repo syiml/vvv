@@ -22,6 +22,14 @@
     %>
     <script>$("pre").html("").append("<iframe style='width:100%;height:600px;border-width:0' src='module/GoBangResult.jsp?rid=<%=rid%>'></iframe>");</script>
     <%
+        }else if("GuessNumber".equals(Main.status.getCEInfo_game_type(Integer.parseInt(rid)))) {
+    %>
+    <script>$("pre").html("").append("<iframe style='width:100%;height:600px;border-width:0' src='module/GuessNumberResult.jsp?rid=<%=rid%>'></iframe>");</script>
+    <%
+        }else if("MinesweeperResult".equals(Main.status.getCEInfo_game_type(Integer.parseInt(rid)))) {
+    %>
+    <script>$("pre").html("").append("<iframe style='width:100%;height:600px;border-width:0' src='module/MinesweeperResult.jsp?rid=<%=rid%>'></iframe>");</script>
+    <%
         }
     %>
 
