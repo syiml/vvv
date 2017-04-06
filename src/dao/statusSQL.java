@@ -349,26 +349,26 @@ public class statusSQL {
     }
     public String getCEInfoHTML(int rid, boolean havepanle){
         String ret=new SQL("select info from ceinfo where rid=?",rid).queryString();
-        if(ret.equals("")){
-            ret="none";
-        }
-        return havepanle?HTML.panel("Compilation Error Info", HTML.code(ret,false,-1),null,"warning"):HTML.code(ret,false,-1);
-    }
-    public String getCEInfo(int rid){
-        return new SQL("select info from ceinfo where rid=?",rid).queryString();
-    }
-    public String getCEInfo_game_type(int rid){
-        String ret = new SQL("select info from ceinfo where rid=?",rid).queryString();
+        String game_type = null;
         if(ret != null) {
             try {
                 JSONObject jsonObject = JSONObject.fromObject(ret);
                 //if(jsonObject.getString("game_type").equals("GoBang")) return "GoBang";
-                return jsonObject.getString("game_type");
-            }catch (Exception e){
-                return null;
-            }
+                game_type =  jsonObject.getString("game_type");
+            }catch (Exception ignored){ }
         }
-        return null;
+        if(ret==null || ret.length()==0){
+            ret="none";
+        }
+        if(game_type == null) {
+            return havepanle ? HTML.panel("评测信息", HTML.code(ret, false, -1), null, "warning") : HTML.code(ret, false, -1);
+        }else{
+            String html = "<iframe style='width:100%;height:700px;border-width:0' src='module/"+game_type+"Result.jsp?rid="+rid+"'></iframe>";
+            return havepanle ? HTML.panel("评测信息", html, null, "warning") : html;
+        }
+    }
+    public String getCEInfo(int rid){
+        return new SQL("select info from ceinfo where rid=?",rid).queryString();
     }
     public Map<Integer,Integer> submitResult(String username, int pid1, int pid2){
         return new SQL("select pid,status from t_usersolve where username=? AND pid>=? AND pid<=?",username,pid1,pid2){
