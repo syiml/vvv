@@ -10,7 +10,7 @@ import java.util.Timer;
 public class TaskWeekRankCount extends MyTimer{
     @Override
     public void run() {
-        WeekRankCountHTML.compute();
+        WeekRankCountHTML.compute(false);
         WeekRankCountHTML.award();
     }
 

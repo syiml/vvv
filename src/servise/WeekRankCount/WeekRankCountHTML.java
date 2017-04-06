@@ -24,16 +24,18 @@ public class WeekRankCountHTML extends pageBean {
     private int from = 1;
     private int num = 1;
     private int page = 1;
+    private static boolean isInit = false;
     public WeekRankCountHTML(int page){
-        compute();
+        compute(true);
         if(page<=0) page = 1;
         this.from = (page-1) * pageSize;
         this.num = pageSize;
         this.page = page;
         addTableHead("Rank","用户名","积分","1天前","2天前","3天前","4天前","5天前","6天前");
     }
-    public static synchronized void compute(){
-        if (weekRank[0] != null) return ;
+    public static synchronized void compute(boolean init){
+        if (init && isInit) return ;
+        isInit = true;
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY,0);
         calendar.set(Calendar.MINUTE,0);
