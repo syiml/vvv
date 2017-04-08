@@ -30,7 +30,6 @@ public class JudgeSystem extends OTHOJ {
     private MyClient hc = MyClient.getMyClient();
     public RES res = new RES();
     public final Boolean lock = false;
-
     public JudgeSystem(){
 
     }
@@ -38,6 +37,7 @@ public class JudgeSystem extends OTHOJ {
     public JudgeSystem(String name){
         if(name.equals("judge_system_game")){
             url= Main.GV.getJSONObject("judge_system_game").getString("URL");
+            this.name = "JudgeSystemGame";
         }
     }
     @Override
