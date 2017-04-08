@@ -30,6 +30,16 @@ public class JudgeSystem extends OTHOJ {
     private MyClient hc = MyClient.getMyClient();
     public RES res = new RES();
     public final Boolean lock = false;
+
+    public JudgeSystem(){
+
+    }
+
+    public JudgeSystem(String name){
+        if(name.equals("judge_system_game")){
+            url= Main.GV.getJSONObject("judge_system_game").getString("URL");
+        }
+    }
     @Override
     public String getRid(String user, VjSubmitter s) {
         return s.rid;
@@ -61,7 +71,7 @@ public class JudgeSystem extends OTHOJ {
         formparams.add(new BasicNameValuePair("code",s.getSubmitInfo().code));
         formparams.add(new BasicNameValuePair("language","0"));
         synchronized (lock) {
-            String ret = hc.Post(url+"/",formparams);
+            String ret = hc.Post(s.getUsername()+"/",formparams);
             s.rid = Math.random()+"";
             /*Tool.debug("wait begin");
             try {
@@ -146,7 +156,7 @@ public class JudgeSystem extends OTHOJ {
 
     @Override
     public RES getResultReturn(VjSubmitter s){
-        int wait[] = {300};
+        int wait[] = {500};
         int i=0;
         RES r = res;
         do{
@@ -210,9 +220,10 @@ public class JudgeSystem extends OTHOJ {
         return "Problem.jsp?pid="+pid;
     }
 
+    public String name = "JudgeSystem";
     @Override
     public String getName() {
-        return "JudgeSystem";
+        return name;
     }
 
     @Override

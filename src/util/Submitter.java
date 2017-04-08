@@ -19,7 +19,7 @@ import java.sql.Timestamp;
  * Created by Administrator on 2015/12/14 0014.
  */
 public interface Submitter {
-    OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF(),new CodeVS(),new JudgeSystem(),new Acdream()};
+    OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF(),new CodeVS(),new JudgeSystem(),new Acdream(),new JudgeSystem("judge_system_game")};
     //OJ列表。判题OJ顺序不能改变，否则导致已有题目的OJ不正确
     VJudge m=new VJudge();
 
