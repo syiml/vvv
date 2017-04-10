@@ -3,6 +3,7 @@ package util;
 import entity.OJ.Acdream;
 import entity.OJ.BNUOJ.BNUOJ;
 import entity.OJ.CF.CF;
+import entity.OJ.CF.CFGym;
 import entity.OJ.CodeVS.CodeVS;
 import entity.OJ.HDU.HDU;
 import entity.OJ.HUST.HUST;
@@ -19,7 +20,19 @@ import java.sql.Timestamp;
  * Created by Administrator on 2015/12/14 0014.
  */
 public interface Submitter {
-    OTHOJ[] ojs ={new HDU(),new BNUOJ(),new NBUT(),new PKU(),new HUST(),new CF(),new CodeVS(),new JudgeSystem(),new Acdream(),new JudgeSystem("judge_system_game")};
+    OTHOJ[] ojs ={
+            new HDU(),
+            new BNUOJ(),
+            new NBUT(),
+            new PKU(),
+            new HUST(),
+            new CF(),
+            new CodeVS(),
+            new JudgeSystem(),
+            new Acdream(),
+            new JudgeSystem("judge_system_game"),
+            new CFGym()
+    };
     //OJ列表。判题OJ顺序不能改变，否则导致已有题目的OJ不正确
     VJudge m=new VJudge();
 

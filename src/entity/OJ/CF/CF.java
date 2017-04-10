@@ -101,7 +101,7 @@ public class CF extends OTHOJ {
         return doc.select(".problem-statement").select(".title").get(0).text().substring(3);
     }
 
-    private String getLanguage(int lang){
+    protected String getLanguage(int lang){
         if(lang==0){//G++
             return "1";
         }else if(lang==1){//C
@@ -150,7 +150,7 @@ public class CF extends OTHOJ {
         if(hc.Post(URL+"/problemset/submit?csrf_token="+csrf_token, formparams)!=null) return "success";
         return "error";
     }
-    private Result getRes(String s){
+    protected Result getRes(String s){
         if(s.equals("Accepted")) return Result.AC;
         if(s.contains("Wrong answer")) return Result.WA;
         if(s.contains("Time limit exceeded")) return Result.TLE;
