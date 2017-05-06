@@ -104,9 +104,9 @@ public class statuListHTML extends pageBean {
 
     private String scoreHTML(int score){
         if(score == -1) return "";
-        if(score==100) return HTML.text(" "+score,"#27c24c");
-        else if(score>=60) return HTML.text(" "+score,"#fad733");
-        else return HTML.text(" "+score,"#f05050");
+        if(score==100) return HTML.textb(" "+score,"#27c24c");
+        else if(score>=60) return HTML.textb(" "+score,"#ff8520");
+        else return HTML.textb(" "+score,"#f05050");
     }
     public static boolean canViewCEInfo(Status s,User loginUser){
         if(loginUser == null) return false;

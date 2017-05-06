@@ -13,17 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 提交器 info 里面保存了各种提交信息
  * Created by Administrator on 2015/5/21.
  */
-/*
-* 提交器
-* */
 public class VjSubmitter implements Runnable{
     public static final int BUSY=1;
     public static final int IDLE=0;
     public String showstatus="";
     public String rid = "";
-    public MyClient client = new MyClient();
+    public MyClient client = new MyClient(); //用这个网络客户端进行登录、提交等操作
     SubmitInfo info;//正在处理的info
     int status;//忙碌状态与否
     int ojid;

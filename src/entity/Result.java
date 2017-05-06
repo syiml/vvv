@@ -16,7 +16,8 @@ public enum Result{
         DANGER(9),
         RUNNING(10),
         ERROR(11),
-        JUDGING(12);
+        JUDGING(12),
+        SCORE(13);
 
         int value;
         Result(int v){

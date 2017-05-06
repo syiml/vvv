@@ -17,7 +17,7 @@ public class Status implements IBeanResultSetCreate , ICanToJSON{
             Result.CE,      Result.RE,      Result.TLE,
             Result.MLE,     Result.OLE,     Result.PE,
             Result.DANGER,  Result.RUNNING, Result.ERROR,
-            Result.JUDGING
+            Result.JUDGING, Result.SCORE
     };
     private String user;
     private int rid;//runID
@@ -176,6 +176,7 @@ public class Status implements IBeanResultSetCreate , ICanToJSON{
         if(s==Result.TLE) return HTML.span("danger","Time Limit Exceeded");
         if(s==Result.WA) return HTML.span("danger","Wrong Answer");
         if(s==Result.ERROR) return HTML.span("info","Submit Error");
+        if(s==Result.SCORE) return HTML.span("primary","SCORE");
         return HTML.span("primary","System Error");
     }
     public int getScore() {

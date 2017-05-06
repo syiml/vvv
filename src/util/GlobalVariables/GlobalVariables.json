@@ -78,15 +78,27 @@
     ]
   },
   "judge_system":{
-    "URL":"http://59.77.139.92:8100",
+    "URL":"http://192.168.111.132:8100",
     "Submitter":[
-      ["http://59.77.139.92:8100",""]
+      ["http://192.168.111.132:8100",""]
     ]
   },
   "acdream":{
     "URL":"http://acdream.info",
     "Submitter":[
       ["spsmoj","spsmoj123"]
+    ]
+  },
+  "judge_system_game":{
+    "URL":"http://192.168.111.132:8100",
+    "Submitter":[
+      ["http://192.168.111.132:8100",""]
+    ]
+  },
+  "cf_gym":{
+    "URL":"http://codeforces.com",
+    "Submitter":[
+      ["syiml","Loveshiya"]
     ]
   }
 }

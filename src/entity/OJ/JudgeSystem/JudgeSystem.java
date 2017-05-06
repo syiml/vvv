@@ -94,6 +94,43 @@ public class JudgeSystem extends OTHOJ {
         resultmap.put("OLE",Result.OLE);
         resultmap.put("WA",Result.WA);
         resultmap.put("PE",Result.PE);
+        resultmap.put("SC",Result.SCORE);
+    }
+
+    /**
+     * 计算得分。
+     * 计算模式：
+     *      AC以100分计算
+     *      SC以得分计算
+     *      如果有非AC和非SC，返回对应的结果，得分-1
+     *      最后得分为平均分
+     *      全部都是100分，则返回AC，否则返回SC
+     *
+     * @param retJson 评测结果
+     */
+    public void computeScore_all_avg(JSONArray retJson){
+        int total_score = 0;
+        Result result_1;
+        for (int i = 0; i < retJson.size(); i++) {
+            result_1 = resultmap.get(retJson.getJSONArray(i).getString(1));
+            if(result_1 == Result.AC){
+                total_score += 100;
+            }else if(result_1 == Result.SCORE){
+                total_score += retJson.getJSONArray(i).getInt(5);
+            }else{
+                res.setR(result_1);
+                res.setScore(-1);
+                return;
+            }
+        }
+        if(total_score == 100*retJson.size()){
+            res.setR(Result.AC);
+            res.setScore(100);
+            return ;
+        }
+        total_score /= retJson.size();
+        res.setR(Result.SCORE);
+        res.setScore(total_score);
     }
     public void setResult(String result){
         JSONObject resultJson = JSONObject.fromObject(result);
@@ -124,13 +161,24 @@ public class JudgeSystem extends OTHOJ {
         }else{
             int time = 0;
             int memory = 0;
+            boolean has_score = false;
             Result result_1;
             JSONArray retJson = resultJson.getJSONArray("ret");
             result_1 = Result.ERROR;
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < retJson.size(); i++) {
                 result_1 = resultmap.get(retJson.getJSONArray(i).getString(1));
-
+                time += retJson.getJSONArray(i).getInt(2);
+                memory = Math.max(memory, retJson.getJSONArray(i).getInt(3));
+                if(retJson.getJSONArray(i).size() >= 6 && retJson.getJSONArray(i).getInt(5) !=-1){
+                    has_score = true;
+                }
+                if (result_1 != Result.AC && result_1 != Result.SCORE) {
+                    break;
+                }
+            }
+            for (int i = 0; i < retJson.size(); i++) {
+                result_1 = resultmap.get(retJson.getJSONArray(i).getString(1));
                 stringBuilder.append("测试文件：").append(retJson.getJSONArray(i).getString(0));
                 stringBuilder.append(" 测试结果：").append(retJson.getJSONArray(i).getString(1));
                 if(result_1 == Result.MLE || result_1 == Result.OLE) {
@@ -138,19 +186,19 @@ public class JudgeSystem extends OTHOJ {
                 }else{
                     stringBuilder.append(" 用时：").append(retJson.getJSONArray(i).getInt(2)).append("MS");
                 }
-                stringBuilder.append(" 内存：").append(retJson.getJSONArray(i).getInt(3)).append("KB\n");
-
-                time += retJson.getJSONArray(i).getInt(2);
-                memory = Math.max(memory, retJson.getJSONArray(i).getInt(3));
-                res.setScore(-1);
-                if (result_1 != Result.AC) {
-                    break;
+                stringBuilder.append(" 内存：").append(retJson.getJSONArray(i).getInt(3)).append("KB");
+                if(retJson.getJSONArray(i).size() >= 6 && retJson.getJSONArray(i).getInt(5) !=-1) {
+                    stringBuilder.append(" 得分：").append(retJson.getJSONArray(i).getInt(5));
                 }
+                stringBuilder.append("\n");
             }
             res.setR(result_1);
             res.setTime(time + "MS");
             res.setMemory(memory + "KB");
             res.setCEInfo(stringBuilder.toString());
+            if(has_score){
+                computeScore_all_avg(retJson);
+            }
         }
     }
 
@@ -185,7 +233,7 @@ public class JudgeSystem extends OTHOJ {
             }
 
             //JudgeSystem用https协议主动返回
-            if(r.getR() == Result.AC) {
+            if(r.getR() == Result.AC || r.getR() == Result.SCORE) {
                 Pair<Integer, Integer> limit = Main.problems.getProblemLimit(Integer.parseInt(s.getSubmitInfo().pid));
                 if(r.getUseTime() > limit.getKey()){
                     r.setR(Result.TLE);

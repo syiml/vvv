@@ -14,13 +14,60 @@ import util.Submitter;
  */
 public abstract class OTHOJ {
     public static String GET_TITLE_ERROR="获取题目错误！";
+
+    /**
+     * 获取某账号在目标oj上最近提交过的rid
+     * @param user 用户名
+     * @param s 提交器
+     * @return rid
+     */
     public abstract String getRid(String user,VjSubmitter s);
+
+    /**
+     * 获取题目描述
+     * @param pid 目标oj题目id
+     * @return 返回题目描述的内容
+     */
     public abstract problemHTML getProblemHTML(String pid);
+
+    /**
+     * 获取题目标题
+     * @param pid 目标oj题目id
+     * @return 题目标题
+     */
     public abstract String getTitle(String pid);
+
+    /**
+     * 提交代码
+     * @param s 提交器。提交内容在s.getSubmitInfo()
+     * @return 字符串
+     */
     public abstract String submit(VjSubmitter s);
+
+    /**
+     * 获取评测结果
+     * @param s 提交器
+     * @return 返回的结果
+     */
     public abstract RES getResult(VjSubmitter s);
+
+    /**
+     * 根据pid返回查看题目的链接
+     * @param pid 目标oj题号
+     * @return 链接
+     */
     public abstract String getProblemURL(String pid);
+
+    /**
+     * @return OJ的名字
+     */
     public abstract String getName();
+
+    /**
+     * 返回  %I64d 或者 %lld
+     * @param pid 题号
+     * @return 64位整数的表示方式
+     */
     public abstract String get64IO(String pid);
 
     public RES getResultReturn(VjSubmitter s){
