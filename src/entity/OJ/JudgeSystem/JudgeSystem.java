@@ -237,6 +237,7 @@ public class JudgeSystem extends OTHOJ {
                 Pair<Integer, Integer> limit = Main.problems.getProblemLimit(Integer.parseInt(s.getSubmitInfo().pid));
                 if(r.getUseTime() > limit.getKey()){
                     r.setR(Result.TLE);
+                    r.setScore(-1);
                 }
             }
             if(r.getR() == Result.MLE || r.getR() == Result.OLE){
