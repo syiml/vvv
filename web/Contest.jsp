@@ -66,7 +66,8 @@
       contest = ContestMain.getContest(qcid);
       int in = contest.canin(user);
       if (in == 0) {
-        out.print("没有权限，请"+HTML.a("Login.jsp","登录")+"或报名比赛后再进入");
+          if(user == null) out.print("没有权限，请"+HTML.a("Login.jsp","登录")+"后再进入");
+          else out.print("没有权限，请"+HTML.a("User.jsp?cid="+cid,"报名比赛")+"后再进入");
       } else if (in == -1 || in == -2) {//need password
 %>
     <%-- 密码模块 --%>
