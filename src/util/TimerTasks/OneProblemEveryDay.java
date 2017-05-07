@@ -76,14 +76,15 @@ public class OneProblemEveryDay extends MyTimer{
         contest.setType("0");
         contest.setKind("0");
         contest.setProblems("");
-        contest.setInfo("");
-        contest.setRank("3");
-//        contest.setTraining_m1_s("1");//金奖个数
-//        contest.setTraining_m2_s("3");//银奖个数
-//        contest.setTraining_m3_s("6");//铜奖个数
-//        contest.setTraining_m1_t("0");
-//        contest.setTraining_m2_t("0");
-//        contest.setTraining_m3_t("0");
+        contest.setProblemCanPutTag("true");
+        contest.setStatusReadOut("true");
+        contest.setRank("2");
+        contest.setTraining_m1_s("10");//金奖个数
+        contest.setTraining_m2_s("30");//银奖个数
+        contest.setTraining_m3_s("60");//铜奖个数
+        contest.setTraining_m1_t("1");
+        contest.setTraining_m2_t("1");
+        contest.setTraining_m3_t("1");
         int cid = ContestMain.addContestReturnResult(contest);
         //////-------------//////
         GvMain.setOneProblemEveryDayCid(cid);
