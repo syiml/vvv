@@ -1,4 +1,5 @@
 <%@ page import="entity.User" %>
+<%@ page import="entity.Problem" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -31,9 +32,17 @@
     <div class="form-group">
       <label for="pidinput"> pid</label><input type="text" name ="pid" value="<%=pid%>" class="form-control" id="pidinput"/>
       <label for="laninput"> language</label><select name="language" class="form-control" id="laninput">
+      <%
+        Problem p = Main.problems.getProblem(Integer.parseInt(pid));
+        if(p.getOjid() == 7 || p.getOjid() == 9 ) {
+                                        %><option value="0" selected>G++</option><%
+
+        }else{
+      %>
                                         <option value="0" selected>G++</option>
                                         <option value="1">GCC</option>
                                         <option value="2">Java</option>
+      <%}%>
                                         </select>
     </div>
   </div>
@@ -55,15 +64,15 @@
         code: {
           required: true,
           minlength: 51,
-          maxlength: 65535,
+          maxlength: 100000,
           bsf: true
         }
       },
       messages: {
         code: {
-          required: "Please enter your code",
-          minlength: "Code length is improper! Make sure your code length is longer than 50 and not exceed 65536 Bytes",
-          maxlength: "Code length is improper! Make sure your code length is longer than 50 and not exceed 65536 Bytes"
+          required: "请输入提交代码",
+          minlength: "代码长度必须在50到100000之间",
+          maxlength: "代码长度必须在50到100000之间"
         }
       }
     });
