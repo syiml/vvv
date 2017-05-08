@@ -4,6 +4,7 @@ import entity.OJ.OTHOJ;
 import entity.Problem;
 import entity.RES;
 import entity.Result;
+import entity.Status;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.comparators.BooleanComparator;
@@ -70,6 +71,12 @@ public class JudgeSystem extends OTHOJ {
         formparams.add(new BasicNameValuePair("memorylimit",limit.getValue()+""));
         formparams.add(new BasicNameValuePair("code",s.getSubmitInfo().code));
         formparams.add(new BasicNameValuePair("language","0"));
+
+        JSONObject jo = new JSONObject();
+        Status st = Main.status.getStatu(s.getSubmitInfo().getRid());
+        jo.put("username",st.getUser());
+        formparams.add(new BasicNameValuePair("judge_data",jo.toString()));
+
         synchronized (lock) {
             String ret = hc.Post(s.getUsername()+"/",formparams);
             s.rid = Math.random()+"";
