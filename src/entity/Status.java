@@ -139,6 +139,7 @@ public class Status implements IBeanResultSetCreate , ICanToJSON{
         if(s==Result.TLE) return "Time Limit Exceeded";
         if(s==Result.WA) return "Wrong Answer";
         if(s==Result.ERROR) return "Submit Error";
+        if(s==Result.SCORE) return "Score";
         return "System Error";
     }
 

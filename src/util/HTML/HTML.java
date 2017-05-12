@@ -398,14 +398,14 @@ public class HTML {
                             "<br>rid: "+s.getRid()+
                             "<br>user: "+u.getUsername()+
                             "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
-                            "<br>result: "+s.getResultString()+
+                            "<br>result: "+s.getResultString()+" "+(s.getScore()==0-1?"":s.getScore())+
                             "<br>*/")+code(code, true, s.getLanguage()))
                     :copyCode()+(p.getReJudge()?reJudgeForm(s.getRid()):"")
                     +statusMisStar(ridInt)+HTML.pre("/**" +
                     "<br>rid: "+s.getRid()+
                     "<br>user: "+u.getUsername()+
                     "<br>time: "+s.getSbmitTime().toString().substring(0,19)+
-                    "<br>result: "+s.getResultString()+
+                    "<br>result: "+s.getResultString()+" "+(s.getScore()==0-1?"":s.getScore())+
                     "<br>*/")+code(code, true, s.getLanguage());
         }else{
             return havepanel?panel("Error","没有权限",null,"danger"):"没有权限";
@@ -1096,7 +1096,7 @@ public class HTML {
         return f.toHTML();
     }
     public static String reJudgeForm(int rid){
-        return "["+HTML.a("rejudge.action?rid="+rid,"Rejudge")+"]";
+        return "["+HTML.a("rejudge.action?rid="+rid,"重判")+"]";
     }
     public static String editProblem(String pid,String edit,String num){
         try{

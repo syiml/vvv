@@ -35,12 +35,12 @@ public class RankNOIP extends Rank<user> {
 
     @Override
     public String getCellByHead(int row, user u, String colName) {
-        return u.totalScore+"";
+        return HTML.a("#S"+u.username,u.totalScore+"");
     }
 
     @Override
     public String getTitle() {
-        return "NOIP Rank";
+        return "积分模式排名";
     }
 
     @Override
