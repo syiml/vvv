@@ -1,4 +1,8 @@
 <%@ page import="entity.User" %>
+<%@ page import="util.Main" %>
+<%@ page import="entity.Problem" %>
+<%@ page import="entity.Contest" %>
+<%@ page import="servise.ContestMain" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -27,10 +31,19 @@
     <div class="form-group">
       <label for="pidinput"> pid</label><input type="text" name ="pid" value="<%=pid%>" class="form-control" id="pidinput"/>
       <label for="laninput"> language</label><select name="language" class="form-control" id="laninput">
-                                        <option value="0" selected>G++</option>
-                                        <option value="1">GCC</option>
-                                        <option value="2">Java</option>
-                                        </select>
+      <%
+        Contest c = ContestMain.getContest(Integer.parseInt(cid));
+        Problem p = c.getProblem(Integer.parseInt(pid));
+        if(p.getOjid() == 7 || p.getOjid() == 9 ) {
+      %><option value="0" selected>G++</option><%
+
+    }else{
+    %>
+      <option value="0" selected>G++</option>
+      <option value="1">GCC</option>
+      <option value="2">Java</option>
+      <%}%>
+    </select>
     </div>
   </div>
   <div class="row">
