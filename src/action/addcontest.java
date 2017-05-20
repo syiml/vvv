@@ -106,7 +106,6 @@ public class addcontest extends BaseAction{
             this.setPrompt("题目列表格式错误");
             return ERROR;
         }
-        Tool.debug(cid+"");
         if(cid == 0) ContestMain.addContest(this);
         else{
             Contest c = ContestMain.getContest(cid);
