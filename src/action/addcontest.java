@@ -1,23 +1,25 @@
 package action;
 
+import entity.*;
 import servise.ContestMain;
 import util.Main;
-import entity.Permission;
+import util.MainResult;
+import util.Tool;
 
 /**
  * Created by Syiml on 2015/6/23 0023.
  */
 public class addcontest extends BaseAction{
     public String name;
-    public String cid;//edit
+    public int cid;//edit
     public String begintime_d;
     public String begintime_s;
     public String begintime_m;
     public String endtime_d;
     public String endtime_s;
     public String endtime_m;
-    public String type;
-    public String kind;
+    public int type;
+    public int kind;
     public String registerstarttime_d;
     public String registerstarttime_s;
     public String registerstarttime_m;
@@ -26,7 +28,7 @@ public class addcontest extends BaseAction{
     public String registerendtime_m;
     public String pass;
     public String problems;
-    public String rank;
+    public int rank;
     public String icpc_penalty;
     public String icpc_m1_t;
     public String icpc_m1_s;
@@ -54,6 +56,78 @@ public class addcontest extends BaseAction{
     public String training_m3_t;
     public String training_m3_s;
 
+    public static boolean validate(String problems){
+        User user = Main.loginUser();
+        if(user == null) return false;
+        String[] pids = problems.split(",");
+        for (int i = 0; i < pids.length; i++) {
+            int tpid = Integer.parseInt(pids[i]);
+            Problem p = Main.problems.getProblem(tpid);
+            if (p == null) {
+                //this.setPrompt("题目" + tpid + "不存在");
+                return false;
+            }
+            if (p.visiable == 0) {
+                if (!(user.getPermission().havePermissions(PermissionType.partAddProblem) && p.getOwner().equals(user.getUsername()))) {
+                    //this.setPrompt("题目" + tpid + "不存在");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public String addDIY() {
+        User user = Main.loginUser();
+        if (user == null) {
+            this.setPrompt("未登录");
+            return ERROR;
+        }
+        kind = Contest.KIND_DIY;
+        //statusReadOut = null;
+        computerating = null;
+        registerShowComplete = null;
+        try {
+            String[] pids = problems.split(",");
+            for (int i = 0; i < pids.length; i++) {
+                int tpid = Integer.parseInt(pids[i]);
+                Problem p = Main.problems.getProblem(tpid);
+                if (p == null) {
+                    this.setPrompt("题目" + tpid + "不存在");
+                    return ERROR;
+                }
+                if (p.visiable == 0) {
+                    if (!(user.getPermission().havePermissions(PermissionType.partAddProblem) && p.getOwner().equals(user.getUsername()))) {
+                        this.setPrompt("题目" + tpid + "不存在");
+                        return ERROR;
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            this.setPrompt("题目列表格式错误");
+            return ERROR;
+        }
+        Tool.debug(cid+"");
+        if(cid == 0) ContestMain.addContest(this);
+        else{
+            Contest c = ContestMain.getContest(cid);
+            if(c == null){
+                this.setPrompt("比赛"+cid+"不存在");
+                return ERROR;
+            }
+            if(c.getKind()!=Contest.KIND_DIY){
+                this.setPrompt("非法编辑");
+                return ERROR;
+            }
+            if(c.getCreateuser().equals(user.getUsername()))
+                ContestMain.editContest(this);
+            else {
+                this.setPrompt("没有权限编辑不是自己创建的比赛");
+                return ERROR;
+            }
+        }
+
+        return SUCCESS;
+    }
 
     public String add(){
         if(!Main.loginUserPermission().getAddContest()) return ERROR;
@@ -68,17 +142,9 @@ public class addcontest extends BaseAction{
     public String problemPublic(){
         Permission p=Main.loginUserPermission();
         if(p.getAddContest()&&p.getAddProblem()){
-            ContestMain.contestPorblemPublc(Integer.parseInt(cid));
+            ContestMain.contestPorblemPublc(cid);
         }
         return SUCCESS;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
     }
 
     public String getInfo() {
@@ -119,14 +185,6 @@ public class addcontest extends BaseAction{
 
     public void setRegisterShowComplete(String registerShowComplete) {
         this.registerShowComplete = registerShowComplete;
-    }
-
-    public String getCid() {
-        return cid;
-    }
-
-    public void setCid(String cid) {
-        this.cid = cid;
     }
 
     public String getShortcode_m1_t() {
@@ -289,14 +347,6 @@ public class addcontest extends BaseAction{
         this.endtime_m = endtime_m;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getRegisterstarttime_d() {
         return registerstarttime_d;
     }
@@ -361,14 +411,6 @@ public class addcontest extends BaseAction{
         this.problems = problems;
     }
 
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
     public String getIcpc_penalty() {
         return icpc_penalty;
     }
@@ -425,4 +467,35 @@ public class addcontest extends BaseAction{
         this.icpc_m3_s = icpc_m3_s;
     }
 
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getKind() {
+        return kind;
+    }
+
+    public void setKind(int kind) {
+        this.kind = kind;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
 }

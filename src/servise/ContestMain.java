@@ -32,7 +32,7 @@ public class ContestMain {
     }
 
     public static String editContest(addcontest a) {
-        int cid = Integer.parseInt(a.cid);
+        int cid = a.cid;
         if (contests.editContest(cid, a).equals("error")) return "error";
         if (RankSQL.editRank(cid, a).equals("error")) return "error";
         return "success";

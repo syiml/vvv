@@ -47,6 +47,10 @@
                         <result name="success" type="redirect">Contests.jsp</result>
                         <result name="error">return.jsp</result>
                 </action>
+                <action name="addDIY" class="action.addcontest" method="addDIY">
+                        <result name="success" type="redirect">return.jsp</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
+                </action>
                 <action name="problemPublic" class="action.addcontest" method="problemPublic">
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>

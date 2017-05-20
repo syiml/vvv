@@ -39,6 +39,7 @@ public class RankICPC extends Rank<user> {
         f.setPartFrom();
 
         text f1=new text("icpc_penalty","罚时");
+        f1.setId("icpc_penalty");
         f1.setValue("20");
         f1.setPlaceholder("错误一次的罚时（分钟）");
         if(r instanceof RankICPC) f1.setValue(((RankICPC)r).penalty+"");
@@ -72,7 +73,7 @@ public class RankICPC extends Rank<user> {
            s.getResult()==Result.PENDING ||
            s.getResult()==Result.JUDGING||
            s.getResult()==Result.ERROR) return;
-        if(s.getCid()!=cid) return;
+        //if(s.getCid()!=cid) return;
         //System.out.println("->"+s.getRid());
         long time = s.getSbmitTime().getTime() - c.getBeginDate().getTime();
         String u=s.getUser();

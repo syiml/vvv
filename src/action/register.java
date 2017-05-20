@@ -26,6 +26,14 @@ public class register extends BaseAction{
     public String reg(){
         Tool.log(" - Register:"+username);
         if(username==null) return returnError();
+        for(int i=0;i<username.length();i++){
+            char c=username.charAt(i);
+            if(c >='0' && c <='9') continue;
+            if(c >='a' && c <='z') continue;
+            if(c >='A' && c <='Z') continue;
+            if(c == '_') continue;
+            return returnError();
+        }
         if(password==null) return returnError();
         if(rpass==null) return returnError();
         if(username.length()<5) return returnError();

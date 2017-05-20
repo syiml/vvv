@@ -21,6 +21,9 @@ import java.util.List;
  */
 public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
     public static String TRUE_USERNAME = "trueusername";
+
+    public static int KIND_DIY = 5;
+
     public static int typeNum=Contest_Type.SIZE.getCode();
     private int cid;
     private String name;
@@ -36,7 +39,7 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
     private Rank rank;
     private String info;
     private boolean computerating;//是否计算rating只影响save链接的显示
-    private int kind;//练习、积分、趣味、正式、隐藏
+    private int kind;//练习、积分、趣味、正式、隐藏  、DIY
     private int group;//分类  //专题、积分、趣味、正式  -1隐藏
                              //练习:里面可以编辑题目标签
     private String createuser;//创建人。创建人和超级管理员可以修改其配置
@@ -504,6 +507,14 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
 
     public void setRegisterShowComplete(boolean registerShowComplete) {
         this.registerShowComplete = registerShowComplete;
+    }
+
+    public String getCreateuser() {
+        return createuser;
+    }
+
+    public void setCreateuser(String createuser) {
+        this.createuser = createuser;
     }
 
     @Override

@@ -167,24 +167,24 @@ public class RankSQL {
         }
     }
     public static String addRank(int cid, addcontest a){
-        if(a.getRank().equals("0")){
+        if(a.getRank()==0){
             return addIcpcRank(cid,a);
-        }else if(a.getRank().equals("1")){
+        }else if(a.getRank()==1){
             return addShortCodeRank(cid,a);
-        }else if(a.getRank().equals("2")){
+        }else if(a.getRank()==2){
             return addTrainingRank(cid,a);
-        }else if(a.getRank().equals("3")){
+        }else if(a.getRank()==3){
             return "success";
         }
         return "error";
     }
     public static String editRank(int cid, addcontest a){
         String s="t_rank_icpc";
-        if(a.getRank().equals("0")){
+        if(a.getRank()==0){
             s="t_rank_icpc";
-        }else if(a.getRank().equals("1")){
+        }else if(a.getRank()==1){
             s="t_rank_shortcode";
-        }else if(a.getRank().equals("2")){
+        }else if(a.getRank()==2){
             s="t_rank_training";
         }
         new SQL("delete from "+s+" where cid=?",cid).update();

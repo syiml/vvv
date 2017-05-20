@@ -136,6 +136,10 @@
                 out.print(HTML.a("admin.jsp?page=AddContest&cid="+cid,"Edit")+" ");
                 if(p.getAddContest()&&p.getAddProblem())
                     out.print(HTML.a("problemPublic.action?cid="+cid,"题目public"));
+            }else{
+                if(contest.getKind() == Contest.KIND_DIY && contest.getCreateuser().equals(user.getUsername())){
+                    out.print("["+HTML.a("ContestDIY.jsp?cid="+cid,"修改比赛")+"] ");
+                }
             }
         %></div>
       <%--<%@include file="module/contestModule/main.jsp"%>--%>

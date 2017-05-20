@@ -50,7 +50,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
     public String addContest(int id,addcontest a){
         PreparedStatement p= null;
         int ret=0;
-        int type=Integer.parseInt(a.getType());
+        int type=a.getType();
         User u = Main.loginUser();
         String user = u==null?"":u.getUsername();
         new SQL("INSERT INTO contest values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
@@ -58,7 +58,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
                 ,a.getName()
                 , Tool.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
                 , Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
-                ,Integer.parseInt(a.getRank())
+                ,a.getRank()
                 ,type
                 ,type==1?a.getPass():""
                 ,type==3||type==4? Tool.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m()): Tool.now()
@@ -66,7 +66,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
                 ,a.getInfo()
                 ,a.getComputerating()!=null
                 ,user
-                ,Integer.parseInt(a.getKind())
+                ,a.getKind()
                 ,a.getProblemCanPutTag()!=null
                 ,a.getStatusReadOut()!=null
                 ,a.getRegisterShowComplete()!=null).update();
@@ -75,21 +75,21 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         //return ret;
     }
     public String editContest(int id,addcontest a){
-        int type=Integer.parseInt(a.getType());
+        int type=a.getType();
         new SQL("update contest set name=?,begintime=?,endtime=?," +
                 "rankType=?,ctype=?,password=?,registerstarttime=?,registerendtime=?,info=?,computerating=?," +
                 "kind=?,problemCanPutTag=?,statusReadOut=?,registerShowComplete=? where id=?"
                 ,a.getName()
                 , Tool.getTimestamp(a.getBegintime_d(), a.getBegintime_s(), a.getBegintime_m())
                 , Tool.getTimestamp(a.getEndtime_d(), a.getEndtime_s(), a.getEndtime_m())
-                ,Integer.parseInt(a.getRank())
+                ,a.getRank()
                 ,type
                 ,a.getPass()
                 ,Tool.getTimestamp(a.getRegisterstarttime_d(), a.getRegisterstarttime_s(), a.getRegisterstarttime_m())
                 ,Tool.getTimestamp(a.getRegisterendtime_d(), a.getRegisterendtime_s(), a.getRegisterendtime_m())
                 ,a.getInfo()
                 ,a.getComputerating()!=null
-                ,Integer.parseInt(a.getKind())
+                ,a.getKind()
                 ,a.getProblemCanPutTag()!=null
                 ,a.getStatusReadOut()!=null
                 ,a.getRegisterShowComplete()!=null
@@ -201,8 +201,9 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
             sql+=" and kind="+kind;
         }else{
             if(!Main.loginUserPermission().getAddContest()){
-                sql+=" and kind!=4";//4->隐藏
+                sql+=" and kind!=4";//4->隐藏  5->DIY
             }
+            sql += " and kind!=5";
         }
         sql+=" order by endTime<now(),begintime desc";
         sql+=" limit ?,?";

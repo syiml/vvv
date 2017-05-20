@@ -1218,7 +1218,7 @@ public class HTML {
                 return returnPage(per,panel("新增/编辑题目", adminAddProblemForm()));
             }
             case "ReJudge":         return returnPage(p.getReJudge(),panel("重判题目", adminReJudgeForm()));
-            case "AddContest":      return returnPage(p.getAddContest(),panel("新增比赛", adminAddContestForm()));
+            case "AddContest":      return returnPage(p.getAddContest(),panel("新增比赛", adminAddContestForm(false)));
             case "AddDiscuss":      return returnPage(p.getAddDiscuss(),panel("新增/编辑通知", adminAddDiscuss()));
             case "AddTag":          return returnPage(p.getAddTag(),panel("题目标签管理", adminAddTag()));
             case "SubmitterInfo":   return returnPage(Main.loginUser().getUsername().equals("admin"),panel("评测机",adminSubmitterInfo()));
@@ -1338,7 +1338,7 @@ public class HTML {
     public static String adminAddContestFromJavaScript(){
         return "<script src='js/adminAddContestForm.js'></script>";
     }
-    public static String adminAddContestForm(){
+    public static String adminAddContestForm(boolean isDIY){
         int cid;
         try{
             cid=Integer.parseInt(Main.getRequest().getParameter("cid"));
@@ -1348,8 +1348,13 @@ public class HTML {
         Contest  c=null;
         if(cid!=-1) c=ContestMain.getContest(cid);
         FormHTML form=new FormHTML();
-        if(c==null) form.setAction("addcontest.action");
-        else form.setAction("editcontest.action?cid="+cid);
+        if(isDIY){
+            if(c==null) form.setAction("addDIY.action");
+            else form.setAction("addDIY.action?cid="+cid);
+        }else{
+            if(c==null) form.setAction("addcontest.action");
+            else form.setAction("editcontest.action?cid="+cid);
+        }
         form.setId("addcontest");
         text f1=new text("name","名称");
         f1.setId("name");
@@ -1366,7 +1371,7 @@ public class HTML {
         else f3.setValue(Tool.nowDate());
         form.addForm(f3);
 
-        select f4=new select("type","类型");
+        select f4=new select("type","报名类型");
         //0public 1password 2private 3register 4register2 5team
         for(int i = 0; i<Contest.typeNum; i++){
             f4.add(i, Contest.getTypeText(i),Contest.getTypeStyle(i));
@@ -1386,7 +1391,7 @@ public class HTML {
         f44.setId("kind");
         if(c!=null) f44.setValue(c.getKind()+"");
         else f44.setValue("0");
-        form.addForm(f44);
+        if(!isDIY) form.addForm(f44);
 
         date f55=new date("registerstarttime","注册开始时间");
         if(c!=null)f55.setValue(c.getRegisterstarttime());
@@ -1403,6 +1408,7 @@ public class HTML {
 
         text f7=new text("problems","题目列表");
         f7.setPlaceholder("输入题号列表，半角逗号分隔");
+        f7.setId("problems");
         if(c!=null) f7.setValue(c.getProblems());
         form.addForm(f7);
 
@@ -1418,7 +1424,7 @@ public class HTML {
 
         check ch=new check("computerating","是否计算rating");
         if(c!=null&&c.isComputerating())ch.setChecked();
-        form.addForm(ch);
+        if(!isDIY) form.addForm(ch);
 
         check ch_1=new check("problemCanPutTag","内部题目是否可以直接贴标签");
         if(c!=null&&c.isProblemCanPutTag())ch_1.setChecked();
@@ -1430,7 +1436,7 @@ public class HTML {
 
         check ch_3=new check("registerShowComplete","注册是否需要完整的个人信息");
         if(c!=null&&c.isRegisterShowComplete()) ch_3.setChecked();
-        form.addForm(ch_3);
+        if(!isDIY) form.addForm(ch_3);
 
         select f8=new select("rank","Rank模式");
         f8.setId("rank");

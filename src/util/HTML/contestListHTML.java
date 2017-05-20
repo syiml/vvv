@@ -60,6 +60,8 @@ public class contestListHTML extends pageBean{
             head=HTML.textb("比赛列表 - 趣味","");
         }else if(kind==3){
             head=HTML.textb("比赛列表 - 正式","orange");
+        }else if(kind == Contest.KIND_DIY){
+            head=HTML.textb("比赛列表 - DIY","");
         }
         Permission p;
         User u=Main.loginUser();
@@ -70,6 +72,9 @@ public class contestListHTML extends pageBean{
         }
         if(p.getAddContest()){
             head+=HTML.floatRight(HTML.a("admin.jsp?page=AddContest","New"));
+        }
+        if(u!=null && kind == Contest.KIND_DIY){
+            head+=HTML.floatRight(HTML.a("ContestDIY.jsp","创建比赛"));
         }
         return head;
     }
@@ -122,6 +127,15 @@ public class contestListHTML extends pageBean{
                 return HTML.textb("正式","orange");
             }else if(k==4){
                 return HTML.textb("隐藏","gray");
+            }else if(k==5){
+                return HTML.textb("DIY","");
+            }
+        }else if(colname.equals("创建人")){
+            User createUser = Main.users.getUser(c.getCreateuser());
+            if(createUser == null){
+                return "";
+            }else{
+                return createUser.getUsernameHTML();
             }
         }
         return "=ERROR=";
@@ -179,6 +193,7 @@ public class contestListHTML extends pageBean{
         pageNum= getTotalPageNum(ContestMain.getContestsNum(status,name,type,kind),num);
         addTableHead("#","名称","开始时间","结束时间","权限","状态");
         if(kind==-1) addTableHead("类型");
+        if(kind == 5) addTableHead("创建人");
         return super.HTML();
     }
 }

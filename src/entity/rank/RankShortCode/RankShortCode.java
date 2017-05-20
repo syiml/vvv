@@ -49,6 +49,7 @@ public class RankShortCode extends Rank<user> {
         f.setPartFrom();
 
         text f1=new text("shortcode_chengfa","惩罚");
+        f1.setId("shortcode_chengfa");
         if(r instanceof RankShortCode) f1.setValue(((RankShortCode)r).chengfa+"");
         else f1.setValue("0");
         f.addForm(f1);

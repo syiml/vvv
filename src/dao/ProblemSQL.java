@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Contest;
 import servise.ContestMain;
 import util.Main;
 import entity.User;
@@ -56,9 +57,16 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         }
     }
     public List<problemView> getProblems(int cid){
-        //pid,title,visiable,ac,submit
-        String sql="SELECT tpid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";
-        return new SQL(sql,cid,cid,cid).queryBeanList(problemView.class);
+        Contest c = ContestMain.getContest(cid);
+        if(c.isStatusReadOut()){
+            String sql="SELECT contestproblems.tpid,title,1,totalAcUser,totalSubmit FROM contestproblems LEFT JOIN problem ON contestproblems.tpid=problem.pid WHERE cid=?";
+            //String sql="SELECT tpid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";
+            return new SQL(sql,cid).queryBeanList(problemView.class);
+        }else{
+            //pid,title,visiable,ac,submit
+            String sql="SELECT tpid,(select title from problem where problem.pid=tpid) as title,1,(select count(distinct ruser) from statu where statu.cid=? and statu.pid=tpid and result=1)as acnum,(select count(*) from statu where statu.cid=? and statu.pid=tpid)as submitnum FROM `contestproblems` WHERE cid=?";
+            return new SQL(sql,cid,cid,cid).queryBeanList(problemView.class);
+        }
     }
     public int getPageNum(int num,boolean showHide){
         String sql="select MAX(pid) from problem where pid<10000";
