@@ -1373,8 +1373,14 @@ public class HTML {
 
         select f4=new select("type","报名类型");
         //0public 1password 2private 3register 4register2 5team
-        for(int i = 0; i<Contest.typeNum; i++){
-            f4.add(i, Contest.getTypeText(i),Contest.getTypeStyle(i));
+        if(!isDIY || Main.loginUserPermission().havePermissions(PermissionType.contestRegisterAdmin)){
+            for(int i = 0; i<Contest.typeNum; i++){
+                f4.add(i, Contest.getTypeText(i),Contest.getTypeStyle(i));
+            }
+        }else{
+            for(int i = 0; i<2; i++) {
+                f4.add(i, Contest.getTypeText(i), Contest.getTypeStyle(i));
+            }
         }
         f4.setId("type");
         if(c!=null) f4.setValue(c.getType().getCode()+"");
