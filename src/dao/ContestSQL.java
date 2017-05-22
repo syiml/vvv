@@ -248,7 +248,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
         return new SQL(sql).queryNum();
     }
     public List<Contest> getRecentlyContests(int num){
-        return new SQL("SELECT * FROM contest WHERE endTime>=NOW() and kind!=4 ORDER BY beginTime DESC LIMIT 0,?",num)
+        return new SQL("SELECT * FROM contest WHERE endTime>=NOW() and kind!=4 and kind!=5 ORDER BY beginTime DESC LIMIT 0,?",num)
                 .queryBeanList(Contest.class);
     }
     public List<Integer> getAcRidFromCidPid(int cid,int pid){

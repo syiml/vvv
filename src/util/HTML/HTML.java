@@ -1347,6 +1347,11 @@ public class HTML {
         }
         Contest  c=null;
         if(cid!=-1) c=ContestMain.getContest(cid);
+        User u = Main.loginUser();
+        if(u==null) return "未登录";
+        if(c!=null && !c.getCreateuser().equals(u.getUsername())){
+            return "你不是本比赛的所有者，不能编辑比赛";
+        }
         FormHTML form=new FormHTML();
         if(isDIY){
             if(c==null) form.setAction("addDIY.action");
@@ -1394,6 +1399,7 @@ public class HTML {
         f44.add(2,"趣味");
         f44.add(3,"正式");
         f44.add(4,"隐藏");
+        f44.add(5,"DIY");
         f44.setId("kind");
         if(c!=null) f44.setValue(c.getKind()+"");
         else f44.setValue("0");

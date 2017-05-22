@@ -42,6 +42,10 @@
                     minlength: 4,
                     maxlength: 25
                 },
+                pass: {
+                    minlength: 4,
+                    maxlength: 25
+                },
                 problems: {
                     required: true,
                     maxlength: 250,

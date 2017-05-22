@@ -257,6 +257,9 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
 
     public String getProblemId(int pid){//pid->
         int x=problems.indexOf(pid);
+        if(x == -1){
+            return "["+pid+"]";
+        }
         if(problems.size()>26) return 1+x+"";
         else return (char)(x+'A')+"";
     }
