@@ -8,15 +8,18 @@ import entity.RES;
 import util.HTML.problemHTML;
 import util.Submitter;
 /**
- * 外网OJ基类
+ * 外网OJ基类 （Other OJ）
  * 新增OJ时要在Submitter.ojs类中添加列表
  * Created by Administrator on 2015/6/6.
  */
 public abstract class OTHOJ {
-    public static String GET_TITLE_ERROR="获取题目错误！";
+    protected static String GET_TITLE_ERROR="获取题目错误！";
 
     /**
      * 获取某账号在目标oj上最近提交过的rid
+     *
+     * 如果提交的http请求无法返回rid，那么实现这个方法。
+     *      评测时，先获取rid。然后提交，再获取rid。如果两次rid不同则表示提交成功，rid为第二次获取的rid
      * @param user 用户名
      * @param s 提交器
      * @return rid

@@ -1349,7 +1349,7 @@ public class HTML {
         if(cid!=-1) c=ContestMain.getContest(cid);
         User u = Main.loginUser();
         if(u==null) return "未登录";
-        if(c!=null && !c.getCreateuser().equals(u.getUsername())){
+        if(c!=null && isDIY && !c.getCreateuser().equals(u.getUsername())){
             return "你不是本比赛的所有者，不能编辑比赛";
         }
         FormHTML form=new FormHTML();
