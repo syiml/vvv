@@ -89,6 +89,12 @@
       ["spsmoj","spsmoj123"]
     ]
   },
+  "foj":{
+    "URL":"http://acm.fzu.edu.cn",
+    "Submitter":[
+      ["spsmoj","spsmoj123"]
+    ]
+  },
   "judge_system_game":{
     "URL":"http://192.168.111.132:8100",
     "Submitter":[

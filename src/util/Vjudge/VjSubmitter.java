@@ -22,7 +22,7 @@ public class VjSubmitter implements Runnable{
     public String showstatus="";
     public String rid = "";
     public MyClient client = new MyClient(); //用这个网络客户端进行登录、提交等操作
-    SubmitInfo info;//正在处理的info
+    public SubmitInfo info;//正在处理的info
     int status;//忙碌状态与否
     int ojid;
     int submitterID;
