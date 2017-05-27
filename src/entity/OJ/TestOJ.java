@@ -56,7 +56,7 @@ public class TestOJ {
                 System.out.println("账号" + testUsername + "的提交之后的rid=" + nrid);
                 if (!nrid.equals(prid)) {
                     System.out.println("rid改变了,提交成功");
-
+                    int kk =0;
                     do {
                         RES res = oj.getResult(vjSubmitter);
                         System.out.println("账号" + testUsername + "最近一个提交的评测结果：" + res.getR() + " 时间：" + res.getTime() + " 内存：" + res.getMemory() + " CEInfo:" + res.getCEInfo());
@@ -65,8 +65,8 @@ public class TestOJ {
                             break;
                         }
                         Tool.sleep(1000);
-                    } while (k < 10);
-
+                        kk++;
+                    } while (kk < 10);////获取评测结果次数
                     break;
                 } else {
                     System.out.println("rid没改变,提交失败，重新获取rid");
