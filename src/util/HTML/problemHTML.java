@@ -244,8 +244,8 @@ public class problemHTML {
             s+=ss;
             //s+=HTML.panel("SampleInput And SampleOutput", ss);
         }else if(SampleInput.size()==1){
-            s+=HTML.panel("SampleInput", (admin?edit("editproblem.jsp?pid="+pid+"&edit=sampleinput&num=0","编辑"):"")+SampleInput.get(0));
-            s+=HTML.panel("SampleOutput", (admin?edit("editproblem.jsp?pid="+pid+"&edit=sampleoutput&num=0","编辑"):"")+SampleOutput.get(0));
+            s+=HTML.panel("SampleInput", (admin?edit("editproblem.jsp?pid="+pid+"&edit=sampleinput&num=0","编辑"):"")+HTML.pre(SampleInput.get(0)));
+            s+=HTML.panel("SampleOutput", (admin?edit("editproblem.jsp?pid="+pid+"&edit=sampleoutput&num=0","编辑"):"")+HTML.pre(SampleOutput.get(0)));
         }else if(SampleInput.size()==0){
             s+=HTML.panel("SampleInput And SampleOutput", (admin?edit("module/addproblemsample.jsp?pid="+pid,"新增"):"")+"NULL");
         }

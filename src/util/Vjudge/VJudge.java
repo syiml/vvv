@@ -2,6 +2,7 @@ package util.Vjudge;
 
 import util.Main;
 import net.sf.json.JSONArray;
+import util.Submitter;
 import util.Tool;
 
 import java.util.*;
@@ -22,7 +23,7 @@ public class VJudge {
             s.add(new SubmitterLocal(0,"","",-1,this));
         }
 
-        String ss[]={"hdu","bnuoj","nbut","pku","hust","cf","codevs","judge_system","acdream","judge_system_game","cf_gym"};
+        String ss[] = Submitter.oj_keys;
         for(int j=0;j<ss.length;j++){
             String sss=ss[j];
             JSONArray GA=Main.GV.getJSONObject(sss).getJSONArray("Submitter");

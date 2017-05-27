@@ -212,7 +212,7 @@ public class HTML {
     public static String btngroup(String s){
         return "<div class='btn-group' role='group'>"+s+"</div>";
     }
-    public static String pre(String s){return "<pre style='padding:0px;border-style:none;background-color:transparent'>"+s+"</pre>";}
+    public static String pre(String s){return "<pre class='sample'>"+s+"</pre>";}
     public static String center(String s){return "<div style='text-align:center'>"+s+"</div>";}
 
     public static String div(String cl,String s){
