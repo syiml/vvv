@@ -10,6 +10,8 @@ import util.Tool;
 import util.Vjudge.SubmitInfo;
 import util.Vjudge.VjSubmitter;
 
+import java.util.Scanner;
+
 /**
  * Created by QAQ on 2017/5/5.
  */
@@ -27,7 +29,6 @@ public class TestOJ {
         System.out.println("OJ的64位整数输出格式（"+testPid+"题）:"+oj.get64IO(testPid));
         System.out.println("OJ的题目链接（"+testPid+"题）:"+oj.getProblemURL(testPid));
         System.out.println("OJ的"+testPid+"题目的标题是:"+oj.getTitle(testPid));
-
         problemHTML ph = oj.getProblemHTML(testPid);
         System.out.println("时间："+ph.getTimeLimit());
         System.out.println("内存："+ph.getMenoryLimit());
@@ -40,33 +41,38 @@ public class TestOJ {
             System.out.println("====输出样例"+i+"====\n"+ph.getSampleOutput().get(i));
         }
 
-        String prid = oj.getRid(testUsername,vjSubmitter);
-        System.out.println("账号"+testUsername+"的最近一个提交rid="+prid);
-        System.out.println("提交" + testPid + "题目");
-        oj.submit(vjSubmitter);
-        int k = 0;
-        do {
-            Tool.sleep(1000);
-            String nrid = oj.getRid(testUsername, vjSubmitter);
-            System.out.println("账号" + testUsername + "的提交之后的rid=" + nrid);
-            if(!nrid.equals(prid)){
-                System.out.println("rid改变了,提交成功");
+        Scanner cin = new Scanner( System.in );
+        System.out.println("提交测试：输入1继续");
+        int x = cin.nextInt();
+        if(x == 1) {
+            String prid = oj.getRid(testUsername, vjSubmitter);
+            System.out.println("账号" + testUsername + "的最近一个提交rid=" + prid);
+            System.out.println("提交" + testPid + "题目");
+            oj.submit(vjSubmitter);
+            int k = 0;
+            do {
+                Tool.sleep(1000);
+                String nrid = oj.getRid(testUsername, vjSubmitter);
+                System.out.println("账号" + testUsername + "的提交之后的rid=" + nrid);
+                if (!nrid.equals(prid)) {
+                    System.out.println("rid改变了,提交成功");
 
-                do{
-                    RES res=oj.getResult(vjSubmitter);
-                    System.out.println("账号"+testUsername+"最近一个提交的评测结果："+res.getR()+" 时间："+res.getTime()+" 内存："+res.getMemory() +" CEInfo:"+res.getCEInfo());
-                    if(res.canReturn()){
-                        System.out.println("评测结束");
-                        break;
-                    }
-                    Tool.sleep(1000);
-                }while(k<10);
+                    do {
+                        RES res = oj.getResult(vjSubmitter);
+                        System.out.println("账号" + testUsername + "最近一个提交的评测结果：" + res.getR() + " 时间：" + res.getTime() + " 内存：" + res.getMemory() + " CEInfo:" + res.getCEInfo());
+                        if (res.canReturn()) {
+                            System.out.println("评测结束");
+                            break;
+                        }
+                        Tool.sleep(1000);
+                    } while (k < 10);
 
-                break;
-            }else{
-                System.out.println("rid没改变,提交失败，重新获取rid");
-            }
-            k++;
-        }while(k<10);
+                    break;
+                } else {
+                    System.out.println("rid没改变,提交失败，重新获取rid");
+                }
+                k++;
+            } while (k < 10);
+        }
     }
 }
