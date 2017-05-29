@@ -3,6 +3,9 @@ package dao;
 import action.TeamAward;
 import entity.*;
 import entity.Enmu.AcbOrderType;
+import entity.Title.TitleSet;
+import util.Event.EventMain;
+import util.Event.Events.EventVerify;
 import util.Main;
 import servise.MessageMain;
 import util.HTML.HTML;
@@ -107,6 +110,30 @@ public class UserSQL extends BaseCache<String,User> {
         Permission p=new Permission(rs);
         sql.close();
         return p;
+    }
+    public TitleSet getTitle(String username){
+        if(username == null) return null;
+        TitleSet ts = new SQL("SELECT id,endtime FROM t_title WHERE username=?",username).queryBean(TitleSet.class);
+        if(ts == null){
+            ts = new TitleSet();
+        }
+        ResultSet rs = new SQL("SELECT * FROM t_title_config where username=?",username).query();
+        try {
+            if(rs.next()){
+                ts.isShow = rs.getBoolean("isShow");
+                ts.setOrder(rs.getString("config"));
+            }
+        } catch (SQLException e) {
+        }
+        ts.setOrder(ts.getOrder());
+        return ts;
+    }
+    public void addTitle(String username,int id,Timestamp endTime){
+        new SQL("REPLACE INTO t_title VALUES(?,?,?)",username,id,endTime).update();
+    }
+    public void setTitleConfig(String username,boolean isShow,String config)
+    {
+        new SQL("REPLACE INTO t_title_config VALUES(?,?,?)",username,isShow,config).update();
     }
 
     public List<List<String>> getPermissionTable(){
@@ -340,6 +367,7 @@ public class UserSQL extends BaseCache<String,User> {
         sql+=" WHERE username=?";
         //Tool.log(sql);
         removeCatch(u.getUsername());
+        EventMain.triggerEvent(new EventVerify(u));
         return (new SQL(sql, u.getUsername()).update()==1);
     }
     public int updateByVerify(UserVerifyInfo userVerifyInfo){
@@ -490,7 +518,10 @@ public class UserSQL extends BaseCache<String,User> {
     protected User getByKeyFromSQL(String username) {
         if(username == null) return null;
         User ret = new SQL("SELECT * from users where username=?",username).queryBean(User.class);
-        if(ret!=null)ret.setPermission(Main.getPermission(username));
+        if(ret!=null){
+            ret.setPermission(getPermission(username));
+            ret.titleSet = getTitle(username);
+        }
         return ret;
     }
 }

@@ -8,11 +8,14 @@ import entity.Status;
 import entity.User;
 import entity.UserSolvedListBean;
 import entity.UserVerifyInfo;
+import util.Event.EventMain;
+import util.Event.Events.EventVerify;
 import util.Main;
 import util.MainResult;
 import util.Tool;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 /**
  * Created by Administrator on 2015/12/11 0011.
@@ -64,6 +67,7 @@ public class UserService {
         Main.users.updateByVerify(userVerifyInfo);
         verifySQL.updateResult(id, UserVerifyInfo.RESULT_ACCEPTED,"");
         MessageMain.addMessageVerify(verifySQL.getUserVerifyInfo(id));
+        EventMain.triggerEvent(new EventVerify(Main.users.getUser(userVerifyInfo.username)));
         return MainResult.SUCCESS;
     }
     public static MainResult refuseVerify(int id,String reason){
@@ -120,5 +124,10 @@ public class UserService {
         if(Main.status.getStatu(rid) == null) return MainResult.ARR_ERROR;
         userStarSQL.removeStar(user.getUsername(),rid, UserStarType.STATUS);
         return MainResult.SUCCESS;
+    }
+
+    public static void addTitle(User u , int id, Timestamp endTime){
+        u.titleSet.addTitle(id,endTime);
+        Main.users.addTitle(u.getUsername(),id,endTime);
     }
 }

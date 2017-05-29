@@ -4,6 +4,8 @@ import entity.*;
 import entity.Enmu.AcbOrderType;
 import servise.ContestMain;
 import servise.MessageMain;
+import util.Event.EventMain;
+import util.Event.Events.EventRating;
 import util.Main;
 import dao.ratingSQL;
 import util.HTML.HTML;
@@ -120,8 +122,8 @@ public class Computer {
                     ratingSQL.save(ratingCase);
                     //返还acb
                     RegisterUser registerUser = c.getRegisterUser(ratingCase.getUsername());
+                    User u = Main.users.getUser(ratingCase.getUsername());
                     if(registerUser.getStatu() == RegisterUser.STATUS_TEAM_AUTO_APPENDED){
-                        User u = Main.users.getUser(ratingCase.getUsername());
                         int totalSubAcb = u.getSubAcbInWeekContest();
                         int ratingChange = ratingCase.getTrueRating() - ratingCase.getTruePRating();
                         int realSubAcb = ratingChange >= 0 ? 0 : Math.min(-ratingChange, totalSubAcb);
@@ -131,6 +133,7 @@ public class Computer {
                     }else{
                         MessageMain.addMessageRatingChange(ratingCase.getCid(), ratingCase.getUsername(), ratingCase.getTruePRating(), ratingCase.getTrueRating());
                     }
+                    EventMain.triggerEvent(new EventRating(u,ratingCase.getRank()));
                     Tool.log(ratingCase.getUsername() + ":" + ratingCase.getRating());
                 }
                 Main.users.updateAllUserRank();

@@ -12,12 +12,11 @@ import java.util.List;
  */
 public abstract class SimplePageBean<T> extends pageBean {
 
-    private List<T> list;
-    private int page;
+    protected List<T> list;
+    protected int page;
 
     protected SimplePageBean(int page) {
         this.page = page;
-        this.list = getElement( getEveryPageNumber() * (page-1) ,getEveryPageNumber());
     }
 
     public abstract List<T> getElement(int from,int num);
@@ -66,5 +65,11 @@ public abstract class SimplePageBean<T> extends pageBean {
     @Override
     public String getCellByHead(int i, String colname) {
         return getCellByClass(i,list.get(i),colname);
+    }
+
+    public String HTML(){
+        this.list = getElement( getEveryPageNumber() * (page-1) ,getEveryPageNumber());
+        addTableHead(getColNames());
+        return super.HTML();
     }
 }

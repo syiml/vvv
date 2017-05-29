@@ -51,6 +51,22 @@ body{
 .table-small tbody>tr>td,.font-small thead>tr>td{
     paddding:4px;
 }
+.user_title_fa{
+    position:relative;
+}
+.user_title{
+    position: absolute;
+    width: 150px;
+    border: solid 2px #f00;
+    border-radius: 14px;
+    left: calc(50% - 10px);
+    top: -70px;
+    transform:rotate(-30deg);
+    -ms-transform:rotate(-30deg); 	/* IE 9 */
+    -moz-transform:rotate(-30deg); 	/* Firefox */
+    -o-transform:rotate(-30deg); 	/* Opera */
+    -webkit-transform: rotate(-30deg);/* Safari 和 Chrome */
+}
 .head-0{
     width: 70px;
     height: 70px;

@@ -1,5 +1,6 @@
 package util.Event;
 
+import entity.Title.AllTitle.Title_MengNew;
 import util.Event.EvnetDeals.EventDealOnStatusAdd;
 import util.Event.EvnetDeals.EventDealOnStatusChange;
 import util.Tool;
@@ -20,6 +21,16 @@ public class EventMain implements Runnable{
 
     public static Thread getThread(){
         return eventThread;
+    }
+
+    public static void Init(){
+        EventMain eventMain = new EventMain();
+        eventThread = new Thread(eventMain);
+        eventThread.start();
+        addEventDeal(new EventDealOnStatusAdd());
+        addEventDeal(new EventDealOnStatusChange());
+
+        //addEventDeal(new Title_MengNew());
     }
 
     /**
@@ -50,14 +61,6 @@ public class EventMain implements Runnable{
         events.add(event);
     }
 
-    public static void Init(){
-        EventMain eventMain = new EventMain();
-        eventThread = new Thread(eventMain);
-        eventThread.start();
-        addEventDeal(new EventDealOnStatusAdd());
-        addEventDeal(new EventDealOnStatusChange());
-    }
-
     private static void remvoeEventDeal(){
         BaseEventDeal eventDeal;
         while((eventDeal = removeEventDeal.poll())!=null) {
@@ -74,6 +77,7 @@ public class EventMain implements Runnable{
                 Set<BaseEventDeal> set = map.get(event.getClass().hashCode());
                 if(set != null){
                     remvoeEventDeal();
+                    event.before();
                     for(BaseEventDeal deal : set){
                         deal.run(event);
                     }
@@ -81,6 +85,8 @@ public class EventMain implements Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Tool.sleep(1000);
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

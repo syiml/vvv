@@ -1,5 +1,6 @@
 package entity;
 
+import entity.Title.TitleSet;
 import net.sf.json.JSONObject;
 import util.Main;
 import util.HTML.HTML;
@@ -24,7 +25,7 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
     String nick;
     String school;
     String email;
-    String motto;//座右铭
+    String motto;//签名
     Timestamp registertime;
     int type;
     int submissions;
@@ -36,7 +37,7 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
     int rank;//rating 的rank
     int acb;
     int inTeamLv;//队员等级
-    int inTeamStatus;//队员状态 0非队员 1现役队员 2退役队员
+    int inTeamStatus;//队员状态 0非队员 1现役队员 2退役队员 3协会成员 4校内人员
     //详细信息：姓名，性别，学校，院系，专业班级，学号，手机
     String name;
     int    gender;//性别
@@ -47,6 +48,7 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
     String phone;//联系方式
     Timestamp graduationTime;//毕业时间
     private Timestamp catch_time;
+    public TitleSet titleSet;
 
     public User(){}
 

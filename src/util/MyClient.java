@@ -92,7 +92,7 @@ public class MyClient extends DefaultHttpClient{
      * 对url提交一个post请求
      * @param URL 提交地址
      * @param form 表单的key value
-     * @return 1成功 0失败
+     * @return 返回的页面内容  如果为nul表示错误
      */
     public synchronized String Post(String URL,List<NameValuePair> form){
         HttpEntity entity;
@@ -106,7 +106,7 @@ public class MyClient extends DefaultHttpClient{
             hr = execute(httppost);
             entity = hr.getEntity();
             if (entity != null) {
-                System.out.println("Response content lenght:"  + entity.getContentLength());
+                //System.out.println("Response content lenght:"  + entity.getContentLength());
                 String content;
                 try {
                     content = EntityUtils.toString(entity);
@@ -133,10 +133,10 @@ public class MyClient extends DefaultHttpClient{
 
     /**
      * 获取指定url的内容，指定了utf-8编码
-     * 要获取登录后才能显示的页面，要先用Post提交登录表单，然后get指定页面
+     * 要获取登录后才能显示的页面，要先用Post提交登录表单，然后get指定页面（先后必须使用同一个MyClient对象）
      * 返回的页面没有执行页面的js脚本代码
      * @param URL 地址
-     * @return 返回地址的Document类
+     * @return 返回地址的Document类  为null表示获取失败
      */
     public Document get(String URL){
         HttpEntity entity = null;

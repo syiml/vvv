@@ -1,5 +1,7 @@
 package action;
 
+import util.Event.EventMain;
+import util.Event.Events.EventRegister;
 import util.JSON.JSON;
 import util.Main;
 import entity.User;
@@ -49,6 +51,9 @@ public class register extends BaseAction{
         int ret=Main.users.register(u);
         if(ret==1){
             Tool.log("Register:"+username);
+
+            //触发注册事件
+            EventMain.triggerEvent(new EventRegister(Main.users.getUser(u.getUsername())));
             out.print(JSON.getJSONObject("ret","success"));
             return noRedirect==0?SUCCESS:NONE;
         }else if(ret==-1){

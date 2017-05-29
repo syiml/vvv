@@ -82,8 +82,9 @@
         if(messnoread>0) ss+="<li>"+HTML.a("Message.jsp","<span><i class='icon-envelope-alt'></i> MESSAGE<text class='badge'>"+messnoread+"</text></span>")+"</li>";
         else ss+="<li>"+HTML.a("Message.jsp","<span><i class='icon-envelope-alt'></i> MESSAGE</span>")+"</li>";
         ss+="<li>"+HTML.a("EditInfo.jsp","<span><i class='icon-edit'></i> EDIT")+"<span></li>";
-        ss+="<li>"+HTML.a("Verify.action","<span><i class='icon-edit'></i> VERIFY")+"<span></li>";
-        ss+="<li>"+HTML.a("dmc.jsp","<span><i class='icon-edit'></i> CLOCKIN")+"<span></li>";
+        ss+="<li>"+HTML.a("Verify.action","<span><i class='icon-check'></i> VERIFY")+"<span></li>";
+        ss+="<li>"+HTML.a("dmc.jsp","<span><i class='icon-calendar'></i> CLOCKIN</span>")+"<span></li>";
+        ss+="<li>"+HTML.a("Title.jsp","<span><i class='icon-tag'></i> TITLE")+"<span></li>";
         ss+="<li>"+" <a href='Logout.jsp'><span><i class='icon-signout'></i> LOGOUT</span></a>"+"</li>";
         ss+="</ul></li>";
       }else{
@@ -110,7 +111,8 @@
     LOGOUT:"退出",
     MALL:"商城",
     VERIFY:"认证",
-    CLOCKIN:"签到"
+    CLOCKIN:"签到",
+    TITLE:"称号"
   };
   $(".mm-over,.mm-hdrop-over").each(function () {
     var $th=$(this);

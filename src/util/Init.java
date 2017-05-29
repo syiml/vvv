@@ -1,5 +1,6 @@
 package util;
 
+import entity.Title.BaseTitle;
 import util.Event.EventMain;
 import util.TimerTasks.MyTimer;
 
@@ -17,6 +18,8 @@ public class Init extends HttpServlet {
             MyTimer.Init();
             EventMain.Init();
             Tool.log("服务器启动完成");
+
+            BaseTitle.Init();
         }catch (Exception e){
             Tool.log("服务器启动时出现异常");
             e.printStackTrace();

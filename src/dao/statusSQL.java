@@ -4,6 +4,7 @@ import entity.*;
 import net.sf.json.JSONObject;
 import servise.ContestMain;
 import util.Event.EventMain;
+import util.Event.Events.EventJudge;
 import util.Event.Events.EventStatusChange;
 import util.Main;
 import util.HTML.HTML;
@@ -209,6 +210,7 @@ public class statusSQL {
         Tool.log(rid+"->"+res);
         Status s=getStatu(rid);
         EventMain.triggerEvent(new EventStatusChange(ps,s));
+        EventMain.triggerEvent(new EventJudge(Main.users.getUser(s.getUser()),s));
         if(s.getCid()!=-1&&res!=Result.JUDGING){
             Contest c=ContestMain.getContest(s.getCid());
             c.getRank().add(s , c);

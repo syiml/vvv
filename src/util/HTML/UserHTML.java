@@ -2,6 +2,8 @@ package util.HTML;
 
 import entity.TeamMemberAwardInfo;
 import entity.TeamMemberAwardInfo_ContestLevel;
+import entity.Title.BaseTitle;
+import entity.Title.Title;
 import util.Main;
 import entity.Permission;
 import entity.User;
@@ -26,6 +28,17 @@ public class UserHTML {
         this.showuser=showuser;
         this.user=user;
     }
+    private String getTitleHTML(){
+        int z = showuser.titleSet.getShowTitle();
+        String style = "";
+        BaseTitle t = BaseTitle.getTitleByID(z);
+        if(t.getBorder_color() != null){
+            style = "style='border-color:"+t.getBorder_color()+"'";
+        }
+        if(z != -1)
+            return "<div class='user_title_fa'><img class='user_title' src='pic/Title/"+z+".png' "+style+"></div>";
+        return "";
+    }
     public String UserInfo2(){
         String headimg;
         if(user==null||!showuser.getUsername().equals(user.getUsername())) headimg=HTML.headImg(showuser.getUsername(), 2);
@@ -37,7 +50,7 @@ public class UserHTML {
             headimg=m.toHTMLA();
         }
 //        String icon = HTML.div("userIcon",showuser.getIcon());
-        String left=headimg + "<br>"+HTML.text(showuser.getNick(),10)+"<br>"+HTML.text(showuser.getMotto(), 4);
+        String left=headimg +getTitleHTML()+ "<br>"+HTML.text(showuser.getNick(),10)+"<br>"+HTML.text(showuser.getMotto(), 4);
         String r="";
         r+=HTML.text(showuser.getNick(),7)+HTML.text("("+showuser.getUsername() + ")",5);
         r+="在"+HTML.text(showuser.getRegistertime().toString().substring(0,10),5)+"加入OJ，";

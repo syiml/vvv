@@ -9,6 +9,10 @@ import util.Main;
  */
 public class EventDealOnStatusAdd extends EventDeal<EventStatusAdd> {
 
+    public EventDealOnStatusAdd() {
+        super(EventStatusAdd.class);
+    }
+
     @Override
     public void dealEvent(EventStatusAdd event) {
         Main.status.onStatusAdd(event.s);

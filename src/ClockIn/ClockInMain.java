@@ -3,8 +3,11 @@ package ClockIn;
 import dao.SomeOptRecordSQL;
 import entity.Enmu.AcbOrderType;
 import entity.SomeOptRecord.ESomeOptRecordType;
+import entity.SomeOptRecord.SomeOptRecord;
 import entity.User;
 import servise.MessageMain;
+import util.Event.EventMain;
+import util.Event.Events.EventClockIn;
 import util.Main;
 import util.MainResult;
 import util.MyTime;
@@ -24,10 +27,16 @@ public class ClockInMain {
         if(u == null) return MainResult.NO_LOGIN;
         if(!canClockIn(u.getUsername())) return MainResult.FAIL;
         if(isFistClockInOfDay(u.getUsername())){
-            Main.users.addACB(u.getUsername(), 5 , AcbOrderType.CLOCK_IN,"");
-            MessageMain.addMessageAwardACB(u.getUsername(),5,"每日签到奖励");
+            Main.users.addACB(u.getUsername(), clock_in_award_acb , AcbOrderType.CLOCK_IN,"");
+            MessageMain.addMessageAwardACB(u.getUsername(),clock_in_award_acb ,"每日签到奖励");
         }
         int ret = someOptRecordSQL.addRecord(ESomeOptRecordType.ClockIn,u.getUsername(), Tool.now(),0,Main.getIP());
+        SomeOptRecord record = new SomeOptRecord();
+        record.setUsername(u.getUsername());
+        record.setType(ESomeOptRecordType.ClockIn);
+        record.setTime(Tool.now());
+        record.setData(Main.getIP());
+        EventMain.triggerEvent(new EventClockIn(u,record));
         if(ret == 1) {
             return MainResult.SUCCESS;
         }else{
