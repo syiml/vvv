@@ -1,7 +1,7 @@
 package entity.Title.AllCondition;
 
 import net.sf.json.JSONArray;
-import util.Event.BaseEvent;
+import util.Event.BaseTitleEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,13 @@ public class ConditionAnd extends BaseCondition {
     }
 
     @Override
-    public boolean check(BaseEvent event) {
+    public void setTitleID(int id) {
+        for (BaseCondition condition : conditions) condition.setTitleID(id);
+        super.setTitleID(id);
+    }
+
+    @Override
+    public boolean check(BaseTitleEvent event) {
         for (BaseCondition condition : conditions) {
             if (!condition.check(event)) return false;
         }

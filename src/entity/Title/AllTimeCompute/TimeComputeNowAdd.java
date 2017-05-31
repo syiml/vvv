@@ -1,6 +1,8 @@
 package entity.Title.AllTimeCompute;
 
+import net.sf.json.JSONArray;
 import util.Event.BaseEvent;
+import util.Event.BaseTitleEvent;
 import util.MyTime;
 
 /**
@@ -8,9 +10,10 @@ import util.MyTime;
  */
 public class TimeComputeNowAdd extends BaseTimeCompute{
 
-    long addition;
+    private long addition;
 
-    TimeComputeNowAdd(long value,String unit){
+    TimeComputeNowAdd(JSONArray ja,long value, String unit){
+        super(ja);
         switch (unit){
             case "day": addition = value * MyTime.DAY;break;
             case "month": addition = value * MyTime.MONTH;break;
@@ -19,7 +22,7 @@ public class TimeComputeNowAdd extends BaseTimeCompute{
         }
     }
     @Override
-    public long getTime(BaseEvent event){
-        return MyTime.addTimestamp(event.getTimestamp(null),addition).getTime();
+    public long getTime(BaseTitleEvent event){
+        return MyTime.addTimestamp(getTimestamp(null,event),addition).getTime();
     }
 }

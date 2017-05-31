@@ -6,18 +6,19 @@
                     "name":"萌新",
                     "des":"注册30天内获得",
                     "event":"register",
-                    "condition":{},
+                    "jd":1,
+                    "jd_value":1,
+                    "condition":{"type":"true"},
                     "lose_condition":{},
-                    "end_time":{
-                        "type":"now_add",
-                        "value":[30,"day"]
-                    }
+                    "end_time":["now_add",30,"day"]
                 },
                 {
                     "id":2,
                     "name":"退役",
                     "des":"退役后获得",
                     "event":"verify",
+                    "jd":1,
+                    "jd_value":1,
                     "condition":{
                         "type":"cmp",
                         "value":["status","=","2"]
@@ -26,13 +27,15 @@
                         "type":"cmp",
                         "value":["status","!=","2"]
                     },
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
                 },
                 {
-                    "id":"3",
+                    "id":3,
                     "name":"集训队员",
                     "des":"认证为集训队员后获得",
                     "event":"verify",
+                    "jd":1,
+                    "jd_value":1,
                     "condition":{
                         "type":"cmp",
                         "value":["status","=","1"]
@@ -41,58 +44,134 @@
                       "type":"cmp",
                       "value":["status","!=","1"]
                     },
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
                 },
                 {
-                    "id":"4",
+                    "id":4,
                     "name":"周赛举办者",
                     "des":"举办过一场以上的周赛",
                     "event":"none",
+                    "jd":1,
+                    "jd_value":1,
                     "condition":{},
                     "lose_condition":{},
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
                 },
                 {
-                    "id":"1200",
-                    "name":"参赛达人",
-                    "des":"参加过20场rating赛",
-                    "event":"rating",
+                    "id":1000,
+                    "name":"坚持不懈",
+                    "des":"连续3天每天至少AC一题。中断一天后称号失去",
+                    "event":"judge",
+                    "jd":3,
+                    "jd_value":"++",
                     "condition":{
-                        "type":"cmp",
-                        "value":["rating_num",">=","20"]
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"time_cmp",
+                                "value":["clear_time","!=",["last_time_of_tomorrow","submit_time"]]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==",0]
+                            }
+                        ]
                     },
                     "lose_condition":{},
-                    "end_time":{"type":"forever"}
+                    "end_time":["last_time_of_tomorrow","submit_time"]
                 },
                 {
-                    "id":"1030",
+                    "id":1001,
+                    "name":"锲而不舍",
+                    "des":"连续7天每天至少AC一题。中断一天后称号失去",
+                    "event":"judge",
+                    "jd":7,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"time_cmp",
+                                "value":["clear_time","!=",["last_time_of_tomorrow","submit_time"]]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["last_time_of_tomorrow","submit_time"]
+                },
+                {
+                    "id":1002,
+                    "name":"滴水穿石",
+                    "des":"连续30天每天至少AC一题。中断一天后称号失去",
+                    "event":"judge",
+                    "jd":30,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"time_cmp",
+                                "value":["clear_time","!=",["last_time_of_tomorrow","submit_time"]]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["last_time_of_tomorrow","submit_time"]
+                },
+                {
+                    "id":1020,
+                    "name":"一步登天",
+                    "des":"一天内AC30题",
+                    "event":"judge",
+                    "jd":30,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["is_repeat","==",0]
+                    },
+                    "lose_condition":{},
+                    "end_time":["last_time_of_day","submit_time"],
+                    "get_end_time":["now_add",7,"day"]
+                },
+                {
+                    "id":1030,
                     "name":"大佬",
                     "des":"AC 1000题之后获得",
                     "event":"judge",
+                    "jd":1000,
+                    "jd_value":"acnum",
                     "condition":{
                         "type":"cmp",
-                        "value":["acnum",">=","1000"]
+                        "value":["judge_result","==","1"]
                     },
                     "lose_condition":{},
-                    "end_time":{
-                      "type":"forever"
-                    }
+                    "end_time":"forever"
                 },
                 {
                     "id":"1040",
                     "name":"夜猫子",
                     "des":"在半夜2点到5点之间AC一题。获得称号后7天失效",
                     "event":"judge",
+                    "jd":1,
+                    "jd_value":1,
                     "border_color":"black",
                     "condition":{
                         "type":"and",
                         "value":[
                             {
-                                "type":"time_cmp",
+                                "type":"time_check",
                                 "value":["submit_time","hour",">=",2]
                             },
                             {
-                                "type":"time_cmp",
+                                "type":"time_check",
                                 "value":["submit_time","hour","<=",4]
                             },
                             {
@@ -102,70 +181,208 @@
                         ]
                     },
                     "lose_condition":{},
-                    "end_time":{
-                        "type":"now_add",
-                        "value":[7,"day"]
-                    }
+                    "end_time":["now_add",7,"day"]
                 },
                 {
                     "id":"1100",
                     "name":"签到狂魔Lv1",
                     "des":"累计签到50次",
                     "event":"clock_in",
+                    "jd":50,
+                    "jd_value":"++",
                     "condition":{
-                        "type":"cmp",
-                        "value":["total_num",">=","50"]
+                        "type":"true"
                     },
                     "lose_condition":{},
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
                 },
                 {
                     "id":"1101",
                     "name":"签到狂魔Lv2",
                     "des":"累计签到100次",
                     "event":"clock_in",
+                    "jd":100,
+                    "jd_value":"++",
                     "condition":{
-                        "type":"cmp",
-                        "value":["total_num",">=","100"]
+                        "type":"true"
                     },
                     "lose_condition":{},
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
                 },
                 {
                     "id":"1102",
                     "name":"签到狂魔Lv3",
                     "des":"累计签到200次",
                     "event":"clock_in",
+                    "jd":200,
+                    "jd_value":"++",
                     "condition":{
-                        "type":"cmp",
-                        "value":["total_num",">=","200"]
+                        "type":"true"
                     },
                     "lose_condition":{},
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
                 },
                 {
                     "id":"1103",
                     "name":"签到狂魔Lv4",
                     "des":"累计签到365次",
                     "event":"clock_in",
+                    "jd":365,
+                    "jd_value":"++",
                     "condition":{
-                        "type":"cmp",
-                        "value":["total_num",">=","365"]
+                        "type":"true"
                     },
                     "lose_condition":{},
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
                 },
                 {
                     "id":"1104",
                     "name":"签到狂魔Lv5",
                     "des":"累计签到1000次",
                     "event":"clock_in",
+                    "jd":1000,
+                    "jd_value":"++",
                     "condition":{
-                        "type":"cmp",
-                        "value":["total_num",">=","1000"]
+                        "type":"true"
                     },
                     "lose_condition":{},
-                    "end_time":{"type":"forever"}
+                    "end_time":"forever"
+                },
+                {
+                    "id":1200,
+                    "name":"参赛达人",
+                    "des":"参加过20场rating赛",
+                    "jd":20,
+                    "jd_value":"rating_num",
+                    "event":"rating",
+                    "condition":{
+                        "type":"true"
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":1220,
+                    "name":"东方不败",
+                    "des":"连续3次rating赛中获得第一，获得称号后，最多保留30天(期间再次获得第一将会延期)，有一次没有获得第一则失去该称号",
+                    "event":"rating",
+                    "jd":3,
+                    "jd_value":"++",
+                    "border_color":"#ed008c",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{
+                        "type":"cmp",
+                        "value":["rank","!=","1"]
+                    },
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":1221,
+                    "name":"孤独求败",
+                    "des":"连续5次rating赛中获得第一，获得称号后，最多保留30天(期间再次获得第一将会延期)，有一次没有获得第一则失去该称号",
+                    "event":"rating",
+                    "jd":5,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{
+                        "type":"cmp",
+                        "value":["rank","!=","1"]
+                    },
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":1221,
+                    "name":"孤独求败",
+                    "des":"连续5次rating赛中获得第一，获得称号后，最多保留30天(期间再次获得第一将会延期)，有一次没有获得第一则失去该称号",
+                    "event":"rating",
+                    "jd":5,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{
+                        "type":"cmp",
+                        "value":["rank","!=","1"]
+                    },
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":1230,
+                    "name":"Dominating",
+                    "des":"获得5次rating赛的第一",
+                    "event":"rating",
+                    "jd":5,
+                    "jd_value":"++",
+                    "style":"border-color:#991C38;width:200px;left:calc(50% - 40px)",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":1231,
+                    "name":"Unstoppable",
+                    "des":"获得10次rating赛的第一",
+                    "event":"rating",
+                    "jd":10,
+                    "jd_value":"++",
+                    "style":"border-color:#99008C;width:200px;left:calc(50% - 40px)",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":1232,
+                    "name":"GodLike",
+                    "des":"获得20次rating赛的第一",
+                    "event":"rating",
+                    "jd":20,
+                    "jd_value":"++",
+                    "style":"border-color:#FF1C38;width:200px;left:calc(50% - 40px)",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":1300,
+                    "name":"万元户",
+                    "des":"ACB达到一万",
+                    "event":"acb",
+                    "jd":10000,
+                    "jd_value":"acb",
+                    "condition":{"type":"true"},
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":1320,
+                    "name":"首富",
+                    "des":"ACB富豪榜排名第一（每日12点更新）",
+                    "event":"rich_rank",
+                    "jd":1,
+                    "jd_value":"1",
+                    "style":"border-color:#ffd700;background-color: rgba(0,0,255,0.2);",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",1,"day"]
                 }
             ]
 }

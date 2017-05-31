@@ -32,11 +32,15 @@ public class UserHTML {
         int z = showuser.titleSet.getShowTitle();
         String style = "";
         BaseTitle t = BaseTitle.getTitleByID(z);
-        if(t.getBorder_color() != null){
-            style = "style='border-color:"+t.getBorder_color()+"'";
-        }
-        if(z != -1)
+        if(z != -1){
+            if(t.getBorder_color() != null){
+                style = "style='border-color:"+t.getBorder_color()+"'";
+            }
+            if(t.getStyle()!=null){
+                style = "style=\""+t.getStyle()+"\"";
+            }
             return "<div class='user_title_fa'><img class='user_title' src='pic/Title/"+z+".png' "+style+"></div>";
+        }
         return "";
     }
     public String UserInfo2(){

@@ -5,6 +5,7 @@ import entity.*;
 import entity.Enmu.AcbOrderType;
 import entity.Title.TitleSet;
 import util.Event.EventMain;
+import util.Event.Events.EventAcbChg;
 import util.Event.Events.EventVerify;
 import util.Main;
 import servise.MessageMain;
@@ -113,7 +114,7 @@ public class UserSQL extends BaseCache<String,User> {
     }
     public TitleSet getTitle(String username){
         if(username == null) return null;
-        TitleSet ts = new SQL("SELECT id,endtime FROM t_title WHERE username=?",username).queryBean(TitleSet.class);
+        TitleSet ts = new SQL("SELECT id,jd,endtime FROM t_title WHERE username=?",username).queryBean(TitleSet.class);
         if(ts == null){
             ts = new TitleSet();
         }
@@ -128,8 +129,8 @@ public class UserSQL extends BaseCache<String,User> {
         ts.setOrder(ts.getOrder());
         return ts;
     }
-    public void addTitle(String username,int id,Timestamp endTime){
-        new SQL("REPLACE INTO t_title VALUES(?,?,?)",username,id,endTime).update();
+    public void addTitle(String username,int id,int jd,Timestamp endTime){
+        new SQL("REPLACE INTO t_title VALUES(?,?,?,?)",username,id,jd,endTime).update();
     }
     public void setTitleConfig(String username,boolean isShow,String config)
     {
@@ -491,6 +492,7 @@ public class UserSQL extends BaseCache<String,User> {
         acbOrder.mark = mark;
         acbOrder.time = Tool.now();
         Main.acbOrderSQL.addAcbOrder(acbOrder);
+        EventMain.triggerEvent(new EventAcbChg(getUser(user),acbOrder));
         return ret;
     }
     public int subACB(String user,int num, AcbOrderType orderType,String mark) {
@@ -504,6 +506,7 @@ public class UserSQL extends BaseCache<String,User> {
             acbOrder.mark = mark;
             acbOrder.time = Tool.now();
             Main.acbOrderSQL.addAcbOrder(acbOrder);
+            EventMain.triggerEvent(new EventAcbChg(getUser(user),acbOrder));
         }
         return ret;
     }

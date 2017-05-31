@@ -126,8 +126,8 @@ public class UserService {
         return MainResult.SUCCESS;
     }
 
-    public static void addTitle(User u , int id, Timestamp endTime){
-        u.titleSet.addTitle(id,endTime);
-        Main.users.addTitle(u.getUsername(),id,endTime);
+    public static void addTitle(User u , int id, int jd,Timestamp endTime){
+        u.titleSet.addTitle(id,jd,endTime);
+        Main.users.addTitle(u.getUsername(),id,jd,endTime);
     }
 }

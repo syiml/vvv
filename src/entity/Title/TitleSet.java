@@ -12,12 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 称号集合
- * Created by QAQ on 2017/5/27.
- */
 public class TitleSet implements IBeanResultSetCreate{
-    public Map<Integer,Timestamp> titles;
+    public Map<Integer, title_value > titles;
 
     public Map<Integer,Integer> order;
 
@@ -28,24 +24,38 @@ public class TitleSet implements IBeanResultSetCreate{
         order = new HashMap<>();
     }
 
-    public synchronized void addTitle(Integer id,Timestamp time){
-        titles.put(id,time);
+    public synchronized void addTitle(Integer id,int jd,Timestamp time){
+        titles.put(id,new title_value(jd,time));
     }
 
-    public synchronized boolean haveTitle(int id) {
-        if (!titles.containsKey(id)) return false;
-        Timestamp time = titles.get(id);
-        if(time == null) return true;
+    public synchronized title_value getTitleValue(int id){
+        if(titles.containsKey(id)){
+            return titles.get(id);
+        }
+        return new title_value(0,null);
+    }
+    public synchronized int getTitleJd(int id){
+        if(!titles.containsKey(id)) return 0;
+        title_value value = titles.get(id);
+        Timestamp time = value.clear_time;
+        if(time == null){
+            return value.jd;
+        }
         if(time.before(Tool.now())){
             titles.remove(id);
         }
-        return true;
+        return value.jd;
+    }
+    public synchronized boolean haveTitle(int id) {
+        if(id==-1) return false;
+        BaseTitle title = BaseTitle.getTitleByID(id);
+        return getTitleJd(id) >= title.getTotal_jd();
     }
 
     @Override
     public synchronized void init(ResultSet rs) throws SQLException {
         do{
-            titles.put(rs.getInt("id"),rs.getTimestamp("endtime"));
+            titles.put(rs.getInt("id"),new title_value(rs.getInt("jd"),rs.getTimestamp("endtime")));
         }while(rs.next());
     }
 
@@ -122,6 +132,15 @@ public class TitleSet implements IBeanResultSetCreate{
         int z = showTitles.indexOf(-1);
         order.put(i,z);
         setOrder(getOrder());
+    }
+    public synchronized void top(int id){
+        List<Integer> showTitles = getShowTitles();
+        int i = showTitles.indexOf(id);
+        for(int j=i;j>0;j--){
+            showTitles.set(j,showTitles.get(j-1));
+        }
+        showTitles.set(0,id);
+        setOrder(JSONArray.fromObject(showTitles).toString());
     }
     public synchronized void hide(int i){
         order.put(i,-1);

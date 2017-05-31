@@ -25,6 +25,7 @@ public abstract class MyTimer extends TimerTask{
         add(new TaskWeekRankCount());
         add(new OneProblemEveryDay());
         add(new TaskUpdateAllUserRank());
+        add(new RichRankTitleEvent());
     }
 
     public static void Init() throws Exception {

@@ -391,7 +391,6 @@ public class statusSQL {
         //-1->no submit
         return new SQL("select MAX(result=1)+1 from statu where ruser=? AND pid=?",username,pid).queryNum()-1;
     }
-
     /**
      * 批量重判
      * @param pid 题目id

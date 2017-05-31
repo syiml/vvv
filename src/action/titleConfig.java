@@ -9,7 +9,7 @@ import java.util.List;
  * Created by QAQ on 2017/5/28.
  */
 public class titleConfig extends BaseAction {
-    int type ;//1交换，2隐藏,3显示
+    int type ;//1交换，2隐藏,3显示,4置顶
     int id;
     int id2;
 
@@ -20,8 +20,10 @@ public class titleConfig extends BaseAction {
             u.titleSet.swap(id,id2);
         }else if(type==2){
             u.titleSet.hide(id);
-        }else{
+        }else if(type==3){
             u.titleSet.show(id);
+        }else if(type==4){
+            u.titleSet.top(id);
         }
         Main.users.setTitleConfig(u.getUsername(),u.titleSet.isShow,u.titleSet.getOrder());
         return SUCCESS;

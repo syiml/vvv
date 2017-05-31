@@ -1,6 +1,8 @@
 package entity.Title.AllCondition;
 
+import entity.Title.title_value;
 import util.Event.BaseEvent;
+import util.Event.BaseTitleEvent;
 
 /**
  * Created by QAQ on 2017/5/28.
@@ -15,8 +17,8 @@ public class ConditionCmp extends BaseCondition{
         this.cmpType = cmpType;
     }
     @Override
-    public boolean check(BaseEvent event) {
-        Integer int1 = event.getInt(name1);
+    public boolean check(BaseTitleEvent event) {
+        Integer int1 = getInt(name1,event);
         Integer int2 = event.getInt(name2);
         if(int1 == null || int2 == null) return false;
         switch (cmpType){

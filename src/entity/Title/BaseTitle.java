@@ -1,11 +1,10 @@
 package entity.Title;
 
 import entity.Title.AllCondition.BaseCondition;
+import entity.Title.AllIntCompute.BaseIntCompute;
 import entity.Title.AllTimeCompute.BaseTimeCompute;
-import entity.Title.AllTitle.Title_MengNew;
 import net.sf.json.JSONObject;
 import servise.UserService;
-import util.Event.BaseEvent;
 import util.Event.BaseTitleEvent;
 import util.Event.EventDeal;
 
@@ -15,7 +14,6 @@ import java.util.HashMap;
 import util.Event.EventMain;
 import util.Event.Events.*;
 import util.GlobalVariables.GlobalVariables;
-import util.MyTime;
 import util.Tool;
 
 /**
@@ -27,8 +25,11 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
     private String name;
     private String des;
     private BaseCondition condition,lose_condition;
-    private BaseTimeCompute timeCompute;
+    private BaseTimeCompute timeCompute,get_timeCompute;
     private String border_color = null;
+    private String style = null;
+    private int total_jd;
+    private BaseIntCompute intCompute;
 
     protected BaseTitle(Class<T> cls) {
         super(cls);
@@ -38,23 +39,34 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
 
     public String getName(){return name;}
     public String getDes(){return des;}
-
+    public int getTotal_jd(){return total_jd;}
     @Override
     public void dealEvent(T event) {
         if(lose_condition.check(event)){
-            UserService.addTitle(event.user,getID(), Tool.now());
+            UserService.addTitle(event.user,getID(), 0,Tool.now());
         }
         if(condition.check(event)){
-            long time = timeCompute.getTime(event);
+            long time;
+            int jd = event.user.titleSet.getTitleJd(getID());
+            int to_jd = intCompute.getInt(event,jd);
+            if(to_jd >= total_jd){
+                time = get_timeCompute.getTime(event);
+            }else {
+                time = timeCompute.getTime(event);
+            }
             Timestamp timestamp;
-            if(time == -1) timestamp = null;
+            if(time <=0) timestamp = null;
             else timestamp = new Timestamp(time);
-            UserService.addTitle(event.user,getID(), timestamp);
+            UserService.addTitle(event.user,getID(),to_jd, timestamp);
         }
     }
 
     public String getBorder_color() {
         return border_color;
+    }
+
+    public String getStyle() {
+        return style;
     }
 
     /////static//////
@@ -80,15 +92,23 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
             putTitle(getTitle(jo.getJSONArray("titles").getJSONObject(i)));
         }
     }
+
+    /**
+     * 从json配置中读取称号
+     * @param jo json
+     * @return 返回称号
+     */
     public static BaseTitle getTitle(JSONObject jo){
         BaseTitle title;
         switch (jo.getString("event")){
-            case "none":title = new BaseTitle<>(BaseTitleEvent.class);break;
-            case "register": title = new BaseTitle<>(EventRegister.class); break;
-            case "judge":title = new BaseTitle<>(EventJudge.class);break;
-            case "verify":title = new BaseTitle<>(EventVerify.class);break;
-            case "rating":title = new BaseTitle<>(EventRating.class);break;
-            case "clock_in":title = new BaseTitle<>(EventClockIn.class);break;
+            case "none":        title = new BaseTitle<>(BaseTitleEvent.class);  break;
+            case "register":    title = new BaseTitle<>(EventRegister.class);   break;
+            case "judge":       title = new BaseTitle<>(EventJudge.class);      break;
+            case "verify":      title = new BaseTitle<>(EventVerify.class);     break;
+            case "rating":      title = new BaseTitle<>(EventRating.class);     break;
+            case "clock_in":    title = new BaseTitle<>(EventClockIn.class);    break;
+            case "acb":         title = new BaseTitle<>(EventAcbChg.class);     break;
+            case "rich_rank":   title = new BaseTitle<>(EventRichRank.class);   break;
             default:{
                 Tool.log("不存在"+jo.getString("event")+"事件");
                 return null;
@@ -98,9 +118,21 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
         title.name = jo.getString("name");
         title.des = jo.getString("des");
         if(jo.containsKey("border_color")) title.border_color = jo.getString("border_color");
+        if(jo.containsKey("style")) title.style = jo.getString("style");
         title.condition = BaseCondition.getCondition(jo.getJSONObject("condition"));
+        title.condition.setTitleID(title.id);
         title.lose_condition = BaseCondition.getCondition(jo.getJSONObject("lose_condition"));
-        title.timeCompute = BaseTimeCompute.getTimeCompute(jo.getJSONObject("end_time"));
+        title.lose_condition.setTitleID(title.id);
+        title.timeCompute = BaseTimeCompute.getTimeCompute(jo.get("end_time"));
+        title.timeCompute.setTitle_id(title.id);
+        if(jo.containsKey("get_end_time")){
+            title.get_timeCompute =  BaseTimeCompute.getTimeCompute(jo.get("get_end_time"));
+            title.get_timeCompute.setTitle_id(title.id);
+        }else{
+            title.get_timeCompute = title.timeCompute;
+        }
+        title.intCompute = BaseIntCompute.getIntCompute(jo.get("jd_value"));
+        title.total_jd = jo.getInt("jd");
         return title;
     }
 }
