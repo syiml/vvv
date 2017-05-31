@@ -198,6 +198,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         Problem p = Main.problems.getProblem(pid);
         problemHTML ph=new problemHTML(pid);
         SQL sql=new SQL("SELECT pid,timelimit,MenoryLimit,Int64,spj,Dis,Input,Output FROM t_problemview WHERE pid= ?",pid);
+        SQL sql1 = null;
         try {
             ResultSet s=sql.query();
             if(s.next()){
@@ -213,12 +214,11 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
                 ph.setDis(s.getString(6));
                 ph.setInput(s.getString(7));
                 ph.setOutput(s.getString(8));
-                SQL sql1=new SQL("SELECT input,output FROM t_problem_sample WHERE pid=? ORDER BY id",pid);
+                sql1 = new SQL("SELECT input,output FROM t_problem_sample WHERE pid=? ORDER BY id",pid);
                 s=sql1.query();
                 while(s.next()) {
                     ph.addSample(s.getString(1), s.getString(2));
                 }
-                sql1.close();
                 return ph;
             }else{
                 return null;
@@ -227,6 +227,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
             return null;
         }finally {
             sql.close();
+            if(sql1 != null) sql1.close();
         }
     }
     public Pair<Integer,Integer> getProblemLimit(int pid){
@@ -263,7 +264,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
             return "<tr><td>"+pid+"</td><td>"+HTML.a("Problem.jsp?pid="+pid,p.getTitle())+"</td></tr>";
         }
     }
-    public ResultSet getProblemListByTag(int tagid,int from,int num) {
+    public SQL getProblemListByTag(int tagid,int from,int num) {
         String sql = "";
         User u = Main.loginUser();
         boolean vis;
@@ -280,7 +281,7 @@ public class ProblemSQL extends BaseCache<Integer,Problem> {
         String username;
         if (u != null) username = u.getUsername();
         else username = "";
-        return new SQL(sql, username, tagid, from, num).query();
+        return new SQL(sql, username, tagid, from, num);
     }
     public void updateProblemTotals(int pid,int totalSubmit,int totalSubmitUser,int totalAc,int totalAcUser) {
         Problem p = getProblem(pid);

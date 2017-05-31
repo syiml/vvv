@@ -73,6 +73,8 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
         //ps:   pid,tpid
         //rs:   id,ruser,pid,cid,lang,submittime,result,timeused,memoryUsed,code,codelen
         //us:   username,statu,info(0未审核 1通过 -1未通过)
+        SQL sql4 = null;
+        SQL sql5 = null;
         try {
             re.next();
             //获取基础信息
@@ -99,7 +101,6 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
             }
             //读取user列表
             ResultSet ru;
-            SQL sql4;
             if(getType() == Contest_Type.TEAM_OFFICIAL) {
                 sql4 = new SQL("select * from t_register_team where cid = ?",cid);
                 ru = sql4.query();
@@ -111,18 +112,23 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
 
             ResultSet rs;
             if(!isStatusReadOut()) {
-                rs=new SQL("select id,ruser,pid,cid,lang,submittime,result,score,timeused,memoryUsed,codelen from statu where cid=?",cid).query();
+                sql5 =new SQL("select id,ruser,pid,cid,lang,submittime,result,score,timeused,memoryUsed,codelen from statu where cid=?",cid);
+                rs=sql5.query();
             }else{
-                rs=new SQL("SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,score,timeused,memoryUsed,codelen" +
+                sql5 = new SQL("SELECT id,ruser,statu.pid,statu.cid,lang,submittime,result,score,timeused,memoryUsed,codelen" +
                         " FROM statu LEFT JOIN contestproblems" +
                         " ON contestproblems.cid=? AND tpid=statu.pid" +
-                        " WHERE contestproblems.cid=? ",cid,cid).query();
+                        " WHERE contestproblems.cid=? ",cid,cid);
+                rs = sql5.query();
             }
             //创建Rank
             rank=RankSQL.getRank(this,rs);
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("没有result");
+        }finally {
+            if(sql4!=null)sql4.close();
+            if(sql5!=null)sql5.close();
         }
     }
 

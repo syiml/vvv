@@ -37,6 +37,7 @@ public class DBConnectionPool extends MyTimer {
         try {
             return DriverManager.getConnection(Main.config.sqlconnstring, Main.config.sqlusername, Main.config.sqlpassword);
         } catch (SQLException e) {
+            e.printStackTrace();
             Tool.log("===连接失败，请检查数据库是否已经启动===");
         }
         return null;

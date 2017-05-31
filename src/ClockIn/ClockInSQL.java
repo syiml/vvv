@@ -152,6 +152,8 @@ public class ClockInSQL {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            sql.close();
         }
         return "未知";
     }

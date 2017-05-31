@@ -99,8 +99,9 @@ public class UserSQL extends BaseCache<String,User> {
             return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
-        sql.close();
         return -1;
     }
 
@@ -118,13 +119,16 @@ public class UserSQL extends BaseCache<String,User> {
         if(ts == null){
             ts = new TitleSet();
         }
-        ResultSet rs = new SQL("SELECT * FROM t_title_config where username=?",username).query();
+        SQL sql = new SQL("SELECT * FROM t_title_config where username=?",username);
+        ResultSet rs = sql.query();
         try {
             if(rs.next()){
                 ts.isShow = rs.getBoolean("isShow");
                 ts.setOrder(rs.getString("config"));
             }
         } catch (SQLException e) {
+        } finally {
+            sql.close();
         }
         ts.setOrder(ts.getOrder());
         return ts;
@@ -153,8 +157,9 @@ public class UserSQL extends BaseCache<String,User> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
-        sql.close();
         return table;
     }
 

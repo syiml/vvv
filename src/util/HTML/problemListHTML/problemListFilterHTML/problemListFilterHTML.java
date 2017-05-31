@@ -3,6 +3,7 @@ package util.HTML.problemListHTML.problemListFilterHTML;
 import util.Main;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
+import util.SQL.SQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +15,12 @@ import java.util.List;
  */
 public class problemListFilterHTML {
     ResultSet rs;
+    SQL sql;
     private static int pageNum=20;
     int num=0;
     public problemListFilterHTML(int tag, int page){
-        rs= Main.problems.getProblemListByTag(tag,page*pageNum,pageNum+1);
+        sql = Main.problems.getProblemListByTag(tag,page*pageNum,pageNum+1);
+        rs = sql.query();
     }
     public boolean islast(){
         return num<=pageNum;
@@ -62,6 +65,8 @@ public class problemListFilterHTML {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            sql.close();
         }
         return table.HTML();
     }

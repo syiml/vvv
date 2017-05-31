@@ -43,6 +43,7 @@ public class TitleSet implements IBeanResultSetCreate{
         }
         if(time.before(Tool.now())){
             titles.remove(id);
+            return 0;
         }
         return value.jd;
     }
