@@ -45,6 +45,7 @@ public class date extends form {
     }
     public String toHTML() {
         t = new text(id, label);
+        t.setId(id);
         String s = "";
         s += t.toHTML();
         s += "<script>" +

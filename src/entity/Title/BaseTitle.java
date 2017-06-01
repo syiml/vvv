@@ -10,6 +10,7 @@ import util.Event.EventDeal;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import util.Event.EventMain;
 import util.Event.Events.*;
@@ -71,11 +72,11 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
 
     /////static//////
     public static void Init(){
-        titles = new HashMap<>(20);
+        titles = new TreeMap<>();
         read();
         //添加title列表
     }
-    public static HashMap<Integer,BaseTitle> titles;
+    public static TreeMap<Integer,BaseTitle> titles;
     private static void putTitle(BaseTitle ... args){
         for(BaseTitle title:args){
             titles.put(title.getID(),title);
@@ -95,8 +96,8 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
 
     /**
      * 从json配置中读取称号
-     * @param jo json
-     * @return 返回称号
+     * @param jo
+     * @return
      */
     public static BaseTitle getTitle(JSONObject jo){
         BaseTitle title;

@@ -1,7 +1,14 @@
 package util.HTML;
 
+import entity.PermissionType;
 import entity.Title.BaseTitle;
 import entity.User;
+import util.HTML.FromHTML.FormHTML;
+import util.HTML.FromHTML.check.check;
+import util.HTML.FromHTML.date.date;
+import util.HTML.FromHTML.hidden.hidden;
+import util.HTML.FromHTML.select.select;
+import util.HTML.FromHTML.text.text;
 import util.Main;
 import util.SimplePageBean;
 
@@ -30,6 +37,11 @@ public class TitleListHTML extends SimplePageBean<Integer> {
     @Override
     public int getTotalNumber() {
         return 100;
+    }
+
+    @Override
+    public String getTableClass() {
+        return "table table-hover";
     }
 
     @Override
@@ -74,20 +86,31 @@ public class TitleListHTML extends SimplePageBean<Integer> {
                 return i+1+"";
             }
             case "操作":{
-                int z = 1;
-                if(showUser.titleSet.order.containsKey(title_id)) {
-                    z = showUser.titleSet.order.get(title_id);
-                }
-                if(z==-1){
-                    return HTML.a("titleConfig.action?id="+title_id+"&type=3", "显示");
-                }else {
-                    String ret = "";
-                    if(i!=0) ret += HTML.a("titleConfig.action?type=1&id="+title_id+"&id2="+list.get(i-1), "上移");
-                    if(list.get(i+1) != -1) ret += " "+HTML.a("titleConfig.action?type=1&id="+title_id+"&id2="+list.get(i+1), "下移");
+                String _ret = "";
+                if(showUser.getUsername().equals(loginUser.getUsername())) {
+                    int z = 1;
+                    if (showUser.titleSet.order.containsKey(title_id)) {
+                        z = showUser.titleSet.order.get(title_id);
+                    }
+                    if (z == -1) {
+                        _ret += HTML.a("titleConfig.action?id=" + title_id + "&type=3", "显示");
+                    } else {
+                        String ret = "";
+                        if (i != 0)
+                            ret += HTML.a("titleConfig.action?type=1&id=" + title_id + "&id2=" + list.get(i - 1), "上移");
+                        if (list.get(i + 1) != -1)
+                            ret += " " + HTML.a("titleConfig.action?type=1&id=" + title_id + "&id2=" + list.get(i + 1), "下移");
 
-                    return ret + " "+HTML.a("titleConfig.action?id="+title_id+"&type=2", "隐藏")+" "+
-                            HTML.a("titleConfig.action?id="+title_id+"&type=4", "置顶");
+                        _ret += ret + " " + HTML.a("titleConfig.action?id=" + title_id + "&type=2", "隐藏") + " " +
+                                HTML.a("titleConfig.action?id=" + title_id + "&type=4", "置顶");
+                    }
                 }
+                if(loginUser.getPermission().havePermissions(PermissionType.titleAdmin)){
+                    if(showUser.titleSet.haveTitle(title_id)){
+                        _ret += " "+HTML.a("titleConfig.action?type=5&id="+title_id,"删除");
+                    }
+                }
+                return _ret;
             }
             case "预览":{
                 return "<img src='pic/Title/"+title_id+".png' style='height:30px'>";
@@ -113,6 +136,35 @@ public class TitleListHTML extends SimplePageBean<Integer> {
 
     @Override
     public String rightForm() {
+        if(loginUser.getPermission().havePermissions(PermissionType.titleAdmin)){
+            FormHTML f = new FormHTML();
+            f.setType(1);
+
+            select f3=new select("id","称号");
+            f3.setId("id");
+            f3.setType(1);
+            for(Integer title_id:BaseTitle.titles.keySet()){
+                BaseTitle title = BaseTitle.getTitleByID(title_id);
+                f3.add(title_id, title_id+" - "+title.getName(),"");
+            }
+            f.addForm(f3);
+
+            text ki=new text("jd","进度");
+            ki.setType(1);
+            f.addForm(ki);
+
+            date d = new date("time","过期时间");
+
+            f.addForm(d);
+
+            check c = new check("isForever","是否永久");
+            f.addForm(c);
+
+            f.setSubmitText("新增");
+            f.addForm(new hidden("type","6"));
+            f.setAction("titleConfig.action");
+            return f.toHTML();
+        }
         return "";
     }
 }

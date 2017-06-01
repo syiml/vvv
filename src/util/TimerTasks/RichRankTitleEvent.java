@@ -22,7 +22,7 @@ public class RichRankTitleEvent extends MyTimer {
 
     @Override
     public void getTimer() throws Exception {
-        setEveryDay(0,8,0);
+        setEveryDay(0,0,0);
         new Timer().scheduleAtFixedRate(this, date, period);
     }
 }
