@@ -31,6 +31,7 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
     private String style = null;
     private int total_jd;
     private BaseIntCompute intCompute;
+    private int part;
 
     protected BaseTitle(Class<T> cls) {
         super(cls);
@@ -112,6 +113,7 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
             case "rich_rank":   title = new BaseTitle<>(EventRichRank.class);   break;
             case "award":       title = new BaseTitle<>(EventAward.class);      break;
             case "rating_rank": title = new BaseTitle<>(EventRatingRank.class); break;
+            case "shop_buy":    title = new BaseTitle<>(EventShopBuy.class);    break;
             default:{
                 Tool.log("不存在"+jo.getString("event")+"事件");
                 return null;
@@ -128,6 +130,7 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
         title.lose_condition.setTitleID(title.id);
         title.timeCompute = BaseTimeCompute.getTimeCompute(jo.get("end_time"));
         title.timeCompute.setTitle_id(title.id);
+        title.part = jo.getString("part").equals("n")?1:0;
         if(jo.containsKey("get_end_time")){
             title.get_timeCompute =  BaseTimeCompute.getTimeCompute(jo.get("get_end_time"));
             title.get_timeCompute.setTitle_id(title.id);
@@ -137,5 +140,9 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
         title.intCompute = BaseIntCompute.getIntCompute(jo.get("jd_value"));
         title.total_jd = jo.getInt("jd");
         return title;
+    }
+
+    public int getPart() {
+        return part;
     }
 }

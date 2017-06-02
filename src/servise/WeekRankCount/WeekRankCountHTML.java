@@ -145,7 +145,7 @@ public class WeekRankCountHTML extends pageBean {
             return getRankShow(weekRank[0].get(currRecord.username),weekRank[1].get(currRecord.username));
         }
         if(colname.equals("用户名")){
-            return Main.users.getUser(currRecord.username).getUsernameHTML();
+            return Main.users.getUser(currRecord.username).getTitleAndNick();
         }
         if(colname.equals("积分")){
             int lastScore;

@@ -135,7 +135,7 @@ public class contestListHTML extends pageBean{
             if(createUser == null){
                 return "";
             }else{
-                return createUser.getUsernameHTML();
+                return createUser.getTitleAndNick();
             }
         }
         return "=ERROR=";

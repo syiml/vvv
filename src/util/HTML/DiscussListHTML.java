@@ -119,9 +119,9 @@ public class DiscussListHTML extends pageBean {
             }else return "";
         }else if(colname.equals(AUTHOR)){
             if(d.isShowauthor()){
-                return Main.users.getUser(d.getUsername()).getUsernameHTML();
+                return Main.users.getUser(d.getUsername()).getTitleAndNick();
             }else if(admin){
-                return "<em class='small'>"+Main.users.getUser(d.getUsername()).getUsernameHTML()+"</em>";
+                return "<em class='small'>"+Main.users.getUser(d.getUsername()).getTitleAndNick()+"</em>";
             }else return "";
         }else if(colname.equals(REPLY)){
             return d.getReplyNum() +"";

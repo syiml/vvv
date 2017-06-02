@@ -125,6 +125,8 @@ public class UserSQL extends BaseCache<String,User> {
             if(rs.next()){
                 ts.isShow = rs.getBoolean("isShow");
                 ts.setOrder(rs.getString("config"));
+                ts.n = rs.getInt("n");
+                ts.adj = rs.getInt("adj");
             }
         } catch (SQLException e) {
         } finally {
@@ -136,9 +138,9 @@ public class UserSQL extends BaseCache<String,User> {
     public void addTitle(String username,int id,int jd,Timestamp endTime){
         new SQL("REPLACE INTO t_title VALUES(?,?,?,?)",username,id,jd,endTime).update();
     }
-    public void setTitleConfig(String username,boolean isShow,String config)
+    public void setTitleConfig(String username,boolean isShow,String config,int adj,int n)
     {
-        new SQL("REPLACE INTO t_title_config VALUES(?,?,?)",username,isShow,config).update();
+        new SQL("REPLACE INTO t_title_config VALUES(?,?,?,?,?)",username,isShow,config,adj,n).update();
     }
 
     public List<List<String>> getPermissionTable(){
@@ -268,7 +270,7 @@ public class UserSQL extends BaseCache<String,User> {
                         s.add(rs.getString("cla"));
                         s.add(rs.getString("no"));
                     }
-                    s.add(rs.getString("nick"));
+                    s.add(Main.users.getUser(rs.getString("username")).getTitleAndNick());
                     s.add(User.ratingToHTML(User.getShowRating(rs.getInt("ratingnum"), rs.getInt("rating"))));
                 }
                 if(rs.getInt("statu")==3){

@@ -116,7 +116,7 @@ public class AdminUserListHTML extends pageBean {
             return HTML.a("admin.jsp?page=UserAdmin&user="+s.getUsername(),s.getUsernameHTMLNoA());
         }
         if(colname.equals("name")){
-            return s.getName();
+            return s.getTitleAndNick();
         }
         if(colname.equals("nick")){
             return s.getNick();

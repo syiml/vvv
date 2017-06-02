@@ -7,6 +7,8 @@ import entity.Enmu.AcbOrderType;
 import entity.Mall.Goods;
 import entity.Mall.Order;
 import entity.User;
+import util.Event.EventMain;
+import util.Event.Events.EventShopBuy;
 import util.Main;
 import util.MainResult;
 import util.Tool;
@@ -45,6 +47,8 @@ public class MallMain {
         if(Main.users.subACB(u.getUsername(),goods.getAcb(),AcbOrderType.MALL_BUY,"订单号："+orderId)<=0) return MainResult.FAIL;
         //减库存
         goods.setStock(goods.getStock()-1);
+
+        EventMain.triggerEvent(new EventShopBuy(u,goodsId));
         if(goodsSQL.editGoods(goods)<=0) return MainResult.FAIL;
         return MainResult.SUCCESS;
     }

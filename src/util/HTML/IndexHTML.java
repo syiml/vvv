@@ -26,7 +26,7 @@ public class IndexHTML {
             //if(i<=2){
                 //row.add(HTML.headImg(u.getUsername(),0)+u.getUsernameHTML());
             //}else{
-                row.add(u.getUsernameHTML());
+                row.add(u.getTitleAndNick());
             //}
             row.add(User.ratingToHTML(u.getShowRating()));
             table.addRow(row);
@@ -45,7 +45,7 @@ public class IndexHTML {
             List<String> row=new ArrayList<String>();
             row.add(k + "");
             k++;
-            row.add(u.getUsernameHTML());
+            row.add(u.getTitleAndNick());
             row.add(u.getAcb()+"");
             table.addRow(row);
         }
@@ -62,7 +62,7 @@ public class IndexHTML {
         for(User u:list){
             List<String> row=new ArrayList<String>();
             row.add(k++ +"");
-            row.add(u.getUsernameHTML());
+            row.add(u.getTitleAndNick());
             row.add(u.getAcnum()+"");
             table.addRow(row);
         }

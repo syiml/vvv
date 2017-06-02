@@ -44,10 +44,10 @@ public class ProblemInfo {
         List<String[]> list=Main.status.getProblemShortCodeTop10(pid);
         TableHTML table=new TableHTML();
         table.setClass("table");
-        table.addColname("user","nick","codelen");
+        table.addColname(/*"user",*/"nick","codelen");
         for(String[] row:list){
             User u=Main.users.getUser(row[0]);
-            table.addRow(u.getUsernameHTML(),u.getNick(),HTML.aNew("Status.jsp?all=1&user="+row[0]+"&pid="+pid+"&result=1",row[1]));
+            table.addRow(/*u.getUsernameHTML(),*/u.getTitleAndNick(),HTML.aNew("Status.jsp?all=1&user="+row[0]+"&pid="+pid+"&result=1",row[1]));
         }
         return HTML.panelnobody("最短代码TOP10", "info", table.HTML());
     }

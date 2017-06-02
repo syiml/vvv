@@ -48,7 +48,7 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
     String phone;//联系方式
     Timestamp graduationTime;//毕业时间
     private Timestamp catch_time;
-    public TitleSet titleSet;
+    public TitleSet titleSet = null;
 
     public User(){}
 
@@ -214,6 +214,20 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
 
     public String getUsernameAndNickHTML(){
         return HTML.a("UserInfo.jsp?user="+username,getUsernameHTMLNoA())+"("+nick+")";
+    }
+
+    public String getTitleAndNickNoA(){
+        if(titleSet == null){
+            return Main.users.getUser(username).getTitleAndNickNoA();
+        }
+        return "<font class='title'>"+titleSet.getNickTitle()+"</font>"+HTML.textb(nick, ratingColor(getShowRating())) + getIcon();
+    }
+    public String getTitleAndNick(){
+        if(titleSet == null){
+            return Main.users.getUser(username).getTitleAndNick();
+        }
+        return "<font class='title'>"+titleSet.getNickTitle()+"</font>"+HTML.a("UserInfo.jsp?user="+username,HTML.textb(nick, ratingColor(getShowRating())) + getIcon());
+        //return HTML.a("UserInfo.jsp?user="+username,getTitleAndNickNoA());
     }
 
     public boolean canRegisterOfficalContest(){

@@ -85,7 +85,7 @@ public class RegisterUser implements IBeanResultSetCreate {
     public String getShowNick(){
         User user = Main.users.getUser(username);
         if(user!=null) {
-            return (user.getNick());
+            return (user.getTitleAndNick());
         }else{
            return (HTML.textb("未注册","red"));
         }

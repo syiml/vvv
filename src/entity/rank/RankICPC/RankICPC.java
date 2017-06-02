@@ -95,7 +95,7 @@ public class RankICPC extends Rank<user> {
                 _user.showUsername = (_user.username);
             }
             if(user!=null) {
-                _user.showNick =(user.getNick());
+                _user.showNick =(user.getTitleAndNick());
             }else{
                 _user.showNick =(HTML.textb("未注册","red"));
             }

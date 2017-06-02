@@ -134,7 +134,7 @@ public class UserListHTML extends pageBean {
             return s.getName();
         }
         if(colname.equals("nick")){
-            return s.getNick();
+            return s.getTitleAndNick();
         }
         if(colname.equals("motto")){
             return s.getMotto();

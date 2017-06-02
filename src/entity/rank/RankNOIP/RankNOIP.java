@@ -68,7 +68,7 @@ public class RankNOIP extends Rank<user> {
             User user = Main.users.getUser(_user.username);
             if(user!=null){
                 _user.showUsername = user.getUsernameHTML();
-                _user.showNick = user.getNick();
+                _user.showNick = user.getTitleAndNick();
             }else{
                 _user.showUsername = (_user.username);
                 _user.showNick =(HTML.textb("未注册","red"));

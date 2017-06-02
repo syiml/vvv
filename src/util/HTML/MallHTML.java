@@ -47,7 +47,7 @@ public class MallHTML {
         for (Order order : orders) {
             List<String> row = new ArrayList<>();
             User u = Main.users.getUser(order.getUsername());
-            row.add(u.getUsernameHTML());
+            row.add(u.getTitleAndNick());
             //row.add(order.getTime() + "");
             tableHTML.addRow(row);
         }

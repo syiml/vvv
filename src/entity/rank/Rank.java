@@ -81,7 +81,7 @@ public abstract class Rank<user extends RankBaseUser> {
         Collections.sort(list);
         tableHTML = new TableHTML();
         tableHTML.setClass("table table-bordered table-hover table-condensed");
-        tableHTML.addColname("Rank","User","Nick");
+        tableHTML.addColname("Rank"/*,"User"*/,"Nick");
         extraTableCol = getExtraTableCol();
         tableHTML.addColname(extraTableCol);
         int pnum= contest.getProblemNum();
@@ -147,7 +147,7 @@ public abstract class Rank<user extends RankBaseUser> {
             if(loginUserName!=null&&us.username.equals(loginUserName)){
                 tableHTML.addCl(rowNumber,1,"info");
             }
-            row.add(us.showUsername);
+            //row.add(us.showUsername);
             row.add(us.showNick);
             for (String anExtraTableCol : extraTableCol) {
                 row.add(getCellByHead(rowNumber,us, anExtraTableCol));
@@ -171,7 +171,7 @@ public abstract class Rank<user extends RankBaseUser> {
         return "";
     }
     protected void addProblemCl(int row,int pid,String cla){
-        tableHTML.addCl(row,pid+3+extraTableCol.size(),cla);
+        tableHTML.addCl(row,pid+2+extraTableCol.size(),cla);
     }
     protected void addExColCl(int row,int col,String cla){
         tableHTML.addCl(row,3+col,cla);

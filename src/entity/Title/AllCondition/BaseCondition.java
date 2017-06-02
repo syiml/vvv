@@ -48,10 +48,8 @@ public class BaseCondition {
             case "true":{
                 return new BaseCondition(true);
             }
-            case "have_condition_check":{
-                if(jo.get("value") instanceof Integer)
-                    return new ConditionHaveTitleCheck(jo.getInt("value"));
-                else return  new ConditionHaveTitleCheck(jo.getJSONArray("value").getInt(0));
+            case "have_title_check":{
+                return new ConditionHaveTitleCheck(jo.getJSONArray("value").getInt(0),jo.getJSONArray("value").getBoolean(1));
             }
         }
         return new BaseCondition(false);

@@ -330,10 +330,10 @@ public class ClockInHTML {
 
         TableHTML tableHTML = new TableHTML();
         tableHTML.setClass("table table-striped table-hover table-condensed");
-        tableHTML.addColname("用户","时间","ip");
+        tableHTML.addColname("用户","昵称","时间","ip");
         for(SomeOptRecord record : records){
             User u = Main.users.getUser(record.getUsername());
-            tableHTML.addRow(u.getUsernameHTML(),new SimpleDateFormat("yyyy-MM-dd HH:mm").format(record.getTime()),record.getData());
+            tableHTML.addRow(u.getUsernameHTML(),u.getTitleAndNick(),new SimpleDateFormat("yyyy-MM-dd HH:mm").format(record.getTime()),record.getData());
         }
         return HTML.panelnobody(r_year+"-"+r_month+"-"+r_day+"签到记录",tableHTML.HTML());
     }
@@ -405,8 +405,8 @@ public class ClockInHTML {
             tableHTML.addRow(rows);
         }
         return HTML.row(
-                HTML.col(6,HTML.panelnobody("我的签到记录",HTML.div("panel-body","style='padding:5px'",Head(l_year,l_month,r_year,r_month,r_day))+tableHTML.HTML()))+
-                HTML.col(6,record(r_year,r_month,r_day))
+                HTML.col(5,HTML.panelnobody("我的签到记录",HTML.div("panel-body","style='padding:5px'",Head(l_year,l_month,r_year,r_month,r_day))+tableHTML.HTML()))+
+                HTML.col(7,record(r_year,r_month,r_day))
         );
     }
 }

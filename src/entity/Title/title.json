@@ -7,6 +7,7 @@
                     "des":"注册30天内获得",
                     "event":"register",
                     "jd":1,
+                    "part":"n",
                     "jd_value":1,
                     "condition":{"type":"true"},
                     "lose_condition":{},
@@ -17,6 +18,7 @@
                     "name":"退役",
                     "des":"退役后获得",
                     "event":"verify",
+                    "part":"adj",
                     "jd":1,
                     "jd_value":1,
                     "condition":{
@@ -34,6 +36,7 @@
                     "name":"集训队员",
                     "des":"认证为集训队员后获得",
                     "event":"verify",
+                    "part":"n",
                     "jd":1,
                     "jd_value":1,
                     "condition":{
@@ -50,6 +53,7 @@
                     "id":4,
                     "name":"周赛举办者",
                     "des":"举办过一场以上的周赛",
+                    "part":"n",
                     "event":"none",
                     "jd":1,
                     "jd_value":1,
@@ -61,6 +65,7 @@
                     "id":1000,
                     "name":"坚持不懈",
                     "des":"连续3天每天至少AC一题。中断一天后称号失去",
+                    "part":"adj",
                     "event":"judge",
                     "jd":3,
                     "jd_value":"++",
@@ -84,6 +89,7 @@
                     "id":1001,
                     "name":"锲而不舍",
                     "des":"连续7天每天至少AC一题。中断一天后称号失去",
+                    "part":"adj",
                     "event":"judge",
                     "jd":7,
                     "jd_value":"++",
@@ -107,6 +113,7 @@
                     "id":1002,
                     "name":"滴水穿石",
                     "des":"连续30天每天至少AC一题。中断一天后称号失去",
+                    "part":"adj",
                     "event":"judge",
                     "jd":30,
                     "jd_value":"++",
@@ -130,6 +137,7 @@
                     "id":1020,
                     "name":"一步登天",
                     "des":"一天内AC30题",
+                    "part":"adj",
                     "event":"judge",
                     "jd":30,
                     "jd_value":"++",
@@ -145,6 +153,7 @@
                     "id":1030,
                     "name":"大佬",
                     "des":"AC 1000题之后获得",
+                    "part":"n",
                     "event":"judge",
                     "jd":1000,
                     "jd_value":"acnum",
@@ -158,6 +167,7 @@
                 {
                     "id":"1040",
                     "name":"夜猫子",
+                    "part":"n",
                     "des":"在半夜2点到5点之间AC一题。获得称号后7天失效",
                     "event":"judge",
                     "jd":1,
@@ -184,8 +194,209 @@
                     "end_time":["now_add",7,"day"]
                 },
                 {
+                    "id":1010,
+                    "name":"闭关修炼",
+                    "part":"adj",
+                    "des":"在商城中购买、开启“闭关修炼”挑战线，持续七天",
+                    "event":"shop_buy",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["goods_id","==","14"]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["acnum",">=","200"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",7,"day"]
+                },
+                {
+                    "id":1011,
+                    "name":"渐入佳境",
+                    "des":"在有“闭关修炼”称号的时间内AC 5题,获得后时间为“闭关修炼”的结束时间加七天",
+                    "part":"adj",
+                    "event":"judge",
+                    "jd":5,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==","0"]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1010,true]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["end_time_of_some_title",1010],
+                    "get_end_time":["time_compute",["end_time_of_some_title",1010],7,"day"]
+                },
+                {
+                    "id":1012,
+                    "name":"遗形藏志",
+                    "des":"在有“渐入佳境”称号的期间内AC 10题，获得后时间为“渐入佳境”的结束时间加七天",
+                    "part":"adj",
+                    "event":"judge",
+                    "jd":10,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==","0"]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1011,true]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["end_time_of_some_title",1011],
+                    "get_end_time":["time_compute",["end_time_of_some_title",1011],7,"day"]
+                },
+                {
+                    "id":1013,
+                    "name":"如火纯青",
+                    "des":"在有“遗形藏志”称号的期间内AC 10题，获得后时间为“遗形藏志”的结束时间加七天",
+                    "part":"adj",
+                    "event":"judge",
+                    "jd":10,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==","0"]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1012,true]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["end_time_of_some_title",1012],
+                    "get_end_time":["time_compute",["end_time_of_some_title",1012],7,"day"]
+                },
+                {
+                    "id":1014,
+                    "name":"登峰造极",
+                    "des":"在有“如火纯青”称号的期间内AC 10题，获得后时间为“如火纯青”的结束时间加七天",
+                    "part":"adj",
+                    "event":"judge",
+                    "jd":10,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==","0"]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1013,true]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["end_time_of_some_title",1013],
+                    "get_end_time":["time_compute",["end_time_of_some_title",1013],7,"day"]
+                },
+                {
+                    "id":1015,
+                    "name":"脱胎换骨",
+                    "des":"在有“登峰造极”称号的期间内AC 15题，获得后时间为“登峰造极”的结束时间加七天",
+                    "part":"adj",
+                    "event":"judge",
+                    "jd":15,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==","0"]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1014,true]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["end_time_of_some_title",1014],
+                    "get_end_time":["time_compute",["end_time_of_some_title",1014],7,"day"]
+                },
+                {
+                    "id":1016,
+                    "name":"超凡脱俗",
+                    "des":"在有“脱胎换骨”称号的期间内AC 20题，获得后时间为“脱胎换骨”的结束时间加七天",
+                    "part":"adj",
+                    "event":"judge",
+                    "jd":20,
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==","0"]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1015,true]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["end_time_of_some_title",1015],
+                    "get_end_time":["time_compute",["end_time_of_some_title",1015],7,"day"]
+                },
+                {
+                    "id":1017,
+                    "name":"走火入魔",
+                    "des":"在有“超凡脱俗”称号的期间内AC 30题。永久",
+                    "part":"adj",
+                    "event":"judge",
+                    "jd":30,
+                    "border_color":"#7a0045",
+                    "jd_value":"++",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["is_repeat","==","0"]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1016,true]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["end_time_of_some_title",1016],
+                    "get_end_time":"forever"
+                },
+                {
                     "id":"1100",
                     "name":"签到狂魔Lv1",
+                    "part":"n",
                     "des":"累计签到50次",
                     "event":"clock_in",
                     "jd":50,
@@ -199,6 +410,7 @@
                 {
                     "id":"1101",
                     "name":"签到狂魔Lv2",
+                    "part":"n",
                     "des":"累计签到100次",
                     "event":"clock_in",
                     "jd":100,
@@ -212,6 +424,7 @@
                 {
                     "id":"1102",
                     "name":"签到狂魔Lv3",
+                    "part":"n",
                     "des":"累计签到200次",
                     "event":"clock_in",
                     "jd":200,
@@ -226,6 +439,7 @@
                     "id":"1103",
                     "name":"签到狂魔Lv4",
                     "des":"累计签到365次",
+                    "part":"n",
                     "event":"clock_in",
                     "jd":365,
                     "jd_value":"++",
@@ -239,6 +453,7 @@
                     "id":"1104",
                     "name":"签到狂魔Lv5",
                     "des":"累计签到1000次",
+                    "part":"n",
                     "event":"clock_in",
                     "jd":1000,
                     "jd_value":"++",
@@ -252,6 +467,7 @@
                     "id":1200,
                     "name":"参赛达人",
                     "des":"参加过20场rating赛",
+                    "part":"n",
                     "jd":20,
                     "jd_value":"rating_num",
                     "event":"rating",
@@ -265,6 +481,7 @@
                     "id":1220,
                     "name":"东方不败",
                     "des":"连续3次rating赛中获得第一，获得称号后，最多保留30天(期间再次获得第一将会延期)，有一次没有获得第一则失去该称号",
+                    "part":"n",
                     "event":"rating",
                     "jd":3,
                     "jd_value":"++",
@@ -283,23 +500,7 @@
                     "id":1221,
                     "name":"孤独求败",
                     "des":"连续5次rating赛中获得第一，获得称号后，最多保留30天(期间再次获得第一将会延期)，有一次没有获得第一则失去该称号",
-                    "event":"rating",
-                    "jd":5,
-                    "jd_value":"++",
-                    "condition":{
-                        "type":"cmp",
-                        "value":["rank","==","1"]
-                    },
-                    "lose_condition":{
-                        "type":"cmp",
-                        "value":["rank","!=","1"]
-                    },
-                    "end_time":["now_add",30,"day"]
-                },
-                {
-                    "id":1221,
-                    "name":"孤独求败",
-                    "des":"连续5次rating赛中获得第一，获得称号后，最多保留30天(期间再次获得第一将会延期)，有一次没有获得第一则失去该称号",
+                    "part":"n",
                     "event":"rating",
                     "jd":5,
                     "jd_value":"++",
@@ -315,8 +516,9 @@
                 },
                 {
                     "id":1230,
-                    "name":"Dominating",
+                    "name":"君临天下",
                     "des":"获得5次rating赛的第一",
+                    "part":"adj",
                     "event":"rating",
                     "jd":5,
                     "jd_value":"++",
@@ -330,8 +532,9 @@
                 },
                 {
                     "id":1231,
-                    "name":"Unstoppable",
+                    "name":"无人能挡",
                     "des":"获得10次rating赛的第一",
+                    "part":"adj",
                     "event":"rating",
                     "jd":10,
                     "jd_value":"++",
@@ -345,8 +548,9 @@
                 },
                 {
                     "id":1232,
-                    "name":"GodLike",
+                    "name":"如神一般",
                     "des":"获得20次rating赛的第一",
+                    "part":"adj",
                     "event":"rating",
                     "jd":20,
                     "jd_value":"++",
@@ -362,6 +566,7 @@
                     "id":1300,
                     "name":"万元户",
                     "des":"ACB达到一万",
+                    "part":"n",
                     "event":"acb",
                     "jd":10000,
                     "jd_value":"acb",
@@ -374,6 +579,7 @@
                     "id":1320,
                     "name":"首富",
                     "des":"ACB富豪榜排名第一（每日12点更新）",
+                    "part":"n",
                     "event":"rich_rank",
                     "jd":1,
                     "jd_value":"1",
@@ -388,6 +594,7 @@
                 {
                     "id":1330,
                     "name":"天下无敌",
+                    "part":"adj",
                     "style":"border-color:#ed008c",
                     "des":"rating榜第一（每日更新）",
                     "event":"rating_rank",
@@ -403,6 +610,7 @@
                 {
                     "id":2000,
                     "name":"打铁匠",
+                    "part":"n",
                     "des":"区域赛打铁",
                     "event":"award",
                     "jd":1,
@@ -440,6 +648,7 @@
                     "id":2001,
                     "name":"铜牌渣渣",
                     "des":"在区域赛获得铜牌",
+                    "part":"n",
                     "event":"award",
                     "jd":1,
                     "jd_value":"1",
@@ -477,6 +686,7 @@
                     "id":2002,
                     "name":"银牌选手",
                     "des":"在区域赛获得银牌",
+                    "part":"n",
                     "event":"award",
                     "jd":1,
                     "jd_value":"1",
@@ -514,6 +724,7 @@
                     "id":2003,
                     "name":"金牌大佬",
                     "des":"在区域赛获得金牌",
+                    "part":"n",
                     "event":"award",
                     "jd":1,
                     "jd_value":"1",
@@ -551,6 +762,7 @@
                     "id":2010,
                     "name":"省赛铜牌",
                     "des":"在省赛中获得铜牌",
+                    "part":"n",
                     "event":"award",
                     "jd":1,
                     "jd_value":"1",
@@ -573,6 +785,7 @@
                 {
                     "id":2011,
                     "name":"省赛银牌",
+                    "part":"n",
                     "des":"在省赛中获得银牌",
                     "event":"award",
                     "jd":1,
@@ -597,6 +810,7 @@
                     "id":2012,
                     "name":"省赛金牌",
                     "des":"在省赛中获得金牌",
+                    "part":"n",
                     "event":"award",
                     "jd":1,
                     "jd_value":"1",
@@ -620,6 +834,7 @@
                     "id":9000,
                     "name":"正牌管理员",
                     "des":"admin专有",
+                    "part":"n",
                     "event":"none",
                     "jd":1,
                     "jd_value":1,
@@ -632,6 +847,7 @@
                     "name":"开发团成员",
                     "des":"为OJ的开发做出杰出贡献的人可以获得",
                     "event":"none",
+                    "part":"n",
                     "jd":1,
                     "jd_value":1,
                     "condition":{},

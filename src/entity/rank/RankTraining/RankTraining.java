@@ -100,7 +100,7 @@ public class RankTraining extends Rank<user> {
             u.init(s.getUser(),1,pnum);
             User us = Main.users.getUser(s.getUser());
             u.showUsername = us.getUsernameHTML();
-            u.showNick = us.getNick();
+            u.showNick = us.getTitleAndNick();
             this.list.add(u);
             this.list.get(j).addres(c.getcpid(s.getPid()),s.getResult(),s.getCodelen());
         }

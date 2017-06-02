@@ -332,3 +332,6 @@ pre .sample{
     white-space: nowrap;
     overflow: hidden;
 }
+.title{
+    /*text-shadow: 1px 1px 0.2em rgb(0, 0, 0);*/
+}

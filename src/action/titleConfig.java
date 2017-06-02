@@ -21,6 +21,7 @@ public class titleConfig extends BaseAction {
     private String time;
     private String isForever;
     private String username;
+    private int n,adj;
 
     public String go(){
         User u = Main.loginUser();
@@ -50,8 +51,12 @@ public class titleConfig extends BaseAction {
                     UserService.addTitle(Main.users.getUser(username), id, jd, Tool.getTimestamp(time,"0","0"));
                 }
                 break;
+            case 7:
+                u.titleSet.adj = adj;
+                u.titleSet.n = n;
+                break;
         }
-        Main.users.setTitleConfig(u.getUsername(),u.titleSet.isShow,u.titleSet.getOrder());
+        Main.users.setTitleConfig(u.getUsername(),u.titleSet.isShow,u.titleSet.getOrder(),u.titleSet.adj,u.titleSet.n);
         return SUCCESS;
     }
 
@@ -105,6 +110,22 @@ public class titleConfig extends BaseAction {
 
     public String getUsername() {
         return username;
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public int getAdj() {
+        return adj;
+    }
+
+    public void setAdj(int adj) {
+        this.adj = adj;
     }
 
     public void setUsername(String username) {

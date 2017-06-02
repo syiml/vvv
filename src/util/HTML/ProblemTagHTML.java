@@ -16,7 +16,7 @@ import java.util.*;
  * Created by Syiml on 2015/7/24 0024.
  */
 public class ProblemTagHTML {
-    public static int ProblemTagPageNum=20;
+    public static int ProblemTagPageNum=40;
     public static String ProblemTag(int pid){
         List<ProblemTagRecord> list = ProblemTagSQL.getProblemTags(pid);
         if(list.size()==0) return HTML.div("panel-body","暂无标签");
@@ -127,7 +127,7 @@ public class ProblemTagHTML {
        TableHTML table=new TableHTML();
        table.setClass("table");
        List<ProblemTagRecord> list=ProblemTagSQL.getProblemTags(pid,page*ProblemTagPageNum,ProblemTagPageNum+1);
-       table.addColname("user", "nick", "tag", "#");
+       table.addColname(/*"user",*/ "nick", "tag", "#");
        int size=list.size();
        if(size==ProblemTagPageNum+1){
            size=ProblemTagPageNum;
@@ -135,8 +135,8 @@ public class ProblemTagHTML {
        for(int i=0;i<size;i++){
            List<String> row=new ArrayList<String>();
            User u=Main.users.getUser(list.get(i).getUsername());
-           row.add(u.getUsernameHTML());
-           row.add(u.getNick());
+           //row.add(u.getUsernameHTML());
+           row.add(u.getTitleAndNick());
            row.add(ProblemTagSQL.get(list.get(i).getTagid()).getName());
            row.add(HTML.a("Status.jsp?all=1&user="+list.get(i).getUsername()+"&pid="+pid,list.get(i).getRating()-500+""));
            table.addRow(row);

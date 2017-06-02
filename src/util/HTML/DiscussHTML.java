@@ -28,7 +28,7 @@ public class DiscussHTML {
         String s="";
         if(d.isShowtime() || d.isShowauthor()){
             s+="bulid";
-            if(d.isShowauthor()) s+=" by "+ Main.users.getUser(d.getUsername()).getUsernameHTML();
+            if(d.isShowauthor()) s+=" by "+ Main.users.getUser(d.getUsername()).getTitleAndNick();
             if(d.isShowtime()) s+=" at "+ d.getTime().toString().substring(0,16);
         }
         s+=" "+HTML.a("Discuss.jsp?id="+ d.getId(),"<span class='badge'>→</span>");
@@ -242,7 +242,7 @@ public class DiscussHTML {
             admin=loginuser.getPermission().getAddDiscuss();
         }
         User u=Main.users.getUser(r.getUsername());
-        String title="<span class='badge'>"+ r.getRid() +"</span> reply by "+u.getUsernameHTML()+" at "+ r.getTime().toString().substring(0,16);
+        String title="<span class='badge'>"+ r.getRid() +"</span> reply by "+u.getTitleAndNick()+" at "+ r.getTime().toString().substring(0,16);
         if(!r.isVisiable()){
             if(!(admin || (loginuser!=null&&loginuser.getUsername().equals(r.getUsername())))){
                 title="<span class='badge'>"+ r.getRid() +"</span>";
@@ -374,7 +374,7 @@ public class DiscussHTML {
         String s="";
         User lz = Main.users.getUser(d.getUsername());
         if(d.isShowtime() || d.isShowauthor()) s+="bulid";
-        if(d.isShowauthor()) s+=" by "+lz.getUsernameHTML();
+        if(d.isShowauthor()) s+=" by "+lz.getTitleAndNick();
         if(d.isShowtime()) s+=" at "+ d.getTime().toString().substring(0,16);
         User u=Main.loginUser();
 //        System.out.print(u);

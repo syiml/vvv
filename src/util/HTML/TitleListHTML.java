@@ -136,6 +136,43 @@ public class TitleListHTML extends SimplePageBean<Integer> {
 
     @Override
     public String rightForm() {
+        String res = "";
+        if(loginUser.getUsername().equals(showUser.getUsername())) {
+            FormHTML ff = new FormHTML();
+            ff.setType(1);
+            select adj_se = new select("adj", "昵称前的称号显示");
+            adj_se.setId("adj");
+            adj_se.add(-1, "无");
+            for (BaseTitle title : BaseTitle.titles.values()) {
+                if (title.getPart() == 0 && showUser.titleSet.haveTitle(title.getID())) {
+                    adj_se.add(title.getID(), title.getName());
+                }
+            }
+            adj_se.setValue(showUser.titleSet.adj + "");
+            select n_se = new select("n", "的");
+            adj_se.setType(1);
+            n_se.setId("n");
+            n_se.add(-1, "无");
+            n_se.setType(1);
+            for (BaseTitle title : BaseTitle.titles.values()) {
+                if (title.getPart() == 1 && showUser.titleSet.haveTitle(title.getID())) {
+                    n_se.add(title.getID(), title.getName());
+                }
+            }
+            n_se.setValue(showUser.titleSet.n + "");
+            ff.addForm(new hidden("type","7"));
+            ff.setAction("titleConfig.action");
+            ff.addForm(adj_se, n_se);
+            ff.setType(1);
+            ff.setSubmitText("确定");
+            res += ff.toHTML();
+        }
+
+        return res;
+    }
+
+    @Override
+    public String head() {
         if(loginUser.getPermission().havePermissions(PermissionType.titleAdmin)){
             FormHTML f = new FormHTML();
             f.setType(1);
@@ -164,8 +201,8 @@ public class TitleListHTML extends SimplePageBean<Integer> {
             f.addForm(new hidden("type","6"));
             f.addForm(new hidden("username",showUser.getUsername()));
             f.setAction("titleConfig.action");
-            return f.toHTML();
+            return "<div class='panel-body' style=\"padding:5px\">"+HTML.floatRight(f.toHTML())+"</div>" + super.head();
         }
-        return "";
+        return super.head();
     }
 }

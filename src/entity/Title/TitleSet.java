@@ -19,9 +19,12 @@ public class TitleSet implements IBeanResultSetCreate{
 
     public boolean isShow = true;
 
+    public int adj=-1,n=-1;//展示称号 id
+
     public TitleSet(){
         titles = new HashMap<>();
         order = new HashMap<>();
+        adj=n=-1;
     }
 
     public synchronized void addTitle(Integer id,int jd,Timestamp time){
@@ -146,5 +149,21 @@ public class TitleSet implements IBeanResultSetCreate{
     public synchronized void hide(int i){
         order.put(i,-1);
         setOrder(getOrder());
+    }
+    public String getNickTitle(){
+        String ret = "";
+        if(adj!=-1 && haveTitle(adj)){
+            BaseTitle title_adj = BaseTitle.getTitleByID(adj);
+            if(title_adj!=null) {
+                ret += title_adj.getName() + "的";
+            }
+        }
+        if(n!=-1 && haveTitle(n)){
+            BaseTitle title_n = BaseTitle.getTitleByID(n);
+            if(title_n!=null) {
+                ret += title_n.getName();
+            }
+        }
+        return ret.length()==0?"":"["+ret+"]";
     }
 }

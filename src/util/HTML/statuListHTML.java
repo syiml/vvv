@@ -64,7 +64,7 @@ public class statuListHTML extends pageBean {
         if(this.star){
             status = UserService.userStarSQL.getStarStatus(user.getUsername(),this.num * (this.page - 1), this.num);
             this.PageNum = getTotalPageNum(UserService.userStarSQL.getStarStatusNum(user.getUsername()),num);
-            addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间","收藏备注");
+            addTableHead("#"/*, "用户"*/, "昵称", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间","收藏备注");
             return;
         }
         if(contest!=null&&contest.getType()==Contest_Type.TEAM_OFFICIAL) {
@@ -78,7 +78,7 @@ public class statuListHTML extends pageBean {
             this.PageNum= getTotalPageNum(Main.status.getStatusNum(this.cid, this.pid, this.result, this.Language, this.ssuser, all), num);
         }
 
-        addTableHead("#", "用户", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
+        addTableHead("#"/*, "用户"*/, "昵称", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间");
 
     }
 
@@ -123,8 +123,6 @@ public class statuListHTML extends pageBean {
     public String getCellByHead(int i, String colname) {
         Status s=status.get(i);
         if(colname.equals("#")){
-            return s.getRid()+"";
-        }else if(colname.equals("用户")){
             if(contest!=null && contest.getType()==Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser)){
                     addClass(i + 1, -1, "info");
@@ -134,7 +132,17 @@ public class statuListHTML extends pageBean {
                     addClass(i + 1, -1, "info");
                 }
             }
+            return s.getRid()+"";
+        }else if(colname.equals("用户")){
             return userToHtml(s);
+        }else if(colname.equals("昵称")){
+            if(contest==null||contest.getType()!=Contest_Type.TEAM_OFFICIAL){
+                User u=Main.users.getUser(s.getUser());
+                if(!incontest) return u.getTitleAndNick();
+                else return HTML.a("#R"+s.getUser(),u.getTitleAndNickNoA());
+            }else{
+                return HTML.a("#R"+s.getUser(),s.getUser());
+            }
         }else if(colname.equals("题目")){
             return ""+pidToHtml(s,incontest);
         }else if(colname.equals("评测结果")){
@@ -330,8 +338,8 @@ public class statuListHTML extends pageBean {
     private String userToHtml(Status s){
         if(contest==null||contest.getType()!=Contest_Type.TEAM_OFFICIAL){
             User u=Main.users.getUser(s.getUser());
-            if(!incontest) return u.getUsernameHTML()+"("+u.getNick()+")";
-            else return HTML.a("#R"+s.getUser(),u.getUsernameHTMLNoA())+"("+u.getNick()+")";
+            if(!incontest) return u.getUsernameHTML()/*+"("+u.getNick()+")"*/;
+            else return HTML.a("#R"+s.getUser(),u.getUsernameHTMLNoA())/*+"("+u.getNick()+")"*/;
         }else{
             return HTML.a("#R"+s.getUser(),s.getUser());
         }
