@@ -218,8 +218,8 @@
                         <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>
                 <action name="titleConfig" class="action.titleConfig" method="go">
-                        <result name="success" type="redirect">Title.jsp</result>
-                        <result name="error" type="redirect">Title.jsp</result>
+                        <result name="success" type="redirect">return.jsp</result>
+                        <result name="error" type="redirect">return.jsp</result>
                 </action>
         </package>
         <package name="app" namespace="/app" extends="struts-default">

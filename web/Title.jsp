@@ -12,6 +12,14 @@
     <title>称号列表 - <%=Main.config.OJName%></title>
 </head>
 <body>
+<%
+    //未登录跳转
+    if(Main.loginUser()==null){
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+    Main.saveURL();
+%>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp?page=status"/>
     <%=new TitleListHTML(request.getParameter("username")).HTML()%>

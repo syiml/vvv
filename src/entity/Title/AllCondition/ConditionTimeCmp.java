@@ -36,8 +36,10 @@ public class ConditionTimeCmp extends BaseCondition {
 
     @Override
     public boolean check(BaseTitleEvent event) {
-        Timestamp time1 = new Timestamp(timeCompute1.getTime(event));
-        Timestamp time2 = new Timestamp(timeCompute2.getTime(event));
+        long t1 = timeCompute1.getTime(event);
+        long t2 = timeCompute2.getTime(event);
+        Timestamp time1 = t1<=0?null:new Timestamp(t1);
+        Timestamp time2 = t2<=0?null:new Timestamp(t2);
         //if(time1 == null || time2 == null) return false;
         switch (cmpType){
             case "<":return less(time1,time2);

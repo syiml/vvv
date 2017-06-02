@@ -365,6 +365,7 @@
                     "event":"acb",
                     "jd":10000,
                     "jd_value":"acb",
+                    "style":"border-color:#ffd700;background-color: rgba(0,0,255,0.2);",
                     "condition":{"type":"true"},
                     "lose_condition":{},
                     "end_time":"forever"
@@ -383,6 +384,259 @@
                     },
                     "lose_condition":{},
                     "end_time":["now_add",1,"day"]
+                },
+                {
+                    "id":1330,
+                    "name":"天下无敌",
+                    "style":"border-color:#ed008c",
+                    "des":"rating榜第一（每日更新）",
+                    "event":"rating_rank",
+                    "jd":1,
+                    "jd_value":"1",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","==","1"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",1,"day"]
+                },
+                {
+                    "id":2000,
+                    "name":"打铁匠",
+                    "des":"区域赛打铁",
+                    "event":"award",
+                    "jd":1,
+                    "jd_value":"1",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"or",
+                                "value":[
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","1"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","2"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","6"]
+                                    }
+                                ]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["award_level","==","0"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":2001,
+                    "name":"铜牌渣渣",
+                    "des":"在区域赛获得铜牌",
+                    "event":"award",
+                    "jd":1,
+                    "jd_value":"1",
+                    "style":"border-width: 0;width: 100px;-webkit-transform: rotate(0deg);left: calc(50% + 40px);transform: rotate(0deg);top: -90px;",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"or",
+                                "value":[
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","1"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","2"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","6"]
+                                    }
+                                ]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["award_level","==","1"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":2002,
+                    "name":"银牌选手",
+                    "des":"在区域赛获得银牌",
+                    "event":"award",
+                    "jd":1,
+                    "jd_value":"1",
+                    "style":"border-width: 0;width: 100px;-webkit-transform: rotate(0deg);left: calc(50% + 40px);transform: rotate(0deg);top: -90px;",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"or",
+                                "value":[
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","1"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","2"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","6"]
+                                    }
+                                ]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["award_level","==","2"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":2003,
+                    "name":"金牌大佬",
+                    "des":"在区域赛获得金牌",
+                    "event":"award",
+                    "jd":1,
+                    "jd_value":"1",
+                    "style":"border-width: 0;width: 100px;-webkit-transform: rotate(0deg);left: calc(50% + 40px);transform: rotate(0deg);top: -90px;",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"or",
+                                "value":[
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","1"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","2"]
+                                    },
+                                    {
+                                        "type": "cmp",
+                                        "value": ["contest_level","==","6"]
+                                    }
+                                ]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["award_level","==","3"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":2010,
+                    "name":"省赛铜牌",
+                    "des":"在省赛中获得铜牌",
+                    "event":"award",
+                    "jd":1,
+                    "jd_value":"1",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["contest_level","==","0"]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["award_level","==","1"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":2011,
+                    "name":"省赛银牌",
+                    "des":"在省赛中获得银牌",
+                    "event":"award",
+                    "jd":1,
+                    "jd_value":"1",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["contest_level","==","0"]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["award_level","==","2"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":2012,
+                    "name":"省赛金牌",
+                    "des":"在省赛中获得金牌",
+                    "event":"award",
+                    "jd":1,
+                    "jd_value":"1",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["contest_level","==","0"]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["award_level","==","3"]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":9000,
+                    "name":"正牌管理员",
+                    "des":"admin专有",
+                    "event":"none",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition":{},
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":9001,
+                    "name":"开发团成员",
+                    "des":"为OJ的开发做出杰出贡献的人可以获得",
+                    "event":"none",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition":{},
+                    "lose_condition":{},
+                    "end_time":"forever"
                 }
             ]
 }

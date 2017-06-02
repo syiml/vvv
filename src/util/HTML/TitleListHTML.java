@@ -107,13 +107,13 @@ public class TitleListHTML extends SimplePageBean<Integer> {
                 }
                 if(loginUser.getPermission().havePermissions(PermissionType.titleAdmin)){
                     if(showUser.titleSet.haveTitle(title_id)){
-                        _ret += " "+HTML.a("titleConfig.action?type=5&id="+title_id,"删除");
+                        _ret += " "+HTML.a("titleConfig.action?type=5&username="+showUser.getUsername()+"&id="+title_id,"删除");
                     }
                 }
                 return _ret;
             }
             case "预览":{
-                return "<img src='pic/Title/"+title_id+".png' style='height:30px'>";
+                return "<img src='TitlePic/"+title_id+".png' style='height:30px'>";
             }
         }
         return ERROR_CELL_TEXT;
@@ -162,6 +162,7 @@ public class TitleListHTML extends SimplePageBean<Integer> {
 
             f.setSubmitText("新增");
             f.addForm(new hidden("type","6"));
+            f.addForm(new hidden("username",showUser.getUsername()));
             f.setAction("titleConfig.action");
             return f.toHTML();
         }

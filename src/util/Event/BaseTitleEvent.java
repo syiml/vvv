@@ -22,7 +22,7 @@ public class BaseTitleEvent extends BaseEvent {
             case "acnum": return user.getAcnum();
             case "acb":   return user.getAcb();
             case "rating":return user.getShowRating();
-            case "ratting_num":return user.getRatingnum();
+            case "rating_num":return user.getRatingnum();
             case "status":return user.getInTeamStatus();
         }
         return super.getInt(name);

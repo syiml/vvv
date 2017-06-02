@@ -110,6 +110,8 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
             case "clock_in":    title = new BaseTitle<>(EventClockIn.class);    break;
             case "acb":         title = new BaseTitle<>(EventAcbChg.class);     break;
             case "rich_rank":   title = new BaseTitle<>(EventRichRank.class);   break;
+            case "award":       title = new BaseTitle<>(EventAward.class);      break;
+            case "rating_rank": title = new BaseTitle<>(EventRatingRank.class); break;
             default:{
                 Tool.log("不存在"+jo.getString("event")+"事件");
                 return null;

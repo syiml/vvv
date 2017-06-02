@@ -2,6 +2,9 @@ package action;
 
 import entity.TeamMemberAwardInfo_AwardLevel;
 import entity.TeamMemberAwardInfo_ContestLevel;
+import entity.User;
+import util.Event.EventMain;
+import util.Event.Events.EventAward;
 import util.Main;
 
 import java.sql.Date;
@@ -31,6 +34,18 @@ public class TeamAward  extends BaseAction{
         }else{
             //edit
             Main.users.updateTeamMemberAwardInfo(this);
+        }
+        User user1= Main.users.getUser(username1);
+        if(user1!=null){
+            EventMain.triggerEvent(new EventAward(user1,contestLevel,awardLevel));
+        }
+        User user2= Main.users.getUser(username2);
+        if(user2!=null){
+            EventMain.triggerEvent(new EventAward(user2,contestLevel,awardLevel));
+        }
+        User user3= Main.users.getUser(username3);
+        if(user3!=null){
+            EventMain.triggerEvent(new EventAward(user3,contestLevel,awardLevel));
         }
         return "success";
     }

@@ -9,36 +9,81 @@ import util.MyTime;
 import util.Tool;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by QAQ on 2017/5/28.
  */
 public class BaseTimeCompute {
     private int title_id;
-    private JSONArray ja;
+    //private JSONArray ja;
     private String name;
+
+    private String type;
+    private List<Object> args;
+
     public BaseTimeCompute(JSONArray ja){
-        this.ja = ja;
+        args = new ArrayList<>();
+        //this.ja = ja;
+        name = null;
+        if(ja!=null) {
+            type = ja.getString(0);
+            switch (type) {
+                case "last_time_of_day":
+                case "last_time_of_tomorrow": {
+                    args.add(getTimeCompute(ja.get(1)));
+                    break;
+                }
+                case "end_time_of_some_title": {
+                    args.add(ja.getInt(1));
+                    break;
+                }
+                case "time_compute": {
+                    args.add(getTimeCompute(ja.get(1)));
+                    args.add(ja.getLong(2));
+                    args.add(ja.getString(3));
+                    break;
+                }
+            }
+        }
     }
 
     public void setTitle_id(int id){
         this.title_id = id;
     }
+
+    /**
+     * 获取时间计算器的运算结果
+     * @param event 事件
+     * @return 时间。如果为0表示永久
+     */
     public long getTime(BaseTitleEvent event){
-        if(ja == null){
-            if(name==null) return 0;
-            else{
-                Timestamp ret = getTimestamp(name,event);
-                if(ret == null) return 0;
-                return ret.getTime();
-            }
+        if(name != null){
+            Timestamp ret = getTimestamp(name,event);
+            if(ret == null) return 0;
+            return ret.getTime();
         }
-        switch (ja.getString(0)){
+        switch (type){
             case "last_time_of_day":{
-                return MyTime.getLastTimeOfDay(getTimestamp(ja.getString(1),event)).getTime();
+                Long time = ((BaseTimeCompute)args.get(0)).getTime(event);
+                if(time <=0) return 0;
+                return MyTime.getLastTimeOfDay(new Timestamp(time)).getTime();
             }
             case "last_time_of_tomorrow":{
-                return MyTime.getLastTimeOfDay(MyTime.addTimestamp(getTimestamp(ja.getString(1),event),MyTime.DAY)).getTime();
+                Long time = ((BaseTimeCompute)args.get(0)).getTime(event);
+                if(time <=0) return 0;
+                return MyTime.getLastTimeOfDay(MyTime.addTimestamp(new Timestamp(time),MyTime.DAY)).getTime();
+            }
+            case "end_time_of_some_title":{
+                Timestamp time = event.user.titleSet.getTitleValue((int)args.get(0)).clear_time;
+                if(time==null) return 0;
+                return time.getTime();
+            }
+            case "time_compute":{
+                Long time = ((BaseTimeCompute)args.get(0)).getTime(event);
+                if(time<=0) return 0;
+                return time + getTimeByUnit((long)args.get(1),(String)args.get(2));
             }
         }
         return -1;
@@ -65,6 +110,18 @@ public class BaseTimeCompute {
                 return new TimeComputeNowAdd(ja,ja.getLong(1),ja.getString(2));
             }
             default:return new BaseTimeCompute(ja);
+        }
+    }
+
+    protected long getTimeByUnit(long value,String unit){
+        switch (unit){
+            case "year":return value * MyTime.YEAR;
+            case "month": return value * MyTime.MONTH;
+            case "day": return value * MyTime.DAY;
+            case "hour": return value * MyTime.HOUR;
+            case "minute":return value * MyTime.MINUTE;
+            case "second":return value * MyTime.SECOND;
+            default: return value;
         }
     }
 }

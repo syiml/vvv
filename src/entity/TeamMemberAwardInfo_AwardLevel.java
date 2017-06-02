@@ -7,7 +7,7 @@ public enum TeamMemberAwardInfo_AwardLevel {
     NONE(-2),//无奖项
     TENACIOUSLY(-1),//顽强拼搏奖
     ENCOURAGING(0),//优秀奖/鼓励奖
-    BRANZE(1),//铜奖
+    BRAZE(1),//铜奖
     SILVER(2),//银奖
     GOLD(3),//金奖
     LV1(4),//一等奖
@@ -31,7 +31,7 @@ public enum TeamMemberAwardInfo_AwardLevel {
     public String toString(){
         if(this == TeamMemberAwardInfo_AwardLevel.TENACIOUSLY) return "顽强拼搏奖";
         if(this == TeamMemberAwardInfo_AwardLevel.ENCOURAGING) return "鼓励奖";
-        if(this == TeamMemberAwardInfo_AwardLevel.BRANZE) return "铜奖";
+        if(this == TeamMemberAwardInfo_AwardLevel.BRAZE) return "铜奖";
         if(this == TeamMemberAwardInfo_AwardLevel.SILVER) return "银奖";
         if(this == TeamMemberAwardInfo_AwardLevel.GOLD) return "金奖";
         if(this == TeamMemberAwardInfo_AwardLevel.LV1) return "一等奖";

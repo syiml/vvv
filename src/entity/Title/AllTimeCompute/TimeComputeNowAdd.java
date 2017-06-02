@@ -14,12 +14,7 @@ public class TimeComputeNowAdd extends BaseTimeCompute{
 
     TimeComputeNowAdd(JSONArray ja,long value, String unit){
         super(ja);
-        switch (unit){
-            case "day": addition = value * MyTime.DAY;break;
-            case "month": addition = value * MyTime.MONTH;break;
-            case "hour": addition = value * MyTime.HOUR;break;
-            default: addition = value;
-        }
+        addition = getTimeByUnit(value,unit);
     }
     @Override
     public long getTime(BaseTitleEvent event){

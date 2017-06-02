@@ -20,7 +20,7 @@ public class titleConfig extends BaseAction {
     private int jd;
     private String time;
     private String isForever;
-
+    private String username;
 
     public String go(){
         User u = Main.loginUser();
@@ -40,14 +40,14 @@ public class titleConfig extends BaseAction {
                 break;
             case 5:
                 if (!Main.loginUserPermission().havePermissions(PermissionType.titleAdmin)) return ERROR;
-                UserService.addTitle(u, id, 0, null);
+                UserService.addTitle(Main.users.getUser(username), id, 0, null);
                 break;
             case 6:
                 if (!Main.loginUserPermission().havePermissions(PermissionType.titleAdmin)) return ERROR;
                 if(isForever != null){
-                    UserService.addTitle(u, id, jd, null);
+                    UserService.addTitle(Main.users.getUser(username), id, jd, null);
                 }else{
-                    UserService.addTitle(u, id, jd, Tool.getTimestamp(time,"0","0"));
+                    UserService.addTitle(Main.users.getUser(username), id, jd, Tool.getTimestamp(time,"0","0"));
                 }
                 break;
         }
@@ -101,5 +101,13 @@ public class titleConfig extends BaseAction {
 
     public void setIsForever(String isForever) {
         this.isForever = isForever;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
