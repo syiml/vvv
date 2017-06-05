@@ -165,6 +165,7 @@ public class edit extends BaseAction{
             u.setPassword(newpass);
         }
         if(nick!=null) u.setNick(HTML.HTMLtoString(nick));
+        if("".equals(nick)) nick = "把nick改成空白的智障";
         if(motto!=null) u.setMotto(HTML.HTMLtoString(motto));
         return u;
     }

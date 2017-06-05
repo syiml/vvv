@@ -206,7 +206,7 @@
                         "value":[
                             {
                                 "type":"cmp",
-                                "value":["goods_id","==","14"]
+                                "value":["goods_id","==","37"]
                             },
                             {
                                 "type":"cmp",
@@ -853,6 +853,154 @@
                     "condition":{},
                     "lose_condition":{},
                     "end_time":"forever"
+                },
+                {
+                    "id":9002,
+                    "name":"集训队教练",
+                    "des":"教练专有",
+                    "event":"none",
+                    "part":"n",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition":{},
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":8000,
+                    "name":"萌萌",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "border_color":"#ef6ea8",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","38"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8001,
+                    "name":"挥金如土",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","39"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8002,
+                    "name":"假",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","40"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8003,
+                    "name":"一脸懵逼",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","41"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8004,
+                    "name":"不可描述",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","42"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8005,
+                    "name":"身体被掏空",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","43"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8006,
+                    "name":"上天",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","44"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8007,
+                    "name":"开始方了",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","45"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
+                },
+                {
+                    "id":8008,
+                    "name":"老司机",
+                    "des":"商城购买，购买后持续一个月",
+                    "event":"shop_buy",
+                    "part":"n",
+                    "jd":1,
+                    "jd_value":1,
+                    "condition": {
+                      "type":"cmp",
+                      "value":["goods_id","==","46"]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",30,"day"]
                 }
             ]
 }
