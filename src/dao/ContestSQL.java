@@ -262,7 +262,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
      */
     public String problemContest(int pid){
         SQL sql=new SQL("SELECT * FROM contestproblems left join contest on cid=id" +
-                " WHERE tpid=? and kind!=4 order by begintime limit 0,1",pid);
+                " WHERE tpid=? and kind!=4 and kind!=5 order by begintime limit 0,1",pid);
         ResultSet rs=sql.query();
         try {
             if(rs.next()){
