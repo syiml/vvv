@@ -358,25 +358,19 @@ public class UserSQL extends BaseCache<String,User> {
     public boolean update(User u){
         Tool.log("Edit:"+u.getUsername());
         String sql="UPDATE users set ";
-        if(u.getPassword()!=null) sql+="password = md5('"+u.getPassword()+"'),";
-        sql+=" nick = '"+u.getNick()+"'";
-        sql+=",name = '"+u.getName()+"'";
-        sql+=",gender = "+u.getGender();
-        sql+=",school = '"+u.getSchool()+"'";
-        sql+=",faculty = '"+u.getFaculty()+"'";
-        sql+=",major = '"+u.getMajor()+"'";
-        sql+=",cla = '"+u.getCla()+"'";
-        sql+=",no = '"+u.getNo() +"'";
-        sql+=",phone = '"+ u.getPhone()+"'";
-        sql+=",Email = '"+u.getEmail()+"'";
-        sql+=",motto = '"+u.getMotto()+"'";
-        sql+=",inTeamLv = "+u.getInTeamLv();
-        sql+=",inTeamStatus = "+u.getInTeamStatus();
-        sql+=" WHERE username=?";
+        if(u.getPassword()!=null) sql+="password = md5(?),";
+        sql+=" nick = ?,name = ?,gender = ?,school = ?,faculty = ?,major = ?,cla = ?";
+        sql+=",no = ?,phone = ?,Email = ?,motto = ?,inTeamLv = ?,inTeamStatus = ? WHERE username=?";
+
+        SQL s = new SQL(sql);
+        if(u.getPassword()!=null) s.addArgs(u.getPassword());
+        s.addArgs(u.getNick(),u.getName(),u.getGender(),u.getSchool(),u.getFaculty(),u.getMajor(),u.getCla(),u.getNo(),
+                    u.getPhone(),u.getEmail(),u.getMotto(),u.getInTeamLv(),u.getInTeamStatus(),u.getUsername());
         //Tool.log(sql);
-        removeCatch(u.getUsername());
         EventMain.triggerEvent(new EventVerify(u));
-        return (new SQL(sql, u.getUsername()).update()==1);
+        boolean k=(s.update()==1);
+        removeCatch(u.getUsername());
+        return k;
     }
     public int updateByVerify(UserVerifyInfo userVerifyInfo){
         User u = Main.users.getUser(userVerifyInfo.username);

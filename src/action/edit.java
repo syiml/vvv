@@ -151,6 +151,11 @@ public class edit extends BaseAction{
     }
     private User getEditUser(){
         nick=nick.replace("'","''");
+        nick=nick.replaceAll("\\s*", "");
+        nick=nick.replaceAll("　", "");
+
+        if(nick.length()>10) nick = "把昵称改超长的智障";
+        if(nick.length()<3) nick = "把昵称改超短的智障";
         motto=motto.replace("'","''");
         User u;
         if(username==null){
@@ -165,7 +170,7 @@ public class edit extends BaseAction{
             u.setPassword(newpass);
         }
         if(nick!=null) u.setNick(HTML.HTMLtoString(nick));
-        if("".equals(nick)) nick = "把nick改成空白的智障";
+        if("".equals(nick)) nick = "把昵称改成空白的智障";
         if(motto!=null) u.setMotto(HTML.HTMLtoString(motto));
         return u;
     }

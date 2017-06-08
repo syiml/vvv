@@ -44,7 +44,8 @@ form:id=edit
       rules: {
         nick:{
           required: true,
-          maxlength: 12
+          minlength: 3,
+          maxlength: 10
         },
         pass: {
           required: true
@@ -62,7 +63,8 @@ form:id=edit
       messages: {
         nick: {
           required: "昵称不能为空",
-          maxlength: "昵称最多只能有12个字符长度"
+          minlength: "昵称最少要有3个字符",
+          maxlength: "昵称最多只能有10个字符"
         },
         pass: {
           required: "密码不能为空"

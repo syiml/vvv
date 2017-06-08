@@ -31,6 +31,12 @@ public class SQL {
         this.args = args.toArray();
         conn = conns.getConn();
     }
+    public void addArgs(Object... args){
+        Object[] a3 = new Object[this.args.length + args.length];
+        System.arraycopy(this.args, 0, a3, 0, this.args.length);
+        System.arraycopy(args, 0, a3, this.args.length, args.length);
+        this.args = a3;
+    }
     public SQL setLog(boolean log){
         this.log=log;
         return this;
