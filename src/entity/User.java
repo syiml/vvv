@@ -49,7 +49,7 @@ public class User implements IBeanResultSetCreate, IBeanCanCatch,ICanToJSON{
     Timestamp graduationTime;//毕业时间
     private Timestamp catch_time;
     public TitleSet titleSet = null;
-
+    public Timestamp autoClockInTime = null;
     public User(){}
 
     public User(register r){

@@ -51,4 +51,13 @@ public class ClockInMain {
         Timestamp now = Tool.now();
         return someOptRecordSQL.getRecord(ESomeOptRecordType.ClockIn,user, MyTime.getFistTimeOfHour(now),MyTime.getLastTimeOfHour(now)).size() == 0;
     }
+    public static boolean autoClockIn(){
+        User u = Main.loginUser();
+        if(u==null) return false;
+        if(u.autoClockInTime == null || !MyTime.getFistTimeOfHour(u.autoClockInTime).equals(MyTime.getFistTimeOfHour(Tool.now()))){
+            u.autoClockInTime = Tool.now();
+            return clockIn() == MainResult.SUCCESS;
+        }
+        return false;
+    }
 }

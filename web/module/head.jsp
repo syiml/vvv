@@ -76,6 +76,7 @@
       if(u!=null){
         String s=u.getUsername();
         int messnoread=MessageSQL.getNoRead(s);
+        ClockInMain.autoClockIn();
         ss+="<li  class=' mm-right' style='min-width:135px'>";//float:right; min-width: 115px;
         ss+=HTML.a("UserInfo.jsp?user="+s,"<span><i class='icon-user'></i> "+s+(messnoread==0?"":"<text class='badge'>"+messnoread+"</text>")+"</span>");
         ss+="<ul>";
