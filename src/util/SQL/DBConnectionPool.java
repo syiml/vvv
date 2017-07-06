@@ -18,6 +18,9 @@ import java.util.concurrent.BlockingQueue;
  * 并且自动连接数据库
  * 由于mysql默认8小时没有数据交互就自动断开连接
  * 所以每过一段时间(6小时)就自动重新连接上数据库
+ *
+ * 链接可能未被6小时清空
+ *
  * Created by Administrator on 2015/11/22 0022.
  */
 public class DBConnectionPool extends MyTimer {
