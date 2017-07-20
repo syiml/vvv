@@ -197,20 +197,33 @@ public class ClockInHTML {
     static List<String> showusers;
     static{//要统计的用户列表，可以存起来
         showusers=new ArrayList<String>();
-        showusers.add("FJUTACM1408");
-        showusers.add("3141906223");
-        showusers.add("FJUTACM1415");
-        showusers.add("3141906116");
-        showusers.add("3151906216");
-        showusers.add("cjt152");
+        showusers.add("Marris");
         showusers.add("3151301111");
-        showusers.add("Moon450362681");
-        showusers.add("cmjkcm");
-        showusers.add("chenshuiji");
-        showusers.add("al1457");
-        showusers.add("zzy1997");
-        showusers.add("shixiaodong");
-        showusers.add("3151906215");
+        showusers.add("3141906223");
+        showusers.add("3151906216");
+        showusers.add("seventh");
+        showusers.add("3161906213");
+        showusers.add("cjt152");
+        showusers.add("cantaloupe");
+        showusers.add("Pegasus");
+        showusers.add("CCL66");
+        showusers.add("Q1143316492");
+        showusers.add("3161906217");
+        //showusers.add("fmb007");
+        showusers.add("chengdong");
+        showusers.add("xiejin");
+        showusers.add("BLACK");
+        showusers.add("LIWEI");
+        //showusers.add("297947648");
+        showusers.add("738324062");
+        showusers.add("w_z_c");
+        //showusers.add("3161906218");
+        showusers.add("evils");
+        showusers.add("wushengtao");
+        showusers.add("Froid");
+        //showusers.add("121371");
+        //showusers.add("DreamBattle");
+        showusers.add("CCSGTC");
     }
     public static String HTMLtable(){
         TableHTML table=new TableHTML();

@@ -2,16 +2,29 @@
     "titles":
             [
                 {
-                    "id":1,
+                    "id":"1",
                     "name":"萌新",
-                    "des":"注册30天内获得",
-                    "event":"register",
-                    "jd":1,
+                    "des":"注册后AC10题,获得后持续50天",
+                    "event":"judge",
+                    "jd":10,
                     "part":"n",
-                    "jd_value":1,
-                    "condition":{"type":"true"},
+                    "jd_value":"acnum",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"cmp",
+                                "value":["acnum","<","11"]
+                            },
+                            {
+                                "type":"cmp",
+                                "value":["judge_result","==",1]
+                            }
+                        ]
+					},
                     "lose_condition":{},
-                    "end_time":["now_add",30,"day"]
+                    "end_time":"forever",
+					"get_end_time":["now_add",50,"day"]
                 },
                 {
                     "id":2,
@@ -136,7 +149,7 @@
                 {
                     "id":1020,
                     "name":"一步登天",
-                    "des":"一天内AC30题",
+                    "des":"一天内AC30题，获得后持续30天",
                     "part":"adj",
                     "event":"judge",
                     "jd":30,
@@ -147,7 +160,7 @@
                     },
                     "lose_condition":{},
                     "end_time":["last_time_of_day","submit_time"],
-                    "get_end_time":["now_add",7,"day"]
+                    "get_end_time":["now_add",30,"day"]
                 },
                 {
                     "id":1030,
@@ -192,6 +205,162 @@
                     },
                     "lose_condition":{},
                     "end_time":["now_add",7,"day"]
+                },
+				{
+                    "id":1050,
+                    "name":"初出江湖",
+                    "part":"adj",
+                    "des":"“萌新”在开始的10天内A10题，获得后持续3个月",
+                    "event":"judge",
+                    "jd":10,
+                    "jd_value":"++",
+                    "border_color":"black",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+								"type":"time_cmp",
+								"value":[["time_compute","now","40","day"],"<=",["end_time_of_some_title",1]]
+							},
+                            {
+                                "type":"cmp",
+								"value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",10,"day"],
+					"get_end_time":["now_add",3,"month"]
+                },
+				{
+                    "id":1051,
+                    "name":"初露锋芒",
+                    "part":"adj",
+                    "des":"“萌新”在开始的15天内A20题，获得后持续3个月",
+                    "event":"judge",
+                    "jd":20,
+                    "jd_value":"++",
+                    "border_color":"black",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+								"type":"time_cmp",
+								"value":[["time_compute","now","35","day"],"<=",["end_time_of_some_title",1]]
+							},
+                            {
+                                "type":"cmp",
+								"value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",15,"day"],
+					"get_end_time":["now_add",3,"month"]
+                },
+				{
+                    "id":1052,
+                    "name":"崭露头角",
+                    "part":"adj",
+                    "des":"“萌新”在开始的20天内A50题，获得后持续3个月",
+                    "event":"judge",
+                    "jd":50,
+                    "jd_value":"++",
+                    "border_color":"black",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+								"type":"time_cmp",
+								"value":[["time_compute","now","30","day"],"<=",["end_time_of_some_title",1]]
+							},
+                            {
+                                "type":"cmp",
+								"value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",20,"day"],
+					"get_end_time":["now_add",3,"month"]
+                },
+				{
+                    "id":1053,
+                    "name":"势如破竹",
+                    "part":"adj",
+                    "des":"“萌新”在开始的25天内A100题，获得后持续3个月",
+                    "event":"judge",
+                    "jd":100,
+                    "jd_value":"++",
+                    "border_color":"black",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+								"type":"time_cmp",
+								"value":[["time_compute","now","25","day"],"<=",["end_time_of_some_title",1]]
+							},
+                            {
+                                "type":"cmp",
+								"value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",25,"day"],
+					"get_end_time":["now_add",3,"month"]
+                },
+				{
+                    "id":1054,
+                    "name":"名震一方",
+                    "part":"adj",
+                    "des":"“萌新”在开始的30天内A150题,永久",
+                    "event":"judge",
+                    "jd":150,
+                    "jd_value":"++",
+                    "border_color":"black",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+								"type":"time_cmp",
+								"value":[["time_compute","now","20","day"],"<=",["end_time_of_some_title",1]]
+							},
+                            {
+                                "type":"cmp",
+								"value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+					"end_time":["now_add",30,"day"],
+					"get_end_time":"forever"
+                },
+				{
+                    "id":1055,
+                    "name":"名震一方",
+                    "part":"adj",
+                    "des":"“萌新”A300题,永久",
+                    "event":"judge",
+                    "jd":300,
+                    "jd_value":"++",
+                    "border_color":"black",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+                            {
+                                "type":"have_title_check",
+                                "value":[1,true]
+                            },
+                            {
+                                "type":"cmp",
+								"value":["is_repeat","==",0]
+                            }
+                        ]
+                    },
+                    "lose_condition":{},
+                    "end_time":["now_add",50,"day"],
+					"get_end_time":"forever"
                 },
                 {
                     "id":1010,
@@ -269,7 +438,7 @@
                 },
                 {
                     "id":1013,
-                    "name":"如火纯青",
+                    "name":"炉火纯青",
                     "des":"在有“遗形藏志”称号的期间内AC 10题，获得后时间为“遗形藏志”的结束时间加七天",
                     "part":"adj",
                     "event":"judge",
@@ -295,7 +464,7 @@
                 {
                     "id":1014,
                     "name":"登峰造极",
-                    "des":"在有“如火纯青”称号的期间内AC 10题，获得后时间为“如火纯青”的结束时间加七天",
+                    "des":"在有“炉火纯青”称号的期间内AC 10题，获得后时间为“炉火纯青”的结束时间加七天",
                     "part":"adj",
                     "event":"judge",
                     "jd":10,
@@ -477,6 +646,59 @@
                     "lose_condition":{},
                     "end_time":"forever"
                 },
+				{
+                    "id":"1210",
+                    "name":"咸鱼",
+                    "des":"连续5次rating赛都在10名外",
+                    "part":"n",
+                    "jd":5,
+                    "jd_value":"++",
+                    "event":"rating",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["rank","<","10"]
+                    },
+                    "lose_condition":{
+						"type":"or",
+                        "value":[
+						{
+							"type":"cmp",
+							"value":["rank",">=","10"]
+						},
+						{
+							"type":"have_title_check",
+                            "value":[1211,true]
+						}
+						]
+					},
+                    "end_time":"forever"
+                },
+				{
+                    "id":1211,
+                    "name":"咸鱼翻身",
+                    "des":"在有咸鱼称号的情况下参加rating赛进入前十",
+                    "part":"adj",
+                    "jd":1,
+                    "jd_value":1,
+                    "event":"rating",
+                    "condition":{
+                        "type":"and",
+                        "value":[
+						{
+							"type":"cmp",
+							"value":["rank",">=","10"]
+						},
+						{
+							"type":"have_title_check",
+                            "value":[1210,true]
+						}
+						]
+                    },
+                    "lose_condition":{
+
+					},
+                    "end_time":["now_add",7,"day"]
+                },
                 {
                     "id":1220,
                     "name":"东方不败",
@@ -516,7 +738,7 @@
                 },
                 {
                     "id":1230,
-                    "name":"君临天下",
+                    "name":"Dominating",
                     "des":"获得5次rating赛的第一",
                     "part":"adj",
                     "event":"rating",
@@ -532,7 +754,7 @@
                 },
                 {
                     "id":1231,
-                    "name":"无人能挡",
+                    "name":"Unstoppable",
                     "des":"获得10次rating赛的第一",
                     "part":"adj",
                     "event":"rating",
@@ -548,7 +770,7 @@
                 },
                 {
                     "id":1232,
-                    "name":"如神一般",
+                    "name":"GodLike",
                     "des":"获得20次rating赛的第一",
                     "part":"adj",
                     "event":"rating",
@@ -569,6 +791,19 @@
                     "part":"n",
                     "event":"acb",
                     "jd":10000,
+                    "jd_value":"acb",
+                    "style":"border-color:#ffd700;background-color: rgba(0,0,255,0.2);",
+                    "condition":{"type":"true"},
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+				{
+                    "id":1301,
+                    "name":"百万富翁",
+                    "des":"ACB达到一百万",
+                    "part":"n",
+                    "event":"acb",
+                    "jd":1000000,
                     "jd_value":"acb",
                     "style":"border-color:#ffd700;background-color: rgba(0,0,255,0.2);",
                     "condition":{"type":"true"},
@@ -826,6 +1061,81 @@
                                 "value":["award_level","==","3"]
                             }
                         ]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+				{
+                "id":"3000",
+                "name":"水题达人",
+                "des":"挑战模式基础类型模块总分50分",
+                "part":"n",
+                "event":"judge",
+                "jd":50,
+                "jd_value":"[GroupScore,0]",
+                "condition":{
+                    "type":"cmp",
+                    "value":["judge_result","==",1]
+                },
+                "lose_condition":{},
+                "end_time":"forever"
+                 },
+                {
+                    "id":"3001",
+                    "name":"水题砖家",
+                    "des":"挑战模式基础类型模块总分75分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":75,
+                    "jd_value":"[GroupScore,0]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3002",
+                    "name":"水题大师",
+                    "des":"挑战模式基础类型模块总分100分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":100,
+                    "jd_value":"[GroupScore,0]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3003",
+                    "name":"水题杀手",
+                    "des":"挑战模式基础类型模块总分150分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":150,
+                    "jd_value":"[GroupScore,0]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3004",
+                    "name":"水题之神",
+                    "des":"挑战模式基础类型模块总分200分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":200,
+                    "jd_value":"[GroupScore,0]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
                     },
                     "lose_condition":{},
                     "end_time":"forever"

@@ -40,6 +40,11 @@ public class TitleSet implements IBeanResultSetCreate{
     public synchronized int getTitleJd(int id){
         if(!titles.containsKey(id)) return 0;
         title_value value = titles.get(id);
+
+        BaseTitle title = BaseTitle.getTitleByID(id);
+        if  (value.jd > title.getTotal_jd() ); //添加新称号，可能进度超过总进度
+         value.jd = title.getTotal_jd();
+
         Timestamp time = value.clear_time;
         if(time == null){
             return value.jd;

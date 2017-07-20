@@ -65,11 +65,11 @@
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>
     <li><a href="Challenge.jsp"><span>CHALLENGE</span></a></li>
     <li><a href="mall.jsp"><span>MALL</span></a> </li>
-    <%--<li><a href="ClockIn.jsp"><span <%--%>
+    <li><a href="ClockIn.jsp"><span>
     <%--if(ClockInSQL.mustClockIn()>=0){--%>
     <%--out.print("style='background:red;color:white'");--%>
     <%--}--%>
-    <%--%>>签到</span></a></li>--%>
+    签到</span></a></li>
     <%
       String ss="";
       User u = Main.loginUser();

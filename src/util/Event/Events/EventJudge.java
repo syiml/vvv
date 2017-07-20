@@ -6,19 +6,24 @@ import entity.User;
 import util.Event.BaseTitleEvent;
 import util.Main;
 import util.SQL.SQL;
+import dao.ChallengeSQL;
 
 import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Created by QAQ on 2017/5/28.
  */
 public class EventJudge extends BaseTitleEvent {
     public Status s;
+	public static Map<Integer,Integer> blockScore;
+	public static List<Integer> groupList;
     int is_repeat;
     public EventJudge(User u, Status s) {
         super(u);
         this.s = s;
     }
+
     public void before(){
         if(s.getResult() == Result.AC){
             int acNum = new SQL("SELECT COUNT(*) FROM statu WHERE pid=? AND ruser=? AND result=? AND id<?",s.getPid(),s.getUser(),Result.AC.getValue(),s.getRid()).queryNum();
@@ -28,6 +33,45 @@ public class EventJudge extends BaseTitleEvent {
             is_repeat = 2;
         }
     }
+
+    public static void getGroupList(int gro){
+        groupList = new SQL("SELECT id FROM t_challenge_block WHERE isEditing = 0 AND gro = ?",gro).queryList();
+    }
+
+    public static void getBlockList(String username){
+        blockScore = ChallengeSQL.getUserScore(username);
+    }
+
+	//获取某个group的得分
+	public static int getGroupScore(int gro){
+		int score = 0;
+		try{
+        Iterator<Integer> iter = groupList.iterator();
+        while(iter.hasNext()){
+            score += getBlockScore(iter.next());
+        }
+		}catch(Exception msg){
+            score = 0;
+        }
+		return score;
+	}
+
+	//获取某个模块的得分
+	public static int getBlockScore(int blockId){
+		int score = 0;
+		if (blockId != -1){  //单个模块
+			if (blockScore.get(blockId) != null){
+			score = blockScore.get(blockId);
+			}
+		}
+		else{  //所有模块
+			for (Integer value : blockScore.values()){
+			    System.out.println(value);
+				score += value;
+			}
+		}
+		return score;
+	}
 
     @Override
     public Timestamp getTimestamp(String name) {

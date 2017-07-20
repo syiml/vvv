@@ -18,7 +18,11 @@ public class EventAcbChg extends BaseTitleEvent {
 
     @Override
     public Integer getInt(String name) {
-        if(name.equals("chg")) return acbOrder.change;
+        if(name.equals("chg")) 
+		{
+			//System.out.println("acb改变量"+acbOrder.change);
+			return acbOrder.change;
+		}
         if(name.equals("reason")) return acbOrder.reason.getId();
         return super.getInt(name);
     }
