@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class EventJudge extends BaseTitleEvent {
     public Status s;
-	public static Map<Integer,Integer> blockScore;
-	public static List<Integer> groupList;
+	public Map<Integer,Integer> blockScore;
+	public Map<Integer,Integer> groupList;
     int is_repeat;
     public EventJudge(User u, Status s) {
         super(u);
@@ -32,32 +32,32 @@ public class EventJudge extends BaseTitleEvent {
         }else {
             is_repeat = 2;
         }
-    }
 
-    public static void getGroupList(int gro){
-        groupList = new SQL("SELECT id FROM t_challenge_block WHERE isEditing = 0 AND gro = ?",gro).queryList();
-    }
-
-    public static void getBlockList(String username){
-        blockScore = ChallengeSQL.getUserScore(username);
+        groupList = new SQL("SELECT id,gro FROM t_challenge_block WHERE isEditing = 0 ORDER BY gro").queryMap();
+        blockScore = ChallengeSQL.getUserScore(s.getUser());
     }
 
 	//获取某个group的得分
-	public static int getGroupScore(int gro){
+	public int getGroupScore(int gro){
 		int score = 0;
 		try{
-        Iterator<Integer> iter = groupList.iterator();
-        while(iter.hasNext()){
-            score += getBlockScore(iter.next());
-        }
-		}catch(Exception msg){
+            Iterator<Map.Entry<Integer, Integer>> entries = groupList.entrySet().iterator();
+            Map.Entry<Integer, Integer> entry;
+            while (entries.hasNext()) {
+                entry = entries.next();
+                if (entry.getValue() == gro){
+                    score += getBlockScore(entry.getKey());
+                }
+                else if (entry.getValue() > gro){ break;}
+            }
+        }catch(Exception msg){
             score = 0;
         }
 		return score;
 	}
 
 	//获取某个模块的得分
-	public static int getBlockScore(int blockId){
+	public int getBlockScore(int blockId){
 		int score = 0;
 		if (blockId != -1){  //单个模块
 			if (blockScore.get(blockId) != null){
@@ -88,6 +88,21 @@ public class EventJudge extends BaseTitleEvent {
             case "judge_result":return s.getResult().getValue();
             case "is_repeat":return is_repeat;
         }
+
+        if (name.startsWith("[Block")){ //[BlockScore,1]
+            int num = name.length();
+            String buffer = name.substring(12,num-1); //获取模块id
+            num = Integer.parseInt(buffer);
+            return getBlockScore(num);
+        }
+
+        if (name.startsWith("[Group")){ //[GroupScore,1]
+            int num = name.length();
+            String buffer = name.substring(12,num-1);  //获取模块分组id
+            num = Integer.parseInt(buffer);
+            return getGroupScore(num);
+        }
+
         return super.getInt(name);
     }
 }

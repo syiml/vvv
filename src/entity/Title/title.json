@@ -656,14 +656,14 @@
                     "event":"rating",
                     "condition":{
                         "type":"cmp",
-                        "value":["rank","<","10"]
+                        "value":["rank",">","10"]
                     },
                     "lose_condition":{
 						"type":"or",
                         "value":[
 						{
 							"type":"cmp",
-							"value":["rank",">=","10"]
+							"value":["rank","<=","10"]
 						},
 						{
 							"type":"have_title_check",
@@ -686,7 +686,7 @@
                         "value":[
 						{
 							"type":"cmp",
-							"value":["rank",">=","10"]
+							"value":["rank","<=","10"]
 						},
 						{
 							"type":"have_title_check",
@@ -738,7 +738,7 @@
                 },
                 {
                     "id":1230,
-                    "name":"Dominating",
+                    "name":"君临天下",
                     "des":"获得5次rating赛的第一",
                     "part":"adj",
                     "event":"rating",
@@ -754,7 +754,7 @@
                 },
                 {
                     "id":1231,
-                    "name":"Unstoppable",
+                    "name":"无人能挡",
                     "des":"获得10次rating赛的第一",
                     "part":"adj",
                     "event":"rating",
@@ -770,7 +770,7 @@
                 },
                 {
                     "id":1232,
-                    "name":"GodLike",
+                    "name":"如神一般",
                     "des":"获得20次rating赛的第一",
                     "part":"adj",
                     "event":"rating",

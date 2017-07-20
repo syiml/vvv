@@ -139,9 +139,6 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
         }
         title.intCompute = BaseIntCompute.getIntCompute(jo.get("jd_value"));
         title.total_jd = jo.getInt("jd");
-//        if (title.intCompute > title.total_jd) {
-//            title.intCompute = title.total_jd;
-//        }
         return title;
     }
 

@@ -26,23 +26,6 @@ public class BaseTitleEvent extends BaseEvent {
             case "rating_num":return user.getRatingnum();
             case "status":return user.getInTeamStatus();
         }
-		if (name.startsWith("[Block")){ //[BlockScore,1]
-		    int num = name.length();
-		    String buffer = name.substring(12,num-1); //获取模块id
-            num = Integer.parseInt(buffer);
-            EventJudge.getBlockList(user.getUsername()); //更新模块得分
-			return EventJudge.getBlockScore(num);
-		}
-
-        if (name.startsWith("[Group")){ //[GroupScore,1]
-            int num = name.length();
-            String buffer = name.substring(12,num-1);  //获取模块分组id
-            num = Integer.parseInt(buffer);
-            EventJudge.getBlockList(user.getUsername()); //更新模块得分
-            EventJudge.getGroupList(num);                //更新模块分组列表
-            return EventJudge.getGroupScore(num);
-        }
-
         return super.getInt(name);
     }
 
