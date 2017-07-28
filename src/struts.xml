@@ -272,6 +272,10 @@
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>
                 </action>
+                <action name="modBlockType" class="action.ChallengeAction" method="modBlockType">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
                 <action name="delPorblem" class="action.ChallengeAction" method="delProblem">
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>

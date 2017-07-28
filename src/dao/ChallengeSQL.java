@@ -187,4 +187,12 @@ public class ChallengeSQL {
         new SQL("INSERT INTO t_challenge_block VALUES(?,?,?,?,?)",id,name,0,"",1).update();
         ChallengeMain.blocks= ChallengeSQL.init();
     }
+    public static String modBlockType(int id,int gro ){
+         if (new SQL("UPDATE t_challenge_block SET gro = ? WHERE id = ?",gro,id).update() !=0 ){
+             ChallengeMain.blocks= ChallengeSQL.init();
+             return "success";
+         }else {
+             return "error";
+         }
+    }
 }

@@ -48,7 +48,7 @@ public class EventJudge extends BaseTitleEvent {
                 if (entry.getValue() == gro){
                     score += getBlockScore(entry.getKey());
                 }
-                else if (entry.getValue() > gro){ break;}
+                //else if (entry.getValue() > gro){ break;} 可能分数表是按id来排,但此时gro的列表不一定有序
             }
         }catch(Exception msg){
             score = 0;

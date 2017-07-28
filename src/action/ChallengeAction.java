@@ -177,4 +177,10 @@ public class ChallengeAction extends BaseAction{
         }
         return "success";
     }
+    public String modBlockType(){
+        if(Main.loginUserPermission().getChallengeAdmin()){
+            return ChallengeSQL.modBlockType(Integer.parseInt(block),Integer.parseInt(type));
+        }
+        return "error";
+    }
 }

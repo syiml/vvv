@@ -2,6 +2,7 @@ package util.HTML;
 
 import entity.*;
 import entity.Enmu.UserStarType;
+import org.apache.commons.collections.list.TypedList;
 import servise.*;
 import util.HTML.FromHTML.text_select.text_select;
 import util.HTML.UserListHTML.AdminUserListHTML;
@@ -40,6 +41,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1635,19 +1637,37 @@ public class HTML {
                 for(Condition c:b.conditions){
                     conditionTable.addRow(c.toString(),HTML.a("delCondition.action?id="+c.getId(),"删除"));
                 }
+            //modify block's type(group)
+                FormHTML modType=new FormHTML();
+                modType.setType(1);
+                modType.setAction("modBlockType.action");
+                select s=new select("type","type");
+                s.setType(1);
+                for (ChallengeMain.BlockType gro: ChallengeMain.typeList){
+                    s.add(gro.getIndex(),gro.getName());
+                }
+                s.setValue(String.valueOf(b.getGroup()));
+                modType.addForm(s);
+                text bl=new text("block","block"); //传入模块id
+                bl.setValue(id+"");
+                bl.setDisabled();
+                modType.addForm(bl);
+                modType.setSubmitText("修改类型");
             //condition add form
                 FormHTML addCondition=new FormHTML();
                 addCondition.setType(1);
                 addCondition.setAction("addCondition.action");
                 text t1=new text("id","id");
                 t1.setValue(id+"");
-                t1.setDisabled();
                 addCondition.addForm(t1);
-                select type=new select("type","tpye");
+                t1.setDisabled();
+                /* 挑战模式开启的条件中判断某一个模块的类型？
+                select type=new select("type","type");
                 type.setType(1);
                 type.add(1,"1");
                 type.setValue("1");
                 addCondition.addForm(type);
+                */
                 select block=new select("block","block");
                 block.setType(1);
                 for(Integer bid: ChallengeMain.blocks.keySet()){
@@ -1665,7 +1685,7 @@ public class HTML {
                 addProblemForm.setAction("addProblem.action");
                 addProblemForm.setType(1);
                 text pos=new text("pos","插入位置");
-                text bl=new text("block","block");
+                //text bl=new text("block","block");
                 bl.setValue(id+"");
                 bl.setDisabled();
                 text pid=new text("pid","题目编号");
@@ -1675,7 +1695,7 @@ public class HTML {
                 addProblemForm.addForm(pid);
                 addProblemForm.addForm(score);
                 addProblemForm.setSubmitText("添加题目");
-            return HTML.text("模块【"+b.getName() + "】<br>", 11)+setEditing+textForm.toHTML()+addCondition.toHTML()+conditionTable.HTML()+addProblemForm.toHTML()+problemList.HTML();
+            return HTML.text("模块【"+b.getName() + "】<br>", 11)+setEditing+textForm.toHTML()+modType.toHTML()+addCondition.toHTML()+conditionTable.HTML()+addProblemForm.toHTML()+problemList.HTML();
         }
     }
     public static String adminResetPassword(){
