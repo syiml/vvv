@@ -57,7 +57,7 @@ public class ChallengeMain {
         blocks= ChallengeSQL.init();
         typeList = new ArrayList<BlockType>();
         for (BlockType type: BlockType.values()) {
-            typeList.add(type);
+            if(type.index!=-1) typeList.add(type);
         }
     }
 
