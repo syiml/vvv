@@ -79,6 +79,7 @@ public class ChallengeJSON {
         ret.put("name", block.getName());
         ret.put("group", block.getGroup());
         ret.put("text",ChallengeSQL.getText(id));
+        ret.put("type", ChallengeMain.BlockType.getBlockTypeByIndex(block.getGroup()).getName());
         ret.put("score", block.getScore());
         ret.put("userScore",ChallengeSQL.getUserScore(user,id));
         JSONArray conditions=new JSONArray();

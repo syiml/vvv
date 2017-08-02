@@ -115,6 +115,7 @@ var challenge=function(){
                 .append("<div class='col-xs-10 col-xs-offset-1'></div>").find('div').last()
                 .append("<h4>完成进度：("+data.userScore+"/"+data.score+")</h4>"+"<p class='paragraph'>"+HTML.progress({jd:(data.score==0?0:data.userScore/data.score)})+"</p>")
                 .append("<h4>模块说明：</h4>"+"<div class='paragraph'>"+data.text+"</div>")
+                .append("<h4>模块类型：</h4>"+"<div class='paragraph'>"+data.type+"</div>")
                 .append("<h4>开启条件：</h4>"+"<p class='paragraph'>"+condition(data.conditions)+"</p>")
                 .append("<h4>题目列表：</h4>"+problem(data.problemList));
         });

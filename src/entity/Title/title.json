@@ -214,7 +214,7 @@
                     "event":"judge",
                     "jd":10,
                     "jd_value":"++",
-                    "border_color":"black",
+                    "border_color":"#a1410d",
                     "condition":{
                         "type":"and",
                         "value":[
@@ -240,7 +240,7 @@
                     "event":"judge",
                     "jd":20,
                     "jd_value":"++",
-                    "border_color":"black",
+                    "border_color":"#a36209",
                     "condition":{
                         "type":"and",
                         "value":[
@@ -266,7 +266,7 @@
                     "event":"judge",
                     "jd":50,
                     "jd_value":"++",
-                    "border_color":"black",
+                    "border_color":"#10252f",
                     "condition":{
                         "type":"and",
                         "value":[
@@ -292,7 +292,7 @@
                     "event":"judge",
                     "jd":100,
                     "jd_value":"++",
-                    "border_color":"black",
+                    "border_color":"#588528",
                     "condition":{
                         "type":"and",
                         "value":[
@@ -318,7 +318,7 @@
                     "event":"judge",
                     "jd":150,
                     "jd_value":"++",
-                    "border_color":"black",
+                    "border_color":"ff0000",
                     "condition":{
                         "type":"and",
                         "value":[
@@ -338,13 +338,13 @@
                 },
 				{
                     "id":1055,
-                    "name":"名震一方",
+                    "name":"四海皆知",
                     "part":"adj",
                     "des":"“萌新”A300题,永久",
                     "event":"judge",
                     "jd":300,
                     "jd_value":"++",
-                    "border_color":"black",
+                    "border_color":"ff0000",
                     "condition":{
                         "type":"and",
                         "value":[
@@ -654,6 +654,7 @@
                     "jd":5,
                     "jd_value":"++",
                     "event":"rating",
+                    "border_color":"#464646",
                     "condition":{
                         "type":"cmp",
                         "value":["rank",">","10"]
@@ -681,6 +682,7 @@
                     "jd":1,
                     "jd_value":1,
                     "event":"rating",
+                    "border_color":"#0000ff",
                     "condition":{
                         "type":"and",
                         "value":[
@@ -1065,28 +1067,30 @@
                     "lose_condition":{},
                     "end_time":"forever"
                 },
-				{
-                "id":"3000",
-                "name":"水题达人",
-                "des":"挑战模式基础类型模块总分50分",
-                "part":"n",
-                "event":"judge",
-                "jd":50,
-                "jd_value":"[GroupScore,0]",
-                "condition":{
-                    "type":"cmp",
-                    "value":["judge_result","==",1]
+                {
+                    "id":"3000",
+                    "name":"水题达人",
+                    "des":"挑战模式基础类型模块总分64分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":64,
+                    "border_color":"#9d0039",
+                    "jd_value":"[GroupScore,0]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
                 },
-                "lose_condition":{},
-                "end_time":"forever"
-                 },
                 {
                     "id":"3001",
                     "name":"水题砖家",
-                    "des":"挑战模式基础类型模块总分75分",
+                    "des":"挑战模式基础类型模块总分128分",
                     "part":"n",
                     "event":"judge",
-                    "jd":75,
+                    "jd":128,
+                    "border_color":"#9b0038",
                     "jd_value":"[GroupScore,0]",
                     "condition":{
                         "type":"cmp",
@@ -1097,41 +1101,12 @@
                 },
                 {
                     "id":"3002",
-                    "name":"水题大师",
-                    "des":"挑战模式基础类型模块总分100分",
-                    "part":"n",
-                    "event":"judge",
-                    "jd":100,
-                    "jd_value":"[GroupScore,0]",
-                    "condition":{
-                        "type":"cmp",
-                        "value":["judge_result","==",1]
-                    },
-                    "lose_condition":{},
-                    "end_time":"forever"
-                },
-                {
-                    "id":"3003",
                     "name":"水题杀手",
-                    "des":"挑战模式基础类型模块总分150分",
+                    "des":"挑战模式基础类型模块总分256分",
                     "part":"n",
                     "event":"judge",
-                    "jd":150,
-                    "jd_value":"[GroupScore,0]",
-                    "condition":{
-                        "type":"cmp",
-                        "value":["judge_result","==",1]
-                    },
-                    "lose_condition":{},
-                    "end_time":"forever"
-                },
-                {
-                    "id":"3004",
-                    "name":"水题之神",
-                    "des":"挑战模式基础类型模块总分200分",
-                    "part":"n",
-                    "event":"judge",
-                    "jd":200,
+                    "jd":256,
+                    "border_color":"#ff0000",
                     "jd_value":"[GroupScore,0]",
                     "condition":{
                         "type":"cmp",

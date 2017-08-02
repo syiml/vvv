@@ -19,7 +19,8 @@ public class ChallengeMain {
         geometry(3,"几何"),
         graph(4,"图论"),
         search(5,"搜索"),
-        dp(6,"动态规划");
+        dp(6,"动态规划"),
+        error(-1,"ERROR");
 
         private int index;
         private String name;
@@ -35,6 +36,13 @@ public class ChallengeMain {
 
         public String getName() {
             return name;
+        }
+
+        public static BlockType getBlockTypeByIndex(int index){
+            for (BlockType type: BlockType.values()) {
+                if(type.index == index) return type;
+            }
+            return error;
         }
     }
 
