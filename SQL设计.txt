@@ -1,4 +1,26 @@
+﻿
+CREATE TABLE t_game_repetition
+(
+id INT(11) AUTO_INCREMENT,
+blackName VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+blackAuthor VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+whiteName VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+whiteAuthor VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+processes TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+PRIMARY KEY (id)
+)
 
+
+CREATE TABLE t_ai_info
+(
+id INT(11) AUTO_INCREMENT,
+username VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+game_id INT(11) NOT NULL,
+ai_name VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+ai_code TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+introduce VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+PRIMARY KEY (id)
+)
 
 CREATE TABLE `t_vote` (
 `did`  int(11) NOT NULL ,

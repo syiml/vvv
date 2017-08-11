@@ -302,4 +302,14 @@
                 </action>
                 <action name="getOnlineUserWithContest" class="action.WebSocket" method="getOnlieUserList"></action>
         </package>
+        <package name="Ai" extends="struts-default">
+                <action name="getAiInfoList" class="action.AiAction" method="getAiInfoList">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+                <action name="addAiInfo" class="action.AiAction" method="addAiInfo">
+                        <result name="success">return.jsp</result>
+                        <result name="error">return.jsp</result>
+                </action>
+        </package>
 </struts>
