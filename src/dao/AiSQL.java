@@ -38,11 +38,8 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
         return "error";
     }
 
-    public String addAiGameRepetition(String blackName,int blackAuthor,String whiteName,String whiteAuthor,String processes){
-        if (new SQL("INSERT INTO t_game_repetition VALUES(?,?,?,?,?,?)",0,blackName,blackAuthor,whiteName,whiteAuthor,processes).update() !=0){
-            return "success";
-        }
-        return "error";
+    public void addAiGameRepetition(String blackName,int blackAuthor,String whiteName,String whiteAuthor,String processes){
+        new SQL("INSERT INTO t_game_repetition VALUES(?,?,?,?,?,?)",0,blackName,blackAuthor,whiteName,whiteAuthor,processes).update();
     }
 
 
