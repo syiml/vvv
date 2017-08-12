@@ -13,9 +13,9 @@ import java.util.List;
 public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
 
     private static AiSQL sql = new AiSQL();
-    /**
+    /**AiSQL对象
      * 饿汉式单例
-     * @return AiSQL对象
+     * @return
      */
     public static AiSQL getInstance(){
         return sql;
@@ -33,6 +33,13 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
 
     public String addAiInfo(String username,int game_id,String aiName,String code,String introduce){
         if (new SQL("INSERT INTO t_ai_info VALUES(?,?,?,?,?,?)",0,username,game_id,aiName,code,introduce).update() !=0){
+            return "success";
+        }
+        return "error";
+    }
+
+    public String addAiGameRepetition(String blackName,int blackAuthor,String whiteName,String whiteAuthor,String processes){
+        if (new SQL("INSERT INTO t_game_repetition VALUES(?,?,?,?,?,?)",0,blackName,blackAuthor,whiteName,whiteAuthor,processes).update() !=0){
             return "success";
         }
         return "error";
