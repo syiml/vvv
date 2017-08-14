@@ -225,6 +225,10 @@
                             {
                                 "type":"cmp",
 								"value":["is_repeat","==",0]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1,true]
                             }
                         ]
                     },
@@ -251,6 +255,10 @@
                             {
                                 "type":"cmp",
 								"value":["is_repeat","==",0]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1,true]
                             }
                         ]
                     },
@@ -277,6 +285,10 @@
                             {
                                 "type":"cmp",
 								"value":["is_repeat","==",0]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1,true]
                             }
                         ]
                     },
@@ -303,6 +315,10 @@
                             {
                                 "type":"cmp",
 								"value":["is_repeat","==",0]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1,true]
                             }
                         ]
                     },
@@ -329,6 +345,10 @@
                             {
                                 "type":"cmp",
 								"value":["is_repeat","==",0]
+                            },
+                            {
+                                "type":"have_title_check",
+                                "value":[1,true]
                             }
                         ]
                     },
@@ -794,7 +814,7 @@
                     "event":"acb",
                     "jd":10000,
                     "jd_value":"acb",
-                    "style":"border-color:#ffd700;background-color: rgba(0,0,255,0.2);",
+                    "style":"border-color:#ffd700;",
                     "condition":{"type":"true"},
                     "lose_condition":{},
                     "end_time":"forever"
@@ -807,7 +827,7 @@
                     "event":"acb",
                     "jd":1000000,
                     "jd_value":"acb",
-                    "style":"border-color:#ffd700;background-color: rgba(0,0,255,0.2);",
+                    "style":"border-color:#ffd700;",
                     "condition":{"type":"true"},
                     "lose_condition":{},
                     "end_time":"forever"
@@ -820,7 +840,7 @@
                     "event":"rich_rank",
                     "jd":1,
                     "jd_value":"1",
-                    "style":"border-color:#ffd700;background-color: rgba(0,0,255,0.2);",
+                    "style":"border-color:#ffd700;",
                     "condition":{
                         "type":"cmp",
                         "value":["rank","==","1"]

@@ -77,7 +77,7 @@ public class BaseTimeCompute {
             }
             case "end_time_of_some_title":{
                 Timestamp time = event.user.titleSet.getTitleValue((int)args.get(0)).clear_time;
-                if(time==null) return 0;
+                if(time==null) return 0;  //如果称号不存在，返回的称号的结束时间是永久？
                 return time.getTime();
             }
             case "time_compute":{

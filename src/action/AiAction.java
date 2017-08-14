@@ -66,8 +66,8 @@ public class AiAction extends BaseAction {
         return introduce;
     }
 
-    public  String addAiInfo(){
-        return AiSQL.addAiInfo(user,game_id,aiName,code,introduce);
+    public String addAiInfo(){
+         return AiSQL.getInstance().addAiInfo(user,game_id,aiName,code,introduce);
     }
 
 }
