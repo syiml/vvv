@@ -32,6 +32,7 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
     private int total_jd;
     private BaseIntCompute intCompute;
     private int part;
+    private boolean isHide = false;
 
     protected BaseTitle(Class<T> cls) {
         super(cls);
@@ -131,6 +132,7 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
         title.timeCompute = BaseTimeCompute.getTimeCompute(jo.get("end_time"));
         title.timeCompute.setTitle_id(title.id);
         title.part = jo.getString("part").equals("n")?1:0;
+        if(jo.containsKey("isHide")) title.isHide = jo.getBoolean("isHide");
         if(jo.containsKey("get_end_time")){
             title.get_timeCompute =  BaseTimeCompute.getTimeCompute(jo.get("get_end_time"));
             title.get_timeCompute.setTitle_id(title.id);
@@ -144,5 +146,9 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
 
     public int getPart() {
         return part;
+    }
+
+    public boolean isHide() {
+        return isHide;
     }
 }

@@ -210,7 +210,7 @@
                     "id":1050,
                     "name":"初出江湖",
                     "part":"adj",
-                    "des":"“萌新”在开始的10天内A10题，获得后持续3个月",
+                    "des":"在获得“萌新”后的10天内AC10题，获得后持续3个月",
                     "event":"judge",
                     "jd":10,
                     "jd_value":"++",
@@ -233,14 +233,14 @@
                         ]
                     },
                     "lose_condition":{},
-                    "end_time":["now_add",10,"day"],
+                    "end_time":"forever",
 					"get_end_time":["now_add",3,"month"]
                 },
 				{
                     "id":1051,
                     "name":"初露锋芒",
                     "part":"adj",
-                    "des":"“萌新”在开始的15天内A20题，获得后持续3个月",
+                    "des":"在获得“萌新”后的15天内AC20题，获得后持续3个月",
                     "event":"judge",
                     "jd":20,
                     "jd_value":"++",
@@ -263,14 +263,14 @@
                         ]
                     },
                     "lose_condition":{},
-                    "end_time":["now_add",15,"day"],
+                    "end_time":"forever",
 					"get_end_time":["now_add",3,"month"]
                 },
 				{
                     "id":1052,
                     "name":"崭露头角",
                     "part":"adj",
-                    "des":"“萌新”在开始的20天内A50题，获得后持续3个月",
+                    "des":"在获得“萌新”后的20天内AC50题，获得后持续3个月",
                     "event":"judge",
                     "jd":50,
                     "jd_value":"++",
@@ -293,14 +293,14 @@
                         ]
                     },
                     "lose_condition":{},
-                    "end_time":["now_add",20,"day"],
+                    "end_time":"forever",
 					"get_end_time":["now_add",3,"month"]
                 },
 				{
                     "id":1053,
                     "name":"势如破竹",
                     "part":"adj",
-                    "des":"“萌新”在开始的25天内A100题，获得后持续3个月",
+                    "des":"在获得“萌新”后的25天内AC100题，获得后持续3个月",
                     "event":"judge",
                     "jd":100,
                     "jd_value":"++",
@@ -323,14 +323,14 @@
                         ]
                     },
                     "lose_condition":{},
-                    "end_time":["now_add",25,"day"],
+                    "end_time":"forever",
 					"get_end_time":["now_add",3,"month"]
                 },
 				{
                     "id":1054,
                     "name":"名震一方",
                     "part":"adj",
-                    "des":"“萌新”在开始的30天内A150题,永久",
+                    "des":"在获得“萌新”后的35天内AC150题,永久",
                     "event":"judge",
                     "jd":150,
                     "jd_value":"++",
@@ -360,7 +360,7 @@
                     "id":1055,
                     "name":"四海皆知",
                     "part":"adj",
-                    "des":"“萌新”A300题,永久",
+                    "des":"在有“萌新”称号的时间内AC150题,永久",
                     "event":"judge",
                     "jd":300,
                     "jd_value":"++",
@@ -669,12 +669,13 @@
 				{
                     "id":"1210",
                     "name":"咸鱼",
-                    "des":"连续5次rating赛都在10名外",
+                    "des":"",
                     "part":"n",
                     "jd":5,
                     "jd_value":"++",
                     "event":"rating",
                     "border_color":"#464646",
+                    "isHide":true,
                     "condition":{
                         "type":"cmp",
                         "value":["rank",">","10"]
@@ -697,12 +698,13 @@
 				{
                     "id":1211,
                     "name":"咸鱼翻身",
-                    "des":"在有咸鱼称号的情况下参加rating赛进入前十",
+                    "des":"",
                     "part":"adj",
                     "jd":1,
                     "jd_value":1,
                     "event":"rating",
                     "border_color":"#0000ff",
+                    "isHide":true,
                     "condition":{
                         "type":"and",
                         "value":[
@@ -1128,6 +1130,102 @@
                     "jd":256,
                     "border_color":"#ff0000",
                     "jd_value":"[GroupScore,0]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3010",
+                    "name":"数据结构达人",
+                    "des":"挑战模式数据结构类型模块总分32分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":32,
+                    "border_color":"#790000",
+                    "jd_value":"[GroupScore,1]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3020",
+                    "name":"数学达人",
+                    "des":"挑战模式数学类型模块总分32分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":32,
+                    "border_color":"#ff0000",
+                    "jd_value":"[GroupScore,2]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3030",
+                    "name":"几何达人",
+                    "des":"挑战模式几何类型模块总分32分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":32,
+                    "border_color":"#ff0000",
+                    "jd_value":"[GroupScore,3]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3040",
+                    "name":"图论达人",
+                    "des":"挑战模式图论类型模块总分32分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":32,
+                    "border_color":"#ff0000",
+                    "jd_value":"[GroupScore,4]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3050",
+                    "name":"搜索达人",
+                    "des":"挑战模式搜索类型模块总分32分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":32,
+                    "border_color":"#ff0000",
+                    "jd_value":"[GroupScore,5]",
+                    "condition":{
+                        "type":"cmp",
+                        "value":["judge_result","==",1]
+                    },
+                    "lose_condition":{},
+                    "end_time":"forever"
+                },
+                {
+                    "id":"3060",
+                    "name":"DP达人",
+                    "des":"挑战模式动态规划类型模块总分32分",
+                    "part":"n",
+                    "event":"judge",
+                    "jd":32,
+                    "border_color":"#ff0000",
+                    "jd_value":"[GroupScore,6]",
                     "condition":{
                         "type":"cmp",
                         "value":["judge_result","==",1]

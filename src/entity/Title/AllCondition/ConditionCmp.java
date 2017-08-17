@@ -19,7 +19,7 @@ public class ConditionCmp extends BaseCondition{
     @Override
     public boolean check(BaseTitleEvent event) {
         Integer int1 = getInt(name1,event);
-        Integer int2 = event.getInt(name2);
+        Integer int2 = getInt(name2,event);
         if(int1 == null || int2 == null) return false;
         switch (cmpType){
             case "<":return int1 < int2;

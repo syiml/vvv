@@ -244,6 +244,7 @@ public class ContestSQL extends BaseCache<Integer,Contest> {
             if(!Main.loginUserPermission().getAddContest()){
                 sql+=" and kind!=4";//4->隐藏
             }
+            sql += " and kind!=5";
         }
         return new SQL(sql).queryNum();
     }

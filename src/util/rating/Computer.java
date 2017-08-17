@@ -133,7 +133,7 @@ public class Computer {
                     }else{
                         MessageMain.addMessageRatingChange(ratingCase.getCid(), ratingCase.getUsername(), ratingCase.getTruePRating(), ratingCase.getTrueRating());
                     }
-                    EventMain.triggerEvent(new EventRating(u,ratingCase.getRank()));
+                    EventMain.triggerEvent(new EventRating(u,ratingCase.getRank(),rating.size()));
                     Tool.log(ratingCase.getUsername() + ":" + ratingCase.getRating());
                 }
                 Main.users.updateAllUserRank();

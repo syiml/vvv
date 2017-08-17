@@ -16,17 +16,14 @@ import java.util.Random;
  */
 public class Tool {
     /**
-     * 让线程等待t毫秒
-     * @param t 等待时间 单位毫秒
-     * @return 1
+     * 让线程等待millis毫秒
+     * @param millis 等待时间 单位毫秒
      */
-    public static int sleep(int t){
+    public static void sleep(int millis){
         try {
-            Thread.sleep(t);
-        } catch (InterruptedException e) {
-            return 1;
+            Thread.sleep(millis);
+        } catch (InterruptedException ignored) {
         }
-        return 1;
     }
     public static String nowDate(){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,8 +79,8 @@ public class Tool {
                         &&!stacks[stackDepth].getMethodName().equals("SQLDebug")) break;
             }
             Thread current = Thread.currentThread();
-            String nowTime = now().toString();
-            while(nowTime.length() < 23) nowTime+="0";
+            StringBuilder nowTime = new StringBuilder(now().toString());
+            while(nowTime.length() < 23) nowTime.append("0");
             System.out.println(ANSI.CYAN+"【"+nowTime+"|"+current.getId()+"】"+ANSI.RESET+s+ANSI.GREEN+"["+stacks[stackDepth]+"]"+ANSI.RESET);
         }
     }

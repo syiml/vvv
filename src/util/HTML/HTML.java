@@ -1607,10 +1607,10 @@ public class HTML {
             //模块列表
             TableHTML table=new TableHTML();
             table.setClass("table");
-            table.addColname("#","模块名","总积分","管理");
+            table.addColname("#","模块名","类型","总积分","管理");
             for(Integer bid: ChallengeMain.blocks.keySet()){
                 Block b=ChallengeMain.blocks.get(bid);
-                table.addRow(bid+"",b.getIsEditing()==0?b.getName():HTML.text(b.getName(),"red"),b.getScore()+"",HTML.a("admin.jsp?page=ChallengeAdmin&id="+bid,"admin"));
+                table.addRow(bid+"",b.getIsEditing()==0?b.getName():HTML.text(b.getName(),"red"),b.getBlockType().getName(),b.getScore()+"",HTML.a("admin.jsp?page=ChallengeAdmin&id="+bid,"admin"));
             }
             return f.toHTML()+table.HTML();
         }else{//模块管理
@@ -1623,6 +1623,9 @@ public class HTML {
                 text t=new text("id","id");
                 t.setValue(id+"");
                 t.setDisabled();
+                select select_type = new select("type","模块类型");
+                select_type.add(0,"基础");
+
                 textarea te=new textarea("text","模块说明");
                 te.setPlaceholder("支持HTML代码");
                 te.setId("container");
@@ -1661,13 +1664,13 @@ public class HTML {
                 t1.setValue(id+"");
                 addCondition.addForm(t1);
                 t1.setDisabled();
-                /* 挑战模式开启的条件中判断某一个模块的类型？
+                /* 挑战模式开启的条件中判断某一个模块的类型？*/
                 select type=new select("type","type");
                 type.setType(1);
                 type.add(1,"1");
                 type.setValue("1");
                 addCondition.addForm(type);
-                */
+
                 select block=new select("block","block");
                 block.setType(1);
                 for(Integer bid: ChallengeMain.blocks.keySet()){

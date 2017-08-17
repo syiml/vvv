@@ -191,7 +191,7 @@ public class ClockInHTML {
             if(per.getClockIn()) row.add(HTML.a("delclockin.action?id="+cir.id,"删除"));
             table.addRow(row);
         }
-        return HTML.panel("签到"+HTML.floatRight(HTML.a("dmc.jsp","点名册")),p+table.HTML())
+        return HTML.panel("签到"+HTML.floatRight(HTML.a("dmc2.jsp","点名册")),p+table.HTML())
                 +(per.getClockIn()?HTML.panel("添加签到记录",adminForm()):"");
     }
     static List<String> showusers;
@@ -199,7 +199,6 @@ public class ClockInHTML {
         showusers=new ArrayList<String>();
         showusers.add("Marris");
         showusers.add("3151301111");
-        showusers.add("3141906223");
         showusers.add("3151906216");
         showusers.add("seventh");
         showusers.add("3161906213");
@@ -209,20 +208,15 @@ public class ClockInHTML {
         showusers.add("CCL66");
         showusers.add("Q1143316492");
         showusers.add("3161906217");
-        //showusers.add("fmb007");
         showusers.add("chengdong");
         showusers.add("xiejin");
         showusers.add("BLACK");
         showusers.add("LIWEI");
-        //showusers.add("297947648");
         showusers.add("738324062");
         showusers.add("w_z_c");
-        //showusers.add("3161906218");
         showusers.add("evils");
         showusers.add("wushengtao");
         showusers.add("Froid");
-        //showusers.add("121371");
-        //showusers.add("DreamBattle");
         showusers.add("CCSGTC");
     }
     public static String HTMLtable(){
@@ -231,7 +225,7 @@ public class ClockInHTML {
         table.addColname("#");
         table.addCl(0,0,"width100");
         for(int i=0;i<showusers.size();i++){
-            table.addColname(HTML.a("UserInfo.jsp?user="+showusers.get(i),Main.users.getUser(showusers.get(i)).getNick()));
+            table.addColname(HTML.a("UserInfo.jsp?user="+showusers.get(i),Main.users.getUser(showusers.get(i)).getName()));
             table.addCl(0, i + 1, "width10");
         }
 
@@ -241,7 +235,7 @@ public class ClockInHTML {
 //        List<Integer> l4=new ArrayList<Integer>();//旷课
         List<Integer> l5=new ArrayList<Integer>();//积分
         List<List<String>> tablerows=new ArrayList<List<String>>();
-        Long beginday=16824L;
+        Long beginday=17200L;
         Long day=(Tool.now().getTime()+(1000*60*60*8))/(1000*60*60*24);
         for(int i=0;i<showusers.size();i++){
             l1.add(0);

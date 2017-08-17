@@ -1,8 +1,10 @@
 package util.Event.Events;
 
+import entity.Block;
 import entity.Result;
 import entity.Status;
 import entity.User;
+import servise.ChallengeMain;
 import util.Event.BaseTitleEvent;
 import util.Main;
 import util.SQL.SQL;
@@ -17,7 +19,7 @@ import java.util.*;
 public class EventJudge extends BaseTitleEvent {
     public Status s;
 	public Map<Integer,Integer> blockScore;
-	public Map<Integer,Integer> groupList;
+    Set<Integer> openBlocks;
     int is_repeat;
     public EventJudge(User u, Status s) {
         super(u);
@@ -33,42 +35,39 @@ public class EventJudge extends BaseTitleEvent {
             is_repeat = 2;
         }
 
-        groupList = new SQL("SELECT id,gro FROM t_challenge_block WHERE isEditing = 0 ORDER BY gro").queryMap();
         blockScore = ChallengeSQL.getUserScore(s.getUser());
+        openBlocks = ChallengeSQL.getOpenBlocks(s.getUser());
     }
 
 	//获取某个group的得分
-	public int getGroupScore(int gro){
+    private int getGroupScore(int gro){
 		int score = 0;
 		try{
-            Iterator<Map.Entry<Integer, Integer>> entries = groupList.entrySet().iterator();
-            Map.Entry<Integer, Integer> entry;
-            while (entries.hasNext()) {
-                entry = entries.next();
-                if (entry.getValue() == gro){
-                    score += getBlockScore(entry.getKey());
+		    for(Integer id: openBlocks){
+                Block block = ChallengeMain.blocks.get(id);
+                if(block!=null && block.getGroup() == gro){
+                    score += getBlockScore(id);
                 }
-                //else if (entry.getValue() > gro){ break;} 可能分数表是按id来排,但此时gro的列表不一定有序
             }
         }catch(Exception msg){
             score = 0;
+            msg.printStackTrace();
         }
 		return score;
 	}
 
 	//获取某个模块的得分
-	public int getBlockScore(int blockId){
+    private int getBlockScore(int blockId){
 		int score = 0;
 		if (blockId != -1){  //单个模块
-			if (blockScore.get(blockId) != null){
-			score = blockScore.get(blockId);
+			if (openBlocks.contains(blockId) && blockScore.containsKey(blockId)){
+			    score = blockScore.get(blockId);
 			}
 		}
 		else{  //所有模块
-			for (Integer value : blockScore.values()){
-			    System.out.println(value);
-				score += value;
-			}
+            for(Integer id: openBlocks){
+                score += getBlockScore(id);
+            }
 		}
 		return score;
 	}

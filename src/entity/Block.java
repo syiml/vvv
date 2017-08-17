@@ -1,6 +1,7 @@
 package entity;
 
 import dao.ChallengeSQL;
+import servise.ChallengeMain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,9 @@ public class Block {
         return group;
     }
 
+    public ChallengeMain.BlockType getBlockType(){
+        return ChallengeMain.BlockType.getBlockTypeByIndex(getGroup());
+    }
     public List<Condition> getConditions() {
         return conditions;
     }

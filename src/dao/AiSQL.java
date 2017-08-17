@@ -44,7 +44,7 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
 
 
     @Override
-    protected AiInfo getByKeyFromSQL(Integer key) {
+    public AiInfo getByKeyFromSQL(Integer key) {
         ResultSet rs= new SQL("SELECT username,game_id,ai_name,ai_code,introduce " +
                 "FROM t_ai_info WHERE id = ? ", key).query();
         try {

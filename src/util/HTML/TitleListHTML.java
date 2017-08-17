@@ -13,6 +13,7 @@ import util.Main;
 import util.SimplePageBean;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,19 @@ public class TitleListHTML extends SimplePageBean<Integer> {
 
     @Override
     public List<Integer> getElement(int from, int num) {
-        return showUser.titleSet.getShowTitles();
+        List<Integer> list1 = showUser.titleSet.getShowTitles();
+        List<Integer> remove_list = new ArrayList<>();
+        for(Integer id : list1){
+            if(id == -1) continue;
+            BaseTitle t = BaseTitle.getTitleByID(id);
+            if(!loginUser.getPermission().havePermissions(PermissionType.titleAdmin) && t.isHide()){
+                if(!showUser.titleSet.haveTitle(id)) {
+                    remove_list.add(id);
+                }
+            }
+        }
+        list1.removeAll(remove_list);
+        return list1;
     }
 
     @Override

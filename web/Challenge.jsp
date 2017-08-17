@@ -38,5 +38,5 @@
 </body>
 </html>
 <script src="js/jquery-ui.min.js"></script>
-<script src="js/challenge.js"></script>
+<script src="js/challenge.js?<%=Main.config.version%>"></script>
 <script src="js/status.js"></script>

@@ -1,8 +1,8 @@
 {
   "sqlclass":"com.mysql.jdbc.Driver",
-  "sqlconnstring":"jdbc:mysql://localhost:3306/vjudge?autoReconnect=true&useUnicode=true&characterEncoding=utf8",
+  "sqlconnstring":"jdbc:mysql://localhost:3306/vj?autoReconnect=true&useUnicode=true&characterEncoding=utf8",
   "sqlusername":"root",
-  "sqlpassword":"1234",
+  "sqlpassword":"",
 
   "problemShowNum":"100",
   "statusShowNum":"20",

@@ -8,7 +8,7 @@
         <filter-class>util.ReDispatcherFilter</filter-class>
         <init-param>
             <param-name>includeServlets</param-name>
-            <param-value>WebSocket,MatchWebSocket</param-value>
+            <param-value>WebSocket,MatchWebSocket,AI_PVE</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -49,6 +49,18 @@
     <servlet-mapping>
         <servlet-name>MatchWebSocket</servlet-name>
         <url-pattern>/MatchWebSocket</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AI_PVE</servlet-name>
+        <servlet-class>
+            WebSocket.GameSocketServer
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AI_PVE</servlet-name>
+        <url-pattern>/AI_PVE</url-pattern>
     </servlet-mapping>
 
     <servlet>

@@ -92,113 +92,151 @@ public class CPlusPlusCompare{
 		}
 		return code;
 	}
+	private String  del_notes(String str)
+	{
+		str+="\n";
+		StringBuilder sb = new StringBuilder(str);
+		System.out.println(sb.toString());
+		Boolean flag =true;
+		int pos1 = -1;
+		int pos2 = -1;
+		for(int i=0;i<sb.length();i++){
+			if(sb.charAt(i) == '"' && pos1 == -1 && pos2 == -1 && i - 1 >= 0 && sb.charAt(i-1) != '\\' && sb.charAt(i-1) != '\''){
+				flag = !flag;
+			}
+			else if(flag && sb.charAt(i) == '/' && i - 1 >= 0 && sb.charAt(i-1) == '/' && pos2 == -1 && pos1 == -1){
+				pos1 = i-1;
+			}
+			else if(flag && sb.charAt(i) == '*' && i - 1 >= 0 && sb.charAt(i-1) == '/' && pos1 == -1 && pos2 == -1){
+				pos2 = i-1;
+				i++;
+			}
+			else if(flag && sb.charAt(i) == '\n' && pos1 != -1){
+				sb.delete(pos1, i);
+				i-=(i+1-pos1);
+				pos1 = -1;
+			}
+			else if(flag && sb.charAt(i) == '/' && i - 1 >= 0 && sb.charAt(i-1) == '*' && pos2 != -1){
+				sb.delete(pos2, i+1);
+				i-= (i+1-pos2);
+				pos2 = -1;
+			}
+		}
+
+		return sb.toString();
+	}
 	public double getSimilarity(String code1, String code2) {
 		// TODO Auto-generated method stub
+		code1=del_notes(code1);
+		code2=del_notes(code2);
 		code1=getPreProcessedCode(code1);
 		code2=getPreProcessedCode(code2);
 		return 1-ld.ld(code1, code2)*1.0/Math.max(code1.length(), code2.length());
 	}
+
+
 	public static void main(String[]args) throws IOException{
-		CPlusPlusCompare cmp = new CPlusPlusCompare();
-		double s=cmp.getSimilarity("#include<stdio.h>\n" +
-						"char s[1000010];\n" +
-						"int main()\n" +
-						"{\n" +
-						"  int i,n,k,co,aa,aai,o,j;\n" +
-						"  int a[10];\n" +
-						"  while(scanf(\"%d\",&n)!=EOF)\n" +
-						"  {\n" +
-						"    aa=100010;\n" +
-						"    for(aai=9,i=1;i<=9;i++)\n" +
-						"    {\n" +
-						"      scanf(\"%d\",&a[i]);\n" +
-						"      if(a[i]<=aa)\n" +
-						"      {\n" +
-						"        aa=a[i];\n" +
-						"        aai=i;\n" +
-						"      }\n" +
-						"    }\n" +
-						"    if(n<aa)\n" +
-						"      printf(\"-1\\n\");\n" +
-						"    else{\n" +
-						"    co=n/aa;\n" +
-						"    k=n%aa;\n" +
-						"    j=0;\n" +
-						"    while(k>0||co>0)\n" +
-						"    {\n" +
-						"      if(k>0)\n" +
-						"      {\n" +
-						"        for(i=9;i>aai;i--)\n" +
-						"          if(k+a[aai]>=a[i])\n" +
-						"            break;\n" +
-						"        if(i==aai) k=0;\n" +
-						"        else k=k+aa-a[i];\n" +
-						"        o=i;\n" +
-						"      }\n" +
-						"      else o=aai;\n" +
-						"      s[++j]='0'+o;\n" +
-						"      co--;\n" +
-						"}\n" +
-						"    }\n" +
-						"    s[j]=0;\n" +
-						"    printf(\"%s\\n\",s);\n" +
-						"  }\n" +
-						"  return 0;\n" +
-						"}"
 
-				,
+//		CPlusPlusCompare cmp = new CPlusPlusCompare();
+//		double s=cmp.getSimilarity("#include<stdio.h>\n" +
+//						"char s[1000010];\n" +
+//						"int main()\n" +
+//						"{\n" +
+//						"  int i,n,k,co,aa,aai,o,j;\n" +
+//						"  int a[10];\n" +
+//						"  while(scanf(\"%d\",&n)!=EOF)\n" +
+//						"  {\n" +
+//						"    aa=100010;\n" +
+//						"    for(aai=9,i=1;i<=9;i++)\n" +
+//						"    {\n" +
+//						"      scanf(\"%d\",&a[i]);\n" +
+//						"      if(a[i]<=aa)\n" +
+//						"      {\n" +
+//						"        aa=a[i];\n" +
+//						"        aai=i;\n" +
+//						"      }\n" +
+//						"    }\n" +
+//						"    if(n<aa)\n" +
+//						"      printf(\"-1\\n\");\n" +
+//						"    else{\n" +
+//						"    co=n/aa;\n" +
+//						"    k=n%aa;\n" +
+//						"    j=0;\n" +
+//						"    while(k>0||co>0)\n" +
+//						"    {\n" +
+//						"      if(k>0)\n" +
+//						"      {\n" +
+//						"        for(i=9;i>aai;i--)\n" +
+//						"          if(k+a[aai]>=a[i])\n" +
+//						"            break;\n" +
+//						"        if(i==aai) k=0;\n" +
+//						"        else k=k+aa-a[i];\n" +
+//						"        o=i;\n" +
+//						"      }\n" +
+//						"      else o=aai;\n" +
+//						"      s[++j]='0'+o;\n" +
+//						"      co--;\n" +
+//						"}\n" +
+//						"    }\n" +
+//						"    s[j]=0;\n" +
+//						"    printf(\"%s\\n\",s);\n" +
+//						"  }\n" +
+//						"  return 0;\n" +
+//						"}"
+//
+//				,
+//
+//
+//				"#include<stdio.h>\n" +
+//						"char s[1000010];\n" +
+//						"int main()\n" +
+//						"{\n" +
+//						"  int a[10];\n" +
+//						"  int i,n,o,j,k,co,mt,mti;\n" +
+//						"  while(scanf(\"%d\",&n)!=EOF)\n" +
+//						"  {\n" +
+//						"    mt=100010;\n" +
+//						"    for(mti=9,i=1;i<=9;i++)\n" +
+//						"    {\n" +
+//						"      scanf(\"%d\",&a[i]);\n" +
+//						"      if(a[i]<=mt)\n" +
+//						"      {\n" +
+//						"        mt=a[i];\n" +
+//						"        mti=i;\n" +
+//						"      }\n" +
+//						"    }\n" +
+//						"    if(n<mt)\n" +
+//						"    {\n" +
+//						"      printf(\"-1\\n\");\n" +
+//						"      continue;\n" +
+//						"    }\n" +
+//						"    co=n/mt;\n" +
+//						"    k=n%mt;\n" +
+//						"    j=0;\n" +
+//						"    while(k>0||co>0)\n" +
+//						"    {\n" +
+//						"      if(k>0)\n" +
+//						"      {\n" +
+//						"        for(i=9;i>mti;i--)\n" +
+//						"        {\n" +
+//						"          if(k+a[mti]>=a[i])\n" +
+//						"            break;\n" +
+//						"        }\n" +
+//						"        if(i==mti) k=0;\n" +
+//						"        else k=k+mt-a[i];\n" +
+//						"        o=i;\n" +
+//						"      }\n" +
+//						"      else o=mti;\n" +
+//						"      s[j++]=o+'0';\n" +
+//						"      co--;\n" +
+//						"    }\n" +
+//						"    s[j]=0;\n" +
+//						"    printf(\"%s\\n\",s);\n" +
+//						"  }\n" +
+//						"  return 0;\n" +
+//						"}");
 
-
-				"#include<stdio.h>\n" +
-						"char s[1000010];\n" +
-						"int main()\n" +
-						"{\n" +
-						"  int a[10];\n" +
-						"  int i,n,o,j,k,co,mt,mti;\n" +
-						"  while(scanf(\"%d\",&n)!=EOF)\n" +
-						"  {\n" +
-						"    mt=100010;\n" +
-						"    for(mti=9,i=1;i<=9;i++)\n" +
-						"    {\n" +
-						"      scanf(\"%d\",&a[i]);\n" +
-						"      if(a[i]<=mt)\n" +
-						"      {\n" +
-						"        mt=a[i];\n" +
-						"        mti=i;\n" +
-						"      }\n" +
-						"    }\n" +
-						"    if(n<mt)\n" +
-						"    {\n" +
-						"      printf(\"-1\\n\");\n" +
-						"      continue;\n" +
-						"    }\n" +
-						"    co=n/mt;\n" +
-						"    k=n%mt;\n" +
-						"    j=0;\n" +
-						"    while(k>0||co>0)\n" +
-						"    {\n" +
-						"      if(k>0)\n" +
-						"      {\n" +
-						"        for(i=9;i>mti;i--)\n" +
-						"        {\n" +
-						"          if(k+a[mti]>=a[i])\n" +
-						"            break;\n" +
-						"        }\n" +
-						"        if(i==mti) k=0;\n" +
-						"        else k=k+mt-a[i];\n" +
-						"        o=i;\n" +
-						"      }\n" +
-						"      else o=mti;\n" +
-						"      s[j++]=o+'0';\n" +
-						"      co--;\n" +
-						"    }\n" +
-						"    s[j]=0;\n" +
-						"    printf(\"%s\\n\",s);\n" +
-						"  }\n" +
-						"  return 0;\n" +
-						"}");
-
-		System.out.println(s);
+//		System.out.println(s);
 //
 //
 //		File dic= new File("F:\\AllSubmits");
