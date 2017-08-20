@@ -2,11 +2,12 @@
 CREATE TABLE t_game_repetition
 (
 id INT(11) AUTO_INCREMENT,
-blackName VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+blackId INT(11) NOT NULL,
 blackAuthor VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-whiteName VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+whiteId INT(11) NOT NULL,
 whiteAuthor VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 processes TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+win VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 PRIMARY KEY (id)
 )
 
