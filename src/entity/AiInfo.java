@@ -1,13 +1,15 @@
 package entity;
 
+import net.sf.json.JSONObject;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
  * Created on 2017/8/6.
  */
-public class AiInfo implements IBeanResultSetCreate{
-    private int id;//编号
+public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
+    private int id;//编号,数据库中自增加
     private String username;
     private int game_id;
     private String aiName;
@@ -31,14 +33,16 @@ public class AiInfo implements IBeanResultSetCreate{
         this.introduce = introduce;
     }
 
+    public AiInfo(){}//避免InstantiationException
+
     @Override
     public void init(ResultSet rs) throws SQLException {
         id = rs.getInt("id");
         username = rs.getString("username");
-        game_id = rs.getInt("game_id");
-        aiName = rs.getString(rs.getInt("aiName"));
-        code = rs.getString("code");
-        introduce = rs.getString("introduce");
+        aiName = rs.getString("ai_name");
+//        game_id = rs.getInt("game_id");
+//        code = rs.getString("ai_code");
+//        introduce = rs.getString("introduce");
     }
 
     public int getId(){return this.id; }
@@ -49,4 +53,15 @@ public class AiInfo implements IBeanResultSetCreate{
     public String getIntroduce(){return this.introduce; }
 
 
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jo = new JSONObject();
+        jo.put("id",id);
+        jo.put("username",username);
+        jo.put("aiName",aiName);
+//        jo.put("game_id",game_id);
+//        jo.put("code",code);
+//        jo.put("introduce",introduce);
+        return jo;
+    }
 }

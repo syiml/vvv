@@ -307,9 +307,9 @@
                         <result name="success">return.jsp</result>
                         <result name="error">return.jsp</result>
                 </action>
-                <action name="addAiInfo" class="action.AiAction" method="addAiInfo">
-                        <result name="success">return.jsp</result>
-                        <result name="error">return.jsp</result>
-                </action>
+                <action name="addAiInfo" class="action.AiAction" method="addAiInfo"></action>
+                <action name="getAiInfoById" class="action.AiAction" method="getAiInfoById"> </action>
+                <action name="getAiListRank" class="action.AiAction" method="getAiListRank"> </action>
+                <action name="getAboutLogin" class="action.AiAction" method="getAboutLogin"> </action>
         </package>
 </struts>
