@@ -117,14 +117,17 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
 
     @Override
     public AiInfo getByKeyFromSQL(Integer key) {
+        SQL sql = new SQL("SELECT username,game_id,ai_name,ai_code,introduce " +
+                "FROM t_ai_info WHERE id = ? ", key);
         try {
-            ResultSet rs= new SQL("SELECT username,game_id,ai_name,ai_code,introduce " +
-                    "FROM t_ai_info WHERE id = ? ", key).query();
+            ResultSet rs= sql.query();
             if (rs.next()){
                 return new AiInfo(key,rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5));
             }
         }catch(SQLException e){
             e.getErrorCode();
+        }finally {
+            sql.close();
         }
         return null;
     }

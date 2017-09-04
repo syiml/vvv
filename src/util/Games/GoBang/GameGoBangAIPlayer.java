@@ -20,10 +20,12 @@ public class GameGoBangAIPlayer extends BaseJudgeSystemAIPlayer {
     private String user;
     private boolean isBegin = false;
     private int col = -1,row = -1;
+    private int id;
 
-    public GameGoBangAIPlayer(String ai_code,String user){
+    public GameGoBangAIPlayer(int id,String ai_code,String user){
         super(ai_code);
         this.user = user;
+        this.id = id;
     }
 
     public void setGameGoBang(GameGoBang game){
@@ -32,7 +34,6 @@ public class GameGoBangAIPlayer extends BaseJudgeSystemAIPlayer {
 
     @Override
     public void putResult(String res) {
-        Tool.debug(res);
         String[] ress = res.split(" ");
         if(ress.length !=2 ) return;
         try {
@@ -50,10 +51,12 @@ public class GameGoBangAIPlayer extends BaseJudgeSystemAIPlayer {
     public void putInt(int a) throws GameReadException {
         if(!isBegin){
             isBegin = true;
-            StringBuilder input = new StringBuilder();
-            JSONObject record = gameGoBang.getRecord();
-            input.append(record.getInt("row")).append(" ").append(record.getInt("col")).append("\n");
-            runAiCode(this,input.toString());
+            if(a==1){
+                StringBuilder input = new StringBuilder();
+                JSONObject record = gameGoBang.getRecord();
+                input.append(record.getInt("row")).append(" ").append(record.getInt("col")).append("\n");
+                runAiCode(this,input.toString());
+            }
         }else{
             if(col == -1) col = a;
             else if(row == -1){
@@ -71,4 +74,15 @@ public class GameGoBangAIPlayer extends BaseJudgeSystemAIPlayer {
             }
         }
     }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public String getAuthor() {
+        return user;
+    }
+
 }

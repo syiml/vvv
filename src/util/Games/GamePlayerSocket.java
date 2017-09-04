@@ -42,4 +42,19 @@ public class GamePlayerSocket implements IGamePlayer {
             throw new GameReadException();
         }
     }
+
+    @Override
+    public void gameEnd(int a) {
+
+    }
+
+    @Override
+    public int getID() {
+        return 0;
+    }
+
+    @Override
+    public String getAuthor() {
+        return "";
+    }
 }

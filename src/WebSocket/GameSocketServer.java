@@ -1,6 +1,7 @@
 package WebSocket;
 
 import dao.AiSQL;
+import entity.AiInfo;
 import entity.User;
 import org.apache.catalina.websocket.StreamInbound;
 import org.apache.catalina.websocket.WebSocketServlet;
@@ -17,20 +18,29 @@ import javax.servlet.http.HttpServletRequest;
  * Created by QAQ on 2017/8/6.
  */
 public class GameSocketServer extends WebSocketServlet {
+    private static int next_id = 0;
     @Override
     protected StreamInbound createWebSocketInbound(String s, HttpServletRequest request) {
         Tool.log("new game connect!!");
-        int game_id = Integer.parseInt(request.getParameter("id"));
-        String ai_user = request.getParameter("user");
-        Tool.log("new game connect!! id="+game_id+" user="+ai_user);
+        int game_id = Integer.parseInt(request.getParameter("game_id"));
+        int id = Integer.parseInt(request.getParameter("id"));
+        Tool.log("new game connect!! game_id="+game_id+" id="+id);
         StreamInbound ret = null;
-        if(game_id == 0){
-            //int black = Tool.randNum(0,1);
-            int black = 2;
-            GamePlayerWebSocket player = new GamePlayerWebSocket();
-            String ai_code = AiSQL.getInstance().getByKeyFromSQL(1).getCode();//TODO: getAICodeByUser(ai_user,game_id);
-            GameGoBangAIPlayer ai = new GameGoBangAIPlayer(ai_code,ai_user);
-            ai.game_id = Tool.now().getTime()%1000+"";
+        if(game_id == 1){
+            int black = Tool.randNum(1,2);
+            //int black = 2;
+            GamePlayerWebSocket player = new GamePlayerWebSocket((String)request.getSession().getAttribute("user"));
+            String ai_code = null;
+            AiInfo aiInfo = AiSQL.getInstance().getBeanByKey(id);
+            if(aiInfo != null){
+                ai_code = aiInfo.getCode();
+            }else{
+                return null;
+            }
+            String ai_user = aiInfo.getUsername();
+            GameGoBangAIPlayer ai = new GameGoBangAIPlayer(id,ai_code,ai_user);
+            ai.game_id = next_id + "";
+            next_id = (next_id + 1)%1000;
             GameGoBang gameGoBang = null;
             if(black == 1) {
                 gameGoBang = new GameGoBang(15, 15, player , ai);

@@ -103,4 +103,9 @@ public abstract class BaseJudgeSystemAIPlayer implements IGamePlayer {
             }
         }.start();
     }
+
+    @Override
+    public void gameEnd(int a) {
+
+    }
 }

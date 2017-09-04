@@ -25,6 +25,11 @@ public class GamePlayerWebSocket extends MessageInbound implements IGamePlayer{
     private boolean is_Error = false;
     private GameGoBang game;
     private long timeOut = 30000;
+    private String user;
+
+    public GamePlayerWebSocket(String user){
+        this.user = user;
+    }
 
     @Override
     public void setTimeOut(long millisecond) {
@@ -35,13 +40,13 @@ public class GamePlayerWebSocket extends MessageInbound implements IGamePlayer{
         if(is_Error) throw new GameReadException();
         try {
             return catch_queue.poll(timeOut, TimeUnit.MILLISECONDS);
-        } catch (NoSuchElementException | InterruptedException e) {
+        } catch (NoSuchElementException | InterruptedException | NullPointerException e) {
             is_Error = true;
-            try {
-                getWsOutbound().writeTextMessage(CharBuffer.wrap("{\"type\":\"end\"}".toCharArray()));
-            } catch (IOException ignored) {
-
-            }
+//            try {
+//                getWsOutbound().writeTextMessage(CharBuffer.wrap("{\"type\":\"end\"}".toCharArray()));
+//            } catch (IOException ignored) {
+//
+//            }
             throw new GameReadException();
         }
     }
@@ -54,6 +59,28 @@ public class GamePlayerWebSocket extends MessageInbound implements IGamePlayer{
         }catch (IOException e){
             throw new GameReadException();
         }
+    }
+
+    @Override
+    public void gameEnd(int a) {
+        try {
+            JSONObject step = new JSONObject();
+            step.put("type","result");
+            step.put("value",a);
+            getWsOutbound().writeTextMessage(CharBuffer.wrap(step.toString()));
+        }catch (IOException ignored){
+
+        }
+    }
+
+    @Override
+    public int getID() {
+        return 0;
+    }
+
+    @Override
+    public String getAuthor() {
+        return user;
     }
 
     @Override

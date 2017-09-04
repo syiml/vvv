@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/page2.css" rel="stylesheet"/>
+    <script src="js/jquery-1.11.1.js"></script>
+    <script>
+		//设置当前页面
+       var page = 1;
+	   //设置最大页数
+	   var endpage = 2;
+	    $(function(){
+			//页面加载时自动生成大佬人数
+			//使用ajax获得总人数,以及各人信息并写入
+            turnpage(1);
+			
+			//虚拟生成人数信息
+			var sum = 10;
+			var str = "";
+//			for(var i=0;i<10;i++) {
+//                str += "<li id=li_" + i + "><h2><a href='aigame_info.html'>T^T哔哩哔哩</a></h2><i></i><span><div></div></span></li>";
+//            }
+			$("#page_ul").html(str);
+
+            $("button").click(function(){
+                $("body").animate({
+                    left:'25px',
+                    opacity:'0.1',
+                    height:'15px',
+                    width:'15px'
+                },500,function(){
+                    window.location.href="aigame_index.html";
+                });
+            });	
+			//翻页
+			$("#pageup").click(function(){
+				page -= 1;
+				//如果当前页等于1不能翻页
+				if(page < 1){
+					page = 1;
+				}
+				turnpage(page);
+			});
+			$("#pagenext").click(function(){
+				page += 1;
+				if(page >  endpage){
+					page = endpage;
+				}
+				turnpage(page); 
+			});
+        });
+		
+		//翻页
+		//上一页
+		function turnpage(num){		
+		    //alert(num);
+			$.ajax({
+			   type: "POST",
+			   url: "getAiListRank.action",
+			   dataType : "jsonp",
+			   data: "game_id=" + 1 + "&page=" + num,
+			   jsonp: "jsonpCallback",
+			   success: function(msg){
+			       endpage = msg.totalPage;
+				  var str = "";
+				 for(var i in msg.data){
+                    var entity = msg.data[i];
+                    var width = (entity.total===0?0:(entity.win/entity.total*95))+5;
+				 	str +="<li id=li_"+entity.id+"><h2><a href='aigame_info.jsp?id="+entity.id+"'>"+entity.username+" - "+entity.aiName+"</a></h2><i></i>" +
+                        "<span><div style='width:"+width+"%'>" +
+//                        entity.win+"/"+entity.total +
+                        "</div></span></li>"
+				 }
+				 $("#page_ul").html(str);
+                   $("#nowpage").html(num);
+			   }
+			});
+		}
+
+		
+    </script>
+</head>
+<body>
+<div class="page-2">
+    <div class="back"><button>回到主页</button></div>
+    <img class="logo" src="pic/wzq/zsjc.png" alt="中世竞创·AI对战平台"/>
+    <div class="page-title">
+            <h1>AI排行榜</h1>
+        <i></i>
+            <h2>膜拜各位大佬吧</h2>
+    </div>
+    <div class="page-content-1">
+        <ul id="page_ul"></ul>
+    </div>
+    <div class="next">
+        <a target="_blank" id="pageup">上一页</a>&nbsp;&nbsp;<span id="nowpage"></span>&nbsp;&nbsp;<a target="_blank" id="pagenext">下一页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="pic/wzq/go.png" alt="中世竞创·AI对战平台"/><a target="_blank">详细了解并选择一个你要挑战的</a>
+    </div>
+</div>
+</body>
+</html>

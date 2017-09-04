@@ -1,5 +1,7 @@
 package util.Games.GoBang;
 
+import dao.GameRepSQL;
+import entity.GameRep;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import util.Games.BaseGame;
@@ -15,6 +17,23 @@ import java.util.ArrayList;
  * Created by syimlzhu on 2016/9/30.
  */
 public class GameGoBang extends BaseGame{
+    public enum ResultID{
+        NO_START(-1),   //游戏开始失败
+        DRAW(-2),       //平局
+        BLACK(1),       //黑子胜利
+        WHITE(2),       //白子胜利
+        WHITE_ERROR(3), //白子运行错误
+        BLACK_ERROR(4); //黑子运行错误
+
+        public int value;
+        ResultID(int value)
+        {
+            this.value = value;
+        }
+    }
+    public static int BLACK = 1;
+    public static int WHITE = 2;
+
     private int row;
     private int col;
     private int chessBoard[][];
@@ -49,8 +68,31 @@ public class GameGoBang extends BaseGame{
 
     @Override
     public int gameEnd(int status){
+        record.put("result",status);
         Tool.debug("GameEnd("+status+")");
+        players.get(0).gameEnd(status);
+        players.get(1).gameEnd(status);
+
+        insert2DB(status);
         return status;
+    }
+
+    private void insert2DB(int status){
+        GameRep gameRep = new GameRep();
+        gameRep.setId(-1);
+        gameRep.setBlackId(players.get(0).getID());
+        gameRep.setBlackAuthor(players.get(0).getAuthor());
+        gameRep.setWhiteId(players.get(1).getID());
+        gameRep.setWhiteAuthor(players.get(1).getAuthor());
+        gameRep.setProcesses(record);
+        if(status == 1 || status == 3){
+            gameRep.setWin(gameRep.getBlackId()+"");
+        }else if ( status == 2){
+            gameRep.setWin(gameRep.getWhiteId()+"");
+        }else {
+            gameRep.setWin("-1");
+        }
+        GameRepSQL.getInstance().insert(gameRep);
     }
 
     @Override
@@ -59,7 +101,7 @@ public class GameGoBang extends BaseGame{
             players.get(0).putInt(1);
             players.get(1).putInt(2);
         }catch (GameReadException e) {
-            gameEnd(-1);
+            gameEnd(ResultID.NO_START.value);
             return ;
         }
         while(true){
@@ -71,11 +113,15 @@ public class GameGoBang extends BaseGame{
                 Tool.debug(nowPlayer+" ("+x+","+y+")");
                 otherPlayer = 3 - nowPlayer;
             }catch (GameReadException e){
-                gameEnd(nowPlayer + 2);
+                if(nowPlayer == BLACK){
+                    gameEnd(ResultID.BLACK_ERROR.value);
+                }else{
+                    gameEnd(ResultID.WHITE_ERROR.value);
+                }
                 return ;
             }
             int ret = set(x, y);
-            if(ret == 3 || ret == 4) {
+            if(ret == ResultID.BLACK_ERROR.value || ret == ResultID.WHITE_ERROR.value) {
                 //落子非法
                 gameEnd(ret);
                 return ;
@@ -85,7 +131,11 @@ public class GameGoBang extends BaseGame{
                 players.get(otherPlayer -1).putInt(x);
                 players.get(otherPlayer -1).putInt(y);
             } catch (GameReadException e) {
-                gameEnd(otherPlayer + 2);
+                if(otherPlayer == BLACK){
+                    gameEnd(ResultID.BLACK_ERROR.value);
+                }else{
+                    gameEnd(ResultID.WHITE_ERROR.value);
+                }
                 return ;
             }
             if(ret != 0){
@@ -116,10 +166,10 @@ public class GameGoBang extends BaseGame{
         record.getJSONArray("step").add(aStep);
         stepNum++;
         if(i<0||i>=row||j<0||j>col||chessBoard[i][j] != 0){
-            if(nowPlayer == 1){
-                return 4;
+            if(nowPlayer == BLACK){
+                return ResultID.BLACK_ERROR.value;
             }else{
-                return 3;
+                return ResultID.WHITE_ERROR.value;
             }
         }
         chessBoard[i][j] = nowPlayer;
@@ -148,27 +198,35 @@ public class GameGoBang extends BaseGame{
             while (true) {
                 nx += aNext[0];
                 ny += aNext[1];
-                if (nx < 0 || nx >= row || ny < 0 || ny <= col || chessBoard[nx][ny] != player) {
+                if (nx < 0 || nx >= row || ny < 0 || ny >= col || chessBoard[nx][ny] != player) {
                     break;
                 } else {
                     nowLength++;
                 }
             }
+            nx = x;
+            ny = y;
             while (true) {
                 nx -= aNext[0];
                 ny -= aNext[1];
-                if (nx < 0 || nx >= row || ny < 0 || ny <= col || chessBoard[nx][ny] != player) {
+                if (nx < 0 || nx >= row || ny < 0 || ny >= col || chessBoard[nx][ny] != player) {
                     break;
                 } else {
                     nowLength++;
                 }
             }
-            if(nowLength>=5) return player;
+            if(nowLength>=5){
+                if(player == BLACK){
+                    return ResultID.BLACK.value;
+                }else{
+                    return ResultID.WHITE.value;
+                }
+            }
         }
         if(stepNum == row*col){
-            return -1;
+            return ResultID.DRAW.value;
         }
-        return 0;
+        return 0;//未分胜负，继续干
     }
 
     public JSONObject getRecord(){
