@@ -37,20 +37,45 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
     }
 
     public List<AiInfo> getAiListRank(int game_id,int from,int num){
-        return new SQL("SELECT id,ai_name,username,"+
+        return new SQL("SELECT id,ai_name,username,game_id,introduce,"+
                 " (SELECT COUNT(*) FROM t_game_repetition WHERE whiteId = t.id OR blackId = t.id) AS num,"+
                 " (SELECT COUNT(*) FROM t_game_repetition WHERE win = t.id) AS win"+
                 " FROM t_ai_info t "+
-                " WHERE game_id = ? "+" "+
-                " ORDER BY (win/num) DESC LIMIT ?,?",game_id,from,num).queryBeanList(AiInfo.class);
+                " WHERE game_id = ? "+
+                " ORDER BY win DESC,num ASC LIMIT ?,?",game_id,from,num).queryBeanList(AiInfo.class);
     }
 
-    public int getTotalNumOfRank(int game_id){
+    public List<AiInfo> getAiListUser(String username,String aiName,int game_id,int from,int num){
+        String sql = "SELECT id,ai_name,game_id,introduce,username"+
+                " FROM t_ai_info"+
+                " WHERE username = ? ";
+        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name = '" + aiName +"'";}
+        if (game_id > 0) {sql += " AND game_id = " + game_id;}
+        sql += " ORDER BY id LIMIT ?,?";
+        return new SQL(sql,username,from,num).queryBeanList(AiInfo.class);
+    }
+
+    public int getAiTotalNumOfRank(int game_id){
         return new SQL("SELECT COUNT(*) FROM t_ai_info WHERE game_id = ?",game_id).queryNum();
+    }
+
+    public int getAiTotalNumByUser(String username,String aiName,int game_id){
+        String sql = "SELECT COUNT(*) FROM t_ai_info"+
+                " WHERE username = ? ";
+        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name = '" + aiName +"'";}
+        if (game_id > 0) {sql += " AND game_id = " + game_id;}
+        return new SQL(sql,username).queryNum();
     }
 
     public String addAiInfo(String username,int game_id,String aiName,String code,String introduce){
         if (new SQL("INSERT INTO t_ai_info VALUES(?,?,?,?,?,?)",0,username,game_id,aiName,code,introduce).update() !=0){
+            return "success";
+        }
+        return "error";
+    }
+
+    public String updateAiInfo(int id,String aiName,String code,String introduce){
+        if (new SQL("UPDATE t_ai_info SET ai_name = ?,ai_code = ?,introduce = ? WHERE id = ?",aiName,code,introduce,id).update() !=0){
             return "success";
         }
         return "error";
@@ -74,32 +99,21 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
         ).toString();
     }
 
-//    public String getAiRankList(int game_id){
-//            ResultSet rs= new SQL("SELECT id,ai_name,username,"+
-//                    " (SELECT COUNT(*) FROM t_game_repetition WHERE whiteId = t.id OR blackId = t.id) AS num,"+
-//            " (SELECT COUNT(*) FROM t_game_repetition WHERE win = t.id) AS win"+
-//            " FROM t_ai_info t "+
-//            " WHERE game_id = ? "+" "+
-//            " ORDER BY (win/num) DESC LIMIT 9",game_id).query();
-//            int num = 0;
-//            JSONObject date = new JSONObject();
-//            try {
-//            while (rs.next()){
-//                ++num;
-//                JSONObject jo = new JSONObject();
-//                jo.put("id",rs.getInt(1));
-//                jo.put("aiName",rs.getString(2));
-//                jo.put("username",rs.getString(3));
-//                jo.put("num",rs.getInt(4));
-//                jo.put("win",rs.getInt(5));
-//                date.put(Integer.toString(num),jo);
-//            }
-//        }catch(SQLException e){
-//            e.getErrorCode();
-//        }
-//        date.put("num",num);
-//        return date.toString();
-//    }
+    public  String getEditAiView(int id){
+        AiInfo t = getByKeyFromSQL(id);
+        if (t == null){
+            return JSON.getJSONObject(
+                    "ret","error"
+            ).toString();
+        }
+        return JSON.getJSONObject(
+                "ret","success",
+                "id",id+"",
+                "aiName",t.getAiName(),
+                "code",t.getCode(),
+                "introduce",t.getIntroduce()
+        ).toString();
+    }
 
 
     public int getAiNumOfWin(int id){//获取赢的局数
@@ -113,6 +127,7 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
     public void addAiGameRepetition(String blackName,int blackAuthor,String whiteName,String whiteAuthor,String processes,String win){
         new SQL("INSERT INTO t_game_repetition VALUES(?,?,?,?,?,?,?)",0,blackName,blackAuthor,whiteName,whiteAuthor,processes,win).update();
     }
+
 
 
     @Override

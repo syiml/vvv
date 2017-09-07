@@ -10,10 +10,10 @@ import java.sql.SQLException;
  */
 public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
     private int id;//编号,数据库中自增加
-    private String username;
-    private int game_id;
-    private String aiName;
-    private String code;
+    private String username; //作者名字
+    private int game_id; //游戏类型
+    private String aiName; //ai名字
+    private String code; //代码
     private String introduce; //说明
 
     public AiInfo(String username,int game_id,String aiName,String code,String introduce){
@@ -40,9 +40,9 @@ public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
         id = rs.getInt("id");
         username = rs.getString("username");
         aiName = rs.getString("ai_name");
-//        game_id = rs.getInt("game_id");
+        game_id = rs.getInt("game_id");
 //        code = rs.getString("ai_code");
-//        introduce = rs.getString("introduce");
+        introduce = rs.getString("introduce");
     }
 
     public int getId(){return this.id; }
@@ -59,9 +59,9 @@ public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
         jo.put("id",id);
         jo.put("username",username);
         jo.put("aiName",aiName);
-//        jo.put("game_id",game_id);
+        jo.put("game_id",game_id);
 //        jo.put("code",code);
-//        jo.put("introduce",introduce);
+        jo.put("introduce",introduce);
         return jo;
     }
 }

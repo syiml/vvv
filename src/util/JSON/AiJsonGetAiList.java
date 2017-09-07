@@ -7,34 +7,48 @@ import net.sf.json.JSONObject;
 import java.util.List;
 
 /**
- * Created by 无乐园 on 2017/8/22.
+ * Created  on 2017/9/5.
  */
 public class AiJsonGetAiList extends BaseJsonPageBean<AiInfo>{
-
     public int game_id;
+    public String username;
+    public String aiName;
 
-    public AiJsonGetAiList(int game_id,int nowPage, int everyPageNum) {
+    public AiJsonGetAiList(String username, int game_id, String aiName,int nowPage, int everyPageNum) {
+        super(nowPage, everyPageNum);
+        this.game_id = game_id;
+        this.username = username;
+        this.aiName = aiName;
+    }
+
+    public AiJsonGetAiList(int game_id, int nowPage, int everyPageNum) {
         super(nowPage, everyPageNum);
         this.game_id = game_id;
     }
 
     @Override
     protected List<AiInfo> getList(int from, int num) {
-        return AiSQL.getInstance().getAiListRank(game_id, from, num);
+        if (username == null){ //获取Rank
+            return AiSQL.getInstance().getAiListRank(game_id,from,num);
+        }
+        //获取用户所有的AI
+        return AiSQL.getInstance().getAiListUser(username,aiName,game_id, from, num);
     }
 
-    protected List<AiInfo> getListRank(int game_id,int from, int num) {
-        return AiSQL.getInstance().getAiListRank(game_id, from, num);
+    public List<AiInfo> jspGetList(){
+        return getList();
     }
-
 
     @Override
     protected int getTotalNum() {
-        return AiSQL.getInstance().getTotalNumOfRank(game_id);
+        if (username == null){
+            return AiSQL.getInstance().getAiTotalNumOfRank(game_id);
+        }
+        return AiSQL.getInstance().getAiTotalNumByUser(username,aiName,game_id);
     }
 
-    protected int getTotalNumOfRank(int game_id) {
-        return AiSQL.getInstance().getTotalNumOfRank(game_id);
+    public int jspGetTotalPage(){
+        return getTotalPage();
     }
 
     protected JSONObject processingData(JSONObject jo){
@@ -43,5 +57,4 @@ public class AiJsonGetAiList extends BaseJsonPageBean<AiInfo>{
         jo.put("total",AiSQL.getInstance().getAiNumOfTotal(id));
         return jo;
     }
-
 }

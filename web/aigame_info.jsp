@@ -1,5 +1,12 @@
-
+<%@ page import="util.Main" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Main.saveURL();
+    if(Main.loginUser()==null){
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,8 +39,8 @@
 				 $("#win").html(msg.win);
 				 $("#lose").html(msg.total-msg.win);
 			   }
-			});					
-			
+			});
+
             $("#back1").click(function(){
                 $("body").animate({
                     opacity:'0.1',

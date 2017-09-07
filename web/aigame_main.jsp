@@ -8,9 +8,9 @@
 <html lang="en">
 <head>
     <%
-        int id = Integer.parseInt(request.getParameter("id"));
-        AiInfo aiInfo = AiSQL.getInstance().getBeanByKey(id);
-        User ai_author = Main.users.getUser(aiInfo.getUsername());
+            int id = Integer.parseInt(request.getParameter("id"));
+            AiInfo aiInfo = AiSQL.getInstance().getBeanByKey(id);
+            User ai_author = Main.users.getUser(aiInfo.getUsername());
     %>
     <meta charset="UTF-8">
     <title>Gomoku</title>
@@ -21,15 +21,15 @@
 		//var ws = new WebSocket("ws://syiml.wicp.net:21329/AI_PVE?id=0");
 		var ws = new WebSocket("ws://"+window.location.host+"/AI_PVE?game_id=1&id=<%=id%>");
 		//打开
-		ws.onopen = function () {  
+		ws.onopen = function () {
 		   console.log("WebSocket Success");
 		   ws.send(JSON.stringify({type:"start"}));
-      	} 
+      	}
 		//异常
-      	ws.onerror = function () {  
-           console.log("WebSocket Error"); 
-      	}; 	
-		//接收数据	 
+      	ws.onerror = function () {
+           console.log("WebSocket Error");
+      	};
+		//接收数据
 		var flag = 1;
 		var flag2 = 1;
 		var flag3 = 0; //玩家颜色 1黑 0白
@@ -193,7 +193,7 @@
             }
 
 		}
-		
+
         $(document).ready(function(){
 			//用ajax获取值写入页面
 			//$.ajax({
@@ -208,7 +208,7 @@
 			//	 $("#honour").html();
 			//   }
 			//});
-			
+
             $("button").click(function(){
                 $("body").animate({
                     opacity:'0.3'
@@ -217,16 +217,16 @@
                 });
             });
       });
-	  
+
 	function setBlack(i,j){
 		$("#wzq_"+i+"_"+j).removeClass("block").removeClass("black").removeClass("white").addClass("black");
 	}
 	function setWhite(i,j){
 		$("#wzq_"+i+"_"+j).removeClass("block").removeClass("black").removeClass("white").addClass("white");
-	}	
+	}
 	function setNone(i,j){
 		$("#wzq_"+i+"_"+j).removeClass("block").removeClass("black").removeClass("white").addClass("block");
-	}	  
+	}
     </script>
 </head>
 <body>

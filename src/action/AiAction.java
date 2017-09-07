@@ -86,12 +86,19 @@ public class AiAction extends BaseAction {
     public String addAiInfo(){
         User u= Main.loginUser();
         if (u == null){
-            out.print(jsonpCallback+"({\"ret\":\"not login\"})");
-        }else{
-            String buff = AiSQL.getInstance().addAiInfo(u.getUsername(),game_id,aiName,code,introduce);
-            out.print(jsonpCallback+"({\"ret\":"+buff+"})");
+            return "login";
         }
-        return NONE;
+        String buff = AiSQL.getInstance().addAiInfo(u.getUsername(),game_id,aiName,code,introduce);
+        return buff;
+    }
+
+    public String updateAiInfo(){
+        User u= Main.loginUser();
+        if (u == null){
+            return "login";
+        }
+        String buff = AiSQL.getInstance().updateAiInfo(id,aiName,code,introduce);
+        return buff;
     }
 
     public String getAiInfoById(){out.print(jsonpCallback+"("+AiSQL.getInstance().getAiInfoById(id)+")");//不规范的jsonp调用
@@ -104,6 +111,13 @@ public class AiAction extends BaseAction {
         return NONE;
     }
 
+    public String getAiListUser(){
+        User u= Main.loginUser();
+        if (aiName == null) aiName ="";
+        out.print(jsonpCallback+"("+new AiJsonGetAiList(u.getUsername(),game_id,aiName,page,10).toJSON().toString()+")");
+        return NONE;
+    }
+
     public String getAboutLogin(){ //判断用户是否登陆.
         User u= Main.loginUser();
         if (u == null){
@@ -111,6 +125,11 @@ public class AiAction extends BaseAction {
         }else{
             out.print(jsonpCallback+"({\"ret\":\"success\"})");
         }
+        return NONE;
+    }
+
+    public String getEditAiView(){
+        out.print(AiSQL.getInstance().getEditAiView(id));
         return NONE;
     }
 
