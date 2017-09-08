@@ -31,8 +31,9 @@
         gameInt = Integer.parseInt(request.getParameter("game_id"));
     }catch(NumberFormatException e)
     {   }
-    List<AiInfo> aiList = new AiJsonGetAiList(Main.loginUser().getUsername(),gameInt,aiName,pa,10).jspGetList();
-    int totalpage = new AiJsonGetAiList(Main.loginUser().getUsername(),gameInt,aiName,pa,10).jspGetTotalPage();
+    String username = Main.loginUser().getUsername();
+    List<AiInfo> aiList = new AiJsonGetAiList(username,gameInt,aiName,pa,10).jspGetList();
+    int totalpage = new AiJsonGetAiList(username,gameInt,aiName,pa,10).jspGetTotalPage();
 %>
 
 
@@ -44,8 +45,12 @@
     <link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.min.css">
     <script type="text/javascript" language="JavaScript" src="js/jquery-1.11.1.js"></script>
     <script type="text/javascript" language="JavaScript" src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/dateFormat.js"></script>
+    <link rel="stylesheet" href="css/main.css">
     <script type="text/javascript" language="JavaScript">
-        $(function () {
+
+
+    $(function () {
         //获取点击修改的列表的id值
             var modifyid;
             $(".modify").click(function(){
@@ -67,64 +72,39 @@
                         $("#update-code").html(data.code);
                     }, "json");
             })
-            //查看简介
-            $('#exampleModalLogin').on('show.bs.modal', function (e) {
-                // do something...
-
-                //使用ajax发送请求,响应数据
-                $.post("http://localhost:8080/getEditAiView?id=" + modifyid,
-                    function(data){
-                        $("#look_name").html(data.aiName);
-                        $("#look_jj").html(data.introduce);
-                    }, "json");
-            })
         });
     </script>
-    <title>用户AI管理</title>
+    <title>用户AI管理 - <%=Main.config.OJName%></title>
 </head>
-<body class="container">
+<body>
 <br>
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
+                <!--
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                     <img src="pic/top1.jpg" class="img-rounded" width="73px" height="50px">
                 </div>
+                -->
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="#">&nbsp;&nbsp;<b>AI</b> &nbsp;&nbsp;</a>
+                            <a href="index.jsp">&nbsp;&nbsp;<b><%=Main.config.OJName%></b> &nbsp;&nbsp;</a>
                         </li>
                         <li class="active">
-                            <a>&nbsp;&nbsp;用户界面&nbsp;&nbsp;</a>
+                            <a>&nbsp;&nbsp;AI管理&nbsp;&nbsp;</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a>时间：<span id="time"></span></a>
-                            <!--获取时间-->
-                            <script type="text/javascript" language="JavaScript">
-                                    $(function(){
-                                        setInterval(function(){
-                                            var time = "";
-                                            var date = new Date();
-                                            time += date.getFullYear() + "年" + (date.getMonth()+1) + "月" + date.getDate() + "日 "+ date.getHours() +"："+ date.getMinutes() +"："+ date.getSeconds();
-                                            $("#time").html(time);
-                                        },1000);
-                                    });
-                                </script>
-                        </li>
-
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人 <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=username%> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">切换账号</a></li>
-                                <li><a href="#">修改用户</a></li>
+                                <li><a href="UserInfo.jsp?user=<%=username%>">账号信息</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">退出账号</a></li>
+                                <li><a href="Logout.jsp">退出账号</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -135,7 +115,7 @@
                     <div class="panel-group" id="panel-84243">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <span class="glyphicon glyphicon-user"></span>  <span id="admin">1234567</span>
+                                <span class="glyphicon glyphicon-user"></span>  <span id="admin"><%=username%></span>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -188,7 +168,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8 column embed-responsive embed-responsive-16by9">
+                <div class="col-md-10 column embed-responsive embed-responsive-16by9">
                     <!--搜索框组-->
                     <div class="row">
                         <div class="col-sm-2">
@@ -207,6 +187,7 @@
                                     <div class="input-group">
                                         <div class="input-group-addon">类型</div>
                                         <select class="form-control" id="game_id" name="game_id">
+                                            <option value="-1" selected>不限</option>
                                             <option value="1" selected>五子棋</option>
                                         </select>
                                     </div>
@@ -298,9 +279,6 @@
                                 胜率
                             </th>
                             <th class="col-sm-2">
-                                简介
-                            </th>
-                            <th class="col-sm-2">
                                 编辑
                             </th>
                         </tr>
@@ -322,9 +300,6 @@
                                     if (num == 0) num=1;
                                  %>
                                 <td><%=(float)win*100/num %></td>
-                            <td>
-                                <button class="btn btn-default btn-sm modify" data-toggle="modal" data-target="#exampleModalLogin"  id=<%=id%> >查看</button>
-                            </td>
                             <td>
                                 <button class="btn btn-success btn-sm modify" data-toggle="modal" data-target="#update-exampleModalRedirest" id=<%=id%>>编辑</button>
                             </td>
@@ -371,27 +346,6 @@
                         </div>
                     </div>
 
-                    <!--查看简介弹出标签-->
-                    <div class="modal fade" id="exampleModalLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="exampleModalLabel"><span class="glyphicon glyphicon-eye-open"></span> <span id="look_name">简介</span></h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="form-horizontal">
-                                        <div class="form-group has-feedback">
-                                            <label for="look_jj" class="control-label col-sm-2">简介: </label>
-                                            <div class="col-sm-9">
-                                                <textarea class="form-control" id="look_jj" name="" required style="min-height: 150px"></textarea>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-4">
                             <ul class="pagination pagination-sm ">
@@ -408,6 +362,7 @@
                         </div>
                     </div>
                 </div>
+                <!--
                 <div class="col-md-2 column">
                     <dl>
                         <dt>
@@ -424,9 +379,11 @@
                         </dd>
                     </dl>
                 </div>
+                -->
             </div>
         </div>
     </div>
 </div>
+    <jsp:include page="module/foot.jsp"/>
 </body>
 </html>
