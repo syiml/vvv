@@ -101,7 +101,7 @@
                         now_player = 1;
 
                         clearInterval(clock);
-                        clock_sec=30;
+                        clock_sec=120;
                         clock_d();
                         clock = setInterval("clock_d()",1000);
                     } else {
@@ -146,7 +146,7 @@
                 now_player = 1;
 
                 clearInterval(clock);
-                clock_sec=30;
+                clock_sec=120;
                 clock_d();
                 clock = setInterval("clock_d()",1000);
 

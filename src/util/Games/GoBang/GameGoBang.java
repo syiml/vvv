@@ -72,7 +72,7 @@ public class GameGoBang extends BaseGame{
         Tool.debug("GameEnd("+status+")");
         players.get(0).gameEnd(status);
         players.get(1).gameEnd(status);
-
+        if(getRecord().getJSONArray("step").size() <5) return status;
         insert2DB(status);
         return status;
     }
@@ -87,7 +87,7 @@ public class GameGoBang extends BaseGame{
         gameRep.setProcesses(record);
         if(status == 1 || status == 3){
             gameRep.setWin(gameRep.getBlackId()+"");
-        }else if ( status == 2){
+        }else if ( status == 2 || status == 4){
             gameRep.setWin(gameRep.getWhiteId()+"");
         }else {
             gameRep.setWin("-1");
