@@ -14,7 +14,7 @@
 			//页面加载时自动生成大佬人数
 			//使用ajax获得总人数,以及各人信息并写入
             turnpage(1);
-			
+
 			//虚拟生成人数信息
 			var sum = 10;
 			var str = "";
@@ -32,7 +32,7 @@
                 },500,function(){
                     window.location.href="aigame_index.html";
                 });
-            });	
+            });
 			//翻页
 			$("#pageup").click(function(){
 				page -= 1;
@@ -47,13 +47,13 @@
 				if(page >  endpage){
 					page = endpage;
 				}
-				turnpage(page); 
+				turnpage(page);
 			});
         });
-		
+
 		//翻页
 		//上一页
-		function turnpage(num){		
+		function turnpage(num){
 		    //alert(num);
 			$.ajax({
 			   type: "POST",
@@ -78,7 +78,7 @@
 			});
 		}
 
-		
+
     </script>
 </head>
 <body>
@@ -86,7 +86,7 @@
     <div class="back"><button>回到主页</button></div>
     <img class="logo" src="pic/wzq/zsjc.png" alt="中世竞创·AI对战平台"/>
     <div class="page-title">
-            <h1>AI排行榜</h1>
+            <h1>五子棋AI排行榜</h1>
         <i></i>
             <h2>膜拜各位大佬吧</h2>
     </div>
