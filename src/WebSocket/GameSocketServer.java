@@ -10,6 +10,7 @@ import util.Games.GoBang.GameGoBang;
 import util.Games.GoBang.GameGoBangAIPlayer;
 import util.Games.IGamePlayer;
 import util.Main;
+import util.MyTime;
 import util.Tool;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ public class GameSocketServer extends WebSocketServlet {
             }
             String ai_user = aiInfo.getUsername();
             GameGoBangAIPlayer ai = new GameGoBangAIPlayer(id,ai_code,ai_user);
+            ai.setTimeOut(30 * MyTime.SECOND);
             ai.game_id = next_id + "";
             next_id = (next_id + 1)%1000;
             GameGoBang gameGoBang = null;

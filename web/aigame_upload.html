@@ -42,14 +42,14 @@
 <body>
    	 <div>
     	<!--ai上传界面-->
-        <form action="http://localhost:8080/addAiInfo.action" method="POST">
+        <form action="addAiInfo.action" method="POST">
         	<h1>AI上传界</h1>
 			<input type="hidden" value="1" name="game_id"/>
            姓名:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="aiName"/><br>
             简介：<br>
             <textarea id="upload1" class="upload" name="introduce"></textarea><br>
             代码：<br>
-            <textarea id="upload1" class="upload" name="code"></textarea><br>
+            <textarea id="upload2" class="upload" name="code"></textarea><br>
             <input type="submit" value="上传" id="submit"/>
         </form>
     </div>

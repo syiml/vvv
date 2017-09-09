@@ -129,7 +129,9 @@ html, body {
     height: 480px;
     overflow: hidden;
 }
-
+.about-title{
+    margin-top:30px;
+}
 .about-title h1{
     font-size: 30px;
 }
@@ -138,8 +140,9 @@ html, body {
     font-size: 26px;
 }
 .honour {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 100;
+    line-height: 1.3em;
 }
 
 .honour p {

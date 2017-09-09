@@ -24,7 +24,7 @@ public abstract class BaseJudgeSystemAIPlayer implements IGamePlayer {
 
     private static MyClient myClient = new MyClient();
     protected String ai_code;
-    private long timeOut = 10000;
+    public long timeOut = 20000;
     public String game_id = "0";
     private BlockingQueue<Integer> catch_queue = new LinkedBlockingQueue<>();
 
@@ -63,14 +63,14 @@ public abstract class BaseJudgeSystemAIPlayer implements IGamePlayer {
         para.add(new BasicNameValuePair("input",input));
         para.add(new BasicNameValuePair("rid",ai.game_id));
         para.add(new BasicNameValuePair("code",ai.ai_code));
-        para.add(new BasicNameValuePair("timelimit",1000+""));
+        para.add(new BasicNameValuePair("timelimit",ai.timeOut-2000+""));
         para.add(new BasicNameValuePair("memorylimit",128+""));
         myClient.Post("http://106.15.197.254:8100",para);
 
         new Thread(){
             @Override
             public void run(){
-                int times = 10;
+                int times = 30;
                 while(times-->0) {
                     Tool.sleep(1000);
                     List<NameValuePair> para = new ArrayList<>();

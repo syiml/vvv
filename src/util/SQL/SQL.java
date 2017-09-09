@@ -171,6 +171,23 @@ public class SQL {
     }
 
     /**
+     * 通过sql语句查询出一个浮点数
+     * @return 查询结果
+     */
+    public Float queryFloat(){
+        rs=query();
+        try {
+            if(rs != null && rs.next()){
+                return rs.getFloat(1);
+            }else return 0f;
+        } catch (SQLException e) {
+            if(log)Tool.log(e);
+        } finally {
+            close();
+        }
+        return 0f;
+    }
+    /**
      * 通过sql语句查询出一个整数
      * @return 查询结果
      */

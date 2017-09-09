@@ -57,4 +57,10 @@ public class AiJsonGetAiList extends BaseJsonPageBean<AiInfo>{
         jo.put("total",AiSQL.getInstance().getAiNumOfTotal(id));
         return jo;
     }
+
+    @Override
+    protected JSONObject processing(JSONObject jo){
+        //jo.put("max_score",AiSQL.getInstance().getMaxScore(game_id));
+        return jo;
+    }
 }

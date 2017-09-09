@@ -59,7 +59,7 @@
             $('#update-exampleModalRedirest').on('show.bs.modal', function (e) {
                 // do something...
                //使用ajax发送请求,响应数据
-                $.post("http://localhost:8080/getEditAiView?id=" + modifyid,
+                $.post("getEditAiView?id=" + modifyid,
                     function(data){
 
                         //aiid
@@ -71,7 +71,25 @@
                         //代码
                         $("#update-code").html(data.code);
                     }, "json");
-            })
+            });
+            var t1  = $("#update-redist-name").val();
+            $("#update-redist-name").bind('input propertychange',function(e){
+                //alert("too long");
+                if($(this).val().length>8){
+                    alert("名称最长8个字");
+                    $(this).val(t1);
+                }
+                t1  = $(this).val();
+            });
+            var t2  = $("#redist-name").val();
+            $("#redist-name").bind('input propertychange',function(e){
+                //alert("too long");
+                if($(this).val().length>8){
+                    alert("名称最长8个字");
+                    $(this).val(t2);
+                }
+                t2  = $(this).val();
+            });
         });
     </script>
     <title>用户AI管理 - <%=Main.config.OJName%></title>
@@ -96,6 +114,9 @@
                         </li>
                         <li class="active">
                             <a>&nbsp;&nbsp;AI管理&nbsp;&nbsp;</a>
+                        </li>
+                        <li>
+                            <a href="aigame_index.html">&nbsp;&nbsp;AI主页 &nbsp;&nbsp;</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -122,57 +143,57 @@
                             <div class="panel-heading">
                                 <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-867475">AI 管理</a>
                             </div>
-                            <div id="panel-element-867475" class="panel-collapse collapse">
+                            <div id="panel-element-867475" class="panel-collapse collapse in">
                                 <div class="panel-body">
-                                    <a href="#" class="text-primary">AI 编辑</a>
+                                    <a href="aigame_userMangeAi.jsp" class="text-primary">AI 编辑</a>
                                 </div>
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表1-2</a>
-                                </div>
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表1-3</a>
-                                </div>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表1-2</a>--%>
+                                <%--</div>--%>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表1-3</a>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365878">列表2</a>
-                            </div>
-                            <div id="panel-element-365878" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表2-1</a>
-                                </div>
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表2-2</a>
-                                </div>
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表2-3</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365874">列表3</a>
-                            </div>
-                            <div id="panel-element-365874" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表3-1</a>
-                                </div>
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表3-2</a>
-                                </div>
-                                <div class="panel-body">
-                                    <a href="#" class="text-primary">列表3-3</a>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="panel panel-default">--%>
+                            <%--<div class="panel-heading">--%>
+                                <%--<a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365878">列表2</a>--%>
+                            <%--</div>--%>
+                            <%--<div id="panel-element-365878" class="panel-collapse collapse">--%>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表2-1</a>--%>
+                                <%--</div>--%>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表2-2</a>--%>
+                                <%--</div>--%>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表2-3</a>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="panel panel-default">--%>
+                            <%--<div class="panel-heading">--%>
+                                <%--<a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365874">列表3</a>--%>
+                            <%--</div>--%>
+                            <%--<div id="panel-element-365874" class="panel-collapse collapse">--%>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表3-1</a>--%>
+                                <%--</div>--%>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表3-2</a>--%>
+                                <%--</div>--%>
+                                <%--<div class="panel-body">--%>
+                                    <%--<a href="#" class="text-primary">列表3-3</a>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
                 <div class="col-md-10 column embed-responsive embed-responsive-16by9">
                     <!--搜索框组-->
                     <div class="row">
                         <div class="col-sm-2">
-                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModalRedirest"><span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;新 增</button><br><br>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModalRedirest"><span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;&nbsp;上 传</button><br><br>
                         </div>
                         <div class="col-sm-8">
                             <!--用于发送搜索信息-->
@@ -180,15 +201,15 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">AI名称</div>
-                                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="AI名称"name="aiName">
+                                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="AI名称" name="aiName" value="<%=aiName%>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">类型</div>
                                         <select class="form-control" id="game_id" name="game_id">
-                                            <option value="-1" selected>不限</option>
-                                            <option value="1" selected>五子棋</option>
+                                            <option value="-1" <%=gameInt==-1?"selected":""%>>不限</option>
+                                            <option value="1" <%=gameInt==1?"selected":""%>>五子棋</option>
                                         </select>
                                     </div>
                                 </div>
@@ -223,10 +244,10 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="rexampleModalLabel"><span class="glyphicon glyphicon-book"></span>   新增</h4>
+                                    <h4 class="modal-title" id="rexampleModalLabel"><span class="glyphicon glyphicon-book"></span>   上传AI</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" action="http://localhost:8080/addAiInfo.action">
+                                    <form class="form-horizontal" action="Ai/addAiInfo.action" method="post">
                                         <div class="form-group has-feedback">
                                             <label for="redist-name" class="control-label col-sm-2">AI名：</label>
                                             <div class="col-sm-6">
@@ -297,9 +318,8 @@
                                 <%int id = aiList.get(i).getId();
                                     int win = AiSQL.getInstance().getAiNumOfWin(id);
                                     int num = AiSQL.getInstance().getAiNumOfTotal(id);
-                                    if (num == 0) num=1;
                                  %>
-                                <td><%=(float)win*100/num %></td>
+                                <td><%=win%>/<%=num%>(<%=(float)(win*10000/(num==0?1:num)) /100%>%)</td>
                             <td>
                                 <button class="btn btn-success btn-sm modify" data-toggle="modal" data-target="#update-exampleModalRedirest" id=<%=id%>>编辑</button>
                             </td>
@@ -316,7 +336,7 @@
                                     <h4 class="modal-title" id="update-rexampleModalLabel"><span class="glyphicon glyphicon-book"></span>   修改</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" action="http://localhost:8080/updateAiInfo">
+                                    <form class="form-horizontal" action="Ai/updateAiInfo.action" method="post">
                                         <input type="hidden" name="id" id="aiid">
                                         <div class="form-group has-feedback">
                                             <label for="update-redist-name" class="control-label col-sm-2">AI名：</label>

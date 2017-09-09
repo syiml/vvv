@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!--<link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.css">-->
     <link href="css/page2.css" rel="stylesheet"/>
     <script src="js/jquery-1.11.1.js"></script>
+    <!--<link href="js/bootstrap-datepicker-master/datepicker.css" rel="stylesheet">-->
+    <!--<link href="js/modern-menu/modern-menu.css" rel="stylesheet">-->
+    <!--<link rel="stylesheet" href="js/front-awesome/font-awesome.min.css">-->
+    <!--<link rel="stylesheet" href="css/main.css">-->
+    <!--<link href="css/loaders.css" rel="stylesheet">-->
+
+
     <script>
 		//设置当前页面
        var page = 1;
@@ -66,11 +74,25 @@
 				  var str = "";
 				 for(var i in msg.data){
                     var entity = msg.data[i];
-                    var width = (entity.total===0?0:(entity.win/entity.total*95))+5;
-				 	str +="<li id=li_"+entity.id+"><h2><a href='aigame_info.jsp?id="+entity.id+"'>"+entity.username+" - "+entity.aiName+"</a></h2><i></i>" +
-                        "<span><div style='width:"+width+"%'>" +
+                    //var proc = (entity.total===0?0:(entity.win/entity.total*100));
+                    var proc = 0;
+                    var score = 0;
+                    if(entity.total !== 0 && msg.max_score!==0){
+                        score = (entity.win*entity.win/entity.total);
+                        proc = entity.win * 100/entity.total;
+                    }
+				 	str +="<li id=li_"+entity.id+">" +
+                        "<h2 style='float:left'><a href='aigame_info.jsp?id="+entity.id+"'>"+entity.username+" - "+entity.aiName+"</a></h2><i style='float:left'></i>" +
+                            '<div class="win-text">'+score.toFixed(2)+'</div>'+
+                            "<span class=\"progress\" style='float:left;position: relative;'>"+
+                            '<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style=\"width: '+proc+'% \">'+
+                        '</div><div class="pro-text">'+proc.toFixed(0)+'%('+
+                        entity.win+'/'+entity.total+
+                         ')</div></span>'
+//                         '<div class="lose-text">'+(entity.total-entity.win)+'</div>'
+//                        "<span><div style='width:"+width+"%;float:left;font-size:0.6em'>" +
 //                        entity.win+"/"+entity.total +
-                        "</div></span></li>"
+//                        "</div></span></li>"
 				 }
 				 $("#page_ul").html(str);
                    $("#nowpage").html(num);

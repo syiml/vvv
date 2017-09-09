@@ -24,7 +24,7 @@
 				//提交的数据格式
 			   type: "POST",
 			   //url地址
-			   url: "http://localhost:8080/getAiInfoById.action",
+			   url: "getAiInfoById.action",
 			   //传递json "key=value"
 			   data: "id=" + id,
 			   dataType : "jsonp",

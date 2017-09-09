@@ -3,7 +3,7 @@ blockquote,body,dd,dir,dl,fieldset,figure,form,h1,h2,h3,h4,h5,h6,hr,input,legend
 html, body {
     padding: 0;
     margin: 0;
-    font-family: 等线, 微软雅黑;
+    font-family: "微软雅黑","Helvetica Neue",Helvetica,Arial,sans-serif;
     background:url("../pic/wzq/first.png") top right no-repeat #007fff;
     background-size: auto 1080px;
     color: #fff;
@@ -44,7 +44,7 @@ html, body {
 .page-content-1{
     width: auto;
     position: absolute;
-    left: 300px;
+    left: 200px;
     top: 300px;
     z-index: 99;
 }
@@ -83,11 +83,11 @@ html, body {
 }
 
 .page-content-1 ul li span div{
-    background-color: #fff;
+    /*background-color: #fff;*/
 /*通过改变长度百分百来实现对长度的控制*/
-    width:50%;
+    /*width:50%;*/
     height:100%;
-    color:black;
+    /*color:black;*/
 }
 
 .next{
@@ -120,4 +120,60 @@ html, body {
     margin-top: 3px;
     margin-right: 2px;
     float: right;
+}
+.progress {
+    font-family: "微软雅黑","Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+}
+.progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background-color: #005fb1;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}
+.progress-bar-info {
+    background-color: #5bc0de;
+}
+.win-text{
+    float: left;
+    width: 4em;
+    font-size: 1em;
+    text-align: right;
+    padding: 9px 9px 9px 0;
+}
+.lose-text{
+    float: left;
+    width: 1em;
+    font-size: 1em;
+    /*text-align: right;*/
+    padding: 9px;
+}
+#pageup{
+    cursor:pointer;
+}
+#pagenext{
+    cursor:pointer;
+}
+.pro-text{
+    font-size: 0.2em;
+    color: black;
+    position: absolute;
+    text-align:center;
+    left:0;
+    width:100%;
 }

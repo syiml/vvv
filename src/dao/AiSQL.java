@@ -42,14 +42,20 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
                 " (SELECT COUNT(*) FROM t_game_repetition WHERE win = t.id) AS win"+
                 " FROM t_ai_info t "+
                 " WHERE game_id = ? "+
-                " ORDER BY win DESC,num ASC LIMIT ?,?",game_id,from,num).queryBeanList(AiInfo.class);
+                " ORDER BY win*win/num DESC LIMIT ?,?",game_id,from,num).queryBeanList(AiInfo.class);
     }
-
+    public float getMaxScore(int game_id){
+        return new SQL("SELECT MAX(win*win/num) FROM (SELECT "+
+                " (SELECT COUNT(*) FROM t_game_repetition WHERE whiteId = t.id OR blackId = t.id) AS num,"+
+                " (SELECT COUNT(*) FROM t_game_repetition WHERE win = t.id) AS win"+
+                " FROM t_ai_info t "+
+                " WHERE game_id = ? ) a",game_id).queryFloat();
+    }
     public List<AiInfo> getAiListUser(String username,String aiName,int game_id,int from,int num){
         String sql = "SELECT id,ai_name,game_id,introduce,username"+
                 " FROM t_ai_info"+
                 " WHERE username = ? ";
-        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name = '" + aiName +"'";}
+        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name like '%" + aiName +"%'";}
         if (game_id > 0) {sql += " AND game_id = " + game_id;}
         sql += " ORDER BY id LIMIT ?,?";
         return new SQL(sql,username,from,num).queryBeanList(AiInfo.class);

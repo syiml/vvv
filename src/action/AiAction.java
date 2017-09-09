@@ -84,6 +84,7 @@ public class AiAction extends BaseAction {
     }
 
     public String addAiInfo(){
+        if(aiName.length()>8) aiName = aiName.substring(8);
         User u= Main.loginUser();
         if (u == null){
             return "login";
@@ -93,6 +94,7 @@ public class AiAction extends BaseAction {
     }
 
     public String updateAiInfo(){
+        if(aiName.length()>8) aiName = aiName.substring(8);
         User u= Main.loginUser();
         if (u == null){
             return "login";

@@ -9,7 +9,7 @@ whiteAuthor VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 processes TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 win VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 PRIMARY KEY (id)
-)
+);
 
 
 CREATE TABLE t_ai_info
@@ -21,7 +21,7 @@ ai_name VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 ai_code TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 introduce VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE `t_vote` (
 `did`  int(11) NOT NULL ,

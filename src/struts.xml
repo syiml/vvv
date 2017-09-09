@@ -300,18 +300,18 @@
                 <action name="sendToContest" class="action.WebSocket" method="sendToContest">
                         <result name="success">return.jsp</result>
                 </action>
-                <action name="getOnlineUserWithContest" class="action.WebSocket" method="getOnlieUserList"></action>
+                <action name="getOnlineUserWithContest" class="action.WebSocket" method="getOnlieUserList"> </action>
         </package>
         <package name="Ai" extends="struts-default">
                 <action name="addAiInfo" class="action.AiAction" method="addAiInfo">
-                        <result name="success">return.jsp</result>
-                        <result name="error">return.jsp</result>
-                        <result name="login">Login.jsp</result>
+                        <result name="success">../return.jsp</result>
+                        <result name="error">../return.jsp</result>
+                        <result name="login">../Login.jsp</result>
                 </action>
                 <action name="updateAiInfo" class="action.AiAction" method="updateAiInfo">
-                        <result name="success">return.jsp</result>
-                        <result name="error">return.jsp</result>
-                        <result name="login">Login.jsp</result>
+                        <result name="success">../return.jsp</result>
+                        <result name="error">../return.jsp</result>
+                        <result name="login">../Login.jsp</result>
                 </action>
                 <action name="getAiInfoById" class="action.AiAction" method="getAiInfoById"> </action>
                 <action name="getAiListRank" class="action.AiAction" method="getAiListRank"> </action>

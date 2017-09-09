@@ -157,27 +157,27 @@
             if(data.type == "result") {
                 if (flag3 == 1) {
                     if (data.value == 1) {
-                        $("#info").text("恭喜你，获胜了！");
+                        $("#info").text("恭喜你，获胜了！").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if (data.value == 2) {
-                        $("#info").text("失败了！");
+                        $("#info").text("失败了！").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if (data.value == 3) {
-                        $("#info").text("由于AI运行时出错，你赢得了比赛");
+                        $("#info").text("由于AI运行时出错，你赢得了比赛").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if(data.value == 4) {
-                        $("#info").text("思考太久了~ 挑战失败");
+                        $("#info").text("思考太久了~ 挑战失败").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if(data.value == -2){
-                        $("#info").text("平局");
+                        $("#info").text("平局").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     }
                 } else {
                     if (data.value == 2) {
-                        $("#info").text("恭喜你，获胜了！");
+                        $("#info").text("恭喜你，获胜了！").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if (data.value == 1) {
-                        $("#info").text("失败了！");
+                        $("#info").text("失败了！").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if (data.value == 4) {
-                        $("#info").text("由于AI运行时出错，你赢得了比赛");
+                        $("#info").text("由于AI运行时出错，你赢得了比赛").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if(data.value == 3){
-                        $("#info").text("思考太久了~ 挑战失败");
+                        $("#info").text("思考太久了~ 挑战失败").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     } else if(data.value == -2){
-                        $("#info").text("平局");
+                        $("#info").text("平局").append("<button onclick='javascript:location.reload();'>再来一局！</button>");
                     }
                 }
                 if(data.value == 1 || data.value == 3)
@@ -242,6 +242,18 @@
 
             </div>
             <div class="about">
+                <div class="game">
+                    <div class="game-title">
+                        实时赛况
+                    </div>
+                    <i></i>
+                    <div class="game-about">
+                        <p>当前下棋方：<span id="player"></span></p>
+                        <p>统计：<span id="step"></span></p>
+                        <p>计时：<span id="clock"></span></p>
+                        <p>状态：<span id="info"></span></p>
+                    </div>
+                </div>
                 <div class="about-title">
                     <h1 id="name">AI名称：<%=aiInfo.getAiName()%></h1>
                     <i></i>
@@ -253,18 +265,7 @@
                     <%--<p>2013-11-17: 参加ACM/ICPC亚洲区域赛获得鼓励奖(长沙赛区)</p>--%>
                 </div>
             </div>
-            <div class="game">
-                <div class="game-title">
-                    实时赛况
-                </div>
-                <i></i>
-                <div class="game-about">
-                    <p>当前下棋方：<span id="player"></span></p>
-                    <p>统计：<span id="step"></span></p>
-                    <p>计时：<span id="clock"></span></p>
-                    <p>状态：<span id="info"></span></p>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
