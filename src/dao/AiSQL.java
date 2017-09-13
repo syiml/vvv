@@ -1,5 +1,6 @@
 package dao;
 
+import entity.AiBattleInfo;
 import entity.AiInfo;
 import util.JSON.JSON;
 import util.SQL.SQL;
@@ -37,22 +38,22 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
     }
 
     public List<AiInfo> getAiListRank(int game_id,int from,int num){
-        return new SQL("SELECT id,ai_name,username,game_id,introduce,"+
+        return new SQL("SELECT id,ai_name,username,game_id,introduce,isHide,"+
                 " (SELECT COUNT(*) FROM t_game_repetition WHERE (whiteId = t.id OR blackId = t.id) and win!=-1) AS num,"+
                 " (SELECT COUNT(*) FROM t_game_repetition WHERE win = t.id and win!=-1) AS win"+
                 " FROM t_ai_info t "+
-                " WHERE game_id = ? "+
+                " WHERE game_id = ? AND isHide != 1 "+
                 " ORDER BY win*win/num DESC LIMIT ?,?",game_id,from,num).queryBeanList(AiInfo.class);
     }
     public float getMaxScore(int game_id){
         return new SQL("SELECT MAX(win*win/num) FROM (SELECT "+
                 " (SELECT COUNT(*) FROM t_game_repetition WHERE (whiteId = t.id OR blackId = t.id) and win!=-1) AS num,"+
                 " (SELECT COUNT(*) FROM t_game_repetition WHERE win = t.id and win!=-1) AS win"+
-                " FROM t_ai_info t "+
+                " FROM t_ai_info t AND isHide != 1 "+
                 " WHERE game_id = ? ) a",game_id).queryFloat();
     }
     public List<AiInfo> getAiListUser(String username,String aiName,int game_id,int from,int num){
-        String sql = "SELECT id,ai_name,game_id,introduce,username"+
+        String sql = "SELECT id,ai_name,game_id,introduce,username,isHide"+
                 " FROM t_ai_info"+
                 " WHERE username = ? ";
         if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name like '%" + aiName +"%'";}
@@ -61,14 +62,21 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
         return new SQL(sql,username,from,num).queryBeanList(AiInfo.class);
     }
 
+    public String modifyAiIsHide(int id,int isHide){
+        if (new SQL("UPDATE t_ai_info SET isHide = ? WHERE id = ?",1-isHide,id).update()!=0){
+            return "success";
+        }
+        return "error";
+    }
+
     public int getAiTotalNumOfRank(int game_id){
-        return new SQL("SELECT COUNT(*) FROM t_ai_info WHERE game_id = ?",game_id).queryNum();
+        return new SQL("SELECT COUNT(*) FROM t_ai_info WHERE game_id = ? AND isHide != 1",game_id).queryNum();
     }
 
     public int getAiTotalNumByUser(String username,String aiName,int game_id){
         String sql = "SELECT COUNT(*) FROM t_ai_info"+
                 " WHERE username = ? ";
-        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name = '" + aiName +"'";}
+        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name like '%" + aiName +"%'";}
         if (game_id > 0) {sql += " AND game_id = " + game_id;}
         return new SQL(sql,username).queryNum();
     }
@@ -134,16 +142,48 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
         new SQL("INSERT INTO t_game_repetition VALUES(?,?,?,?,?,?,?)",0,blackName,blackAuthor,whiteName,whiteAuthor,processes,win).update();
     }
 
+    public List<AiBattleInfo> getAiGameRepetition(String username, String aiName, int game_id,int id, int from, int num){
+        String sql = null;
+        if (id < 1){
+             sql = " SELECT id FROM t_ai_info"+
+                    " WHERE username = '" + username +"'";
+            if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name like '%" + aiName +"%'";}
+            if (game_id > 0) {sql += " AND game_id = " + game_id;}
+        }else{
+            sql =""+id;
+        }
+        String buffer = " SELECT id,IF (blackId = '0',blackAuthor,(SELECT ai_name FROM t_ai_info WHERE id = blackId)) AS black,"+
+        " IF (whiteId = '0',whiteAuthor,(SELECT ai_name FROM t_ai_info WHERE id = whiteId)) AS white,win,processes"+
+        " FROM t_game_repetition "+
+                " WHERE whiteId IN(" + sql + ")" +
+                " OR blackId IN(" + sql + ")";
+        buffer += " ORDER BY id DESC LIMIT "+from+","+num;
+        return new SQL(buffer).queryBeanList(AiBattleInfo.class);
+    }
+
+    public int getAiRepetitionTotalNum(String username, String aiName, int game_id){
+        String sql = "SELECT id FROM t_ai_info"+
+                " WHERE username = '" + username +"'";
+        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name like '%" + aiName +"%'";}
+        if (game_id > 0) {sql += " AND game_id = " + game_id;}
+        String buffer = " SELECT COUNT(*)"+
+                " FROM t_game_repetition "+
+                " WHERE whiteId IN(" + sql + ")" +
+                " OR blackId IN(" + sql + ")";
+        buffer += " ORDER BY id DESC ";
+        return new SQL(buffer).queryNum();
+    }
+
 
 
     @Override
     public AiInfo getByKeyFromSQL(Integer key) {
-        SQL sql = new SQL("SELECT username,game_id,ai_name,ai_code,introduce " +
+        SQL sql = new SQL("SELECT username,game_id,ai_name,ai_code,introduce,isHide " +
                 "FROM t_ai_info WHERE id = ? ", key);
         try {
             ResultSet rs= sql.query();
             if (rs.next()){
-                return new AiInfo(key,rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5));
+                return new AiInfo(key,rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getInt(6));
             }
         }catch(SQLException e){
             e.getErrorCode();

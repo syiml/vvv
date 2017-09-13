@@ -15,22 +15,25 @@ public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
     private String aiName; //ai名字
     private String code; //代码
     private String introduce; //说明
+    private int isHide;//是否隐藏
 
-    public AiInfo(String username,int game_id,String aiName,String code,String introduce){
+    public AiInfo(String username,int game_id,String aiName,String code,String introduce,int isHide){
         this.username = username;
         this.game_id = game_id;
         this.aiName = aiName;
         this.code = code;
         this.introduce = introduce;
+        this.isHide = isHide;
     }
 
-    public AiInfo(int id,String username,int game_id,String aiName,String code,String introduce){
+    public AiInfo(int id,String username,int game_id,String aiName,String code,String introduce,int isHide){
         this.id = id;
         this.username = username;
         this.game_id = game_id;
         this.aiName = aiName;
         this.code = code;
         this.introduce = introduce;
+        this.isHide = isHide;
     }
 
     public AiInfo(){}//避免InstantiationException
@@ -43,6 +46,7 @@ public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
         game_id = rs.getInt("game_id");
 //        code = rs.getString("ai_code");
         introduce = rs.getString("introduce");
+        isHide = rs.getInt("isHide");
     }
 
     public int getId(){return this.id; }
@@ -52,6 +56,9 @@ public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
     public String getCode(){return this.code; }
     public String getIntroduce(){return this.introduce; }
 
+    public int getIsHide() {
+        return isHide;
+    }
 
     @Override
     public JSONObject toJSON() {
@@ -62,6 +69,7 @@ public class AiInfo implements IBeanResultSetCreate, ICanToJSON {
         jo.put("game_id",game_id);
 //        jo.put("code",code);
         jo.put("introduce",introduce);
+//        jo.put("isHide",isHide);
         return jo;
     }
 }

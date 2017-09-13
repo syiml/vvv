@@ -1,10 +1,9 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page import="util.Main" %>
-<%@ page import="action.AiAction" %>
-<%@ page import="util.JSON.AiJsonGetAiList" %>
+<%@ page import="entity.AiBattleInfo" %>
 <%@ page import="java.util.List" %>
-<%@ page import="entity.AiInfo" %>
 <%@ page import="dao.AiSQL" %>
+
 <%--
   Created by IntelliJ IDEA.
   Date: 2017/9/5
@@ -31,10 +30,23 @@
         gameInt = Integer.parseInt(request.getParameter("game_id"));
     }catch(NumberFormatException e)
     {   }
+    int aiId = -1;
+    try{
+        aiId = Integer.parseInt(request.getParameter("id"));
+    }catch(NumberFormatException e)
+    {   }
     String username = Main.loginUser().getUsername();
-    List<AiInfo> aiList = new AiJsonGetAiList(username,gameInt,aiName,pa,10).jspGetList();
-    int totalpage = new AiJsonGetAiList(username,gameInt,aiName,pa,10).jspGetTotalPage();
+    List<AiBattleInfo> List = AiSQL.getInstance().getAiGameRepetition(username,aiName,gameInt,aiId,(pa-1)*10,10);
+    int num = AiSQL.getInstance().getAiRepetitionTotalNum(username,aiName,gameInt);
+    int totalpage;
+    if (num == 0){
+         totalpage=1;
+    }else{
+        totalpage = num/10 + (num % 10 != 0 ? 1 :0);
+    }
+
 %>
+
 
 
 <!DOCTYPE html>
@@ -148,10 +160,10 @@
                                     <a href="aigame_userMangeAi.jsp" class="text-primary">AI 编辑</a>
                                 </div>
                                 <%--<div class="panel-body">--%>
-                                    <%--<a href="#" class="text-primary">列表1-2</a>--%>
+                                <%--<a href="#" class="text-primary">列表1-2</a>--%>
                                 <%--</div>--%>
                                 <%--<div class="panel-body">--%>
-                                    <%--<a href="#" class="text-primary">列表1-3</a>--%>
+                                <%--<a href="#" class="text-primary">列表1-3</a>--%>
                                 <%--</div>--%>
                             </div>
                         </div>
@@ -160,32 +172,32 @@
                                 <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365878">对战记录查询</a>
                             </div>
                             <div id="panel-element-365878" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <a href="aigame_aiBattleRecord.jsp" class="text-primary">人机对战</a>
-                                </div>
-                                <%--<div class="panel-body">--%>
-                                <%--<a href="#" class="text-primary">列表2-2</a>--%>
-                                <%--</div>--%>
-                                <%--<div class="panel-body">--%>
-                                <%--<a href="#" class="text-primary">列表2-3</a>--%>
-                                <%--</div>--%>
+                            <div class="panel-body">
+                                <a href="aigame_aiBattleRecord.jsp" class="text-primary">人机对战</a>
+                            </div>
+                        <%--<div class="panel-body">--%>
+                        <%--<a href="#" class="text-primary">列表2-2</a>--%>
+                        <%--</div>--%>
+                        <%--<div class="panel-body">--%>
+                        <%--<a href="#" class="text-primary">列表2-3</a>--%>
+                        <%--</div>--%>
                             </div>
                         </div>
                         <%--<div class="panel panel-default">--%>
-                            <%--<div class="panel-heading">--%>
-                                <%--<a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365874">列表3</a>--%>
-                            <%--</div>--%>
-                            <%--<div id="panel-element-365874" class="panel-collapse collapse">--%>
-                                <%--<div class="panel-body">--%>
-                                    <%--<a href="#" class="text-primary">列表3-1</a>--%>
-                                <%--</div>--%>
-                                <%--<div class="panel-body">--%>
-                                    <%--<a href="#" class="text-primary">列表3-2</a>--%>
-                                <%--</div>--%>
-                                <%--<div class="panel-body">--%>
-                                    <%--<a href="#" class="text-primary">列表3-3</a>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                        <%--<div class="panel-heading">--%>
+                        <%--<a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365874">列表3</a>--%>
+                        <%--</div>--%>
+                        <%--<div id="panel-element-365874" class="panel-collapse collapse">--%>
+                        <%--<div class="panel-body">--%>
+                        <%--<a href="#" class="text-primary">列表3-1</a>--%>
+                        <%--</div>--%>
+                        <%--<div class="panel-body">--%>
+                        <%--<a href="#" class="text-primary">列表3-2</a>--%>
+                        <%--</div>--%>
+                        <%--<div class="panel-body">--%>
+                        <%--<a href="#" class="text-primary">列表3-3</a>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
                     </div>
                 </div>
@@ -291,55 +303,38 @@
                                 编号
                             </th>
                             <th class="col-sm-2">
-                                名称
+                                白方
                             </th>
                             <th class="col-sm-2">
-                                游戏类型
+                                黑方
                             </th>
                             <th class="col-sm-2">
-                                胜率
+                                AI结果
                             </th>
                             <th class="col-sm-2">
-                                编辑
-                            </th>
-                            <th class="col-sm-2">
-                                是否隐藏
+                                重现
                             </th>
                         </tr>
                         </thead>
                         <tbody id="ai-list">
-                        <%for(int i=0;i<aiList.size();++i){%>
-                            <tr>
-                                <td><%=i+1%></td>
-                                <%int id = aiList.get(i).getId();%>
-                                <td><a href="aigame_aiBattleRecord.jsp?id=<%=id%>"><%=aiList.get(i).getAiName()%></a></td>
-                                <%String type = "";
-                                    switch (aiList.get(i).getGame_id()){
-                                        case 1:type = "五子棋";break;
-                                    }
-                                %>
-                                <td><%=type%></td>
-                                <%
-                                    int win = AiSQL.getInstance().getAiNumOfWin(id);
-                                    int num = AiSQL.getInstance().getAiNumOfTotal(id);
-                                 %>
-                                <td><%=win%>/<%=num%>(<%=(float)(win*10000/(num==0?1:num)) /100%>%)</td>
+                        <%for(int i=0;i<List.size();++i){%>
+                        <tr>
+                            <td><%=i+1%></td>
+                            <td><%=List.get(i).getWhite()%></td>
+                            <td><%=List.get(i).getBlack()%></td>
+                            <%String buffer =null;
+                                switch (List.get(i).getWin()){
+                                case -1:buffer = "错误";break;
+                                case 0:buffer = "失败";break;
+                                case -2:buffer = "平局";break;
+                                default:buffer = "胜利";
+                            }
+                            %>
+                            <td><%=buffer%></td>
+
                             <td>
-                                <button class="btn btn-success btn-sm modify" data-toggle="modal" data-target="#update-exampleModalRedirest" id=<%=id%>>编辑</button>
+                                <button class="btn btn-success btn-sm modify" data-toggle="modal" data-target="#update-exampleModalRedirest" id=<%=List.get(i).getId()%>>重现</button>
                             </td>
-                                <%
-                                    if (aiList.get(i).getIsHide() == 1){
-                                        type = "是";
-                                    }else{
-                                        type = "否";
-                                    }
-                                %>
-                                <!--
-                            <td>
-                                <button class="btn btn-success btn-sm modify" data-toggle="modal" data-target="#update-exampleModalRedirest" id=<%=id%>><%= type%></button>
-                            </td>
-                                -->
-                            <td align="left"><a href="Ai/modifyAiIsHide?id=<%=id%>&isHide=<%=aiList.get(i).getIsHide()%>"><%=type%></a></td>
                         </tr>
                         <%}%>
                         </tbody>
@@ -387,13 +382,13 @@
                         <div class="col-sm-6 col-sm-offset-4">
                             <ul class="pagination pagination-sm ">
                                 <li>
-                                    <a href="aigame_userMangeAi.jsp?page=<%=Math.max(pa-1,1)%>&aiName=<%=aiName%>&game_id=<%=gameInt%>>"><<</a>
+                                    <a href="aigame_aiBattleRecord.jsp?page=<%=Math.max(pa-1,1)%>&aiName=<%=aiName%>&game_id=<%=gameInt%>&id=<%=aiId%>>"><<</a>
                                 </li>
                                 <li>
                                     <a href="#"><%=""+pa+" / "+totalpage%></a>
                                 </li>
                                 <li>
-                                    <a href="aigame_userMangeAi.jsp?page=<%=Math.min(pa+1,totalpage)%>&aiName=<%=aiName%>&game_id=<%=gameInt%>">>></a>
+                                    <a href="aigame_aiBattleRecord.jsp?page=<%=Math.min(pa+1,totalpage)%>&aiName=<%=aiName%>&game_id=<%=gameInt%>&id=<%=aiId%>">>></a>
                                 </li>
                             </ul>
                         </div>
@@ -421,6 +416,6 @@
         </div>
     </div>
 </div>
-    <jsp:include page="module/foot.jsp"/>
+<jsp:include page="module/foot.jsp"/>
 </body>
 </html>

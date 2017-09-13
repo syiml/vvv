@@ -15,6 +15,8 @@ public class AiAction extends BaseAction {
     private String aiName;
     private String code;
     private String introduce; //说明
+    private int isHide; //是否隐藏
+
     private int page;//当前页面
 
     private String jsonpCallback;//服务端用于接收callback调用的function名的参数
@@ -83,6 +85,14 @@ public class AiAction extends BaseAction {
         this.page = page;
     }
 
+    public int getIsHide() {
+        return isHide;
+    }
+
+    public void setIsHide(int isHide) {
+        this.isHide = isHide;
+    }
+
     public String addAiInfo(){
         if(aiName.length()>8) aiName = aiName.substring(8);
         User u= Main.loginUser();
@@ -133,6 +143,10 @@ public class AiAction extends BaseAction {
     public String getEditAiView(){
         out.print(AiSQL.getInstance().getEditAiView(id));
         return NONE;
+    }
+
+    public String modifyAiIsHide(){
+        return AiSQL.getInstance().modifyAiIsHide(id,isHide);
     }
 
 

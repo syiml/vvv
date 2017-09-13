@@ -313,6 +313,10 @@
                         <result name="error">../return.jsp</result>
                         <result name="login">../Login.jsp</result>
                 </action>
+                <action name="modifyAiIsHide" class="action.AiAction" method="modifyAiIsHide">
+                        <result name="success">../return.jsp</result>
+                        <result name="error">../return.jsp</result>
+                </action>
                 <action name="getAiInfoById" class="action.AiAction" method="getAiInfoById"> </action>
                 <action name="getAiListRank" class="action.AiAction" method="getAiListRank"> </action>
                 <action name="getAiListUser" class="action.AiAction" method="getAiListUser"> </action>
