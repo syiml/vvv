@@ -14,7 +14,7 @@
     %>
     <meta charset="UTF-8">
     <title>Gomoku</title>
-    <link rel="stylesheet" href="css/Gomoku.css"/>
+    <link rel="stylesheet" href="css/Gomoku.css?1"/>
     <!--<script src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/jquery-1.10.2_d88366fd.js"></script>-->
     <script src="js/jquery-1.11.1.js"></script>
     <script>
@@ -52,9 +52,12 @@
 
             $(this).unbind( "click" );
             flag = 1-flag;
+            $(".black").removeClass("last");
+            $(".white").removeClass("last");
             $(this).removeClass("block");
             $(this).removeClass("black");
             $(this).removeClass("white");
+            $(this).addClass("last");
             if(flag3){
                 $(this).addClass("black");
             }else{
@@ -134,12 +137,15 @@
 			if(flag2 == 3){
 				var xy = str.split("-");
 				if(flag3 == 0){
-					wzq_show.setBlack(xy[0],xy[1]);
+                    $(".white").removeClass("last");
+                    wzq_show.setBlack(xy[0],xy[1]);
                     $("#player").text("白方");
 				}else{
+                    $(".black").removeClass("last");
 				    wzq_show.setWhite(xy[0],xy[1]);
                     $("#player").text("黑方");
 				}
+                setLast(xy[0],xy[1]);
 				//收到AI落子
                 $("#info").text("轮到你了！");
                 $("#step").text("第"+step+++"子");
@@ -227,6 +233,9 @@
 	function setNone(i,j){
 		$("#wzq_"+i+"_"+j).removeClass("block").removeClass("black").removeClass("white").addClass("block");
 	}
+	function setLast(i,j){
+        $("#wzq_"+i+"_"+j).addClass("last");
+    }
     </script>
 </head>
 <body>
