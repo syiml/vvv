@@ -313,20 +313,20 @@
                         <tbody id="ai-list">
                         <%for(int i=0;i<aiList.size();++i){%>
                             <tr>
-                                <td><%=i+1%></td>
+                                <td><%=i+1%></td><%--编号--%>
                                 <%int id = aiList.get(i).getId();%>
-                                <td><a href="aigame_aiBattleRecord.jsp?id=<%=id%>"><%=aiList.get(i).getAiName()%></a></td>
+                                <td><a href="ViewCode.jsp?type=2&rid=<%=id%>"><%=aiList.get(i).getAiName()%></a></td><%--名称--%>
                                 <%String type = "";
                                     switch (aiList.get(i).getGame_id()){
                                         case 1:type = "五子棋";break;
                                     }
                                 %>
-                                <td><%=type%></td>
+                                <td><%=type%></td><%--类型--%>
                                 <%
                                     int win = AiSQL.getInstance().getAiNumOfWin(id);
                                     int num = AiSQL.getInstance().getAiNumOfTotal(id);
                                  %>
-                                <td><%=win%>/<%=num%>(<%=(float)(win*10000/(num==0?1:num)) /100%>%)</td>
+                                <td><a href="aigame_aiBattleRecord.jsp?id=<%=id%>"><%=win%>/<%=num%>(<%=(float)(win*10000/(num==0?1:num)) /100%>%)</a></td><%--胜率--%>
                             <td>
                                 <button class="btn btn-success btn-sm modify" data-toggle="modal" data-target="#update-exampleModalRedirest" id=<%=id%>>编辑</button>
                             </td>

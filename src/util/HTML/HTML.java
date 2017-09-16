@@ -1,5 +1,6 @@
 package util.HTML;
 
+import dao.AiSQL;
 import entity.*;
 import entity.Enmu.UserStarType;
 import org.apache.commons.collections.list.TypedList;
@@ -377,6 +378,20 @@ public class HTML {
             return m.toHTMLA();
         }
     }
+    public static String viewAiCode(String aiID){
+        try{
+            int aiIdInt = Integer.parseInt(aiID);
+            AiInfo aiInfo = AiSQL.getInstance().getBeanByKey(aiIdInt);
+            if(aiInfo != null){
+                User u = Main.loginUser();
+                if(u!=null && aiInfo.getUsername().equals(u.getUsername())) {
+                    return panel("AI["+aiInfo.getAiName()+"]的代码", code(aiInfo.getCode(), true, 0));
+                }
+            }
+        }catch (NumberFormatException ignored){}
+        return panel("Error","无效的参数",null,"danger");
+    }
+
     public static String viewCode(String rid,boolean havepanel){
         Status s;
         int ridInt;

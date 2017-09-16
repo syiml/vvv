@@ -11,8 +11,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Main.saveURL();
+  Main.saveURL();
+  if(Main.loginUser()==null){
+      response.sendRedirect("Login.jsp");
+      return;
+  }
   String rid = request.getParameter("rid");
+  int type = 1;
+  try{
+      type = Integer.parseInt(request.getParameter("type"));
+  }catch (Exception e){}
 %>
 <link href="js/prism/css.css" rel="stylesheet" />
 <script src="js/prism/js.js"></script>
@@ -23,7 +31,12 @@
 <body>
 <div class="container-fluid">
     <jsp:include page="module/head.jsp"/>
-      <%=HTML.viewCode(rid,true)%>
+    <%if(type==2){%>
+        <%=HTML.viewAiCode(rid)%>
+    <%}else{%>
+        <%=HTML.viewCode(rid,true)%>
+    <%}%>
+
 </div><jsp:include page="module/foot.jsp"/>
 </body>
 </html>
