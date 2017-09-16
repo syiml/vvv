@@ -86,12 +86,13 @@ public class GameGoBang extends BaseGame{
         gameRep.setWhiteAuthor(players.get(1).getAuthor());
         gameRep.setProcesses(record);
         if(status == 1 || status == 3){
-            gameRep.setWin(gameRep.getBlackId()+"");
+            gameRep.setWin(gameRep.getBlackId());
         }else if ( status == 2 || status == 4){
-            gameRep.setWin(gameRep.getWhiteId()+"");
+            gameRep.setWin(gameRep.getWhiteId());
         }else {
-            gameRep.setWin("-1");
+            gameRep.setWin(-1);
         }
+        gameRep.setTime(Tool.now());
         GameRepSQL.getInstance().insert(gameRep);
     }
 

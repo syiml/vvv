@@ -1,4 +1,6 @@
 ﻿
+ALTER TABLE t_game_repetition ADD COLUMN `time` DATETIME DEFAULT NULL AFTER `win`;
+
 ALTER TABLE t_ai_info ADD COLUMN isHide INT DEFAULT 0;
 
 CREATE TABLE t_game_repetition

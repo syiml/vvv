@@ -1,5 +1,6 @@
 package entity;
 
+import dao.AiSQL;
 import net.sf.json.JSONObject;
 
 import java.sql.ResultSet;
@@ -17,7 +18,8 @@ public class GameRep implements IBeanCanCatch,IBeanResultSetCreate {
     private int whiteId;
     private String whiteAuthor;
     private JSONObject processes;
-    private String win;
+    private int win;
+    private Timestamp time;
 
 
 
@@ -40,7 +42,8 @@ public class GameRep implements IBeanCanCatch,IBeanResultSetCreate {
         whiteId = rs.getInt("whiteId");
         whiteAuthor = rs.getString("whiteAuthor");
         processes = JSONObject.fromObject(rs.getString("processes"));
-        win = rs.getString("win");
+        win = rs.getInt("win");
+        time = rs.getTimestamp("time");
     }
 
     public int getId() {
@@ -91,11 +94,32 @@ public class GameRep implements IBeanCanCatch,IBeanResultSetCreate {
         this.processes = processes;
     }
 
-    public String getWin() {
+    public int getWin() {
         return win;
     }
 
-    public void setWin(String win) {
+    public void setWin(int win) {
         this.win = win;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public String getBlack(){
+        if(blackId == 0){
+            return blackAuthor;
+        }
+        return AiSQL.getInstance().getBeanByKey(blackId).getAiName();
+    }
+    public String getWhite(){
+        if(whiteId == 0){
+            return whiteAuthor;
+        }
+        return AiSQL.getInstance().getBeanByKey(whiteId).getAiName();
     }
 }

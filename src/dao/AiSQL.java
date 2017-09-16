@@ -1,6 +1,5 @@
 package dao;
 
-import entity.AiBattleInfo;
 import entity.AiInfo;
 import util.JSON.JSON;
 import util.SQL.SQL;
@@ -33,8 +32,7 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
     }
 
     public List<AiInfo> getAiListByUsername(String username){
-        return new SQL("SELECT * FROM t_ai_info WHERE username= ? "+
-                " ORDER BY ",username).queryBeanList(AiInfo.class);
+        return new SQL("SELECT * FROM t_ai_info WHERE username= ? ",username).queryBeanList(AiInfo.class);
     }
 
     public List<AiInfo> getAiListRank(int game_id,int from,int num){
@@ -90,6 +88,7 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
 
     public String updateAiInfo(int id,String aiName,String code,String introduce){
         if (new SQL("UPDATE t_ai_info SET ai_name = ?,ai_code = ?,introduce = ? WHERE id = ?",aiName,code,introduce,id).update() !=0){
+            remove_catch(id);
             return "success";
         }
         return "error";
@@ -129,52 +128,13 @@ public class AiSQL extends BaseCacheLRU<Integer,AiInfo> {
         ).toString();
     }
 
-
     public int getAiNumOfWin(int id){//获取赢的局数
-        return new SQL("SELECT COUNT(*) FROM t_game_repetition WHERE win = ?",id).queryNum();
+        return new SQL("SELECT COUNT(*) FROM t_game_repetition WHERE win = ? and win!=-1 ORDER BY id DESC",id).queryNum();
     }
 
     public int getAiNumOfTotal(int id){//获取总的局数
-        return new SQL("SELECT COUNT(*) FROM t_game_repetition WHERE whiteId = ? OR blackId = ?",id,id).queryNum();
+        return new SQL("SELECT COUNT(*) FROM t_game_repetition WHERE (whiteId = ? OR blackId = ?) and win!=-1",id,id).queryNum();
     }
-
-    public void addAiGameRepetition(String blackName,int blackAuthor,String whiteName,String whiteAuthor,String processes,String win){
-        new SQL("INSERT INTO t_game_repetition VALUES(?,?,?,?,?,?,?)",0,blackName,blackAuthor,whiteName,whiteAuthor,processes,win).update();
-    }
-
-    public List<AiBattleInfo> getAiGameRepetition(String username, String aiName, int game_id,int id, int from, int num){
-        String sql = null;
-        if (id < 1){
-             sql = " SELECT id FROM t_ai_info"+
-                    " WHERE username = '" + username +"'";
-            if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name like '%" + aiName +"%'";}
-            if (game_id > 0) {sql += " AND game_id = " + game_id;}
-        }else{
-            sql =""+id;
-        }
-        String buffer = " SELECT id,IF (blackId = '0',blackAuthor,(SELECT ai_name FROM t_ai_info WHERE id = blackId)) AS black,"+
-        " IF (whiteId = '0',whiteAuthor,(SELECT ai_name FROM t_ai_info WHERE id = whiteId)) AS white,win,processes"+
-        " FROM t_game_repetition "+
-                " WHERE whiteId IN(" + sql + ")" +
-                " OR blackId IN(" + sql + ")";
-        buffer += " ORDER BY id DESC LIMIT "+from+","+num;
-        return new SQL(buffer).queryBeanList(AiBattleInfo.class);
-    }
-
-    public int getAiRepetitionTotalNum(String username, String aiName, int game_id){
-        String sql = "SELECT id FROM t_ai_info"+
-                " WHERE username = '" + username +"'";
-        if (aiName != null && aiName.length()>0 ){ sql += " AND ai_name like '%" + aiName +"%'";}
-        if (game_id > 0) {sql += " AND game_id = " + game_id;}
-        String buffer = " SELECT COUNT(*)"+
-                " FROM t_game_repetition "+
-                " WHERE whiteId IN(" + sql + ")" +
-                " OR blackId IN(" + sql + ")";
-        buffer += " ORDER BY id DESC ";
-        return new SQL(buffer).queryNum();
-    }
-
-
 
     @Override
     public AiInfo getByKeyFromSQL(Integer key) {

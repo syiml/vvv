@@ -1,8 +1,12 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page import="util.Main" %>
-<%@ page import="entity.AiBattleInfo" %>
 <%@ page import="java.util.List" %>
 <%@ page import="dao.AiSQL" %>
+<%@ page import="entity.AiInfo" %>
+<%@ page import="util.HTML.HTML" %>
+<%@ page import="entity.GameRep" %>
+<%@ page import="dao.GameRepSQL" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -23,28 +27,34 @@
         pa = Integer.parseInt(request.getParameter("page"));
     }catch(NumberFormatException e)
     {   }
-    String aiName = request.getParameter("aiName");
-    if (aiName == null) aiName ="";
-    int gameInt = -1;
-    try{
-        gameInt = Integer.parseInt(request.getParameter("game_id"));
-    }catch(NumberFormatException e)
-    {   }
+//    String aiName = request.getParameter("aiName");
+//    if (aiName == null) aiName ="";
+//    int gameInt = -1;
+//    try{
+//        gameInt = Integer.parseInt(request.getParameter("game_id"));
+//    }catch(NumberFormatException e)
+//    {   }
     int aiId = -1;
     try{
         aiId = Integer.parseInt(request.getParameter("id"));
     }catch(NumberFormatException e)
     {   }
     String username = Main.loginUser().getUsername();
-    List<AiBattleInfo> List = AiSQL.getInstance().getAiGameRepetition(username,aiName,gameInt,aiId,(pa-1)*10,10);
-    int num = AiSQL.getInstance().getAiRepetitionTotalNum(username,aiName,gameInt);
+    //List<AiBattleInfo> List = AiSQL.getInstance().getAiGameRepetition(username,aiName,gameInt,aiId,(pa-1)*10,10);
+    //int num = AiSQL.getInstance().getAiRepetitionTotalNum(username,aiName,gameInt);
+    List<GameRep> List = GameRepSQL.getInstance().getAIBattleInfo(aiId,(pa-1)*10,10);
+    int num = GameRepSQL.getInstance().getAIBattleInfoNum(aiId);
     int totalpage;
     if (num == 0){
          totalpage=1;
     }else{
         totalpage = num/10 + (num % 10 != 0 ? 1 :0);
     }
-
+    int gameInt = -1;
+    try {
+        gameInt = AiSQL.getInstance().getBeanByKey(aiId).getGame_id();
+    }catch (Exception e) {}
+    List<AiInfo> aiInfos = AiSQL.getInstance().getAiListByUsername(username);
 %>
 
 
@@ -59,54 +69,19 @@
     <script type="text/javascript" language="JavaScript" src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/dateFormat.js"></script>
     <link rel="stylesheet" href="css/main.css">
-    <script type="text/javascript" language="JavaScript">
-
-
-    $(function () {
-        //获取点击修改的列表的id值
-            var modifyid;
-            $(".modify").click(function(){
-                modifyid = $(this).attr("id");
-            });
-            $('#update-exampleModalRedirest').on('show.bs.modal', function (e) {
-                // do something...
-               //使用ajax发送请求,响应数据
-                $.post("getEditAiView?id=" + modifyid,
-                    function(data){
-
-                        //aiid
-                        $("#aiid").val(data.id);
-                        //ai名
-                        $("#update-redist-name").val(data.aiName);
-                        //简介
-                        $("#update-jj").html(data.introduce);
-                        //代码
-                        $("#update-code").html(data.code);
-                    }, "json");
-            });
-            var t1  = $("#update-redist-name").val();
-            $("#update-redist-name").bind('input propertychange',function(e){
-                //alert("too long");
-                if($(this).val().length>8){
-                    alert("名称最长8个字");
-                    $(this).val(t1);
-                }
-                t1  = $(this).val();
-            });
-            var t2  = $("#redist-name").val();
-            $("#redist-name").bind('input propertychange',function(e){
-                //alert("too long");
-                if($(this).val().length>8){
-                    alert("名称最长8个字");
-                    $(this).val(t2);
-                }
-                t2  = $(this).val();
-            });
-        });
-    </script>
-    <title>用户AI管理 - <%=Main.config.OJName%></title>
+    <title>AI挑战记录 - <%=Main.config.OJName%></title>
 </head>
 <body>
+<script>
+    $(function () {
+        //获取点击修改的列表的id值
+        $(".modify").click(function(){
+            var modifyid = $(this).attr("id");
+            $('.rep').html("<iframe style='width:100%;height:700px;border-width:0' src='module/GoBangResult.jsp?type=2&rid="+modifyid+"'></iframe>");
+            $('#repModal').modal('toggle');
+        });
+    });
+</script>
 <br>
 <div class="container">
     <div class="row clearfix">
@@ -155,9 +130,12 @@
                             <div class="panel-heading">
                                 <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-867475">AI 管理</a>
                             </div>
-                            <div id="panel-element-867475" class="panel-collapse collapse in">
+                            <div id="panel-element-867475" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <a href="aigame_userMangeAi.jsp" class="text-primary">AI 编辑</a>
+                                </div>
+                                <div class="panel-body">
+                                    <a href="aigame_demo.jsp" class="text-primary">上传说明</a>
                                 </div>
                                 <%--<div class="panel-body">--%>
                                 <%--<a href="#" class="text-primary">列表1-2</a>--%>
@@ -171,7 +149,7 @@
                             <div class="panel-heading">
                                 <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-84243" href="#panel-element-365878">对战记录查询</a>
                             </div>
-                            <div id="panel-element-365878" class="panel-collapse collapse">
+                            <div id="panel-element-365878" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <a href="aigame_aiBattleRecord.jsp" class="text-primary">人机对战</a>
                             </div>
@@ -204,27 +182,40 @@
                 <div class="col-md-10 column embed-responsive embed-responsive-16by9">
                     <!--搜索框组-->
                     <div class="row">
-                        <div class="col-sm-2">
-                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModalRedirest"><span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;&nbsp;上 传</button><br><br>
-                        </div>
+                        <%--<div class="col-sm-2">--%>
+                            <%--<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModalRedirest"><span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;&nbsp;上 传</button><br><br>--%>
+                        <%--</div>--%>
                         <div class="col-sm-8">
                             <!--用于发送搜索信息-->
                             <form class="form-inline" action="">
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="input-group">--%>
+                                        <%--<div class="input-group-addon">类型</div>--%>
+                                        <%--<select class="form-control" id="game_id" name="game_id">--%>
+                                            <%--<option value="-1" <%=gameInt==-1?"selected":""%>>不限</option>--%>
+                                            <%--<option value="1" <%=gameInt==1?"selected":""%>>五子棋</option>--%>
+                                        <%--</select>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <div class="input-group-addon">AI名称</div>
-                                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="AI名称" name="aiName" value="<%=aiName%>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">类型</div>
-                                        <select class="form-control" id="game_id" name="game_id">
-                                            <option value="-1" <%=gameInt==-1?"selected":""%>>不限</option>
-                                            <option value="1" <%=gameInt==1?"selected":""%>>五子棋</option>
+                                        <div class="input-group-addon">AI</div>
+                                        <select class="form-control" id="ai_nanme" name="id">
+                                            <%--<option value="-1" <%=gameInt==-1?"selected":""%>>不限</option>--%>
+                                            <%for(int i=0;i< aiInfos.size();i++) {
+                                            %>
+                                                <option value="<%=aiInfos.get(i).getId()%>" <%=aiInfos.get(i).getId()==aiId?"selected":""%>><%=aiInfos.get(i).getAiName()%></option>
+                                            <%
+                                            }%>
                                         </select>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="input-group">--%>
+                                        <%--<div class="input-group-addon">AI名称</div>--%>
+                                        <%--<input type="text" class="form-control" id="exampleInputAmount" placeholder="AI名称" name="aiName" value="<%=aiName%>">--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>  筛选</button>
                             </form>
 
@@ -249,52 +240,6 @@
                                 </script>
                         </div><!-- /.col-lg-6 -->
                     </div><!-- /.row -->
-                    <!-- ai新增-->
-                    <!--新增弹出框-->
-                    <div class="modal fade" id="exampleModalRedirest" tabindex="-1" role="dialog" aria-labelledby="rexampleModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="rexampleModalLabel"><span class="glyphicon glyphicon-book"></span>   上传AI</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="form-horizontal" action="Ai/addAiInfo.action" method="post">
-                                        <div class="form-group has-feedback">
-                                            <label for="redist-name" class="control-label col-sm-2">AI名：</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="redist-name" name="aiName" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group text-center">
-                                            <label for="game" class="control-label col-sm-2">游戏类型: </label>
-                                            <div class="col-sm-3">
-                                                <select class="form-control" id="game" name="game_id">
-                                                    <option value="1" selected>五子棋</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group has-feedback">
-                                            <label for="introduce" class="control-label col-sm-2">简介: </label>
-                                            <div class="col-sm-9">
-                                                <textarea class="form-control" id="introduce" name="introduce" required style="min-height: 150px"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group has-feedback">
-                                            <label for="code" class="control-label col-sm-2">代码: </label>
-                                            <div class="col-sm-9">
-                                                <textarea class="form-control" id="code" name="code" required style="min-height: 150px"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                            <button type="submit" class="btn btn-primary">上传</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!--列表-->
                     <table class="table table-hover table-striped table-condensed">
                         <thead>
@@ -303,94 +248,71 @@
                                 编号
                             </th>
                             <th class="col-sm-2">
-                                白方
+                                黑方
                             </th>
                             <th class="col-sm-2">
-                                黑方
+                                白方
                             </th>
                             <th class="col-sm-2">
                                 AI结果
                             </th>
                             <th class="col-sm-2">
-                                重现
+                                时间
                             </th>
                         </tr>
                         </thead>
                         <tbody id="ai-list">
                         <%for(int i=0;i<List.size();++i){%>
                         <tr>
-                            <td><%=i+1%></td>
-                            <td><%=List.get(i).getWhite()%></td>
+                            <td><%=List.get(i).getId()%></td>
                             <td><%=List.get(i).getBlack()%></td>
+                            <td><%=List.get(i).getWhite()%></td>
                             <%String buffer =null;
                                 switch (List.get(i).getWin()){
-                                case -1:buffer = "错误";break;
-                                case 0:buffer = "失败";break;
-                                case -2:buffer = "平局";break;
-                                default:buffer = "胜利";
+                                case -1:buffer = HTML.textb("错误","black");break;
+                                case 0:buffer = HTML.textb("失败","red");break;
+                                case -2:buffer = HTML.textb("平局","blue");break;
+                                default:buffer = HTML.textb("胜利","green");
                             }
                             %>
-                            <td><%=buffer%></td>
-
+                            <td><a class='modify' href="#" id="<%=List.get(i).getId()%>"><%=buffer%></a></td>
                             <td>
-                                <button class="btn btn-success btn-sm modify" data-toggle="modal" data-target="#update-exampleModalRedirest" id=<%=List.get(i).getId()%>>重现</button>
+                                <%=List.get(i).getTime()==null?"":new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(List.get(i).getTime())%>
                             </td>
                         </tr>
                         <%}%>
                         </tbody>
                     </table>
-                    <!--编辑弹出标签-->
-                    <div class="modal fade" id="update-exampleModalRedirest" tabindex="-1" role="dialog" aria-labelledby="update-rexampleModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="update-rexampleModalLabel"><span class="glyphicon glyphicon-book"></span>   修改</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="form-horizontal" action="Ai/updateAiInfo.action" method="post">
-                                        <input type="hidden" name="id" id="aiid">
-                                        <div class="form-group has-feedback">
-                                            <label for="update-redist-name" class="control-label col-sm-2">AI名：</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="update-redist-name" name="aiName" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group has-feedback">
-                                            <label for="update-jj" class="control-label col-sm-2">简介: </label>
-                                            <div class="col-sm-9">
-                                                <textarea class="form-control" id="update-jj" name="introduce" required style="min-height: 150px"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group has-feedback">
-                                            <label for="update-code" class="control-label col-sm-2">代码: </label>
-                                            <div class="col-sm-9">
-                                                <textarea class="form-control" id="update-code" name="code" required style="min-height: 150px"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                            <button type="submit" class="btn btn-primary">修改</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-4">
                             <ul class="pagination pagination-sm ">
                                 <li>
-                                    <a href="aigame_aiBattleRecord.jsp?page=<%=Math.max(pa-1,1)%>&aiName=<%=aiName%>&game_id=<%=gameInt%>&id=<%=aiId%>>"><<</a>
+                                    <a href="aigame_aiBattleRecord.jsp?page=<%=Math.max(pa-1,1)%>&id=<%=aiId%>"><<</a>
                                 </li>
                                 <li>
                                     <a href="#"><%=""+pa+" / "+totalpage%></a>
                                 </li>
                                 <li>
-                                    <a href="aigame_aiBattleRecord.jsp?page=<%=Math.min(pa+1,totalpage)%>&aiName=<%=aiName%>&game_id=<%=gameInt%>&id=<%=aiId%>">>></a>
+                                    <a href="aigame_aiBattleRecord.jsp?page=<%=Math.min(pa+1,totalpage)%>&id=<%=aiId%>">>></a>
                                 </li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ai新增-->
+                <!--新增弹出框-->
+                <div class="modal fade" id="repModal" tabindex="-1" role="dialog" aria-labelledby="rexampleModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="rexampleModalLabel"><span class="glyphicon glyphicon-book"></span>   对战记录</h4>
+                            </div>
+                            <div class="modal-body rep">
+
+                            </div>
                         </div>
                     </div>
                 </div>

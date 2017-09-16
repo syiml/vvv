@@ -1,4 +1,8 @@
-<%@ page import="util.Main" %><%--
+<%@ page import="util.Main" %>
+<%@ page import="dao.AiSQL" %>
+<%@ page import="net.sf.json.JSONObject" %>
+<%@ page import="entity.GameRep" %>
+<%@ page import="dao.GameRepSQL" %><%--
   Created by IntelliJ IDEA.
   User: QAQ
   Date: 2017/4/3
@@ -7,7 +11,21 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    int type = 0;
+    try {
+        type = Integer.parseInt(request.getParameter("type"));
+    }catch (Exception e){}
     int rid = Integer.parseInt(request.getParameter("rid"));
+    String json = "";
+    if(type==2) {
+        GameRep aiBattleInfo = GameRepSQL.getInstance().getAIBattleInfo(rid);
+        JSONObject jsonObject = JSONObject.fromObject(GameRepSQL.getInstance().getAIBattleInfo(rid).getProcesses());
+        jsonObject.put("black",aiBattleInfo.getBlack());
+        jsonObject.put("white",aiBattleInfo.getWhite());
+        json = "{\"record\":["+jsonObject+"],\"type\":\"success\",\"score\":100,\"game_type\":\"GoBang\",\"game\":true,\"time\":186445};";
+    }else{
+        json = Main.status.getCEInfo(rid);
+    }
 %>
 <html>
 <head>
@@ -89,7 +107,7 @@
         };
     }();
 
-    var data=<%=Main.status.getCEInfo(rid)%>
+    var data=<%=json%>
 
     var $nav = $(".nav");
     var $gro;
@@ -124,17 +142,17 @@
     function showEnd(){
         while(next());
     }
+    function pri()
+    {
+        var j_st_now = j_st;
+        pan(i_pan);
+        while(j_st_now-1>j_st) if(!next()) break;
+    }
     function next()
     {
         if(j_st < data.record[i_pan].step.length){
             console.log(data.record[i_pan].step[j_st]);
-            if(data.record[i_pan].step[j_st].type == "success")
-            {
-                if(data.record[i_pan].step[j_st].player == 1)
-                    wzq_show.setBlack(data.record[i_pan].step[j_st].x,data.record[i_pan].step[j_st].y,j_st+1);
-                else
-                    wzq_show.setWhite(data.record[i_pan].step[j_st].x,data.record[i_pan].step[j_st].y,j_st+1);
-            }else if(data.record[i_pan].step[j_st].type == "end"){
+            if(data.record[i_pan].step[j_st].type == "end"){
                 if(data.record[i_pan].step[j_st].status == 1){
                     $(".next").append("<text id='res'>黑方胜</text>");
                 }else if(data.record[i_pan].step[j_st].status == 2){
@@ -146,6 +164,11 @@
                 }else if(data.record[i_pan].step[j_st].status == 0){
                     $(".next").append("<text id='res'>平局</text>");
                 }
+            }else{
+                if(j_st %2 == 0)
+                    wzq_show.setBlack(data.record[i_pan].step[j_st].x,data.record[i_pan].step[j_st].y,j_st+1);
+                else
+                    wzq_show.setWhite(data.record[i_pan].step[j_st].x,data.record[i_pan].step[j_st].y,j_st+1);
             }
             j_st++;
             return true;
@@ -154,6 +177,7 @@
     }
 
     pan(0);
-    $(".next").append("<a role=‘button’ class='btn btn-default btn-sm' href='javascript:next()'>下一步</a>" +
+    $(".next").append("<a role=‘button’ class='btn btn-default btn-sm' href='javascript:pri()'>上一步</a>" +
+        "<a role=‘button’ class='btn btn-default btn-sm' href='javascript:next()'>下一步</a>" +
             "<a role=‘button’ class='btn btn-default btn-sm' href='javascript:showEnd()'>显示结果</a>");
 </script>

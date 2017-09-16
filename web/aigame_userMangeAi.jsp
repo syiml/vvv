@@ -147,6 +147,9 @@
                                 <div class="panel-body">
                                     <a href="aigame_userMangeAi.jsp" class="text-primary">AI 编辑</a>
                                 </div>
+                                <div class="panel-body">
+                                    <a href="aigame_demo.jsp" class="text-primary">上传说明</a>
+                                </div>
                                 <%--<div class="panel-body">--%>
                                     <%--<a href="#" class="text-primary">列表1-2</a>--%>
                                 <%--</div>--%>
