@@ -70,7 +70,7 @@ public class JudgeSystem extends OTHOJ {
         formparams.add(new BasicNameValuePair("timelimit",limit.getKey()+""));
         formparams.add(new BasicNameValuePair("memorylimit",limit.getValue()+""));
         formparams.add(new BasicNameValuePair("code",s.getSubmitInfo().code));
-        formparams.add(new BasicNameValuePair("language","0"));
+        formparams.add(new BasicNameValuePair("language",s.getSubmitInfo().language+""));
 
         JSONObject jo = new JSONObject();
         Status st = Main.status.getStatu(s.getSubmitInfo().getRid());
