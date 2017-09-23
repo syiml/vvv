@@ -154,6 +154,7 @@ public class HTML {
         String language="";
         if(lang==2) language="java";
         else if(lang==1||lang==0) language="cpp";
+        else if(lang==3) language = "Python";
         if(replace){
             code=code.replaceAll("&","&amp;");
             code=code.replaceAll("\"","&quot;");
@@ -600,12 +601,12 @@ public class HTML {
 //        if(Main.loginUser()==null){
 //            return "会话超时，请重新登录";
 //        }
-        statuListHTML s=new statuListHTML(cid,Main.config.statusShowNum,page,
+        statuListHTML s=new statuListHTML(cid,Main.config.topConfig.statusShowNum,page,
                                             pid,Language,result,ssuser,all,star);
         return s.HTML();
     }
     public static String contestList(String num,String page,String statu,String name,String type,String kind){
-        if(num==null||num.equals("")){num=Main.config.contestShowNum+"";}
+        if(num==null||num.equals("")){num=Main.config.topConfig.contestShowNum+"";}
         if(page==null||page.equals("")){page="1";}
         if(statu==null||statu.equals("")){statu="-1";}
         if(name==null) name="";

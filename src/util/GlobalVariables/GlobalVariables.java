@@ -3,6 +3,7 @@ package util.GlobalVariables;
 import java.io.*;
 
 import net.sf.json.JSONObject;
+import util.Config.Config;
 
 
 /**
@@ -10,35 +11,9 @@ import net.sf.json.JSONObject;
  */
 public class GlobalVariables {
     public static JSONObject read(){
-        String JsonContext = new GlobalVariables().ReadFile(GlobalVariables.class.getResource("GlobalVariables.json").getPath());
+        String path = GlobalVariables.class.getResource("../../Config/GlobalVariables.json").getPath();
+        String JsonContext = Config.readFile(path);
         return JSONObject.fromObject(JsonContext);
-    }
-
-    public String ReadFile(String Path){
-//        System.out.println(Path);
-        BufferedReader reader = null;
-        String laststr = "";
-        try{
-            FileInputStream fileInputStream = new FileInputStream(Path);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
-            reader = new BufferedReader(inputStreamReader);
-            String tempString = null;
-            while((tempString = reader.readLine()) != null){
-                laststr += tempString;
-            }
-            reader.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }finally{
-            if(reader != null){
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return laststr;
     }
 }
 

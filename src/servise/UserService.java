@@ -54,7 +54,7 @@ public class UserService {
         }
         try {
             if(e.getPic()!=null)
-                Main.uploadFile(e.getPic(), Main.getRealPath("/")+Main.config.verifyPicPath + id +".jpg");
+                Main.uploadFile(e.getPic(), Main.getRealPath("/")+Main.config.topConfig.verifyPicPath + id +".jpg");
         } catch (IOException e1) {
             e1.printStackTrace();
         }

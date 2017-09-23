@@ -34,8 +34,12 @@
       <label for="laninput"> language</label><select name="language" class="form-control" id="laninput">
       <%
         Problem p = Main.problems.getProblem(Integer.parseInt(pid));
-        if(p.getOjid() == 7 || p.getOjid() == 9 ) {
+        if(p.getOjid() == 9 ) {
                                         %><option value="0" selected>G++</option><%
+        }else if(p.getOjid() == 7) {
+                                        %><option value="0" selected>G++</option>
+                                          <%--<option value="2">Java</option>--%>
+                                          <option value="3">Python 2.7.12</option><%
 
         }else{
       %>

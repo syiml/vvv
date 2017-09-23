@@ -1,4 +1,4 @@
-package util;
+package util.Config;
 
 import net.sf.json.JSONObject;
 
@@ -6,7 +6,7 @@ import net.sf.json.JSONObject;
  * 从src/util/GlobalVariables/GlobalVariables.json读取的配置内容
  * Created by QAQ on 2016/9/27.
  */
-public class Config {
+public class TopConfig extends BaseConfig{
     public int problemShowNum;//每页显示的题目数量
     public int statusShowNum;//statu每页显示数量
     public int contestShowNum;//contest每页显示数量
@@ -35,7 +35,9 @@ public class Config {
     public String sqlusername;
     public String sqlpassword;
 
-    public Config readConfig(JSONObject GV)
+
+    @Override
+    public void readConfig(JSONObject GV)
     {
         problemShowNum=GV.getInt("problemShowNum");
         statusShowNum =GV.getInt("statusShowNum");
@@ -56,6 +58,10 @@ public class Config {
         sqlusername = GV.getString("sqlusername");
         sqlpassword = GV.getString("sqlpassword");
         OJName = GV.getString("OJName");
-        return this;
+    }
+
+    @Override
+    public String getFileName() {
+        return "GlobalVariables.json";
     }
 }

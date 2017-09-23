@@ -5,6 +5,7 @@ import entity.Title.AllIntCompute.BaseIntCompute;
 import entity.Title.AllTimeCompute.BaseTimeCompute;
 import net.sf.json.JSONObject;
 import servise.UserService;
+import util.Config.Config;
 import util.Event.BaseTitleEvent;
 import util.Event.EventDeal;
 
@@ -89,7 +90,7 @@ public class BaseTitle<T extends BaseTitleEvent> extends EventDeal<T>{
         return titles.get(id);
     }
     public static void read(){
-        String JsonContext = new GlobalVariables().ReadFile(BaseTitle.class.getResource("title.json").getPath());
+        String JsonContext = Config.readFile(BaseTitle.class.getResource("title.json").getPath());
         JSONObject jo = JSONObject.fromObject(JsonContext);
         for(int i=0;i<jo.getJSONArray("titles").size();i++){
             putTitle(getTitle(jo.getJSONArray("titles").getJSONObject(i)));

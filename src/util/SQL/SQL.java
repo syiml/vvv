@@ -293,7 +293,7 @@ public class SQL {
             FileLog.updateSqlLog(Tool.now()+": "+sqlString);
             return ret;
         } catch (SQLException e) {
-            if(Main.config.isDebug) e.printStackTrace();
+            if(Main.config.topConfig.isDebug) e.printStackTrace();
             if(log&&_log)Tool.log(e);
             return -1;
         } finally {

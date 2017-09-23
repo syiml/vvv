@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   Main.saveURL();
-  int num= Main.config.discussListShowNum;
+  int num= Main.config.topConfig.discussListShowNum;
   String pa=request.getParameter("page");
   if(pa==null||pa.equals("")) pa="1";
   String search=request.getParameter("search");

@@ -40,7 +40,7 @@ public class FileLog{
     }
     public static synchronized void updateSqlLog(String content) {
         try {
-            updateSqlLogFile = openFile(Main.config.localJudgeWorkPath+"log/updateSQL/",Tool.nowDate()+".txt");
+            updateSqlLogFile = openFile(Main.config.topConfig.localJudgeWorkPath+"log/updateSQL/",Tool.nowDate()+".txt");
             updateSqlLogFile.write(content+"\n");
             updateSqlLogFile.close();
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class FileLog{
 
     static synchronized void RunLog(String content) {
         try {
-            LogFile = openFile(Main.config.localJudgeWorkPath+"log/runLog/",Tool.nowDate()+".txt");
+            LogFile = openFile(Main.config.topConfig.localJudgeWorkPath+"log/runLog/",Tool.nowDate()+".txt");
             LogFile.write(content+"\n");
             LogFile.close();
         } catch (IOException e) {

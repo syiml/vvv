@@ -30,7 +30,7 @@ public class UserListHTML extends pageBean {
         this.inTeamStatus=inTeamStatus;
         if(search!=null) this.search=search;
         if(page>0) this.page = page;
-        num=Main.config.userShowNum;
+        num=Main.config.topConfig.userShowNum;
         if(inTeamStatus!=-1){//取到了status的值
             list= Main.users.getUsersInTeam((page-1) * num, num, search,order, desc,inTeamStatus);
         }else{//全部

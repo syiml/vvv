@@ -26,7 +26,7 @@ public class AdminUserListHTML extends pageBean {
         this.desc = desc;
         if(search!=null) this.search=search;
         this.page=page;
-        num=Main.config.userShowNum;
+        num=Main.config.topConfig.userShowNum;
         list= Main.users.getUsers((page-1) * num, num, search,order, desc);
         pageNum= getTotalPageNum(Main.users.getUsersNum(search),num);
         u=Main.loginUser();

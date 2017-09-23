@@ -302,6 +302,7 @@ public class statuListHTML extends pageBean {
                 if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
                 if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
                 if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
+                if(l==3)return HTML.a("javascript:viewcode("+rid+")","Python");
                 return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
             }else{
                 return "-";
@@ -312,11 +313,13 @@ public class statuListHTML extends pageBean {
                     if(l==0)return HTML.a("ViewCode.jsp?rid="+rid,"C++");
                     if(l==1)return HTML.a("ViewCode.jsp?rid="+rid,"C");
                     if(l==2)return HTML.a("ViewCode.jsp?rid="+rid,"JAVA");
+                    if(l==3)return HTML.a("ViewCode.jsp?rid="+rid,"Python");
                     return HTML.a("ViewCode.jsp?rid="+rid,"UNKNOW");
                 }else{
                     if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
                     if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
                     if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
+                    if(l==2)return HTML.a("javascript:viewcode("+rid+")","Python");
                     return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
                 }
             }
@@ -324,6 +327,7 @@ public class statuListHTML extends pageBean {
         if(l==0)return "C++";
         if(l==1)return "C";
         if(l==2)return "JAVA";
+        if(l==3)return "Python";
         return "UNKNOW";
     }
     private String pidToHtml(Status s,boolean in){

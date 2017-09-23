@@ -2,9 +2,7 @@ package action.App;
 
 import action.BaseAction;
 import net.sf.json.JSONObject;
-import org.jsoup.Connection;
 import servise.GvMain;
-import util.Config;
 import util.Main;
 import util.MainResult;
 
@@ -34,7 +32,7 @@ public class ActionAppUpdate extends BaseAction {
         jo.put("versionCode", GvMain.getAppVersionCode());
         jo.put("versionName", GvMain.getAppVersionName());
         jo.put("versionInfo", GvMain.getAppUpdate());
-        jo.put("url", Main.config.appPath);
+        jo.put("url", Main.config.topConfig.appPath);
         out.print(jo);
         return NONE;
     }

@@ -3,11 +3,12 @@ package util;
 import WebSocket.MatchWebSocket;
 import action.App.ActionAppUpdate;
 import dao.*;
-import dao.Mall.GoodsSQL;
 import entity.*;
 import entity.OJ.OTHOJ;
 import servise.GvMain;
 import util.CodeCompare.cplusplus.CPlusPlusCompare;
+import util.Config.Config;
+import util.Config.TopConfig;
 import util.GlobalVariables.GlobalVariables;
 import util.HTML.problemHTML;
 import action.addLocalProblem;
@@ -29,7 +30,7 @@ import java.util.Set;
  */
 public class Main {
     public static JSONObject GV = GlobalVariables.read();
-    public static Config config;
+    public static Config config = new Config();
 
     public static ProblemSQL problems = new ProblemSQL();
     public static statusSQL status = new statusSQL();
@@ -42,18 +43,14 @@ public class Main {
     public static SQLUpdateThread sqlUpdateThread = new SQLUpdateThread();
 
     public static void Init(){
-        config = (new Config()).readConfig(GV);
+        config.init();
         try {
-            Class.forName(config.sqlclass);
+            Class.forName(config.topConfig.sqlclass);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         status.init();
         new Thread(sqlUpdateThread).start();
-    }
-    public static void readConfig(){
-        GV = GlobalVariables.read();
-        config.readConfig(GV);
     }
     public static String addProblem(addproblem1 action){
         Problem p = new Problem();
@@ -192,7 +189,7 @@ public class Main {
     public static MainResult appUpdate(ActionAppUpdate action){
         if(!Main.loginUserPermission().getAppUpdate()) return MainResult.NO_PERMISSION;
         try {
-            uploadFile(action.getApp(), Main.getRealPath("/")+Main.config.appPath);
+            uploadFile(action.getApp(), Main.getRealPath("/")+Main.config.topConfig.appPath);
         }catch (IOException e){
             return MainResult.FAIL;
         }
@@ -231,9 +228,9 @@ public class Main {
         * svn commit -m
         * */
         Runtime rt = Runtime.getRuntime();
-        File dir = new File(Main.config.localJudgeWorkPath+"/data");
+        File dir = new File(Main.config.topConfig.localJudgeWorkPath+"/data");
         try {
-            Process pro = rt.exec(config.svnPath+" add . --no-ignore --force",new String[]{},dir);
+            Process pro = rt.exec(config.topConfig.svnPath+" add . --no-ignore --force",new String[]{},dir);
             try {
 
                 pro.waitFor();
@@ -242,7 +239,7 @@ public class Main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            pro = rt.exec(config.svnPath+" commit -m \"\"",new String[]{},dir);
+            pro = rt.exec(config.topConfig.svnPath+" commit -m \"\"",new String[]{},dir);
             try {
                 pro.waitFor();
             } catch (InterruptedException e) {
@@ -260,8 +257,8 @@ public class Main {
         * */
         Runtime rt = Runtime.getRuntime();
         try {
-            File dir = new File(Main.config.localJudgeWorkPath+"/data");
-            Process pro = rt.exec(config.svnPath+" rm "+fileName,new String[]{},dir);
+            File dir = new File(Main.config.topConfig.localJudgeWorkPath+"/data");
+            Process pro = rt.exec(config.topConfig.svnPath+" rm "+fileName,new String[]{},dir);
             try {
                 String errorInfo = "";
                 long time = System.currentTimeMillis();
@@ -275,7 +272,7 @@ public class Main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            pro = rt.exec(config.svnPath+" commit -m \"\"",new String[]{},dir);
+            pro = rt.exec(config.topConfig.svnPath+" commit -m \"\"",new String[]{},dir);
             try {
                 pro.waitFor();
             } catch (InterruptedException e) {

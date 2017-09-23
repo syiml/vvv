@@ -52,7 +52,7 @@ public class Tool {
             User loginUser=Main.loginUser();
             Log log=new Log(now(),expMessage,loginUser==null?null:loginUser.getUsername());
             Main.logs.save(log);
-            if(Main.config.isDebug) e.printStackTrace();
+            if(Main.config.topConfig.isDebug) e.printStackTrace();
         }catch (Exception e1){
             e1.printStackTrace();
         }
@@ -61,7 +61,7 @@ public class Tool {
         debug(s,2);
     }
     public static void debug(String s,int stackDepth){
-        if(Main.config.isDebug){
+        if(Main.config.topConfig.isDebug){
             StackTraceElement[] stacks = new Throwable().getStackTrace();
             Thread current = Thread.currentThread();
             String nowTime = now().toString();
@@ -70,7 +70,7 @@ public class Tool {
         }
     }
     public static void debug(String s,String className){
-        if(Main.config.isDebug){
+        if(Main.config.topConfig.isDebug){
             StackTraceElement[] stacks = new Throwable().getStackTrace();
             int stackDepth;
             for(stackDepth=1;stackDepth<stacks.length;stackDepth++){
@@ -85,7 +85,7 @@ public class Tool {
         }
     }
     public static void SQLDebug(Long time, String sql){
-        if(Main.config.isDebug){
+        if(Main.config.topConfig.isDebug){
             if(time < 10){
                 debug("{"+time+"}"+sql,SQL.class.getName());
             }else if(time < 100){

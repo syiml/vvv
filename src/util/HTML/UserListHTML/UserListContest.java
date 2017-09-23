@@ -35,7 +35,7 @@ public class UserListContest extends pageBean {
         c= ContestMain.getContest(cid);
         admin=Main.loginUserPermission().getContestRegisterAdmin();
         this.NowPage=NowPage;
-        int num=Main.config.userShowNum;
+        int num=Main.config.topConfig.userShowNum;
         if(c.getType() == Contest_Type.TEAM_OFFICIAL){
             super.addTableHead("用户名","队名","队员1","队员2","队员3","状态","时间");
             if(admin){
@@ -52,7 +52,7 @@ public class UserListContest extends pageBean {
             }
             list2=Main.users.getUsers(cid, (NowPage - 1) * num, num, "", c.isRegisterShowComplete());
             RegisterUserNum=UserSQL.getUsersNum(c.getCid(),"");
-            PageNum= getTotalPageNum(RegisterUserNum,Main.config.userShowNum);
+            PageNum= getTotalPageNum(RegisterUserNum,Main.config.topConfig.userShowNum);
         }
         if(admin){
             super.addTableHead("admin");
