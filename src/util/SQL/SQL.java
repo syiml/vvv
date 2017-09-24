@@ -253,7 +253,7 @@ public class SQL {
         return update(true);
     }
 
-    public int isnertGetLastInsertId(){
+    public int insertGetLastInsertId(){
         p=null;
         try {
             p= conn.prepareStatement(sql);

@@ -307,21 +307,19 @@ public class statuListHTML extends pageBean {
             }else{
                 return "-";
             }
-        }else {
-            if(Main.canViewCode(s, user)){
-                if(!incontest){
-                    if(l==0)return HTML.a("ViewCode.jsp?rid="+rid,"C++");
-                    if(l==1)return HTML.a("ViewCode.jsp?rid="+rid,"C");
-                    if(l==2)return HTML.a("ViewCode.jsp?rid="+rid,"JAVA");
-                    if(l==3)return HTML.a("ViewCode.jsp?rid="+rid,"Python");
-                    return HTML.a("ViewCode.jsp?rid="+rid,"UNKNOW");
-                }else{
-                    if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
-                    if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
-                    if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
-                    if(l==2)return HTML.a("javascript:viewcode("+rid+")","Python");
-                    return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
-                }
+        }else if(Main.canViewCode(s, user)){
+            if(!incontest){
+                if(l==0)return HTML.a("ViewCode.jsp?rid="+rid,"C++");
+                if(l==1)return HTML.a("ViewCode.jsp?rid="+rid,"C");
+                if(l==2)return HTML.a("ViewCode.jsp?rid="+rid,"JAVA");
+                if(l==3)return HTML.a("ViewCode.jsp?rid="+rid,"Python");
+                return HTML.a("ViewCode.jsp?rid="+rid,"UNKNOW");
+            }else{
+                if(l==0)return HTML.a("javascript:viewcode("+rid+")","C++");
+                if(l==1)return HTML.a("javascript:viewcode("+rid+")","C");
+                if(l==2)return HTML.a("javascript:viewcode("+rid+")","JAVA");
+                if(l==3)return HTML.a("javascript:viewcode("+rid+")","Python");
+                return HTML.a("javascript:viewcode("+rid+")","UNKNOW");
             }
         }
         if(l==0)return "C++";

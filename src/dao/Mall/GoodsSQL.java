@@ -27,7 +27,7 @@ public class GoodsSQL extends BaseCache<Integer, Goods> {
                 goods.getTime(),
                 goods.getBuyLimit(),
                 goods.getBuyVerifyLimit()
-            ).isnertGetLastInsertId();
+            ).insertGetLastInsertId();
     }
     public int editGoods(Goods goods){
         int ret = new SQL("UPDATE t_mall SET title=?,acb=?,stock=?,des=?,isHidden=?,buyLimit=?,BuyVerifyLimit=? WHERE id=?",

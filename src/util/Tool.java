@@ -121,4 +121,18 @@ public class Tool {
     public static double randomGaussian(double miu,double sigma){
         return r.nextGaussian() * sigma + miu;
     }
+
+    /**
+     * 把字符串转化成数字，如果转化失败就返回def
+     * @param s 转化字符串
+     * @param def 默认值
+     * @return 转化结果
+     */
+    public static int parseInt(String s, int def){
+        try{
+            return Integer.parseInt(s);
+        }catch (NumberFormatException e){
+            return def;
+        }
+    }
 }

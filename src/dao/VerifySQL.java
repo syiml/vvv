@@ -46,7 +46,7 @@ public class VerifySQL extends BaseCache<Integer, UserVerifyInfo> {
                     userVerifyInfo.result,
                     "",
                     userVerifyInfo.graduationTime
-                ).isnertGetLastInsertId();
+                ).insertGetLastInsertId();
     }
 
     public void updateResult(int id,int result,String reason){

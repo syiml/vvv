@@ -1,4 +1,29 @@
 ﻿
+
+
+
+CREATE TABLE `t_group_member` (
+`group_id`  int(11) NOT NULL ,
+`username`  varchar(30) NOT NULL ,
+`status`  int(11) NOT NULL ,
+`join_time`  datetime NOT NULL ,
+PRIMARY KEY (`group_id`, `username`)
+)
+;
+
+
+CREATE TABLE `t_group` (
+`id`  int(11) NOT NULL AUTO_INCREMENT FIRST,
+`name`  varchar(30) NOT NULL ,
+`type`  int(11) NOT NULL ,
+`time`  datetime NOT NULL ,
+PRIMARY KEY (`id`)
+);
+
+
+
+
+
 ALTER TABLE t_game_repetition ADD COLUMN `time` DATETIME DEFAULT NULL AFTER `win`;
 
 ALTER TABLE t_ai_info ADD COLUMN isHide INT DEFAULT 0;

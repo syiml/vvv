@@ -22,7 +22,7 @@ public class OrderSQL extends BaseCache<Integer, Order> {
                 order.getAcb(),
                 order.getTime(),
                 order.isCancel()
-        ).isnertGetLastInsertId();
+        ).insertGetLastInsertId();
     }
 
     public int cancelOrder(int id){

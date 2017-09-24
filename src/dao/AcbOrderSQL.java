@@ -29,6 +29,6 @@ public class AcbOrderSQL {
                 acbOrder.reason.getId(),
                 acbOrder.mark,
                 acbOrder.time
-        ).isnertGetLastInsertId();
+        ).insertGetLastInsertId();
     }
 }
