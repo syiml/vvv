@@ -67,7 +67,7 @@
       rules: {
         code: {
           required: true,
-          minlength: 51,
+          minlength: 10,
           maxlength: 100000,
           bsf: true
         }
@@ -75,8 +75,8 @@
       messages: {
         code: {
           required: "请输入提交代码",
-          minlength: "代码长度必须在50到100000之间",
-          maxlength: "代码长度必须在50到100000之间"
+          minlength: "代码长度必须在10到100000之间",
+          maxlength: "代码长度必须在10到100000之间"
         }
       }
     });

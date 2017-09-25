@@ -107,7 +107,8 @@ public class GroupListHTML extends SimplePageBean<Group> {
 
     @Override
     public String getTitle() {
-        return "队伍排行榜"+HTML.floatRight(HTML.a("admin.jsp?page=GroupAdmin","新增队伍"));
+        User u = Main.loginUser();
+        return "队伍排行榜"+((u!=null && u.getPermission().havePermissions(PermissionType.groupAdmin))?HTML.floatRight(HTML.a("admin.jsp?page=GroupAdmin","新增队伍")):"");
     }
 
     @Override
