@@ -60,6 +60,7 @@
         <li><a href="Awards.jsp"><span>荣誉榜</span></a></li>
         <li><a href="WeekRank.jsp"><span>活跃榜</span></a></li>
         <li><a href="User.jsp?status=1"><span>现役榜</span></a></li>
+        <li><a href="GroupRank.jsp"><span>组队榜</span></a></li>
       </ul>
     </li>
     <li><a href="DiscussList.jsp"><span>DISCUSS</span></a></li>

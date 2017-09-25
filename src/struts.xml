@@ -170,7 +170,7 @@
                 <action name="AdminEditUser" class="action.edit" method="adminEdit">
                         <result name="success">return.jsp</result>
                 </action>
-                <action name="StatusJson" class="action.StatusJson" method="getJson"></action>
+                <action name="StatusJson" class="action.StatusJson" method="getJson"> </action>
                 <action name="RegisterTeam" class="action.Action_RegisterTeam" method="RegisterTeam">
                         <result name="error">RegisterTeam.jsp</result>
                         <result name="success" type="redirect">User.jsp?cid=${cid}</result>
@@ -220,6 +220,22 @@
                 <action name="titleConfig" class="action.titleConfig" method="go">
                         <result name="success" type="redirect">return.jsp</result>
                         <result name="error" type="redirect">return.jsp</result>
+                </action>
+                <action name="addGroup" class="action.GroupAction" method="addGroup">
+                        <result name="success">return.jsp</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
+                </action>
+                <action name="editGroup" class="action.GroupAction" method="editGroup">
+                        <result name="success">return.jsp</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
+                </action>
+                <action name="addMember" class="action.GroupAction" method="addMember">
+                        <result name="success">return.jsp</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
+                </action>
+                <action name="delMember" class="action.GroupAction" method="delMember">
+                        <result name="success">return.jsp</result>
+                        <result name="error">info.jsp?info=${prompt}&amp;next=return.jsp</result>
                 </action>
         </package>
         <package name="app" namespace="/app" extends="struts-default">

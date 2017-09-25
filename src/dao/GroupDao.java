@@ -30,13 +30,39 @@ public class GroupDao extends BaseCacheLRU<Integer,Group>{
         return joinGroup(id,username,GroupMemberStatus.LEADER);
     }
 
-    private int joinGroup(int id, String username, GroupMemberStatus status){
-        return new SQL("INSERT INTO t_group_member VALUES(?,?,?,?)",id,username,status.getId(),Tool.now()).update();
+    public int updateGroup(int id,String name){
+        new SQL("UPDATE t_group SET `name`=? WHERE id=?",name, id).update();
+        remove_catch(id);
+        return 1;
+    }
+
+    public int joinGroup(int id, String username, GroupMemberStatus status){
+        int ret = new SQL("INSERT INTO t_group_member VALUES(?,?,?,?)",id,username,status.getId(),Tool.now()).update();
+        remove_catch(id);
+        return ret;
+    }
+
+    public int leaveGroup(int id, String username){
+        int ret = new SQL("DELETE FROM t_group_member WHERE group_id=? AND username=? AND status<>?",id,username,GroupMemberStatus.LEADER.getId()).update();
+        remove_catch(id);
+        return ret;
+    }
+
+
+    /**
+     *
+     * @param username 用户名
+     * @param type 分组类型
+     * @return 组id 不存在返回0
+     */
+    public int inTeam(String username,int type){
+        return new SQL("SELECT group_id FROM t_group_member LEFT JOIN t_group ON group_id=id WHERE username=? AND `type`=?",username,type).queryNum();
     }
 
     @Override
     protected Group getByKeyFromSQL(Integer key) {
         Group group = new SQL("SELECT * FROM t_group WHERE id=?",key).queryBean(Group.class);
+        if(group == null) return null;
         List<GroupMember> members = new SQL("SELECT * FROM t_group_member WHERE group_id=?",key).queryBeanList(GroupMember.class);
         group.setMembers(members);
         return group;

@@ -30,7 +30,7 @@ public class Group implements IBeanResultSetCreate, IBeanCanCatch{
     public int getMemberTotalAC(boolean isIncludeLeader){
         int totalAC=0;
         for(GroupMember member : members){
-            if(member.getStatus() != GroupMemberStatus.LEADER || (member.getStatus() == GroupMemberStatus.LEADER && isIncludeLeader)){
+            if(member.getStatus() == GroupMemberStatus.MEMBER || (member.getStatus() == GroupMemberStatus.LEADER && isIncludeLeader)){
                 totalAC+= Main.users.getUser(member.getUsername()).getAcnum();
             }
         }
@@ -47,7 +47,7 @@ public class Group implements IBeanResultSetCreate, IBeanCanCatch{
     public int getMemberTotalRating(boolean isIncludeLeader){
         int total=0;
         for(GroupMember member : members){
-            if(member.getStatus() != GroupMemberStatus.MEMBER && (member.getStatus() == GroupMemberStatus.MEMBER && isIncludeLeader)){
+            if(member.getStatus() == GroupMemberStatus.MEMBER || (member.getStatus() == GroupMemberStatus.LEADER && isIncludeLeader)){
                 int showRating = Main.users.getUser(member.getUsername()).getShowRating();
                 if(showRating == -100000) showRating = 0;
                 total += showRating;

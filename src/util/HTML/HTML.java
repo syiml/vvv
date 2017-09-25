@@ -1,8 +1,11 @@
 package util.HTML;
 
 import dao.AiSQL;
+import dao.GroupDao;
 import entity.*;
 import entity.Enmu.UserStarType;
+import entity.UserGroup.Group;
+import entity.UserGroup.GroupType;
 import org.apache.commons.collections.list.TypedList;
 import servise.*;
 import util.HTML.FromHTML.text_select.text_select;
@@ -15,6 +18,7 @@ import servise.WeekRankCount.WeekRankCountHTML;
 import util.*;
 import util.CodeCompare.cplusplus.ContestCodeCompare;
 import util.HTML.FromHTML.hidden.hidden;
+import util.HTML.UserListHTML.GroupUserListHTML;
 import util.HTML.modal.modal;
 import util.Vjudge.VjSubmitter;
 import entity.rank.RankICPC.RankICPC;
@@ -1208,12 +1212,13 @@ public class HTML {
             s += li("认证管理","Verify",nowpage);
         }
         if(p.getAppUpdate()) s+= li("APP更新","AppUpdate",nowpage);
+        if(p.havePermissions(PermissionType.groupAdmin)) s+= li(PermissionType.groupAdmin.getName(),"GroupAdmin",nowpage);
         s+="</ul>";
         return s;
     }
     private static String returnPage(boolean per, String context){
         if(per) return context;
-        else return panel("ERROR","NO PERMISSION",null,"danger");
+        else return panel("ERROR","没有权限",null,"danger");
     }
     public static String adminMAIN(Permission p,String nowpage){
         if(nowpage==null) nowpage="";
@@ -1258,6 +1263,8 @@ public class HTML {
                                                         p.havePermissions(PermissionType.verify_school)||
                                                         p.havePermissions(PermissionType.verify_team),
                                                 panel("处理认证",adminVerify()));
+            case "GroupAdmin":      return returnPage(p.havePermissions(PermissionType.groupAdmin),
+                                                adminGroupAdmin());
             default:                return panel("Index","管理员界面，点击左边链接进行后台管理");
         }
     }
@@ -2018,5 +2025,45 @@ public class HTML {
             tableHTML.addRow("拒绝说明",userVerifyInfo.reason,"");
         }
         return tableHTML.HTML();
+    }
+    public static String adminGroupAdmin(){
+        Main.saveURL();
+        int id = Tool.parseInt(Main.getRequest().getParameter("id"),0);
+        Group group = GroupDao.getInstance().getBeanByKey(id);
+        FormHTML formHTML = new FormHTML();
+        text text_name = new text("name","队名");
+        if(group!=null) text_name.setValue(group.getGroupName());
+        formHTML.addForm(text_name);
+        if(group!=null) {
+            formHTML.addForm(new hidden("id",id+""));
+            formHTML.setSubmitText("修改队名");
+            formHTML.setAction("editGroup.action");
+        }
+        else {
+            text text_leader = new text("leader","队长");
+            select select_type = new select("type","队伍类型");
+            for(GroupType type: GroupType.values()) {
+                select_type.add(type.getId(),type.getName());
+            }
+            formHTML.addForm(text_leader,select_type);
+            formHTML.setSubmitText("添加队伍");
+            formHTML.setAction("addGroup.action");
+        }
+
+        //编辑组员
+        String memberEditHTML = "";
+        if(group != null){
+            FormHTML add_member_form = new FormHTML();
+            text text_username = new text("username","用户名");
+            add_member_form.addForm(text_username);
+            add_member_form.addForm(new hidden("id",id+""));
+            add_member_form.setSubmitText("添加成员");
+            add_member_form.setType(1);
+            add_member_form.setAction("addMember.action");
+            GroupUserListHTML listHTML = new GroupUserListHTML(id,true);
+            memberEditHTML = HTML.panel("队员",add_member_form.toHTML() + listHTML.HTML());
+        }
+
+        return panel(PermissionType.groupAdmin.getName(),formHTML.toHTML()) + memberEditHTML;
     }
 }

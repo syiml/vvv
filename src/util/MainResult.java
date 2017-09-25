@@ -16,7 +16,9 @@ public enum MainResult {
     VERIFY_EXIST(8, "不能重复认证"),
     BUY_OBJECT(9,"您的购买权限不足"),
     VOTE_NUM_LIMIT(10,"今日投票次数已经用完"),
-    VOTE_REP(11,"同一天的两票不能投给同一个选项");
+    VOTE_REP(11,"同一天的两票不能投给同一个选项"),
+    USER_ERROR(12,"用户不存在"),
+    GROUP_NAME_REP(13,"队名重复");
 
     int value;
     String prompt;

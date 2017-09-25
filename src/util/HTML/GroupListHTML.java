@@ -1,6 +1,8 @@
 package util.HTML;
 
 import dao.GroupDao;
+import entity.PermissionType;
+import entity.User;
 import entity.UserGroup.Group;
 import entity.UserGroup.GroupType;
 import util.HTML.FromHTML.FormHTML;
@@ -33,9 +35,9 @@ public class GroupListHTML extends SimplePageBean<Group> {
             int ac1 = g1.getMemberTotalAC(isIncludeLeader);
             int ac2 = g2.getMemberTotalAC(isIncludeLeader);
             if(ac1 != ac2){
-                return ac1 - ac2;
+                return ac2 - ac1;
             }
-            return g1.getMemberTotalRating(isIncludeLeader) - g2.getMemberTotalRating(isIncludeLeader);
+            return g2.getMemberTotalRating(isIncludeLeader) - g1.getMemberTotalRating(isIncludeLeader);
         }
     };
 
@@ -89,18 +91,23 @@ public class GroupListHTML extends SimplePageBean<Group> {
                 return cla.getMemberTotalAC(type == GroupType.ICPC.getId()) + "";
             case "总Rating":
                 return cla.getMemberTotalRating(type == GroupType.ICPC.getId()) + "";
+            case "admin":
+                return HTML.a("admin.jsp?page=GroupAdmin&id="+cla.getId(),"编辑");
         }
         return ERROR_CELL_TEXT;
     }
 
     @Override
     public String[] getColNames() {
-        return new String[]{"id","队名","队长","总AC","总Rating"};
+        addTableHead("id","队名","队长","总AC","总Rating");
+        User u = Main.loginUser();
+        if(u!=null && u.getPermission().havePermissions(PermissionType.groupAdmin)) addTableHead("admin");
+        return new String[0];
     }
 
     @Override
     public String getTitle() {
-        return "队伍排行榜";
+        return "队伍排行榜"+HTML.floatRight(HTML.a("admin.jsp?page=GroupAdmin","新增队伍"));
     }
 
     @Override

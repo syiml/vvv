@@ -4,6 +4,8 @@ import dao.GroupDao;
 import entity.PermissionType;
 import entity.User;
 import entity.UserGroup.Group;
+import entity.UserGroup.GroupMemberStatus;
+import util.HTML.HTML;
 import util.HTML.TableHTML;
 import util.Main;
 import util.SQL.SQL;
@@ -18,10 +20,12 @@ import java.util.List;
 public class GroupUserListHTML extends SimplePageBean<User>{
     private int groupID;
     private Group group;
+    private boolean admin;
 
-    public GroupUserListHTML(int groupID) {
+    public GroupUserListHTML(int groupID,boolean admin) {
         super(1);
         this.groupID = groupID;
+        this.admin = admin;
         group = GroupDao.getInstance().getBeanByKey(groupID);
     }
 
@@ -50,6 +54,8 @@ public class GroupUserListHTML extends SimplePageBean<User>{
             case "AC":return user.getAcnum()+"";
             case "Rating":return user.getRatingHTML();
             case "#":return user.getRatingnum()+"";
+            case "admin":
+                return group.getMemberStatus(user.getUsername())== GroupMemberStatus.LEADER?"":HTML.a("delMember.action?id="+groupID+"&username="+user.getUsername(),"删除队员") +" "+ HTML.a("#","设为队长");
         }
         return ERROR_CELL_TEXT;
     }
@@ -67,6 +73,9 @@ public class GroupUserListHTML extends SimplePageBean<User>{
         list.add("AC");
         list.add("Rating");
         list.add("#");
+        if(admin){
+            list.add("admin");
+        }
         String[] ret = new String[list.size()];
         list.toArray(ret);
         return ret;
