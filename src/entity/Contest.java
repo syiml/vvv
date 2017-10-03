@@ -316,7 +316,6 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
     public String getRankHTML(){
         if (doRankHtml == true){ //判断是否重新生成rankHtml
          rankHtmlBuffer = rank.toHTML();
-         System.out.println("\n 重新计算html\n");
         }
         doRankHtml = false;
         return rankHtmlBuffer;
