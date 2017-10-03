@@ -313,7 +313,7 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
         return getEndTime().before(now);
     }
 
-    public String getRankHTML(){
+    public synchronized String getRankHTML(){
         if (doRankHtml == true){ //判断是否重新生成rankHtml
          rankHtmlBuffer = rank.toHTML();
         }
