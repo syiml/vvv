@@ -213,6 +213,7 @@ public class statusSQL {
         EventMain.triggerEvent(new EventJudge(Main.users.getUser(s.getUser()),s));
         if(s.getCid()!=-1&&res!=Result.JUDGING){
             Contest c=ContestMain.getContest(s.getCid());
+            c.setDoRankHtml(true);
             c.getRank().add(s , c);
         }
         if(CEinfo!=null && !CEinfo.equals("")){

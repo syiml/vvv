@@ -50,6 +50,9 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
 
     private Timestamp t;
 
+    private boolean doRankHtml=true; //是否重新生成排行
+    private String rankHtmlBuffer = null;//缓存的排名信息
+
     public Contest(ResultSet re){
         //用ResultSet创建临时Contest变量
         //id,name,beignTime,endTime,rankType,ctype
@@ -311,7 +314,12 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
     }
 
     public String getRankHTML(){
-        return rank.toHTML();
+        if (doRankHtml == true){ //判断是否重新生成rankHtml
+         rankHtmlBuffer = rank.toHTML();
+         System.out.println("\n 重新计算html\n");
+        }
+        doRankHtml = false;
+        return rankHtmlBuffer;
     }
 
     public Contest_Type getType(){
@@ -494,6 +502,14 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
         ContestMain.updateRegisterTeamPassword(cid,username,String.format("%s%03d", prefix, number),randomPassword(6));
     }
 
+    public void setDoRankHtml(boolean doRankHtml){
+        this.doRankHtml = doRankHtml;
+    }
+
+    public boolean getDoRankHtml(){
+        return this.doRankHtml;
+    }
+
     public boolean isProblemCanPutTag() {
         return problemCanPutTag;
     }
@@ -535,4 +551,5 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
     public void setExpired(Timestamp t) {
         this.t = t;
     }
+
 }
