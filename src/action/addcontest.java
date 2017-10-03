@@ -42,6 +42,10 @@ public class addcontest extends BaseAction{
     public String statusReadOut;   //计算排名时，是否把全局的提交也计算入内
     public String registerShowComplete;//注册是否需要完整的个人信息
 
+    private int hideRankMinute = 0;//封榜时间
+    private String isHideOthersStatus;//隐藏其他人的提交
+    private String isHideOthersStatusInfo;//隐藏其他人提交的时间、空间、代码长度
+
     public String shortcode_m1_t;
     public String shortcode_m1_s;
     public String shortcode_m2_t;
@@ -496,5 +500,29 @@ public class addcontest extends BaseAction{
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public int getHideRankMinute() {
+        return hideRankMinute;
+    }
+
+    public void setHideRankMinute(int hideRankMinute) {
+        this.hideRankMinute = hideRankMinute;
+    }
+
+    public String getIsHideOthersStatus() {
+        return isHideOthersStatus;
+    }
+
+    public void setIsHideOthersStatus(String isHideOthersStatus) {
+        this.isHideOthersStatus = isHideOthersStatus;
+    }
+
+    public String getIsHideOthersStatusInfo() {
+        return isHideOthersStatusInfo;
+    }
+
+    public void setIsHideOthersStatusInfo(String isHideOthersStatusInfo) {
+        this.isHideOthersStatusInfo = isHideOthersStatusInfo;
     }
 }

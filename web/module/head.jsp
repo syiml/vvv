@@ -10,25 +10,45 @@
   }
 </script>
 <%@page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.css">
-<link href="js/bootstrap-datepicker-master/datepicker.css" rel="stylesheet">
+<%--<link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.css">--%>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<%--<link href="js/bootstrap-datepicker-master/datepicker.css" rel="stylesheet">--%>
+<link href="https://cdn.bootcss.com/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" rel="stylesheet">
+
 <link href="js/modern-menu/modern-menu.css" rel="stylesheet">
 <link rel="stylesheet" href="js/front-awesome/font-awesome.min.css">
 <link rel="stylesheet" href="css/main.css">
 <link href="css/loaders.css" rel="stylesheet">
 
-<script src="js/jquery-1.11.1.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
-<script src="js/bootstrap-datepicker-master/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<%--<script src="js/jquery-1.11.1.js"></script>--%>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+<%--<script src="js/jquery-ui.min.js"></script>--%>
+<script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<%--<script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>--%>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<%--<script src="js/bootstrap-datepicker-master/bootstrap-datepicker.js"></script>--%>
+<script src="https://cdn.bootcss.com/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+<%--<script type="text/javascript" src="js/jquery.validate.min.js"></script>--%>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
 <script type="text/javascript" src="js/dateFormat.js"></script>
-<script src="js/modern-menu/jquery.transit.min.js"></script>
+
+<%--<script src="js/modern-menu/jquery.transit.min.js"></script>--%>
+<script src="https://cdn.bootcss.com/jquery.transit/0.9.12/jquery.transit.min.js"></script>
+
 <script src="js/modern-menu/jquery.modern-menu.min.js"></script>
 <script src="js/HTML.js"></script>
 
 <script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
-<script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
+
+<%--<script type="text/javascript" src="module/UEditor/ueditor.all.min.js"></script>--%>
+<script type="text/javascript" src="http://ueditor.baidu.com/ueditor/ueditor.all.min.js"></script>
+
 
 <script src='js/problemTag.js'></script>
 

@@ -108,7 +108,7 @@ public class RankSQL {
                 //status.add(rs.getInt(1));
                 Status s=new Status(rs,9);
     //                status.add(s.getRid());
-                rank.add(s,c);
+                rank._add(s,c);
             }
         } catch (SQLException e) {
             e.printStackTrace();

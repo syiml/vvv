@@ -24,9 +24,9 @@
     Permission p= Main.getPermission(user.getUsername());
 %>
 <!-- 配置文件 -->
-<script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
+<%--<script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>--%>
 <!-- 编辑器源码文件 -->
-<script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>
+<%--<script type="text/javascript" src="module/UEditor/ueditor.all.js"></script>--%>
 <html>
 <head>
     <title>编辑题目 - <%=Main.config.OJName%></title>

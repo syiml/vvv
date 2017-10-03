@@ -335,3 +335,17 @@ pre .sample{
 .title{
     /*text-shadow: 1px 1px 0.2em rgb(0, 0, 0);*/
 }
+.table > thead > tr > td.fb,
+.table > tbody > tr > td.fb,
+.table > tfoot > tr > td.fb,
+.table > thead > tr > th.fb,
+.table > tbody > tr > th.fb,
+.table > tfoot > tr > th.fb,
+.table > thead > tr.fb > td,
+.table > tbody > tr.fb > td,
+.table > tfoot > tr.fb > td,
+.table > thead > tr.fb > th,
+.table > tbody > tr.fb > th,
+.table > tfoot > tr.fb > th {
+    background-color: #6dd66e;
+}

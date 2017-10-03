@@ -108,7 +108,7 @@ public class Status implements IBeanResultSetCreate , ICanToJSON{
         MemoryUsed=Memory;
         if(cid!=-1){
             Contest c= ContestMain.getContest(cid);
-            c.getRank().add(Main.status.getStatu(rid),c);//通知更新排行榜
+            c.getRank()._add(Main.status.getStatu(rid),c);//通知更新排行榜
         }
     }
 

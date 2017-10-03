@@ -1459,6 +1459,12 @@ public class HTML {
         ta.setCols(80);
         form.addForm(ta);
 
+        text f_hidetime=new text("hideRankMinute","封榜时间");
+        f_hidetime.setPlaceholder("封榜时间（分钟）");
+        f_hidetime.setId("hideRankMinute");
+        if(c!=null) f_hidetime.setValue(c.getHideRankMinute()+"");
+        form.addForm(f_hidetime);
+
         check ch=new check("computerating","是否计算rating");
         if(c!=null&&c.isComputerating())ch.setChecked();
         if(!isDIY) form.addForm(ch);
@@ -1474,6 +1480,16 @@ public class HTML {
         check ch_3=new check("registerShowComplete","注册是否需要完整的个人信息");
         if(c!=null&&c.isRegisterShowComplete()) ch_3.setChecked();
         if(!isDIY) form.addForm(ch_3);
+
+
+        check ch_4=new check("isHideOthersStatus","是否隐藏其他人的提交");
+        if(c!=null&&c.isHideOthersStatus()) ch_4.setChecked();
+        if(!isDIY) form.addForm(ch_4);
+
+        check ch_5=new check("isHideOthersStatusInfo","是否隐藏其他人的运行时间、空间和代码长度");
+        if(c!=null&&c.isHideOthersStatusInfo()) ch_5.setChecked();
+        if(!isDIY) form.addForm(ch_5);
+
 
         select f8=new select("rank","Rank模式");
         f8.setId("rank");

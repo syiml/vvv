@@ -12,7 +12,7 @@ $.getJSON("module/contestNew/info.jsp?cid="+cid,function(data) {
     init();
 });
 function init(){
-    $("#contestMain").append("<div id='NAV'></div><div id='main'></div><div id='problems'></div><div id='info'></div>");
+    $("#contestMain").append("<div id='NAV'></div><div style='height: 15px'></div><div id='main'></div><div id='problems'></div><div id='info'></div>");
     loadNAV();
     $.getJSON("module/contestNew/HomeProblemList.jsp?cid="+cid, function (data) {
         pnum=data.length;

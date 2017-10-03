@@ -6,6 +6,7 @@ import servise.ContestMain;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
 import util.Main;
+import util.MyTime;
 import util.rating._rank;
 
 import java.util.ArrayList;
@@ -28,9 +29,9 @@ public abstract class Rank<user extends RankBaseUser> {
     protected List<user> list;
     protected int type_1,type_2,type_3;
     protected int m1,m2,m3;
-    Contest contest;
-    List<String> extraTableCol = null;
-    TableHTML tableHTML;
+    private Contest contest;
+    private List<String> extraTableCol = null;
+    private TableHTML tableHTML;
     protected Rank(Contest c){
         this.contest = c;
     }
@@ -59,7 +60,16 @@ public abstract class Rank<user extends RankBaseUser> {
         this.m3 = m3;
     }
 
-    public abstract void add(Status  s,Contest c);//处理rejudge
+    public void _add(Status  s,Contest c){//处理rejudge
+        if(c.getEndTime().getTime() - s.getSbmitTime().getTime() <= c.getHideRankMinute()* MyTime.MINUTE)
+        {
+            //在封榜时间内不更新排行榜
+            //???管理员也看不到实时榜了怎么办
+            return ;
+        }
+        add(s,c);
+    }
+    protected abstract void add(Status  s,Contest c);//处理rejudge
     public _rank get_rank(){
         _rank r=new _rank();
         Collections.sort(list);

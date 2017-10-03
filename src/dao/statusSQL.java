@@ -214,7 +214,7 @@ public class statusSQL {
         if(s.getCid()!=-1&&res!=Result.JUDGING){
             Contest c=ContestMain.getContest(s.getCid());
             c.setDoRankHtml(true);
-            c.getRank().add(s , c);
+            c.getRank()._add(s , c);
         }
         if(CEinfo!=null && !CEinfo.equals("")){
             addCEInfo(rid, CEinfo);

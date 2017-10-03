@@ -47,6 +47,9 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
     private boolean problemCanPutTag = false;//内部题目是否可以直接贴标签
     private boolean statusReadOut = false;   //计算排名时，是否把全局的提交也计算入内
     private boolean registerShowComplete = false;//注册是否需要完整的个人信息
+    private int hideRankMinute = 0;//封榜时间
+    private boolean isHideOthersStatus = false;//隐藏其他人的提交
+    private boolean isHideOthersStatusInfo = false;//隐藏其他人提交的时间、空间、代码长度
 
     private Timestamp t;
 
@@ -97,6 +100,10 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
             problemCanPutTag=re.getBoolean("problemCanPutTag");
             statusReadOut=re.getBoolean("statusReadOut");
             registerShowComplete=re.getBoolean("registerShowComplete");
+
+            hideRankMinute=re.getInt("hideRankMinute");
+            isHideOthersStatus=re.getBoolean("isHideOthersStatus");
+            isHideOthersStatusInfo=re.getBoolean("isHideOthersStatusInfo");
             //获取题目列表
             problems=new ArrayList<Integer>();
             while(ps.next()){
@@ -193,6 +200,10 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
         problemCanPutTag=rs.getBoolean("problemCanPutTag");
         statusReadOut=rs.getBoolean("statusReadOut");
         registerShowComplete=rs.getBoolean("registerShowComplete");
+        hideRankMinute=rs.getInt("hideRankMinute");
+        isHideOthersStatus=rs.getBoolean("isHideOthersStatus");
+        isHideOthersStatusInfo=rs.getBoolean("isHideOthersStatusInfo");
+
     }
 
     public void setUsers(ResultSet us) throws SQLException {
@@ -539,6 +550,30 @@ public class Contest implements IBeanResultSetCreate, IBeanCanCatch {
 
     public void setCreateuser(String createuser) {
         this.createuser = createuser;
+    }
+
+    public int getHideRankMinute() {
+        return hideRankMinute;
+    }
+
+    public void setHideRankMinute(int hideRankMinute) {
+        this.hideRankMinute = hideRankMinute;
+    }
+
+    public boolean isHideOthersStatus() {
+        return isHideOthersStatus;
+    }
+
+    public void setHideOthersStatus(boolean hideOthersStatus) {
+        isHideOthersStatus = hideOthersStatus;
+    }
+
+    public boolean isHideOthersStatusInfo() {
+        return isHideOthersStatusInfo;
+    }
+
+    public void setHideOthersStatusInfo(boolean hideOthersStatusInfo) {
+        isHideOthersStatusInfo = hideOthersStatusInfo;
     }
 
     @Override

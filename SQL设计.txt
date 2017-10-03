@@ -1,5 +1,11 @@
 ﻿
 
+//10-03
+ALTER TABLE `contest`
+ADD COLUMN `hideRankMinute`  int(11) NOT NULL AFTER `registerShowComplete`,
+ADD COLUMN `isHideOthersStatus`  bit(1) NOT NULL AFTER `hideRankMinute`,
+ADD COLUMN `isHideOthersStatusInfo`  bit(1) NOT NULL AFTER `isHideOthersStatus`;
+
 
 
 CREATE TABLE `t_group_member` (

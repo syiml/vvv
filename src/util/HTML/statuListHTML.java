@@ -1,5 +1,6 @@
 package util.HTML;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import entity.*;
 import entity.Enmu.UserStarType;
 import servise.ContestMain;
@@ -67,6 +68,14 @@ public class statuListHTML extends pageBean {
             addTableHead("#"/*, "用户"*/, "昵称", "题目", "评测结果", "语言", "耗时", "使用内存", "代码长", "提交时间","收藏备注");
             return;
         }
+        if(contest!=null && contest.isHideOthersStatus()){
+            if(this.ssuser==null || this.ssuser.length()==0){
+                RegisterUser registerUser = contest.getRegisterUser(user.getUsername());
+                if(registerUser==null || registerUser.getStatu()!=RegisterUser.STATUS_ADMIN) {//管理员不受影响
+                    this.ssuser = this.user.getUsername();
+                }
+            }
+        }
         if(contest!=null&&contest.getType()==Contest_Type.TEAM_OFFICIAL) {
             status = Main.status.getTeamStatus(cid,this.num * (this.page - 1), this.num, this.pid, this.result, this.Language, this.ssuser);
             this.PageNum= getTotalPageNum(Main.status.getTeamStatusNum(cid, this.pid, this.result, this.Language, this.ssuser),num);
@@ -119,6 +128,18 @@ public class statuListHTML extends pageBean {
         }
         return false;
     }
+
+    private boolean isHideStatusInfo(){
+        if(contest==null) return false;
+        if(!contest.isHideOthersStatusInfo()) return false;
+        if (user != null) {
+            RegisterUser registerUser = contest.getRegisterUser(user.getUsername());
+            if(registerUser!=null && registerUser.getStatu()==RegisterUser.STATUS_ADMIN) return false;
+            if(user.getPermission().getViewCode()) return false;
+        }
+        return true;
+    }
+
     @Override
     public String getCellByHead(int i, String colname) {
         Status s=status.get(i);
@@ -156,8 +177,10 @@ public class statuListHTML extends pageBean {
                 return ""+s.resultToHTML(s.getResult())+ scoreHTML(s.getScore());
             }
         }else if(colname.equals("语言")){
+            if(isHideStatusInfo()) return "-";
             return LanguageToHtml(s);
         }else if(colname.equals("耗时")){
+            if(isHideStatusInfo()) return "-";
             if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser) || (user!=null&&user.getPermission().getViewCode())){
                     return s.getTimeUsed()+"";
@@ -166,6 +189,7 @@ public class statuListHTML extends pageBean {
             }
             return s.getTimeUsed();
         }else if(colname.equals("使用内存")){
+            if(isHideStatusInfo()) return "-";
             if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser) ||  (user!=null&&user.getPermission().getViewCode())){
                     return s.getMemoryUsed()+"";
@@ -174,6 +198,7 @@ public class statuListHTML extends pageBean {
             }
             return s.getMemoryUsed();
         }else if(colname.equals("代码长")){
+            if(isHideStatusInfo()) return "-";
             if(contest!=null && contest.getType() == Contest_Type.TEAM_OFFICIAL){
                 if(s.getUser().equals(teamUser) ||  (user!=null&&user.getPermission().getViewCode())){
                     return s.getCodelen()+"";
