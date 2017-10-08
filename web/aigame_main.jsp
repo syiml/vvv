@@ -241,7 +241,7 @@
 <body>
 <div class="page-3">
     <div class="back"><button>回到主页</button></div>
-    <img class="logo" src="pic/wzq/zsjc.png" alt="中世竞创·AI对战平台"/>
+    <img class="logo" src="syspic/wzq/zsjc.png" alt="中世竞创·AI对战平台"/>
     <div class="page-title">
         <h1>五子棋对战</h1>
         <i></i>

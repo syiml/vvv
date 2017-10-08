@@ -126,7 +126,7 @@ public class TitleListHTML extends SimplePageBean<Integer> {
                 return _ret;
             }
             case "预览":{
-                return "<img src='TitlePic/"+title_id+".png' style='height:30px'>";
+                return "<img src='syspic/Title/"+title_id+".png' style='height:30px'>";
             }
         }
         return ERROR_CELL_TEXT;

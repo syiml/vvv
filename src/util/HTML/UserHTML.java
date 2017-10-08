@@ -39,7 +39,7 @@ public class UserHTML {
             if(t.getStyle()!=null){
                 style = "style=\""+t.getStyle()+"\"";
             }
-            return "<div class='user_title_fa'><img class='user_title' src='TitlePic/"+z+".png' "+style+"></div>";
+            return "<div class='user_title_fa'><img class='user_title' src='syspic/Title/"+z+".png' "+style+"></div>";
         }
         return "";
     }

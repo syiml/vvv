@@ -64,14 +64,14 @@
 </head>
 <body>
 <div class="page-3">
-    <img class="logo" src="pic/wzq/zsjc.png" alt="中世竞创·AI对战平台"/>
+    <img class="logo" src="syspic/wzq/zsjc.png" alt="中世竞创·AI对战平台"/>
     <div class="page-title">
         <h1>AI：<span id="name">名字</span></h1>
         <i></i>
         <h2>作者：<span id="author">作者</span></h2>
     </div>
     <div class="page-content-2">
-        <img class="content-bg" src="pic/wzq/quan.png" alt="中世竞创·AI对战平台"/>
+        <img class="content-bg" src="syspic/wzq/quan.png" alt="中世竞创·AI对战平台"/>
         <div class="text-area" id="content">
         	<!-- 内容 -->
         </div>
