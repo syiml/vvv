@@ -7,7 +7,6 @@ ADD COLUMN `isHideOthersStatus`  bit(1) NOT NULL AFTER `hideRankMinute`,
 ADD COLUMN `isHideOthersStatusInfo`  bit(1) NOT NULL AFTER `isHideOthersStatus`;
 
 
-
 CREATE TABLE `t_group_member` (
 `group_id`  int(11) NOT NULL ,
 `username`  varchar(30) NOT NULL ,
