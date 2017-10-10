@@ -1292,7 +1292,7 @@ public class HTML {
         f.addForm(f1);
 
         select f2=new select("ojid","oj");
-        f2.add(-1,"本地OJ");
+        //f2.add(-1,"本地OJ");
         for(int i=0;i<Submitter.ojs.length;i++){
             f2.add(i,Submitter.ojs[i].getName());
         }

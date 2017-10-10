@@ -276,7 +276,7 @@ public class JudgeSystem extends OTHOJ {
         return "Problem.jsp?pid="+pid;
     }
 
-    public String name = "JudgeSystem";
+    public String name = "JudgeSystem(本地评测机)";
     @Override
     public String getName() {
         return name;
