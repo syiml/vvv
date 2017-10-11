@@ -1,6 +1,8 @@
 <%@ page import="entity.User" %>
 <%@ page import="util.HTML.HTML" %>
 <%@ page import="util.Main" %>
+<%@ page import="entity.Enmu.AcbOrderType" %>
+<%@ page import="action.edit" %>
 <%--
   Created by IntelliJ IDEA.
   User: Syiml
@@ -14,6 +16,7 @@
   if(user==null){
     response.sendRedirect("Login.jsp");
   }else{
+
 %>
 <html>
 <head>
@@ -38,7 +41,28 @@ form:id=edit
 --%>
 
 <script type="text/javascript">
+   var buf1=document.getElementById('nick');
+   document.write('<input type="hidden" id ="nick_t" name="buffer" value="" /> ');
+   $(nick_t).val(buf1.value);
+
   $().ready(function() {
+
+    $("form").submit(function(e){
+    buf1=document.getElementById('nick');
+    var buf2=document.getElementById('nick_t');
+
+    if (buf1.value != buf2.value){
+    rs=confirm("是否确定花费<%= edit.acbOfNick%>ACB修改昵称？");
+    if (rs == true){
+        <% if (user.getAcb()<edit.acbOfNick){ %>
+                alert("ACB不够");
+                e.preventDefault();
+         <%}%>
+    }else{
+         e.preventDefault();
+      }
+    }
+  });
 
     $("#edit").validate({
       rules: {

@@ -1,5 +1,6 @@
 package action;
 
+import entity.Enmu.AcbOrderType;
 import entity.UserVerifyInfo;
 import servise.UserService;
 import util.HTML.HTML;
@@ -46,6 +47,8 @@ public class edit extends BaseAction{
     int pre_id;
     File pic;
 
+    public final static int acbOfNick = 500;//修改昵称所需要的ACB
+
     public String ed(){
 //      System.out.println(motto);
         User u=Main.loginUser();
@@ -59,6 +62,9 @@ public class edit extends BaseAction{
                 if (newpass.equals(renewpass)) {
                     u.setPassword(newpass);
                 }
+            }
+            if (u.getNick().equals(nick) == false ){
+                Main.users.subACB(u.getUsername(),acbOfNick , AcbOrderType.MODIFY_NICK,"修改昵称");
             }
             if(UserService.editUser(getEditUser())){
                 return "success";
