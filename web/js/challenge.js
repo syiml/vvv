@@ -5,7 +5,7 @@ var gv={
     jd_color:"#0a0",
     jd_color2:"#ddd",
     bg_color:"#fff",
-    offset:[0,-650],
+    offset:[40,-650],
     position: position
 };
 var challenge=function(){

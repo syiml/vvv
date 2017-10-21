@@ -16,7 +16,7 @@
     return;
   }
 %>
-<link rel="stylesheet" href="css/challenge.css">
+<link rel="stylesheet" href="css/challenge.css?3.16">
 <script>
   var blockList=<%=ChallengeJSON.getBlockList(request.getParameter("user"))%>;
   var admin=<%=Main.loginUserPermission().getChallengeAdmin()%>;
