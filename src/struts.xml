@@ -7,7 +7,7 @@
 <struts>
         <!-- 设置常量 上传文件大小最大值，系统默认是2M，此设置为32M（1024*1024*32=10485760） -->
         <constant name="struts.multipart.maxSize" value="33554432" />
-
+        <constant name="struts.multipart.saveDir" value="/tmp"/>
         <package name="default" extends="struts-default">
                 <action name="sb" class="action.submit" method="submitProblem">
                         <result name="success1" type="redirect">Status.jsp</result>

@@ -112,7 +112,7 @@ public class GroupListHTML extends SimplePageBean<Group> {
             case "id":
                 return cla.getId() + "";
             case "类型":
-                return cla.getType().getName();
+                return HTML.textb(cla.getType().getName(),"black");
             case "队名":
                 return HTML.a("javascript:member("+cla.getId()+")",cla.getGroupName());
             case "所有者":
@@ -133,8 +133,9 @@ public class GroupListHTML extends SimplePageBean<Group> {
 
     @Override
     public String[] getColNames() {
-        addTableHead("id","队名","所有者");
+        addTableHead("id");
         if(type == -1) addTableHead("类型");
+        addTableHead("队名","所有者");
         GroupType groupType = GroupType.getByID(type);
         if(groupType != null){
             for (String colName : groupType.getShowInfo()){
