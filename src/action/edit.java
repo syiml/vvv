@@ -47,7 +47,7 @@ public class edit extends BaseAction{
     int pre_id;
     File pic;
 
-    public final static int acbOfNick = 500;//修改昵称所需要的ACB
+    public final static int acbOfNick = 100;//修改昵称所需要的ACB
 
     public String ed(){
 //      System.out.println(motto);

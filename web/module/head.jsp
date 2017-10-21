@@ -46,8 +46,8 @@
 
 <script type="text/javascript" src="module/UEditor/ueditor.config.js"></script>
 
-<%--<script type="text/javascript" src="module/UEditor/ueditor.all.min.js"></script>--%>
-<script type="text/javascript" src="http://ueditor.baidu.com/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="module/UEditor/ueditor.all.min.js"></script>
+<%--<script type="text/javascript" src="http://ueditor.baidu.com/ueditor/ueditor.all.min.js"></script>--%>
 
 
 <script src='js/problemTag.js'></script>

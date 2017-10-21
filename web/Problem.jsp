@@ -23,7 +23,7 @@
 <head>
     <title>题目 - <%=Main.config.OJName%></title>
     <%--<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>--%>
-    <script type="text/javascript" src="http://acm.hdu.edu.cn/js/MathJax/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="http://acm.split.hdu.edu.cn/js/MathJax/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <%--<script type="text/javascript" src="js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>--%>
     <%--<script type="text/javascript" src="js/MathJax/MathJax.js?config=MMLorHTML"></script>--%>
 </head>

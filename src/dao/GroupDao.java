@@ -3,6 +3,7 @@ package dao;
 import entity.UserGroup.Group;
 import entity.UserGroup.GroupMember;
 import entity.UserGroup.GroupMemberStatus;
+import entity.UserGroup.GroupType;
 import util.SQL.SQL;
 import util.Tool;
 
@@ -21,13 +22,17 @@ public class GroupDao extends BaseCacheLRU<Integer,Group>{
     }
 
     public List<Integer> getAllGroupID(int type){
+        if(type == -1){
+            return new SQL("SELECT id FROM t_group").queryList();
+        }
         return new SQL("SELECT id FROM t_group WHERE `type`=?",type).queryList();
     }
 
     public int createGroup(String name,String username,int type){
         int id = new SQL("INSERT INTO t_group(`name`,`type`,`time`) VALUES(?,?,?)",name,type, Tool.now()).insertGetLastInsertId();
         if(id<=0) return id;
-        return joinGroup(id,username,GroupMemberStatus.LEADER);
+        GroupType groupType = GroupType.getByID(type);
+        return joinGroup(id,username,groupType.getRoles().get(0));
     }
 
     public int updateGroup(int id,String name){
@@ -36,14 +41,14 @@ public class GroupDao extends BaseCacheLRU<Integer,Group>{
         return 1;
     }
 
-    public int joinGroup(int id, String username, GroupMemberStatus status){
-        int ret = new SQL("INSERT INTO t_group_member VALUES(?,?,?,?)",id,username,status.getId(),Tool.now()).update();
+    public int joinGroup(int id, String username, int role){
+        int ret = new SQL("INSERT INTO t_group_member VALUES(?,?,?,?)",id,username,role,Tool.now()).update();
         remove_catch(id);
         return ret;
     }
 
     public int leaveGroup(int id, String username){
-        int ret = new SQL("DELETE FROM t_group_member WHERE group_id=? AND username=? AND status<>?",id,username,GroupMemberStatus.LEADER.getId()).update();
+        int ret = new SQL("DELETE FROM t_group_member WHERE group_id=? AND username=?",id,username).update();
         remove_catch(id);
         return ret;
     }

@@ -12,7 +12,7 @@
 <%
     Main.saveURL();
 
-    int groupType = Tool.parseInt(request.getParameter("type"),1);
+    int groupType = Tool.parseInt(request.getParameter("type"),-1);
     int pageInt = Tool.parseInt(request.getParameter("page"),1);
 %>
 <html>

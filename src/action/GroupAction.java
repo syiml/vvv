@@ -19,6 +19,7 @@ public class GroupAction extends BaseAction {
     private String username;
     private String leader;
     private int type;
+    private int role;
 
     public String addGroup(){
         User loginUser = Main.loginUser();
@@ -75,11 +76,12 @@ public class GroupAction extends BaseAction {
             this.setPrompt("队伍不存在");
             return ERROR;
         }
-        if(GroupDao.getInstance().inTeam(username,group.getType().getId()) != 0){
+        if(!group.getType().isCanRepeatJoin()
+                &&GroupDao.getInstance().inTeam(username,group.getType().getId()) != 0){
             this.setPrompt("该用户已经加入过一个该类型的队伍了");
             return ERROR;
         }
-        if(GroupDao.getInstance().joinGroup(id,username, GroupMemberStatus.MEMBER) > 0) return SUCCESS;
+        if(GroupDao.getInstance().joinGroup(id,username, role) > 0) return SUCCESS;
         return ERROR;
     }
     public String delMember(){
@@ -99,9 +101,10 @@ public class GroupAction extends BaseAction {
             return ERROR;
         }
         boolean flag = false;
+        GroupMember leader = group.getLeader();
         for(GroupMember member : group.getMembers()){
             if(member.getUsername().equals(username)){
-                if(member.getStatus()==GroupMemberStatus.LEADER){
+                if(member == leader){
                     this.setPrompt("删除失败，队长不能被删除");
                     return ERROR;
                 }else{
@@ -117,7 +120,6 @@ public class GroupAction extends BaseAction {
         this.setPrompt("删除失败");
         return ERROR;
     }
-
 
     ///////////get/set////////////
     public int getId() {
@@ -158,5 +160,13 @@ public class GroupAction extends BaseAction {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }

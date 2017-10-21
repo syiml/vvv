@@ -1,38 +1,48 @@
 package entity.UserGroup;
 
+import net.sf.json.JSONObject;
 import util.HTML.HTML;
+
+import java.util.List;
 
 /**
  * Created by QAQ on 2017/9/24.
  */
-public enum GroupMemberStatus {
-    LEADER(1),//队长
-    MEMBER(2),//队员
-    APPLICANT(3),//正在申请加入
-    NOT(0);//非队员
+public class GroupMemberStatus {
 
     int id;
-    GroupMemberStatus(int id){
-        this.id = id;
+    String name;
+    boolean showB;
+    String color;
+
+    public GroupMemberStatus(JSONObject jo){
+        this.id= jo.getInt("id");
+        this.name = jo.getString("name");
+        this.showB = jo.getBoolean("showB");
+        this.color = jo.getString("color");
     }
 
     public int getId() {
         return id;
     }
 
+    public static List<GroupMemberStatus> list;
+
     public static GroupMemberStatus getByID(int id){
-        for(GroupMemberStatus t : GroupMemberStatus.values()){
+        for(GroupMemberStatus t : list){
             if(id == t.id) return t;
         }
         return null;
     }
 
     public String HTML(){
-        switch (id){
-            case 1: return HTML.textb("队长","green");
-            case 2: return HTML.text("队员","green");
-            case 3: return HTML.text("申请加入","gray");
+        if(showB){
+            return HTML.textb(name,color);
         }
-        return "-";
+        return HTML.text(name,color);
+    }
+
+    public String getName() {
+        return name;
     }
 }

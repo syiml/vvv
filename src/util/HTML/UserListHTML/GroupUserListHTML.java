@@ -5,6 +5,7 @@ import entity.PermissionType;
 import entity.User;
 import entity.UserGroup.Group;
 import entity.UserGroup.GroupMemberStatus;
+import entity.UserGroup.GroupType;
 import util.HTML.HTML;
 import util.HTML.TableHTML;
 import util.Main;
@@ -55,7 +56,7 @@ public class GroupUserListHTML extends SimplePageBean<User>{
             case "Rating":return user.getRatingHTML();
             case "#":return user.getRatingnum()+"";
             case "admin":
-                return group.getMemberStatus(user.getUsername())== GroupMemberStatus.LEADER?"":HTML.a("delMember.action?id="+groupID+"&username="+user.getUsername(),"删除队员") +" "+ HTML.a("#","设为队长");
+                return group.getMemberStatus(user.getUsername()).getId() == this.group.getType().getRoles().get(0)?"":HTML.a("delMember.action?id="+groupID+"&username="+user.getUsername(),"删除队员") +" "+ HTML.a("#","设为队长");
         }
         return ERROR_CELL_TEXT;
     }

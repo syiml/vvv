@@ -5,6 +5,7 @@ import dao.GroupDao;
 import entity.*;
 import entity.Enmu.UserStarType;
 import entity.UserGroup.Group;
+import entity.UserGroup.GroupMemberStatus;
 import entity.UserGroup.GroupType;
 import org.apache.commons.collections.list.TypedList;
 import servise.*;
@@ -2058,7 +2059,7 @@ public class HTML {
         else {
             text text_leader = new text("leader","队长");
             select select_type = new select("type","队伍类型");
-            for(GroupType type: GroupType.values()) {
+            for(GroupType type: GroupType.list) {
                 select_type.add(type.getId(),type.getName());
             }
             formHTML.addForm(text_leader,select_type);
@@ -2073,6 +2074,16 @@ public class HTML {
             text text_username = new text("username","用户名");
             add_member_form.addForm(text_username);
             add_member_form.addForm(new hidden("id",id+""));
+
+            select role = new select("role","角色");
+            List<Integer> roles = GroupType.getByID(group.getType().getId()).getRoles();
+            for(Integer roleId : roles){
+                GroupMemberStatus status = GroupMemberStatus.getByID(roleId);
+                if(status == null) continue;
+                role.add(status.getId(),status.getName());
+            }
+            add_member_form.addForm(role);
+
             add_member_form.setSubmitText("添加成员");
             add_member_form.setType(1);
             add_member_form.setAction("addMember.action");

@@ -28,26 +28,37 @@ public class Group implements IBeanResultSetCreate, IBeanCanCatch{
     }
 
     public int getMemberTotalAC(boolean isIncludeLeader){
-        int totalAC=0;
+                int totalAC=0;
+        GroupMember leader = null;
+        if(!isIncludeLeader){
+            leader = getLeader();
+        }
         for(GroupMember member : members){
-            if(member.getStatus() == GroupMemberStatus.MEMBER || (member.getStatus() == GroupMemberStatus.LEADER && isIncludeLeader)){
-                totalAC+= Main.users.getUser(member.getUsername()).getAcnum();
+            if(leader != member){
+                totalAC += Main.users.getUser(member.getUsername()).getAcnum();
             }
         }
         return totalAC;
     }
 
     public GroupMember getLeader(){
-        for(GroupMember member : members){
-            if(member.getStatus() == GroupMemberStatus.LEADER) return member;
+        if (type != null) {
+            int leaderType = type.roles.get(0);
+            for(GroupMember m:members){
+                if(m.getStatus().getId() == leaderType) return  m;
+            }
         }
         return null;
     }
 
     public int getMemberTotalRating(boolean isIncludeLeader){
         int total=0;
+        GroupMember leader = null;
+        if(!isIncludeLeader){
+            leader = getLeader();
+        }
         for(GroupMember member : members){
-            if(member.getStatus() == GroupMemberStatus.MEMBER || (member.getStatus() == GroupMemberStatus.LEADER && isIncludeLeader)){
+            if(leader != member){
                 int showRating = Main.users.getUser(member.getUsername()).getShowRating();
                 if(showRating == -100000) showRating = 0;
                 total += showRating;
@@ -60,7 +71,7 @@ public class Group implements IBeanResultSetCreate, IBeanCanCatch{
         for(GroupMember member : members){
             if(member.getUsername().equals(username)) return member.getStatus();
         }
-        return GroupMemberStatus.NOT;
+        return null;
     }
 
     public int getId() {

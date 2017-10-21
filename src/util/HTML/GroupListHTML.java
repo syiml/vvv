@@ -31,13 +31,40 @@ public class GroupListHTML extends SimplePageBean<Group> {
         public int compare(Integer o1, Integer o2) {
             Group g1 = GroupDao.getInstance().getBeanByKey(o1);
             Group g2 = GroupDao.getInstance().getBeanByKey(o2);
-            boolean isIncludeLeader = g1.getType() != GroupType.NEW_STU;
-            int ac1 = g1.getMemberTotalAC(isIncludeLeader);
-            int ac2 = g2.getMemberTotalAC(isIncludeLeader);
-            if(ac1 != ac2){
-                return ac2 - ac1;
+            List<String> orders = g1.getType().getOrder();
+            for (String order : orders) {
+                switch (order) {
+                    case "id":{
+                        if(g1.getId() == g2.getId())continue;
+                        return g1.getId() - g2.getId();
+                    }
+                    case "总AC":{
+                        int l = g1.getMemberTotalAC(true);
+                        int r = g2.getMemberTotalAC(true);
+                        if(l == r) continue;
+                        return r - l;
+                    }
+                    case "总Rating":{
+                        int l = g1.getMemberTotalRating(true);
+                        int r = g2.getMemberTotalRating(true);
+                        if(l == r) continue;
+                        return r - l;
+                    }
+                    case "队员总AC":{
+                        int l = g1.getMemberTotalAC(false);
+                        int r = g2.getMemberTotalAC(false);
+                        if(l == r) continue;
+                        return r - l;
+                    }
+                    case "队员总Rating":{
+                        int l = g1.getMemberTotalRating(false);
+                        int r = g2.getMemberTotalRating(false);
+                        if(l == r) continue;
+                        return r - l;
+                    }
+                }
             }
-            return g2.getMemberTotalRating(isIncludeLeader) - g1.getMemberTotalRating(isIncludeLeader);
+            return 0;
         }
     };
 
@@ -54,7 +81,8 @@ public class GroupListHTML extends SimplePageBean<Group> {
 
         if(data.lastSortTime==null || data.reset || MyTime.addTimestamp(data.lastSortTime , 2*MyTime.MINUTE).before(Tool.now())){
             data.allGroupIDList = GroupDao.getInstance().getAllGroupID(type);
-            Collections.sort(data.allGroupIDList, cmp);
+            if(type != -1)
+                Collections.sort(data.allGroupIDList, cmp);
             //data.lastSortTime = Tool.now();
         }
     }
@@ -83,14 +111,20 @@ public class GroupListHTML extends SimplePageBean<Group> {
         switch (colname) {
             case "id":
                 return cla.getId() + "";
+            case "类型":
+                return cla.getType().getName();
             case "队名":
                 return HTML.a("javascript:member("+cla.getId()+")",cla.getGroupName());
-            case "队长":
+            case "所有者":
                 return Main.users.getUser(cla.getLeader().getUsername()).getNick();
             case "总AC":
-                return cla.getMemberTotalAC(type == GroupType.ICPC.getId()) + "";
+                return cla.getMemberTotalAC(true) + "";
             case "总Rating":
-                return cla.getMemberTotalRating(type == GroupType.ICPC.getId()) + "";
+                return cla.getMemberTotalRating(true) + "";
+            case "队员总AC":
+                return cla.getMemberTotalAC(false) + "";
+            case "队员总Rating":
+                return cla.getMemberTotalRating(false) + "";
             case "admin":
                 return HTML.a("admin.jsp?page=GroupAdmin&id="+cla.getId(),"编辑");
         }
@@ -99,7 +133,14 @@ public class GroupListHTML extends SimplePageBean<Group> {
 
     @Override
     public String[] getColNames() {
-        addTableHead("id","队名","队长","总AC","总Rating");
+        addTableHead("id","队名","所有者");
+        if(type == -1) addTableHead("类型");
+        GroupType groupType = GroupType.getByID(type);
+        if(groupType != null){
+            for (String colName : groupType.getShowInfo()){
+                addTableHead(colName);
+            }
+        }
         User u = Main.loginUser();
         if(u!=null && u.getPermission().havePermissions(PermissionType.groupAdmin)) addTableHead("admin");
         return new String[0];
@@ -122,8 +163,10 @@ public class GroupListHTML extends SimplePageBean<Group> {
         formHTML.setType(1);
         select s = new select("type","类型");
         s.setType(1);
-        s.add(1,"集训队");
-        s.add(2,"新生分组");
+        s.add(-1,"全部");
+        for(GroupType type : GroupType.list){
+            s.add(type.getId(),type.getName());
+        }
         s.setValue(type+"");
         formHTML.addForm(s);
         formHTML.setAction("GroupRank.jsp");

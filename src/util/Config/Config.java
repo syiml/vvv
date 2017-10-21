@@ -14,10 +14,12 @@ import java.io.InputStreamReader;
  */
 public class Config {
     public TopConfig topConfig = new TopConfig();
+    public GroupConfig groupConfig = new GroupConfig();
 
     public String OJName;
     public void init(){
         init(topConfig);
+        init(groupConfig);
         /*---------------*/
 
 
