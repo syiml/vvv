@@ -22,7 +22,7 @@
 <link href="css/loaders.css" rel="stylesheet">
 
 <%--<script src="js/jquery-1.11.1.js"></script>--%>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 
 <%--<script src="js/jquery-ui.min.js"></script>--%>
 <script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>

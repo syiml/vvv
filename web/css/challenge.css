@@ -7,7 +7,7 @@
 .block{
     position: absolute;
     border-radius: 50%;
-    transition-duration: 0.3s;
+    /*transition-duration: 0.3s;*/
 }
 .block:hover{
     box-shadow: 0 0 10px #00db00;
