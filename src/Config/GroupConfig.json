@@ -15,11 +15,18 @@
         "showInfo":["队员总AC","队员总Rating"],
         "order":["总AC","总总Rating"]
       },{
+        "id":3,
+        "name":"创新组",
+        "canRepeatJoin":true,
+        "roles":[3,4,5,6,7,8,9],
+        "showInfo":["总人数"],
+        "order":["id"]
+      },{
         "id":10,
         "name":"其他分组",
         "canRepeatJoin":true,
-        "roles":[3,4,5,6,7],
-        "showInfo":[],
+        "roles":[3,1,2,4,5,6,7],
+        "showInfo":["总人数"],
         "order":["id"]
       }
     ],
@@ -46,19 +53,29 @@
         "color":"green"
       },{
         "id":5,
-        "name":"OJ后端开发",
+        "name":"后端开发",
         "showB":false,
         "color":"green"
       },{
         "id":6,
-        "name":"OJ前端开发",
+        "name":"前端开发",
         "showB":false,
         "color":"green"
       },{
         "id":7,
-        "name":"OJ评测机开发",
+        "name":"评测机开发",
         "showB":false,
         "color":"green"
+      },{
+        "id":8,
+        "name":"产品经理",
+        "showB":false,
+        "color":"red"
+      },{
+        "id":9,
+        "name":"测试人员",
+        "showB":false,
+        "color":"blue"
       }
     ]
 }

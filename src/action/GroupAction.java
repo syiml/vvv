@@ -120,6 +120,20 @@ public class GroupAction extends BaseAction {
         this.setPrompt("删除失败");
         return ERROR;
     }
+    public String delGroup(){
+        User loginUser = Main.loginUser();
+        if(loginUser == null || !loginUser.getPermission().havePermissions(PermissionType.groupAdmin)){
+            this.setPrompt(MainResult.NO_PERMISSION.getPrompt());
+            return ERROR;
+        }
+        Group group = GroupDao.getInstance().getBeanByKey(id);
+        if(group == null) {
+            this.setPrompt(MainResult.ARR_ERROR.getPrompt());
+            return ERROR;
+        }
+        GroupDao.getInstance().deleteGroup(id);
+        return SUCCESS;
+    }
 
     ///////////get/set////////////
     public int getId() {

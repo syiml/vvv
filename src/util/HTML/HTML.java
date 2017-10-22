@@ -2069,6 +2069,7 @@ public class HTML {
 
         //编辑组员
         String memberEditHTML = "";
+        modal mo = null;
         if(group != null){
             FormHTML add_member_form = new FormHTML();
             text text_username = new text("username","用户名");
@@ -2077,8 +2078,8 @@ public class HTML {
 
             select role = new select("role","角色");
             List<Integer> roles = GroupType.getByID(group.getType().getId()).getRoles();
-            for(Integer roleId : roles){
-                GroupMemberStatus status = GroupMemberStatus.getByID(roleId);
+            for(int i=1;i<roles.size();i++){
+                GroupMemberStatus status = GroupMemberStatus.getByID(roles.get(i));
                 if(status == null) continue;
                 role.add(status.getId(),status.getName());
             }
@@ -2089,8 +2090,11 @@ public class HTML {
             add_member_form.setAction("addMember.action");
             GroupUserListHTML listHTML = new GroupUserListHTML(id,true);
             memberEditHTML = HTML.panel("队员",add_member_form.toHTML() + listHTML.HTML());
-        }
 
-        return panel(PermissionType.groupAdmin.getName(),formHTML.toHTML()) + memberEditHTML;
+            mo = new modal("delGroup","删除队伍","你确定要删除分组【"+group.getGroupName()+"】吗"+new hidden("id",id+"").toHTML(),"删除这个分组");
+            mo.setAction("delGroup.action");
+            mo.setBtnCls("danger");
+        }
+        return panel(PermissionType.groupAdmin.getName(),formHTML.toHTML()) + memberEditHTML + (mo!=null?mo.toHTML():"");
     }
 }

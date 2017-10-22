@@ -53,6 +53,12 @@ public class GroupDao extends BaseCacheLRU<Integer,Group>{
         return ret;
     }
 
+    public int deleteGroup(int id){
+        new SQL("DELETE FROM t_group_member WHERE group_id=?",id).update();
+        new SQL("DELETE FROM t_group WHERE id=?",id).update();
+        remove_catch(id);
+        return 1;
+    }
 
     /**
      *

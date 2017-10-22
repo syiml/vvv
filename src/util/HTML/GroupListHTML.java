@@ -64,7 +64,15 @@ public class GroupListHTML extends SimplePageBean<Group> {
                     }
                 }
             }
-            return 0;
+            return g1.getType().getId() - g2.getType().getId();
+        }
+    };
+    private static Comparator<Integer> cmp2 = new Comparator<Integer>(){
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            Group g1 = GroupDao.getInstance().getBeanByKey(o1);
+            Group g2 = GroupDao.getInstance().getBeanByKey(o2);
+            return g1.getType().getId() - g2.getType().getId();
         }
     };
 
@@ -81,8 +89,11 @@ public class GroupListHTML extends SimplePageBean<Group> {
 
         if(data.lastSortTime==null || data.reset || MyTime.addTimestamp(data.lastSortTime , 2*MyTime.MINUTE).before(Tool.now())){
             data.allGroupIDList = GroupDao.getInstance().getAllGroupID(type);
-            if(type != -1)
+            if(type!=-1){
                 Collections.sort(data.allGroupIDList, cmp);
+            }else {
+                Collections.sort(data.allGroupIDList, cmp2);
+            }
             //data.lastSortTime = Tool.now();
         }
     }
@@ -110,7 +121,9 @@ public class GroupListHTML extends SimplePageBean<Group> {
     public String getCellByClass(int i, Group cla, String colname) {
         switch (colname) {
             case "id":
-                return cla.getId() + "";
+                return cla.getId()+"";
+            case "#":
+                return (page-1)*getEveryPageNumber()+(i+1)+"";
             case "类型":
                 return HTML.textb(cla.getType().getName(),"black");
             case "队名":
@@ -127,13 +140,15 @@ public class GroupListHTML extends SimplePageBean<Group> {
                 return cla.getMemberTotalRating(false) + "";
             case "admin":
                 return HTML.a("admin.jsp?page=GroupAdmin&id="+cla.getId(),"编辑");
+            case "总人数":
+                return cla.getMembers().size()+"";
         }
         return ERROR_CELL_TEXT;
     }
 
     @Override
     public String[] getColNames() {
-        addTableHead("id");
+        addTableHead("#");
         if(type == -1) addTableHead("类型");
         addTableHead("队名","所有者");
         GroupType groupType = GroupType.getByID(type);
